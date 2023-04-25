@@ -1,13 +1,13 @@
 # Module `<Title>`
 
 # Description
-> Brief description of this module's role in the main project.
+O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam exibidos de forma gráfica para o usuário.
 
 # Team
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
+* Iago Caran Aquino - RA: 198921
+* André Silva Telles - RA 165263
+* Juliana Bronqueti da Silva - RA 238389
+* Marcos Cunha Rosa - RA 240815
 
 # Message Types
 
