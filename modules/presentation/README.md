@@ -1,12 +1,18 @@
-# Module `<Title>`
+# Module Presentation
 
 # Description
 > Brief description of this module's role in the main project.
 
 # Team
-* `<complete member name>`
+* Leandro Hélio Ferreira da Silva
   * `<brief description of the activities developed by this member>`
-* `<complete member name>`
+* Daniel Credico Coimbra
+  * `<brief description of the activities developed by this member>`
+* Fernanda Garcia Da Lavra
+  * `<brief description of the activities developed by this member>`
+* Miguel Teixeira Buzato
+  * `<brief description of the activities developed by this member>`
+* Matheus Otávio Rodrigues
   * `<brief description of the activities developed by this member>`
 
 # Message Types
