@@ -26,6 +26,27 @@ O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam 
 }
 ~~~
 
+**create-graph**
+
+~~~json
+{
+  graph_id: number
+  graph_type: string
+}
+~~~
+
+**graph-config**
+
+~~~json
+{
+  graph_id: number
+  config_data: {
+    data_source: string
+  	...(depende do tipo de gráfico)  
+  }
+}
+~~~
+
 > Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
 
 > One can use a second message type inside a given message type (illustrated as `<message type>`).
@@ -57,6 +78,26 @@ notice | action | message type
 notice    | source | message type
 ----------| -------| ------------
 `<notice label>` | `<description of the event that produced the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+
+## Component GraphCreator
+
+### Properties
+
+| property | role |
+| -------- | ---- |
+| --       | --   |
+
+### Input Notices
+
+| notice | action                                                      | message type |
+| ------ | :---------------------------------------------------------- | ------------ |
+| open   | abre o criador de gráficos do tipo selecionado pelo usuário | create-graph |
+
+### Output Notices
+
+| notice       | source                                                       | message type |
+| ------------ | ------------------------------------------------------------ | ------------ |
+| update-graph | O usuário fechar o criador de gráficos ou salvar as mudanças feitas as configurações do gráfico | graph-config |
 
 # Components Narratives
 
