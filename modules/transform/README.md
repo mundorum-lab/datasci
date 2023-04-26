@@ -59,8 +59,8 @@ notice    | source | message type
 ## Setup
 
 ~~~html
-<entrada publish="operação:análise/relacional/operacao_coluna/op/coluna_destino/coluna1/coluna2">
-subscribe="análise/relacional/pronto"
+<entrada publish="operação:análise/relacional/operacao_coluna/op/coluna_destino/coluna1/coluna2"
+         subscribe="análise/relacional/pronto">
 </entrada>
 
 <operacao-colunas subscribe="análise/relacional/operacao_coluna/op/coluna_destino/coluna1/coluna2:transformar">
