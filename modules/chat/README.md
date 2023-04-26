@@ -1,10 +1,10 @@
-# Module `<Title>`
+# Module ChatGPT
 
 # Description
-> Brief description of this module's role in the main project.
+> This module implements calls from the ChatGPT API to describe graphics, table and other relevant data.
 
 # Team
-* `<complete member name>`
+* Felipe Pacheco Manoel
   * `<brief description of the activities developed by this member>`
 * `<complete member name>`
   * `<brief description of the activities developed by this member>`
