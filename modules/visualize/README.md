@@ -26,7 +26,7 @@ O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam 
 }
 ~~~
 
-**create-graph**
+**CreateGraph**
 
 ~~~json
 {
@@ -35,7 +35,7 @@ O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam 
 }
 ~~~
 
-**graph-config**
+**GraphConfig**
 
 ~~~json
 {
@@ -47,6 +47,16 @@ O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam 
 }
 ~~~
 
+**RenderGraph**
+
+~~~json
+{
+  graph_id: number
+  data: Table,
+  size: number
+}
+~~~
+
 > Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
 
 > One can use a second message type inside a given message type (illustrated as `<message type>`).
@@ -54,12 +64,6 @@ O modulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam 
 > Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
 
 # Components
-
-> Present a subsection for each component, following the model below:
-
-## Component `<Name>`
-
-> Summary of the component's role and services it provides.
 
 ### Properties
 
@@ -98,6 +102,29 @@ notice    | source | message type
 | notice       | source                                                       | message type |
 | ------------ | ------------------------------------------------------------ | ------------ |
 | update-graph | O usuário fechar o criador de gráficos ou salvar as mudanças feitas as configurações do gráfico | graph-config |
+
+## Component Graph
+
+Componente visual do gráfico a ser apresentado.
+
+### Properties
+
+| property | role |
+| -------- | ---- |
+| --       | --   |
+
+### Input Notices
+
+| notice | action                                                      | message type |
+| ------ | :---------------------------------------------------------- | ------------ |
+| update-graph | atualiza as configurações internas do gráfico de acordo com o que for fornecido | graph-config |
+| render-graph | atualiza a exibição do gráfico | render-graph |
+
+### Output Notices
+
+| notice       | source                                                       | message type |
+| ------------ | ------------------------------------------------------------ | ------------ |
+| -- | -- | -- |
 
 # Components Narratives
 
