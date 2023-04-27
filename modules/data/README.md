@@ -30,7 +30,7 @@
   ]
 }
 ~~~
-**`TreatedFileContent`**
+**`TreatedDataContent`**
 ~~~json
 {
 	"file_id": string,
@@ -101,7 +101,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`inputFile` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+`inputFile` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
 ## Narrative
@@ -112,10 +112,10 @@ notice    | source | message type
 -   The component appends these JSON objects to the output message body.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the transformed data in JSON format is published on the data bus.
-
+---
 ## Component `api-input`
 
-For this component, the responsibility is to collect raw data from an API specified by us. Initially we are thinking about the implementation for the google sheet API that will take data from online spreadsheets and transform it into a useful format for other components. Similar to file-input, we convert the raw data into a JSON format, which is then inserted into the data bus.
+>For this component, the responsibility is to collect raw data from an API specified by us. Initially we are thinking about the implementation for the google sheet API that will take data from online spreadsheets and transform it into a useful format for other components. Similar to file-input, we convert the raw data into a JSON format, which is then inserted into the data bus.
 
 ### Input Notices
 
@@ -127,7 +127,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`inputApi` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+`inputApi` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
 ## Narrative
