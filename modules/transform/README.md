@@ -1,7 +1,7 @@
 # Module Transform
 
 # Description
-Esse módulo pretende fazer transformações relacionais nos dados, como por exemplo: filtro, join, dropar colunas etc.
+Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
 Cícero Pizzol Libardi RA:168810 <br>
@@ -71,14 +71,14 @@ notice    | source | message type
 
 * Dois componentes: módulo que recebe os dados (`entrada`) e o módulo de operações (`operacao-colunas`).
 * O módulo de operações assina o tópico "`análise/relacional`".
-* O módulo de entrada recebe uma mensagem do componente de workflow com a operação solicitada pelo usuário e a tabela de dados.
+* O módulo de entrada recebe uma mensagem do componente de workflow com a operação solicitada pelo usuário e a tabela de dados, já no formato especificado acima.
 * O módulo de entrada valida a mensagem recebida:
   * Checa a operação;
   * Verifica se tem todos os parâmetros necessários para ela;
   * Publica uma mensagem com o tópico `análise/relacional`.
 * O módulo de entrada assina o tópico `análise/relacional/pronto`.
-* O módulo de operações recebe a mensagem com o tópico `Análise/relacional` e:
+* O módulo de operações recebe a mensagem com o tópico `análise/relacional` e:
   * Mapeia para o aviso `transformar`;
-  * Realiza a operação;
+  * Realiza a operação, transformando para o formato final de retorno;
   * Publica uma mensagem com o tópico `análise/relacional/pronto`.
  
