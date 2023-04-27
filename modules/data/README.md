@@ -7,6 +7,8 @@
 > Our module's responsibility is to gather raw data from files and APIs and transform it into useful data for the other components to use. Essentially, we take raw data and convert it into a JSON format, which is then inserted into the data bus.
 
 # Team
+* `Gustavo Araújo Morais`
+  * `Responsible for architecting and developing the file typing component to type JSON data`
 * `Leonardo Livrare Martins`
   * `Responsible for architecting and developing the file input component to transform into JSON.`
 * `<complete member name>`
@@ -20,11 +22,6 @@
   "file_id": string,
   "file_format": string,
   "file_content": string,
-  "columns_types": [
-	  {"column_0": string},
-	  ...
-	  {"column_n": string}
-  ]
 }
 ~~~
 **`TreatedFileContent`**
@@ -62,6 +59,16 @@
 	]
 }
 ~~~
+**`FileTypeInfo`**
+~~~json
+{
+	"columns_types": [
+	  {"column_0": string},
+	  ...
+	  {"column_n": string}
+  ]
+}
+~~~
 **`ErrorDuringDataProcessing`**
 ~~~json
 {
@@ -97,6 +104,23 @@ notice    | source | message type
 ----------| -------| ------------
 `inputFile` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedFileContent` or `ErrorDuringDataProcessing`
 
+## Component `file-typing`
+
+> This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. After this process is finished, it inserts the typed data into the data bus.
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`fileTyping` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
+`fileTyping` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`fileTyping` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+
 # Components Narratives
 ## Narrative
 
@@ -108,3 +132,10 @@ notice    | source | message type
 -   The component appends these JSON objects to the output message body.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the transformed data in JSON format is published on the data bus.
+-	The `file-typing` component watches the data bus for incoming JSON files that must be typed.
+-	It initiates the process on the result of the process of the `file-input` component.
+-	It triggers the opening of an interface that asks the user to indicate the types of each column of the data in question.
+-	Based on the user's response, it types the data received.
+-   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
+-   If all rows have been processed successfully with no errors, the typed data in JSON format is published on the data bus.
+
