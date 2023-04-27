@@ -13,50 +13,64 @@
 
 > This section comes before all component specifications since there are message types shared by various components.
 
-**`<type identification>`**
+**ContentInput**
 ~~~json
 {
-  <field>: <type>
-  <field>: {
-    <field>: <type>
-    ...
-  }
-  <field>: [<type>]
-  <field>: <message type>
+  tipo : string
+  conteudo : json   
 }
 ~~~
 
-> Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
+>The json type inside ContentInput should be flexible enough to receive any message type from other components as multiple components should be able to send their data. 
 
-> One can use a second message type inside a given message type (illustrated as `<message type>`).
+**WorkflowFormat**
+~~~json
+{
+  nodeList : [{
+    nome: string
+    Adjacencia: [string]
+    canalPublicado: string
+  }]
 
-> Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+}
+~~~
 
 # Components
 
-> Present a subsection for each component, following the model below:
+## Component ChatGPT
 
-## Component `<Name>`
-
-> Summary of the component's role and services it provides.
-
-### Properties
-
-property | role
----------| --------
-`<property name>` | `<role of this property in the component>`
+> Given some valid data which the user wants to interpret, this components returns an interpretation of the data.
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`<notice label>` | `<description of the action triggered by the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`workflow` | After the workflow is finished, gives the component information about the workflow, the component will store this data to do the analysis later | WorkflowFormat
+`componentData` | Contains the data from a specific component which will be necessary to perform the API calls, after receiving , the data processing will start | ContentInput
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`<notice label>` | `<description of the event that produced the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`chatResult` | The API sucessfully returned the result, the result will be posted in the bus | string
+
+## Component GenericWorkflowNode
+ 
+> This node represents a generic component of the workflow
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`dataPublish` | data processing finished and is ready to publish, publish data for the children nodes | Any
+ 
+> the message type depends on actual component of the node
+
+### Output Notices
+
+notice | action | message type
+-------| ------ | ------------
+`dataReceive` | data is received from parents | Any
 
 # Components Narratives
 
