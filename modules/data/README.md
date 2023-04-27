@@ -1,12 +1,18 @@
-# Module `<Title>`
+# Module `Data`
 
 # Description
-> Brief description of this module's role in the main project.
+> Module responsible for extracting data on the platform.
 
 # Team
-* `<complete member name>`
+* `Giovana Kerche Bonás`
   * `<brief description of the activities developed by this member>`
-* `<complete member name>`
+* `Gustavo Araújo Morais`
+  * `<brief description of the activities developed by this member>`
+* `João Guilherme Alves Santos`
+  * `<brief description of the activities developed by this member>`
+* `Raniery Rodrigues da SIlva`
+  * `<brief description of the activities developed by this member>`
+* `Leonardo Livrare Martins`
   * `<brief description of the activities developed by this member>`
 
 # Message Types
