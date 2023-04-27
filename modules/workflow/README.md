@@ -1,28 +1,65 @@
-# Module `<Title>`
+# Module `Workflow`
 
 # Description
-> Brief description of this module's role in the main project.
+> Esse módulo tem como função prover as funcionalidades para interação dos usuários no que diz respeito a autoria. Assim, iremos implementar tanto a parte lógica de conexão dos componentes, quanto a visualização do estado atual da aplicação.
 
 # Team
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
+* César Devens Grazioti
+  * <brief description of the activities developed by this member>
+* João Augusto Rosa Feltran
+  * <brief description of the activities developed by this member>
+* João Miguel de Oliveira Guimarães
+  * <brief description of the activities developed by this member>
+* Lucas Eduardo Ramos de Oliveira
+  * <brief description of the activities developed by this member>
+* Renan Luis Moraes de Sousa
+  * <brief description of the activities developed by this member>
 
 # Message Types
 
 > This section comes before all component specifications since there are message types shared by various components.
 
-**`<type identification>`**
+**`WorkflowState`**
 ~~~json
 {
-  <field>: <type>
-  <field>: {
-    <field>: <type>
+  nodes: [{
+    nodeId: int,
+    nodeType: string,
+    attributes: {...}
+  }]
+
+  edges: [[int, int],[int, int], ...]
+}
+~~~
+
+**`LayoutSelection`**
+~~~json
+{
+  layouts: [
     ...
-  }
-  <field>: [<type>]
-  <field>: <message type>
+  ]
+}
+~~~
+
+**`AvailableNodes`**
+~~~json
+{
+  nodes: [{
+    id: string,
+    name: string,
+    compatibleInputNodes: [string],
+    compatibleOutputNodes: [string],
+    inputRange: [[int, int]],
+    outputRange: [[int, int]],
+    inputFields: [{
+      fieldName: string,
+      fieldType: string, 
+      inputType: {
+        identifier: string,
+        parameters: [...]
+      }
+    }]
+  }]
 }
 ~~~
 
