@@ -1,82 +1,97 @@
-# Module `<Title>`
+# Module Model
 
 # Description
-> Brief description of this module's role in the main project.
+> Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
 
 # Team
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
+* Otávio Silveira Munhoz - 204280
+* Régis Gabetta De Souza - 223965
+* Felipe Hideki Matoba - 196767
+* Fernando de Sáes Madeira Vallar - 171509
+* João Pedro Vianini de Paula - 176241
 
 # Message Types
 
-> This section comes before all component specifications since there are message types shared by various components.
-
-**`<type identification>`**
+**`ModelObject`**
 ~~~json
 {
-  <field>: <type>
-  <field>: {
-    <field>: <type>
+  transformation: string
+  data: {
+    coluna1: {linha1, linha2, ... , linhan}
+    coluna2: {linha1, linha2, ... , linhan}
+    ...
+    colunam: {linha1, linha2, ... , linhan}
+  }
+  types: [string]
+  params: {
+    param1: object
     ...
   }
-  <field>: [<type>]
-  <field>: <message type>
 }
 ~~~
 
-> Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
+> O objeto contém a string transformation, que indica a transformação a ser realizada, o objeto data, com uma tabela serializada, cujo tipo depende dos dados inseridos e o objeto params, que possui os parâmetros necessários para cada transformação.
 
-> One can use a second message type inside a given message type (illustrated as `<message type>`).
+**`TransformedData`**
+~~~json
+{
+  data: {
+    coluna1: {linha1, linha2, ... , linhan}
+    coluna2: {linha1, linha2, ... , linhan}
+    ...
+    colunam: {linha1, linha2, ... , linhan}
+  }
+  types: [string]
+}
+~~~
 
-> Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+> O objeto contém uma tabela serializada com os dados transformados.
 
 # Components
 
-> Present a subsection for each component, following the model below:
+## Component `StatisticsTransformation`
 
-## Component `<Name>`
-
-> Summary of the component's role and services it provides.
-
-### Properties
-
-property | role
----------| --------
-`<property name>` | `<role of this property in the component>`
+> Recebe o ModelObject, desserializa os dados e aplica a transformação requisitada. Por fim, devolve os dados transformados para o barramento.
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`<notice label>` | `<description of the action triggered by the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`statistics/input` | `O usuário envia um pedido de transformação dos dados` | `ModelObject`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`<notice label>` | `<description of the event that produced the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`statistics/output` | `O componente envia os dados transformados para o barramento` | `TransformedData`
 
 # Components Narratives
 
-> Present one or more narratives exemplifying the interaction of your components. It can be a single description comprising all components or several short descriptions. It can be only among your components or can include expected external components. External components can be less detailed.
-
 ## Setup
 
-> Specify here the components involved in the narrative and their publish/subscribe attributes in HTML.
-
 ~~~html
-<web-component1 attribute="value"
-                attribute="value"
-                publish="notice:topic">
-</web-component1>
+<solicita-transformacao attribute="value"
+                publish="notice:statistics/input">
+</solicita-transformacao>
 
-<web-component2 attribute="value"
-                subscribe="topic:notice">
-</web-component2>
+<StatisticsTransformation
+                subscribe="statistics/input:transformation"
+                publish="transformation:statistics/output">
+</StatisticsTransformation>
+
+<exibe-grafico
+                subscribe="statistics/output:display">
+</exibe-grafico>
 ~~~
 
 ## Narrative
 
-> Describe here the narrative as a sequence of steps. The format is free, but you can follow the approach suggested in the example below.
+* O componente StatisticsTransformation irá subscrever no barramento assinando o tópico statistics/input
+* O componente fictício solicita-transformacao publica um pedido de transformação nesse tópico
+* O StatisticsTransformation recebe o pedido e:
+  * Desserializa os dados;
+  * Verifica o tipo da transformação;
+  * Realiza a transformação;
+  * Serializa a resposta;
+  * Publica no barramento em statistics/output.
+* O componente fictício exibe-grafico, subscrito no statistics/output, recebe os dados transformados e exibe o gráfico correspondente.
