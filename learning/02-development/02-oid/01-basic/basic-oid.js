@@ -1,4 +1,4 @@
-import { Oid } from '/lib/oidlib-dev.js'
+import { html,Oid } from '/lib/oidlib-dev.js'
 
 Oid.component(
 {
@@ -7,5 +7,5 @@ Oid.component(
   properties: {
     name: {}
   },
-  template: `<h1>Hello, {{this.name}}</h1>`
+  template: html`<h1>Hello, {{this.name}}</h1>`
 })
