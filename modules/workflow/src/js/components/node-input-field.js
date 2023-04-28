@@ -1,5 +1,3 @@
-import { FieldInputType } from "./field-input-type.js";
-
 export class NodeInputField{
 
     /*
