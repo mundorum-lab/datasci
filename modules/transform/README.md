@@ -12,27 +12,14 @@ Fábio de Andrade Barboza RA:168817 <br>
 # Message Types
 
 **`table`**
- ~~~json
+~~~json
 {
-    {
-      column_one: any,
-      column_two: any,
-      ...
-      column_n: any,
-    },
-    {
-      column_one: any,
-      column_two: any,
-      ...
-      column_n: any,
-    }
+  Tabela: {
+    coluna1: {linha1, linha2, ... , linhan}
+    coluna2: {linha1, linha2, ... , linhan}
     ...
-    {
-      column_one: any,
-      column_two: any,
-      ...
-      column_n: any,
-    }
+    colunan: {linha1, linha2, ... , linhan}
+  }
 }
 ~~~
 
