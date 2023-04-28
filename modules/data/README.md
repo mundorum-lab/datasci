@@ -3,17 +3,17 @@
 # Description
 > Our module's responsibility is to gather raw data from files and APIs and transform it into useful data for the other components to use. Essentially, we take raw data and convert it into a JSON format, which is then inserted into the data bus.
 
-# Team
+# Team `QR2.0`
 * `Giovana Kerche Bonás`
-  * `<brief description of the activities developed by this member>`
+	* `Responsible for architecting and developing the api-input component to transform into JSON.`
 * `Gustavo Araújo Morais`
-  * `Responsible for architecting and developing the file typing component to type JSON data`
+	* `Responsible for architecting and developing the file-typing, this processes JSON data and send to data bus.`
 * `João Guilherme Alves Santos`
-  * `<brief description of the activities developed by this member>`
+	* `Responsible for architecting and developing the api-input component to transform into JSON.`
 * `Raniery Rodrigues da SIlva`
-  * `<brief description of the activities developed by this member>`
+	* `Responsible for architecting and developing the file input component to transform into JSON.`
 * `Leonardo Livrare Martins`
-  * `Responsible for architecting and developing the file input component to transform into JSON.`
+	* `Responsible for architecting and developing the file input component to transform into JSON.`
 
 # Message Types
 
@@ -135,8 +135,19 @@ notice    | source | message type
 `inputApi` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
+
+## Setup
+
+
+> api-input component
+~~~html
+<api-input 
+	attribute="inputAPI"
+    publish="input/on/clicked:receivedata/[id]">
+</api-input>
+~~~
 ## Narrative
--   The `api-input` component listens to the data bus to wait for the spreadsheet URL to be processed in string format.
+-   The `api-input` component listens to the data bus to wait for the spreadsheet URL inside `inputAPI` attribute to be processed in string format.
 -   When a new url message arrives on the data bus being watched, the component starts the process.
 -   Calls the function in javascript that will make the connection with the api to obtain the data, transforming into a JSON format.
 -   The component appends these JSON objects to the output message body.
