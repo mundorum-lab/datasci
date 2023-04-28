@@ -1,0 +1,51 @@
+[
+  {
+    "template": "Template_A",
+    "regions": [
+      {
+        "id": 1,
+        "size": "Small"
+      },
+      {
+        "id": 2,
+        "size": "Medium"
+      },
+      {
+        "id": 3,
+        "size": "Large"
+      }
+    ]
+  },
+
+  {
+    "template": "Template_B",
+    "regions": [
+      {
+        "id": 1,
+        "size": "Small"
+      },
+      {
+        "id": 2,
+        "size": "Small"
+      },
+      {
+        "id": 3,
+        "size": "Medium"
+      },
+      {
+        "id": 4,
+        "size": "Medium"
+      }
+    ]
+  },
+
+  {
+    "template": "Template_C",
+    "regions": [
+      {
+        "id": 1,
+        "size": "XLarge"
+      }
+    ]
+  }
+]
