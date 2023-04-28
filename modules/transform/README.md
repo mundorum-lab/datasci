@@ -58,10 +58,42 @@ Fábio de Andrade Barboza RA:168817 <br>
 }
 ~~~
 
+**`operationResult`**
+~~~json
+{
+  table: table
+  status: boolean
+}
+~~~
+
 
 # Components
 
 > Cada componente é responsável por uma operação relacional.
+> Além disso há um componente de validação, para verificar se os parâmetros de cada operação são válidos
+
+## Component `validateFilter`
+
+> Valida os argumentos passados para a operação de filtro correspondente. Por exemplo, verifica se o valor de comparação utilizado no filtro é válido e é do mesmo tipo dos valores da coluna com base na qual se deseja filtrar.
+
+### Properties
+
+property | role
+---------| --------
+`status` | `salva o estado da validação realizada`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`validate` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`onFilterSucess` | `é ativado pelo próprio componente quando termina uma validação bem sucedida` | `filterInput`
+`onFilterFail` | `é ativado pelo próprio componente quando termina uma validação que falhou` | `operationResult`
 
 ## Component `filter`
 
@@ -72,7 +104,7 @@ Fábio de Andrade Barboza RA:168817 <br>
 property | role
 ---------| --------
 `table` | `salva a tabela resultante da filtragem`
-`ready` | `salva o estado da operação relacional`
+`status` | `salva o estado da operação relacional`
 
 ### Input Notices
 
@@ -84,7 +116,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`getTable` | `a entrada de um componente no worflow é adicionada a saída de um componente de filtro` | `table`
+`getResult` | `é ativado quando a operação de filtrar termina` | `operationResult`
 
 ## Component `columnOperation`
 
@@ -95,7 +127,7 @@ notice    | source | message type
 property | role
 ---------| --------
 `table` | `salva a tabela resultante da operação`
-`ready` | `salva o estado da operação relacional`
+`status` | `salva o estado da operação relacional`
 
 ### Input Notices
 
@@ -120,22 +152,22 @@ notice    | source | message type
         status=false
         table = {}
         subscribe="filterOperation:validate"
-        publish="validationSucceed:filterOperation"
-        publish="validationFailed:operationResult"
+        publish="onValidationSuccess:filterOperation"
+        publish="onValidationFail:filterResult"
         >
 </validateFilter>
 
 <filter
         status=false
         subscribe="filterOperation:filter"
-        publish="filtered:operationResult">
+        publish="getResult:filterResult">
 </filter>
 ~~~
 
 ## Narrative
 
 * O componente `validateFilter` apresenta o notice de entrada `validate` que assina o tópico `filter`. Assim, toda vez que se deseja fazer um filtro, a filtragem passa primeiro pela validação, que recebe também a mensagem do tipo `filterInput`, com os argumentos a serem usados no filtro. Após a validação ser realizada, o componente, a depender do resultado da validação, ativa os notices
-  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `operationResult` e a mensagem `operationResult`
+  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `filterResult` e a mensagem `operationResult`
   * `onValidationSuccess`: se a validação é bem-sucessida, então é publicado um tópico de  `filterOperation`, com a mensagem `filterInput`
-    * Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `operationResult` e a mensagem contendo o resultado, `operationResult`. 
+    *Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `filterResult` e a mensagem contendo o resultado, `operationResult`. 
 * A mensagem do tipo `operationResult` é compartilhada por todos os componentes de transformações relacionais, já que o resultado é sempre uma tabela e o estado da transformação.
