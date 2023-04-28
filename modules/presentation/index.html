@@ -8,14 +8,16 @@
   <body>
     <button-oid
       label="Request templates"
-      publish="click:workflow/templates_request"
+      publish="click:presentation/templates_request"
       value="teste"
     ></button-oid>
     <templates-list
-      subscribe="workflow/templates_request:request"
-      publish="response:workflow/templates_response"
+      subscribe="presentation/templates_request:request"
+      publish="response:presentation/templates_response"
     >
     </templates-list>
-    <console-oid subscribe="workflow/templates_response:display"></console-oid>
+    <console-oid
+      subscribe="presentation/templates_response:display"
+    ></console-oid>
   </body>
 </html>
