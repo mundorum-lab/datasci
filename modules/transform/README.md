@@ -11,19 +11,31 @@ Fábio de Andrade Barboza RA:168817 <br>
 
 # Message Types
 
-**`Tabela`**
-~~~json
+**`table`**
+ ~~~json
 {
-  Tabela: {
-    coluna1: {linha1, linha2, ... , linhan}
-    coluna2: {linha1, linha2, ... , linhan}
+    {
+      column_one: any,
+      column_two: any,
+      ...
+      column_n: any,
+    },
+    {
+      column_one: any,
+      column_two: any,
+      ...
+      column_n: any,
+    }
     ...
-    colunan: {linha1, linha2, ... , linhan}
-  }
+    {
+      column_one: any,
+      column_two: any,
+      ...
+      column_n: any,
+    }
 }
 ~~~
 
-> A tabela é um JSON no qual os campos são as colunas, e esses representam um array com os valores de cada linha. A tipagem dos dados depende da tabela inserida pelo usuário
 
 **`filterInput`**
 ~~~json
@@ -46,42 +58,10 @@ Fábio de Andrade Barboza RA:168817 <br>
 }
 ~~~
 
-**`operationResult`**
-~~~json
-{
-  table: table
-  status: boolean
-}
-~~~
-
 
 # Components
 
 > Cada componente é responsável por uma operação relacional.
-> Além disso há um componente de validação, para verificar se os parâmetros de cada operação são válidos
-
-## Component `validateFilter`
-
-> Valida os argumentos passados para a operação de filtro correspondente. Por exemplo, verifica se o valor de comparação utilizado no filtro é válido e é do mesmo tipo dos valores da coluna com base na qual se deseja filtrar.
-
-### Properties
-
-property | role
----------| --------
-`status` | `salva o estado da validação realizada`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`validate` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-`validationSucceed` | `é ativado pelo próprio componente quando termina uma validação bem sucedida` | `filterInput`
-`validationFailed` | `é ativado pelo próprio componente quando termina uma validação que falhou` | `operationResult`
 
 ## Component `filter`
 
@@ -92,7 +72,7 @@ notice    | source | message type
 property | role
 ---------| --------
 `table` | `salva a tabela resultante da filtragem`
-`status` | `salva o estado da operação relacional`
+`ready` | `salva o estado da operação relacional`
 
 ### Input Notices
 
@@ -104,7 +84,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`filtered` | `é ativado quando a operação de filtrar termina` | `operationResult`
+`getTable` | `a entrada de um componente no worflow é adicionada a saída de um componente de filtro` | `table`
 
 ## Component `columnOperation`
 
@@ -115,7 +95,7 @@ notice    | source | message type
 property | role
 ---------| --------
 `table` | `salva a tabela resultante da operação`
-`status` | `salva o estado da operação relacional`
+`ready` | `salva o estado da operação relacional`
 
 ### Input Notices
 
