@@ -1,4 +1,4 @@
-# Module `ChatGPT`
+# Module ChatGPT
 
 # Description
 > This module has the function to explain some of the generated data to the final user.
@@ -10,7 +10,7 @@
 # Message Types
 
 
-**`Component Data`**
+**ComponentData**
 ~~~json
 {
   componentData: {
@@ -21,22 +21,20 @@
 }
 ~~~
 
-**`Workflow Connections`**
+**WorkflowConnections**
 ~~~json
 {
-  workflowConnections: {
-    component1: {
-      connections : [componentData]
+  nodeList : [
+    {
+    nome: string
+    Adjacencia: [ComponentData]
+    canalPublicado: string
     }
-    component2: {
-      connections : [componentData]
-    }
-    ...
-  }
+  ]
 }
 ~~~
 
-**`Explanation`**
+**Explanation**
 ~~~json
 {
   explanation: string
@@ -46,7 +44,7 @@
 # Components
 
 
-## Component `CHAT`
+## Component ChatGPT
 
 > Given some input data, provides a brief text explanation to the user about its content. The input data can be a graph, statistics, connections
 
@@ -56,20 +54,18 @@ property | role
 ---------| --------
 `openAiApiKey` | `api key to access the openAI api`
 `relevantComponents` | `relevant components to generate the prompt`
-`prompt` | `customized prompt based on the input data`
-`explanation` | `text explanation to be published`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`Explain` | `generate the explanation of the components connected to the chat component` | `workflowConnections`
+`dataPublish` | data processing finished and is ready to publish, publish data for the children nodes | ComponentData
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`showExplanation` | `publish the explanation of the components to be shown to the user` | `explanation`
+`showExplanation` | received result from ChatGPT API | Explanation
 
 # Components Narratives
 
@@ -79,7 +75,7 @@ notice    | source | message type
 ~~~html
 <chat-component attribute="openAiApiKey"
                 publish="showExplanation:show/explanation"
-                subscribe="workflowMap:explain">
+                subscribe="workflowMap:dataPublish">
 </chat-component>
 
 ~~~
