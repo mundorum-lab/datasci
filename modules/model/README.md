@@ -15,22 +15,20 @@
 **`ModelObject`**
 ~~~json
 {
-  transformation: string
-  data: {
-    coluna1: {linha1, linha2, ... , linhan}
-    coluna2: {linha1, linha2, ... , linhan}
+  columns: [{name, type}, ...]
+  data: [
+    [coluna0, coluna1, ...]
+    [coluna0, coluna1, ...]
     ...
-    colunam: {linha1, linha2, ... , linhan}
-  }
-  types: [string]
+  ]
   params: {
-    param1: object
+    paramName: objectValue
     ...
   }
 }
 ~~~
 
-> O objeto contém a string transformation, que indica a transformação a ser realizada, o objeto data, com uma tabela serializada, cujo tipo depende dos dados inseridos e o objeto params, que possui os parâmetros necessários para cada transformação.
+> O objeto contém o objeto columns, que representa o nome e o tipo de cada coluna da tabela, o data, com uma tabela serializada, cujo tipo depende dos dados inseridos, e o objeto params, que possui os parâmetros necessários para cada transformação.
 
 **`TransformedData`**
 ~~~json
