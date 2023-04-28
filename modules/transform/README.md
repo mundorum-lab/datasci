@@ -153,21 +153,21 @@ notice    | source | message type
         table = {}
         subscribe="filterOperation:validate"
         publish="onValidationSuccess:filterOperation"
-        publish="onValidationFail:filterResult"
+        publish="onValidationFail:operationResult"
         >
 </validateFilter>
 
 <filter
         status=false
         subscribe="filterOperation:filter"
-        publish="getResult:filterResult">
+        publish="getResult:operationResult">
 </filter>
 ~~~
 
 ## Narrative
 
 * O componente `validateFilter` apresenta o notice de entrada `validate` que assina o tópico `filter`. Assim, toda vez que se deseja fazer um filtro, a filtragem passa primeiro pela validação, que recebe também a mensagem do tipo `filterInput`, com os argumentos a serem usados no filtro. Após a validação ser realizada, o componente, a depender do resultado da validação, ativa os notices
-  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `filterResult` e a mensagem `operationResult`
+  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `operationResult` e a mensagem `operationResult`
   * `onValidationSuccess`: se a validação é bem-sucessida, então é publicado um tópico de  `filterOperation`, com a mensagem `filterInput`
-    *Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `filterResult` e a mensagem contendo o resultado, `operationResult`. 
+    * Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `operationResult` e a mensagem contendo o resultado, `operationResult`. 
 * A mensagem do tipo `operationResult` é compartilhada por todos os componentes de transformações relacionais, já que o resultado é sempre uma tabela e o estado da transformação.
