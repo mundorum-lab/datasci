@@ -4,10 +4,10 @@
 Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi RA:168810 <br>
-Jéssica da Silva Oliveira RA:173931 <br>
-Isabella Garcia Fagioli RA:173174 <br>
-Fábio de Andrade Barboza RA:168817 <br>
+Cícero Pizzol Libardi - RA 168810 <br>
+Fábio de Andrade Barboza - RA 168817 <br>
+Isabella Garcia Fagioli - RA 173174 <br>
+Jéssica da Silva Oliveira - RA 173931 <br>
 
 # Message Types
 
@@ -74,7 +74,7 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`validate` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
+`filter` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
 
 ### Output Notices
 
@@ -98,7 +98,7 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`filter` | `filtra uma tabela de dados, gerando outra` | `filterInput`
+`filterOperation` | `filtra uma tabela de dados, gerando outra` | `filterInput`
 
 ### Output Notices
 
@@ -133,22 +133,20 @@ notice    | source | message type
 
 ## Setup
 
-> Specify here the components involved in the narrative and their publish/subscribe attributes in HTML.
-
 ~~~html
 <validateFilter 
         status=false
         table = {}
-        subscribe="filterOperation:validate"
-        publish="validationSucceed:filterOperation"
-        publish="validationFailed:operationResult"
+        subscribe="filter/filterInput:validate"
+        publish="validationSucceed:filterOperation/filterInput"
+        publish="validationFailed:filterResult/operationResult"
         >
 </validateFilter>
 
 <filter
         status=false
-        subscribe="filterOperation:filter"
-        publish="filtered:operationResult">
+        subscribe="filterOperation/filterInput:filter"
+        publish="filtered:filterResult/operationResult">
 </filter>
 ~~~
 
