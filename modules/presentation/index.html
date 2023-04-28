@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Module: Presentation (Playgroud)</title>
+    <script src="./components/TemplatesList.js" type="module"></script>
+  </head>
+  <body>
+    <button-oid
+      label="Request templates"
+      publish="click:workflow/templates_request"
+      value="teste"
+    ></button-oid>
+    <templates-list
+      subscribe="workflow/templates_request:request"
+      publish="response:workflow/templates_response"
+    >
+    </templates-list>
+    <console-oid subscribe="workflow/templates_response:display"></console-oid>
+  </body>
+</html>
