@@ -32,7 +32,15 @@ Fábio de Andrade Barboza RA:168817 <br>
 
 ~~~
 
-> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Por isso, temos também um tipo para uma variável simĺes. 
+**`singleValue`**
+
+~~~json
+{
+  "value": "<any>"
+}
+~~~
+
+> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Por isso, temos também um tipo para uma variável simples. 
 
 **`filterInput`**
 ~~~json
@@ -44,7 +52,7 @@ Fábio de Andrade Barboza RA:168817 <br>
 }
 ~~~
 
-**`columnInput`**
+**`columnOpInput`**
 ~~~json
 {
   "table": "<validTable>",
@@ -66,7 +74,7 @@ Fábio de Andrade Barboza RA:168817 <br>
 }
 ~~~
 
-> Os tipos acima desrepeita a entrada de cada uma das transformações que serão realizadas pelo módulo.
+> Os tipos acima se referem a entrada de cada uma das transformações que serão realizadas pelo módulo.
 
 **`transformationError`**
 ~~~json
@@ -77,38 +85,67 @@ Fábio de Andrade Barboza RA:168817 <br>
 }
 ~~~
 
-> Caso ahaja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
+> Caso haja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
 
 
 # Components
 
 > Cada componente é responsável por uma operação relacional.
 > Para cada um dos componentes, haverá um componente de validação, que será implementado internamente pelo componente principal. 
-> Também precisamos de um componente para apresentar dados e tabelas que o usuário queira ver na apresentação. Esse componente se comunica com o grupo de presentation.
-> Além disso, um componente para enviar templates de entrada para o grupo de workflow é necessário.
+> Além disso, outros componentes intermediários serão necessários para fazer a comunicação com outros grupos.
 
-## Component `validate`
+## Component `TransformNodes`
 
-> Valida os argumentos passados para a operação de filtro correspondente. Por exemplo, verifica se o valor de comparação utilizado no filtro é válido e é do mesmo tipo dos valores da coluna com base na qual se deseja filtrar.
+> Componente responsável por salvar os templates de todas as operações de transformação disponíveis. O template é um conjunto de informações de tipos de dados, campos de entrada, entre outras que o grupo de workflow precisa para mostrar os componentes disponíveis ao usuário. Cada template de um componente é um nó. 
 
 ### Properties
 
 property | role
 ---------| --------
-`status` | `salva o estado da validação realizada`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`validate` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
+`nodes` | `uma lista que salva todos o nós de cada um dos componentes de transformação disponíveis`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`onFilterSucess` | `é ativado pelo próprio componente quando termina uma validação bem sucedida` | `filterInput`
-`onFilterFail` | `é ativado pelo próprio componente quando termina uma validação que falhou` | `operationResult`
+`availableNodes` | `é ativado quando a palicação se inicia`  | `availableNodes`
+
+> A notice e o tipo da mensagem foram definidos pelo grupo de workflow e acordados entre os módulos
+
+## Component `PresentTransformation`
+
+> Componente responsável por receber as saídas das transformações, sejam tabelas ou números, e criar uma notificação para o grupo de `presentation` apresentar na tela.
+
+### Properties
+
+property | role
+---------| --------
+`size` | `é o tamanho que o elemento gráfico terá na tela`
+`position` | `é a posição, entre as disponíveis, que a apresentação terá na tela`
+
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`presenteTransformation` | `é ativado quando o componente é inicializado`  | `template`
+
+> O tipo de mesagem template foi definido pelo grupo de apresentação. Trata-se de informações relativos a tamanho e posição da apresentação
+
+## Component `Transform`
+
+property | role
+---------| --------
+`table` | `salva a tabela resultante da filtragem`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+> talvez usaremos esse componente como principal para ser herdado por todos os outros componentes que realizam operações, uma vez que muitas propriedades e notices serão similares. 
+
+## Component `Validate`
+
+> Valida os argumentos passados para a transformação e retorna um erro caso não seja possível realizar a operação. É obrigatório que todos os componentes de transformação implementem uma validação. Esse componente será interno e não fará comunicação com o barramento.
 
 ## Component `filter`
 
@@ -120,6 +157,8 @@ property | role
 ---------| --------
 `table` | `salva a tabela resultante da filtragem`
 `status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
 
 ### Input Notices
 
@@ -131,7 +170,8 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`getResult` | `é ativado quando a operação de filtrar termina` | `operationResult`
+`transformationError` | `é ativado quando a operação de filtrar termina e há erros` | `transformationError`
+`filterResult` | `é ativado quando a operação de filtrar termina` | `validTable`
 
 ## Component `columnOperation`
 
@@ -143,18 +183,22 @@ property | role
 ---------| --------
 `table` | `salva a tabela resultante da operação`
 `status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`transform` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `transformInput`
+`columnOp` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `columnOpInput`
+
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`getTable` | `a entrada de um componente no worflow é adicionada a saída de um componente de transformação` | `table`
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`columnOpResult` | `é ativado quando a operação termina bem sucedida` | `validTable`
 
 # Components Narratives
 
