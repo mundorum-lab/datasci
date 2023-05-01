@@ -1,7 +1,6 @@
-categoryName: model
+categoryName: model //É esperado que o array de dados seja propagado do passo anterior para o próximo.
 
-//É esperado que o array de dados seja propagado do passo anterior para o próximo.
-
+~~~json
 {
   model: [{
     type: TransformedData,
@@ -50,3 +49,4 @@ categoryName: model
     inputFields: []
   }]
 }
+~~~
