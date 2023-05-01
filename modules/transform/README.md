@@ -11,55 +11,83 @@ Fábio de Andrade Barboza RA:168817 <br>
 
 # Message Types
 
-**`table`**
+**`validTable`**
 ~~~json
 {
-  Tabela: {
-    coluna1: {linha1, linha2, ... , linhan}
-    coluna2: {linha1, linha2, ... , linhan}
-    ...
-    colunan: {linha1, linha2, ... , linhan}
-  }
+  "columns": [
+    {
+      "name": "<string>",
+      "type": "<string>"
+    },
+    {
+      "name": "<string>",
+      "type": "<string>"
+    }
+  ],
+  "data": [
+    ["column1","column2","column_n"],
+    ["column1","column2","column_n"],
+  ]
 }
+
 ~~~
 
+> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Por isso, temos também um tipo para uma variável simĺes. 
 
 **`filterInput`**
 ~~~json
 {
-  table: table
-  column: string
-  operation: string
-  compared_value: any
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>",
+  "compared_value": "<any>"
 }
 ~~~
 
 **`columnInput`**
 ~~~json
 {
-  table: table
-  column1: string
-  column2: string
-  operation: string
-  outputColumn: string
+  "table": "<validTable>",
+  "column1": "<string>",
+  "column2": "<string>",
+  "operation": "<string>",
+  "resultColumn": "<string>"
 }
 ~~~
 
-**`operationResult`**
+**`groupByInput`**
 ~~~json
 {
-  table: table
-  status: boolean
+  "table": "<validTable>",
+  "groupByTargetColumn": "<string>",
+  "operationTargetColumn": "<string>",
+  "operation": "<string>",
+  "resultColumn": "<string>"
 }
 ~~~
+
+> Os tipos acima desrepeita a entrada de cada uma das transformações que serão realizadas pelo módulo.
+
+**`transformationError`**
+~~~json
+{
+  "transformationType": "<string>",
+  "errorType": "<string>",
+  "message": "<string>",
+}
+~~~
+
+> Caso ahaja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
 
 
 # Components
 
 > Cada componente é responsável por uma operação relacional.
-> Além disso há um componente de validação, para verificar se os parâmetros de cada operação são válidos
+> Para cada um dos componentes, haverá um componente de validação, que será implementado internamente pelo componente principal. 
+> Também precisamos de um componente para apresentar dados e tabelas que o usuário queira ver na apresentação. Esse componente se comunica com o grupo de presentation.
+> Além disso, um componente para enviar templates de entrada para o grupo de workflow é necessário.
 
-## Component `validateFilter`
+## Component `validate`
 
 > Valida os argumentos passados para a operação de filtro correspondente. Por exemplo, verifica se o valor de comparação utilizado no filtro é válido e é do mesmo tipo dos valores da coluna com base na qual se deseja filtrar.
 
