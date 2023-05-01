@@ -108,7 +108,7 @@ property | role
 
 notice    | source | message type
 ----------| -------| ------------
-`availableNodes` | `é ativado quando a palicação se inicia`  | `availableNodes`
+`publishNodes` | `é ativado quando a aplicação se inicia`  | `availableNodes`
 
 > A notice e o tipo da mensagem foram definidos pelo grupo de workflow e acordados entre os módulos
 
@@ -128,7 +128,7 @@ property | role
 
 notice    | source | message type
 ----------| -------| ------------
-`presenteTransformation` | `é ativado quando o componente é inicializado`  | `template`
+`presentTransformation` | `é ativado quando o componente é inicializado`  | `template`
 
 > O tipo de mesagem template foi definido pelo grupo de apresentação. Trata-se de informações relativos a tamanho e posição da apresentação
 
@@ -204,23 +204,20 @@ notice    | source | message type
 
 ## Setup
 
-> Specify here the components involved in the narrative and their publish/subscribe attributes in HTML.
-
 ~~~html
-<validateFilter 
-        status=false
-        table = {}
-        subscribe="filterOperation:validate"
-        publish="onValidationSuccess:filterOperation"
-        publish="onValidationFail:operationResult"
-        >
-</validateFilter>
+
+<TransformNodes
+        publish="publishNodes:availableNodes/availableNodes">
+</TransformNodes>
 
 <filter
-        status=false
-        subscribe="filterOperation:filter"
-        publish="getResult:operationResult">
+        subscribe="filter/filterInput:filter"
+        publish="filterError:transformationError/transformationError;filterResult:filterResult/validTable">
 </filter>
+
+<presentTransformation
+        publish="presentTransformation:presentTransformation/template">
+</presentTransformation>
 ~~~
 
 ## Narrative
