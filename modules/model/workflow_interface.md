@@ -22,7 +22,7 @@ categoryName: model //É esperado que o array de dados seja propagado do passo a
   },
   {
     type: TransformedData,
-    name: Cluster,
+    name: cluster,
     compatibleInputNodes: {
       entrada0: `Data` // Retorno do grupo de dados,
       entrada1: `Transform` // Retorno do grupo de transformação
@@ -41,7 +41,7 @@ categoryName: model //É esperado que o array de dados seja propagado do passo a
   },
   {
     type: TransformedData,
-    name: PCA,
+    name: linearRegression,
     compatibleInputNodes: {
       entrada0: `Data` // Retorno do grupo de dados,
       entrada1: `Transform` // Retorno do grupo de transformação
