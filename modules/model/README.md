@@ -28,40 +28,88 @@
 }
 ~~~
 
-> O objeto contém o objeto columns, que representa o nome e o tipo de cada coluna da tabela, o data, com uma tabela serializada, cujo tipo depende dos dados inseridos, e o objeto params, que possui os parâmetros necessários para cada transformação.
+> O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos, e o objeto params, que possui os parâmetros necessários para cada transformação.
 
 **`TransformedData`**
 ~~~json
 {
-  data: {
-    coluna1: {linha1, linha2, ... , linhan}
-    coluna2: {linha1, linha2, ... , linhan}
+  columns: [{name, type}, ...]
+  data: [
+    [coluna0, coluna1, ...]
+    [coluna0, coluna1, ...]
     ...
-    colunam: {linha1, linha2, ... , linhan}
-  }
-  types: [string]
+  ]
 }
 ~~~
 
-> O objeto contém uma tabela serializada com os dados transformados.
+> O objeto contém um array com os dados transformados e o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela.
 
 # Components
 
-## Component `StatisticsTransformation`
+## Component `DataOperations`
 
-> Recebe o ModelObject, desserializa os dados e aplica a transformação requisitada. Por fim, devolve os dados transformados para o barramento.
+> Componente interno que será usado pelos modelos de IA. Responsável por realizar as operações comuns de processamento de dados, como por exemplo a desserialização.
+
+## Component `Cluster`
+
+> Recebe o ModelObject, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`statistics/input` | `O usuário envia um pedido de transformação dos dados` | `ModelObject`
+`statistics/cluster` | `O usuário envia um pedido de transformação dos dados por clusterização` | `ModelObject`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `statistics/output` | `O componente envia os dados transformados para o barramento` | `TransformedData`
+
+### Connect
+source | message type
+----------| -------
+`DataOperation` | `TransformedData`
+
+## Component `PCA`
+
+> Recebe o ModelObject, reduz a dimensionalidade através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_dimension`, que indica a quantidade de dimensões que a nova tabela deverá ter
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`statistics/PCA` | `O usuário envia um pedido de redução de dimensionalidade de uma tabela através da aplicação do modelo PCA` | `ModelObject`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`statistics/output` | `O componente envia os dados transformados para o barramento` | `TransformedData`
+
+### Connect
+source | message type
+`DataOperation` | `TransformedData`
+
+## Component `LinearRegression`
+
+> Recebe o ModelObject, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento.
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`statistics/linearRegression` | `O usuário envia um pedido para gerar a linha que melhor representa os dados` | `ModelObject`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`statistics/output` | `O componente envia os dados transformados para o barramento` | `TransformedData`
+
+### Connect
+source | message type
+`DataOperation` | `TransformedData`
 
 # Components Narratives
 
