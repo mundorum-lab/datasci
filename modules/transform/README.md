@@ -210,20 +210,20 @@ notice    | source | message type
         publish="publishNodes:availableNodes/availableNodes">
 </TransformNodes>
 
-<filter
+<Filter
         subscribe="filter/filterInput:filter"
         publish="filterError:transformationError/transformationError;filterResult:filterResult/validTable">
-</filter>
+</Filter>
 
-<presentTransformation
+<PresentTransformation
         publish="presentTransformation:presentTransformation/template">
-</presentTransformation>
+</PresentTransformation>
 ~~~
 
 ## Narrative
 
-* O componente `validateFilter` apresenta o notice de entrada `validate` que assina o tópico `filter`. Assim, toda vez que se deseja fazer um filtro, a filtragem passa primeiro pela validação, que recebe também a mensagem do tipo `filterInput`, com os argumentos a serem usados no filtro. Após a validação ser realizada, o componente, a depender do resultado da validação, ativa os notices
-  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `operationResult` e a mensagem `operationResult`
-  * `onValidationSuccess`: se a validação é bem-sucessida, então é publicado um tópico de  `filterOperation`, com a mensagem `filterInput`
-    * Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `operationResult` e a mensagem contendo o resultado, `operationResult`. 
-* A mensagem do tipo `operationResult` é compartilhada por todos os componentes de transformações relacionais, já que o resultado é sempre uma tabela e o estado da transformação.
+* O componente `TransformNodes` é instanciado no início da aplicação e fornece os templates os nodes disponíveis no módulo para o usuário montar o workflow e inserir os dados desejados. 
+* Quando os componentes forem instanciados pelo grupo de presentation, o componente `filter` vai recber o tópico `filter` junto com o respectivo input e vai mapear para o notice `filter`, que irá fazer o filtro. Internamente, isrá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:
+  * `transformationError`: caso ocorra algum erro na validação ou na própria execução da operação e a mensagem especifica o erro.
+  * `filterResult`: caso a operação seja bem sucedida. A mensagem publicada é a tabela resultante
+* Se o usuário conectar o resultado do filtro com o componente de saida `PresentTransformation`, esse componente é instanciado por outro grupo. No momento em que é instanciado com os devidos valores dados pelo usuário, ele publica uma mensagem com o tópico `presentTransformation` para que o grupo de presentation posso renderizar. 
