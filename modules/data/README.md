@@ -63,6 +63,7 @@
 
 # Components
 
+![Component specification](images/Data.png)
 
 ## Component `file-input`
 
