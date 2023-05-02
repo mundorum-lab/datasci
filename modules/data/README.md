@@ -29,45 +29,17 @@
 ~~~json
 {
 	"file_id": string,
-	"content": [
-		{
-			"column_0": string //"elem[0][0]",
-			"column_1": string //"elem[0][1]",
-			...
-			"column_n": string //"elem[0][n]"
-		},
-		{
-			"column_0": string //"elem[1][0]",
-			"column_1": string //"elem[1][1]",
-			...
-			"column_n": string //"elem[1][n]"
-		},
-		...
-		{
-			"column_0": string //"elem[k][0]",
-			"column_1": string //"elem[k][1]",
-			...
-			"column_n": string //"elem[k][n]"
-		}
-	],
-	"columns_types": [
-		{
-			"column_0": string,
-			"column_1": string,
-			...
-			"column_n": string
-		}
+	"columns": [{name, type}, ...],
+	"data": [
+		[column0, column1, ...],
+		... // Other rows
 	]
 }
 ~~~
 **`FileTypeInfo`**
 ~~~json
 {
-	"columns_types": [
-	  {"column_0": string},
-	  ...
-	  {"column_n": string}
-  ]
+	"types": [type, ...]
 }
 ~~~
 **`ErrorDuringDataProcessing`**
