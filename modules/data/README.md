@@ -72,13 +72,13 @@
 
 notice | action | message type
 -------| ------ | ------------
-`inputFile` | `The component collects data from the received message and initiates the process of transforming the raw data from the file into the JSON format.` | `RawFileContent`
+`load` | `The component collects data from the received message and initiates the process of transforming the raw data from the file into the JSON format.` | `RawFileContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`inputFile` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 ---
 ## Component `api-input`
@@ -89,13 +89,13 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`inputApi` | `The component collects the url received and starts the process of obtaining and transforming the raw data into JSON format.` | `RawAPIContent`
+`load` | `The component collects the url received and starts the process of obtaining and transforming the raw data into JSON format.` | `RawAPIContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`inputApi` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 ---
 ## Component `file-typing`
@@ -106,14 +106,14 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`fileTyping` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
-`fileTyping` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+`receiveData` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
+`receiveTypes` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`fileTyping` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+`output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
 
@@ -121,22 +121,27 @@ notice    | source | message type
 > `file-input` component
 ~~~html
 <file-input
-	attribute="inputFile"
-	publish="input/on/clicked:receivedata/[id]">
+	publish="output:receiveData/[id]">
 </file-input>
 ~~~
 > `api-input` component
 ~~~html
 <api-input 
-	attribute="inputAPI"
-    publish="input/on/clicked:receivedata/[id]">
+    publish="output:receiveData/[id]">
 </api-input>
 ~~~
 > `file-typing` component
 ~~~html
 <file-typing
-	attribute="fileTyping"
-	publish="input/on/clicked:dataprocessed/[id]">
+	treatedFileContent="{
+			'file_id': string,
+			'columns': [{name, type}, ...],
+			'data': [
+				[column0, column1, ...],
+				... // Other rows
+			]
+	}",
+	publish="output:receiveData/[id]">
 </file-typing>
 ~~~
 
