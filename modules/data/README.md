@@ -106,8 +106,8 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`receiveData` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
-`receiveTypes` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+`receive-data` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
+`receive-types` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
 
 ### Output Notices
 
