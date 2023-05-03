@@ -83,6 +83,15 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
+**`maximumInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
 > Os tipos acima se referem a entrada de cada uma das transformações que serão realizadas pelo módulo.
 
 **`transformationError`**
@@ -95,7 +104,6 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~
 
 > Caso haja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
-
 
 # Components
 
@@ -131,7 +139,6 @@ property | role
 ---------| --------
 `size` | `é o tamanho que o elemento gráfico terá na tela`
 `position` | `é a posição, entre as disponíveis, que a apresentação terá na tela`
-
 
 ### Output Notices
 
@@ -227,13 +234,38 @@ notice | action | message type
 -------| ------ | ------------
 `minimum` | `percorre a coluna indicada e encontra o valor mínimo` | `minimumInput`
 
-
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `minimumResult` | `é ativado quando a operação de encontrar o mínimo termina` | `singleValue`
+
+## Component `maximum`
+
+> Encontra e retorna o valor máximo da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`maximum` | `percorre a coluna indicada e encontra o valor máximo` | `maximumInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`maximumResult` | `é ativado quando a operação de encontrar o máximo termina` | `singleValue`
 
 # Components Narratives
 
