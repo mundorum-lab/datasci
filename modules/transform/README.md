@@ -4,10 +4,10 @@
 Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi RA:168810 <br>
-Jéssica da Silva Oliveira RA:173931 <br>
-Isabella Garcia Fagioli RA:173174 <br>
-Fábio de Andrade Barboza RA:168817 <br>
+Cícero Pizzol Libardi - RA:168810 <br>
+Jéssica da Silva Oliveira - RA:173931 <br>
+Isabella Garcia Fagioli - RA:173174 <br>
+Fábio de Andrade Barboza - RA:168817 <br>
 
 # Message Types
 
@@ -71,6 +71,15 @@ Fábio de Andrade Barboza RA:168817 <br>
   "operationTargetColumn": "<string>",
   "operation": "<string>",
   "resultColumn": "<string>"
+}
+~~~
+
+**`minimumInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
 }
 ~~~
 
@@ -192,13 +201,39 @@ notice | action | message type
 -------| ------ | ------------
 `columnOp` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `columnOpInput`
 
-
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `columnOpResult` | `é ativado quando a operação termina bem sucedida` | `validTable`
+
+## Component `minimum`
+
+> Encontra e retorna o valor mínimo da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`minimum` | `percorre a coluna indicada e encontra o valor mínimo` | `minimumInput`
+
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`minimumResult` | `é ativado quando a operação de encontrar o mínimo termina` | `singleValue`
 
 # Components Narratives
 
@@ -223,7 +258,7 @@ notice    | source | message type
 ## Narrative
 
 * O componente `TransformNodes` é instanciado no início da aplicação e fornece os templates os nodes disponíveis no módulo para o usuário montar o workflow e inserir os dados desejados. 
-* Quando os componentes forem instanciados pelo grupo de presentation, o componente `filter` vai recber o tópico `filter` junto com o respectivo input e vai mapear para o notice `filter`, que irá fazer o filtro. Internamente, isrá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:
+* Quando os componentes forem instanciados pelo grupo de presentation, o componente `filter` vai recber o tópico `filter` junto com o respectivo input e vai mapear para o notice `filter`, que irá fazer o filtro. Internamente, irá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:
   * `transformationError`: caso ocorra algum erro na validação ou na própria execução da operação e a mensagem especifica o erro.
   * `filterResult`: caso a operação seja bem sucedida. A mensagem publicada é a tabela resultante
 * Se o usuário conectar o resultado do filtro com o componente de saida `PresentTransformation`, esse componente é instanciado por outro grupo. No momento em que é instanciado com os devidos valores dados pelo usuário, ele publica uma mensagem com o tópico `presentTransformation` para que o grupo de presentation posso renderizar. 
