@@ -48,7 +48,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
   "table": "<validTable>",
   "column": "<string>",
   "operation": "<string>",
-  "compared_value": "<any>"
+  "comparedValue": "<any>"
 }
 ~~~
 
@@ -92,6 +92,16 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
+**`countInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>",
+  "countValue": "<any>"
+}
+~~~
+
 > Os tipos acima se referem a entrada de cada uma das transformações que serão realizadas pelo módulo.
 
 **`transformationError`**
@@ -99,7 +109,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 {
   "transformationType": "<string>",
   "errorType": "<string>",
-  "message": "<string>",
+  "message": "<string>"
 }
 ~~~
 
@@ -266,6 +276,32 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `maximumResult` | `é ativado quando a operação de encontrar o máximo termina` | `singleValue`
+
+## Component `count`
+
+> Conta quantas vezes o elemento aparece na coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`count` | `percorre a coluna indicada e conta quantas vezes o elemento aparece na mesma` | `countInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
 
 # Components Narratives
 
