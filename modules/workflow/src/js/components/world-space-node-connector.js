@@ -5,19 +5,24 @@ export class worldSpaceNodeConnector{
     
     
     parentWorldSpaceNode = worldSpaceNode
-    connectedWorldSpaceNodes = List<worldSpaceNodeConnector>
+    connectedWorldSpaceConnectors = List<worldSpaceNodeConnector>
 
     */
 
     constructor(parentWorldSpaceNode){
 
-    this.connectedWorldSpaceNodes = []
+    this.connectedWorldSpaceConnectors= []
     this.parentWorldSpaceNode = parentWorldSpaceNode
 
     }
 
-}
+    static makeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector , /*worldSpaceNodeConnectorIn*/ targetConnector){
+        //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
+        //TODO
 
+    }
+
+}
 export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector{
 /*
 
@@ -33,14 +38,31 @@ export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector{
         this.connectionsRange = connectionsRange
 
     }
+    receiveConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector){
+        //add the connector to this input's registered connections
+        //TODO
+    }
+
+
 
 }
-
 export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector{
 
     //Output conections don't have limitations
-
+    //Type : String ->logically,the ParentsNode's type is the same as all the output nodes type 
     constructor(parentWorldSpaceNode){
+        this.type = parentWorldSpaceNode.type
         super(parentWorldSpaceNode)
+    }
+
+    canConnectTo(/*worldSpaceNodeConnectorIn*/ targetInput){
+        //Verifies if the parentNode type can be connected to the targetInput
+        //TODO
+    }
+    supplyConnection(/*worldSpaceNodeConnectorOut*/ targeInput){
+        //add the connector to this input's registered connections
+        //TODO
+
+
     }
 }

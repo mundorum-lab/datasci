@@ -22,7 +22,7 @@ export class WorldSpaceNode extends WorldSpaceBehaviour {
     */
 
 
-    constructor(type, name,iconPath,userInputFields,compatibleInputNodes,outputNodesAmmount) {
+    constructor(type, name,iconPath,userInputFields,compatibleInputNodes,outputNodesAmmount = 1) {
 
         // compatibleInputNodes : [[{typeIds:String} ,[int,int]], ..., ...]
         // ->List of tuples, each tuple stores a dict of connectable types and the connections range
@@ -51,6 +51,14 @@ export class WorldSpaceNode extends WorldSpaceBehaviour {
 
 
     }
+
+    Destroy(){
+        /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
+        //TODO ->Remove reference from the nodes receiving and giving connections to this
+        super.Destroy()
+
+    }
+
 
     
 

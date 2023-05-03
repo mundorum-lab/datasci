@@ -24,4 +24,9 @@ export class WorldSpaceSubcomponentBehaviour {
         onSceneComponents[this.individualId] = this;
     }
 
+    Destroy(){
+        /*Deletes itself and removes references if necessary*/
+        //TODO
+
+    }
 }
