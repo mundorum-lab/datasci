@@ -102,6 +102,15 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
+**`uniqueValuesInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
 > Os tipos acima se referem a entrada de cada uma das transformações que serão realizadas pelo módulo.
 
 **`transformationError`**
@@ -302,6 +311,32 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
+
+## Component `uniqueValues`
+
+> Conta quantos valores únicos estão presentes na coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`uniqueValues` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `uniqueValuesInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
 
 # Components Narratives
 
