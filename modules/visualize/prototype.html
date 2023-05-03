@@ -2,28 +2,46 @@
 <html>
     <head>
         <script type="module" src = "graph_creator.js"></script>
-        <script type="module">
-            import {Bus} from '/lib/oidlib-dev.js'
-
-            function workflow_add_graph(topic, message){
-                console.log('new workflow message')
-                console.log(topic);
-                console.log(message);
-                if(topic != 'add/node/graph'){
-                    return
-                }
-
-                let workflow = document.getElementById('workflow');
-                workflow.innerHTML+= `${message.graph_id};`
-            }
-
-            Bus.i.subscribe('add/node/graph', workflow_add_graph)
-            Bus.i.publish('workflow/create/graph',{graph_id: '1', data: null})
-
-        </script>
+        <script type="module" src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js" ></script>
+        <script type="module" src = "pie_chart.js"></script>
+        <script type="module" src = "component_simulator.js"></script>
     </head>
     <body>
         <p>Gráficos no workflow: <span id="workflow"></span></p>
         <create-graph subscribe="workflow/create/graph:create"></create-graph>
+        
+        <script>
+            var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+            var yValues = [55, 49, 44, 24, 15];
+            barColors = [
+            "#b91d47",
+            "#00aba9",
+            "#2b5797",
+            "#e8c3b9",
+            "#1e7145"
+            ];
+    
+            const pie_chart_data = {
+                data:{
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    title:{
+                        display: true,
+                        text: "titulo teste"
+                    }
+                }
+            };
+            const chart = document.createElement('pie-chart');
+            chart.setAttribute('data',JSON.stringify(pie_chart_data));
+            chart.setAttribute('subscribe', "presentation/display/graph:render");
+    
+        const body = document.getElementsByTagName('body')[0];
+        body.appendChild(chart);
+        </script>
     </body>
-</html>
+    </html>

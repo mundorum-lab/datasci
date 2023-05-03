@@ -1,23 +1,16 @@
 import { html, Oid, OidUI, Bus} from '/lib/oidlib-dev.js'
 class Graph extends OidUI{
-    handleGetId(topic, message){
-        return this.id
-    }
-    handleGetTitle(topic, message){
-        return this.graphTitle
-    }
     handleGetData(topic, message){
         return this.getData
     }
 
     handleRender(topic, message){
         const canvas = document.createElement('canvas');
-        canvas.id = this.getCavasId();
-        this.draw(canvas, this.getParsedData());
-    }
-
-    getCavasId(){
-        return this.id+'/canvas'
+        canvas.style ="max-height:400px;max-width:4 00px";
+        this.draw(canvas.getContext("2d"), this.getParsedData());
+        
+        const body = document.getElementsByTagName('body')[0];
+        body.appendChild(canvas);
     }
     
     getParsedData(){
@@ -25,18 +18,16 @@ class Graph extends OidUI{
     }
 }
 
-export class Graphoid{
-    component(element, draw){
-        Oid.component({
-            id: '--', //TODO
-            element: element,
-            properties:{
-                title,
-                data,
-                draw: {default: draw}, 
-            },
-            receive: ['render'],
-            implementation: Graph
-        })
-    }
+export function graph_component(element, draw){
+    Oid.component({
+        id: '--', //TODO
+        element: element,
+        properties:{
+            data: {default: null},
+            draw: {default: draw}, 
+        },
+        receive: ['render','getData'],
+        template: html`<div style='width:20px;height:20px;background-color:red'></div>`,
+        implementation: Graph
+    })
 }

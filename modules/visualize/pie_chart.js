@@ -1,19 +1,12 @@
-import { html, Oid, OidUI, Bus} from '/lib/oidlib-dev.js'
-class Graph extends OidUI{}
-
-export class PieChart extends Graph{
-    handleRender(topic, message){
-        
-    }
+import {graph_component} from './graph.js'
+function drawPieChart(canvas, data){
+    let obj_data = JSON.parse(data);
+    new Chart(canvas, {
+        type: "pie",
+        data: obj_data['data'],
+        options: obj_data['options']
+    });
+    console.log(obj_data);
 }
 
-Oid.component({
-    id: '--', //TODO
-    element: 'pie_chart',
-    properties:{
-        title,
-        data, 
-    },
-    receive: ['render'],
-    implementation: PieChart
-})
+graph_component('pie-chart',drawPieChart);
