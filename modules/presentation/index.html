@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8" />
-    <title>Module: Presentation (Playgroud)</title>
+    <title>Module: Presentation (Playground)</title>
     <script src="./components/TemplatesList.js" type="module"></script>
   </head>
+
   <body>
     <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
     <!-- fazendo uma requisição da lista de templates. -->
@@ -17,8 +19,8 @@
     <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
     <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
     <templates-list
-      subscribe="presentation/templates_request:request"
-      publish="response:presentation/templates_response"
+      subscribe="presentation/templates_request:requestTemplatesList"
+      publish="responseTemplatesList:presentation/templates_response"
     >
     </templates-list>
 
@@ -28,4 +30,5 @@
       subscribe="presentation/templates_response:display"
     ></console-oid>
   </body>
+  
 </html>

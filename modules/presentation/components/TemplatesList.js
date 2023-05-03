@@ -1,21 +1,30 @@
 import { Oid, OidUI } from "/lib/oidlib-dev.js";
 
 export class TemplatesList extends OidUI {
-  // Esse método lida com o evento request.
-  handleRequest() {
-    // Carregamos a lista de templates atráves de uma GET request.
-    fetch("./templates.json")
-      .then((res) => res.json())
-      .then((data) => {
-        // Enviamos um evento-resposta contendo os valores carregados.
-        this._notify("response", { value: JSON.stringify(data) });
-      });
+
+  // URL do arquivo JSON que contém a lista de templates
+  static templatesListUrl = "./templates.json"
+
+  // Retorna a lista de templates atráves de um GET request
+  static async getTemplates() {
+    const request = await fetch(this.templatesListUrl)
+    const json = await request.json();
+    return json
   }
+
+  // Lida com o evento request. Envia uma mensagem de response com a lista de templates
+  handleRequestTemplatesList() {
+    const templates = TemplatesList.getTemplates();
+    templates.then(json => {
+      this._notify("responseTemplatesList", { value: JSON.stringify(json) })
+    });  
+  }
+
 }
 
 Oid.component({
   id: "templates_list",
   element: "templates-list",
-  receive: ["request"],
+  receive: ["requestTemplatesList"],
   implementation: TemplatesList,
 });
