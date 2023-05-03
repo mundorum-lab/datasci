@@ -4,15 +4,15 @@
     "regions": [
       {
         "id": 1,
-        "size": "Small"
+        "size": "small"
       },
       {
         "id": 2,
-        "size": "Medium"
+        "size": "medium"
       },
       {
         "id": 3,
-        "size": "Large"
+        "size": "large"
       }
     ]
   },
@@ -22,19 +22,19 @@
     "regions": [
       {
         "id": 1,
-        "size": "Small"
+        "size": "small"
       },
       {
         "id": 2,
-        "size": "Small"
+        "size": "small"
       },
       {
         "id": 3,
-        "size": "Medium"
+        "size": "medium"
       },
       {
         "id": 4,
-        "size": "Medium"
+        "size": "medium"
       }
     ]
   },
@@ -44,7 +44,7 @@
     "regions": [
       {
         "id": 1,
-        "size": "XLarge"
+        "size": "xlarge"
       }
     ]
   }
