@@ -27,3 +27,18 @@ nav {
 .logo {
     padding: 6px;
 }
+
+.projectname {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+input {
+    text-align: left;
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 16px;
+    outline: none;
+}
