@@ -3,45 +3,28 @@
     <head>
         <script type="module" src = "graph_creator.js"></script>
         <script type="module" src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.js" ></script>
-        <script type="module" src = "pie_chart.js"></script>
+        <script type="module" src = "pie_chart/pie_chart.js"></script>
         <script type="module" src = "component_simulator.js"></script>
     </head>
     <body>
-        <p>Gráficos no workflow: <span id="workflow"></span></p>
-        <create-graph subscribe="workflow/create/graph:create"></create-graph>
+        <button onclick="openGraphCreator()">New Pie Chart</button>
+        <button onclick="visualizeGraph()">Visualize</button>
+        <div id='create_graph' style='visibility: hidden; height:0'>
+            <h1>Editing graph</h1>
+            Graph Title: <input id='graph_creator_graph_title' type='text'><br>
+            Display Title <select id='graph_creator_display_graph_title'>
+                <option value=true>True</option>
+                <option value=false>False</option>
+            </select><br>
+            Animations <select id='graph_creator_animations'>
+                <option value=true>True</option>
+                <option value=false>False</option>
+            </select><br>
+            Cut Out <input id="graph_creator_cut_out" type="range" min="0" max="90"><br>
+            Radius <input id="graph_creator_radius" type="range" min="10" max="100"><br>
+            <button onclick="createPieChart()">save</button>
+        </div>
         
-        <script>
-            var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-            var yValues = [55, 49, 44, 24, 15];
-            barColors = [
-            "#b91d47",
-            "#00aba9",
-            "#2b5797",
-            "#e8c3b9",
-            "#1e7145"
-            ];
-    
-            const pie_chart_data = {
-                data:{
-                    labels: xValues,
-                    datasets: [{
-                        backgroundColor: barColors,
-                        data: yValues
-                    }]
-                },
-                options: {
-                    title:{
-                        display: true,
-                        text: "titulo teste"
-                    }
-                }
-            };
-            const chart = document.createElement('pie-chart');
-            chart.setAttribute('data',JSON.stringify(pie_chart_data));
-            chart.setAttribute('subscribe', "presentation/display/graph:render");
-    
-        const body = document.getElementsByTagName('body')[0];
-        body.appendChild(chart);
-        </script>
+        <p>Gráficos no workflow:</p>
     </body>
     </html>
