@@ -338,6 +338,110 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
 
+## Component `mean`
+
+> Encontra e retorna o valor médio da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`mean` | `percorre a coluna indicada e encontra o valor médio dessa coluna` | `meanInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`meanResult` | `é ativado quando a operação de encontrar o valor médio da coluna termina` | `singleValue`
+
+## Component `median`
+
+> Encontra e retorna o valor correspondente a mediana da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`median` | `percorre a coluna indicada e encontra o valor correspondente a mediana dessa coluna` | `medianInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`medianResult` | `é ativado quando a operação de encontrar o valor correspondente a mediana da coluna termina` | `singleValue`
+
+## Component `mode`
+
+> Encontra e retorna o valor correspondente a moda da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`mode` | `percorre a coluna indicada e encontra o valor correspondente a moda dessa coluna` | `modeInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`modeResult` | `é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina` | `singleValue`
+
+## Component `average`
+
+> Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`average` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `averageInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`averageResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
+
 # Components Narratives
 
 ## Setup
