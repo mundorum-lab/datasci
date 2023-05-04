@@ -111,6 +111,42 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
+**`meanInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
+**`medianInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
+**`modeInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
+**`averageInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>",
+  "operation": "<string>"
+}
+~~~
+
 > Os tipos acima se referem a entrada de cada uma das transformações que serão realizadas pelo módulo.
 
 **`transformationError`**
