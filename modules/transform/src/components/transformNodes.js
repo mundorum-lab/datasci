@@ -12,11 +12,11 @@ Oid.component(
   element: 'filter',
   properties: {
     availableNodes: {default: {
-        category1: [{
-            type: "transform",
-            name: "filter",
+        filter: [{                         //is category the same as type?
+            type: "filter",
+            name: "Filtrar Tabela",
             compatibleInputNodes: {
-                /*entrada0: {typeIds<[string]>, listRange<(int, int)>},
+                /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
                 entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
             },
             inputFields: [
@@ -26,7 +26,7 @@ Oid.component(
                     inputType: 
                     {
                         type: "string",
-                        parameters: {values:[">=",">","<","<=","="]},
+                        parameters: {values:[">=",">","<","<=","="]}, //this parameters will change
                     }
                 },
                 {
