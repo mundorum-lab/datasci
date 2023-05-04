@@ -116,14 +116,14 @@ source | message type
 ## Setup
 
 ~~~html
-<solicita-transformacao attribute="value"
-                publish="notice:statistics/input">
-</solicita-transformacao>
+<data-component attribute="value"
+                publish="notice:statistics/pca">
+</data-component>
 
-<StatisticsTransformation
-                subscribe="statistics/input:transformation"
+<pca
+                subscribe="statistics/pca:transformation"
                 publish="transformation:statistics/output">
-</StatisticsTransformation>
+</pca>
 
 <exibe-grafico
                 subscribe="statistics/output:display">
@@ -132,12 +132,12 @@ source | message type
 
 ## Narrative
 
-* O componente StatisticsTransformation irá subscrever no barramento assinando o tópico statistics/input
-* O componente fictício solicita-transformacao publica um pedido de transformação nesse tópico
-* O StatisticsTransformation recebe o pedido e:
+* O componente PCA irá subscrever no barramento assinando o tópico statistics/pca
+* O componente do grupo de dados ou de tranformação (chamado ficticilmente de data-component) publica um pedido de transformação nesse tópico
+* O componente PCA recebe o pedido e:
   * Desserializa os dados;
-  * Verifica o tipo da transformação;
   * Realiza a transformação;
   * Serializa a resposta;
   * Publica no barramento em statistics/output.
 * O componente fictício exibe-grafico, subscrito no statistics/output, recebe os dados transformados e exibe o gráfico correspondente.
+* No exemplo, utilizamos apenas o componente PCA, mas o setup e a narrativa são as mesmas para o componente `cluster` e `linear-regression`
