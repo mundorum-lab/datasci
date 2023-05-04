@@ -1,4 +1,5 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { validate } from './validateFilter.js'
 /*import {Series, DataFrame} from 'pandas-js' can we use this library?*/
 
 export class FilterOid extends OidUI {
@@ -50,7 +51,7 @@ export class FilterOid extends OidUI {
     handleFilter (topic, message) {  //handle with notice
         //topic: filter
         //message> filterInput
-        result = validateFilter(message)
+        result = validate(message)
         if(result.isValid){
             this.filter(message)
         } else {
@@ -72,6 +73,6 @@ Oid.component(
     type: {default: "Transformação"},
   },
   receive: {filter: 'handleFilter'},
-  /*template: html`<h1>Hello, {{this.name}}</h1>`,*/
+  /*template: html``,*/
   implementation: FilterOid
 })

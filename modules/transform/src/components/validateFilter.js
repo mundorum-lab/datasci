@@ -18,7 +18,7 @@ export class ValidateFilter {
         if(!columnExists){
             let result = {
                 transformationType: "filter",
-                errorType: "Column not find",
+                errorType: "Column not found",
                 message: `Column ${message.column} does not exist in data base."`,
             }
             return {result,isValid: false}
