@@ -105,6 +105,22 @@ O componente irá instanciar todos os componentes necessários para representar 
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
 | `visualization_ready` | Emitido uma vez que a visualização estiver construída e pronta para utilização |
 
+### Component `Painel_Workflow`
+
+O componente irá funcionar semelhantemente ao painel de workflow do Orange. Em um painel interativo o usuário seleciona elementos como tabelas, filtros, e algoritmos, que vão compor todo o fluxo de processamento dos dados. Os elementos serão unidos por setas que definirão a ordem do fluxo. Esses dados serão repassados ao módulo de workflow.
+
+#### Properties
+
+| property         | role                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| `componentes` | Contém um grafo com todos os componentes definidos pelo usuário e sua ordem de execução.|                                                        |
+
+#### Output Notices
+
+| notice               | source                                                                                 | message type                                          |
+| -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workflow_shape` | Irá retornar o fluxo de execução dos elementos para o módulo do Workflow | |
+
 ## Components Narratives
 
 ### Setup
@@ -123,6 +139,12 @@ O componente irá instanciar todos os componentes necessários para representar 
   publish="visualization_ready:workflow"
 >
 </Apresentador>
+
+<Painel_Workflow
+  attribute="components"
+  publish="workflow_shape:workflow"
+>
+</Painel_Workflow>
 ```
 
 ### Narrative
