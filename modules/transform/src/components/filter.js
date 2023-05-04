@@ -1,29 +1,62 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
-import {Series, DataFrame} from 'pandas-js'
+/*import {Series, DataFrame} from 'pandas-js' can we use this library?*/
 
 export class FilterOid extends OidUI {
-    getColumns(jsonColums){
-
-    }
-    getDF(){
-        
+    compare(value, compared,operation){
+        if(operation=="<" && value<compared){
+            return true
+        }
+        if(operation=="<=" && value<=compared){
+            return true
+        }
+        if(operation==">" && value<compared){
+            return true
+        }
+        if(operation==">=" && value<compared){
+            return true
+        }
+        if(operation=="=" && value==compared){
+            return true
+        }
+        return false
     }
     filter(message){
-
+        /*change to update params
+        let data = {}
+        //convert table to DF
+        for(let i = 0; i<message.columns.length; i++){
+            columns = []
+            for(let j = 0; j<message.data.length; j++){
+                columns.append(message.data[j][i])
+            }
+            data[message.columns[i]] =  columns
+        }*/
+        let idx = 0
+        for(let i = 0; i<message.columns.length; i++){
+           if(message.columns[i].name==message.column){
+                idx = i
+                break
+           }
+        }
+        let new_data = []
+        for(let i = 0; i<message.data.length; i++){ //rows
+            if(compare(message.data[i][idx],message.comparedValue,message.operation)){
+                new_data.append(message.data[i])
+            }
+        }
+        message.data = new_data
+        this._notify('filterResult',message)
     }
     handleFilter (topic, message) {  //handle with notice
         //topic: filter
         //message> filterInput
-        
-        //set properties: columns, df
-
         result = validateFilter(message)
         if(result.isValid){
             this.filter(message)
         } else {
-            //return error message -> result
+            //return error message
+            this._notify('filterError', result.result)
         }
-
     }
 }
 
@@ -41,24 +74,4 @@ Oid.component(
   receive: {filter: 'handleFilter'},
   /*template: html`<h1>Hello, {{this.name}}</h1>`,*/
   implementation: FilterOid
-})
-
-
-
-
-export class SomeoneOid extends OidUI {
-  _tellName () {
-    this._notify('click', {value: this.name})
-  }
-}
-
-Oid.component(
-{
-  id: 'ex:someone',
-  element: 'someone-oid',
-  properties: {
-    name: {default: 'nobody'}
-  },
-  template: html`<h1 @click={{this._tellName}}>I am {{this.name}}</h1>`,
-  implementation: SomeoneOid
 })
