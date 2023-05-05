@@ -288,6 +288,32 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `columnOpResult` | `é ativado quando a operação termina bem sucedida` | `validTable`
 
+## Component `deleteColumn`
+
+> Exclui uma coluna.
+
+### Properties
+
+property | role
+---------| --------
+`table` | `salva a tabela resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`columnDel` | `apaga uma coluna` | `columnDeleteInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`columnDeleteResult` | `é ativado quando a operação termina bem sucedida` | `validTable`
+
 ## Component `minimum`
 
 > Encontra e retorna o valor mínimo da coluna.
@@ -365,6 +391,32 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
+
+## Component `orderBy`
+
+> Ordena a coluna de forma crescente ou decrescente.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`orderBy` | `ordena a coluna` | `orderByInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `validTable`
 
 ## Component `uniqueValues`
 
