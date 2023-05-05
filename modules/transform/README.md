@@ -14,6 +14,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 **`validTable`**
 ~~~json
 {
+  "file_id": "<string>",
   "columns": [
     {
       "name": "<string>",
@@ -205,12 +206,12 @@ notice    | source | message type
 
 **`availableNodes`**
 ~~~json
+{
 filter: [{        
             "type": "filter",
             "name": "Filtrar Tabela",
             "compatibleInputNodes": {
-                /* Poderia ser por tipos de mensagem ?
-                entrada0: {typeIds<[string]>, listRange<(int, int)>},
+             /* entrada0: {typeIds<[string]>, listRange<(int, int)>},
                 entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
             },
             "inputFields": [
@@ -243,6 +244,7 @@ filter: [{
                 },
             ]
         }],
+}
 ~~~
 
 ## Component `PresentTransformation`
