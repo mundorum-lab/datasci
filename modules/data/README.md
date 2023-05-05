@@ -36,6 +36,13 @@
 	]
 }
 ~~~
+**`FileTypeRequest`**
+~~~json
+{
+	"data": TreatedDataContent,
+	"return_notice": string
+}
+~~~
 **`FileTypeInfo`**
 ~~~json
 {
@@ -114,49 +121,47 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
+`ask-types` | `Once the component receives a JSON file, it publishes a request for a user interface to ask for typing info` | `FileTypeRequest`
 `output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
+
+![Components Narratives](images/DataWorkflow.png)
 
 ## Setup
 > `file-input` component
 ~~~html
 <file-input
-	publish="output:receiveData/[id]">
+	subscribe="input-file/[id]:load"
+	publish="output:receive-data/[id]">
 </file-input>
 ~~~
 > `api-input` component
 ~~~html
 <api-input 
-    publish="output:receiveData/[id]">
+	subscribe="input-api/[id]:load"
+    publish="output:receive-data/[id]">
 </api-input>
 ~~~
 > `file-typing` component
 ~~~html
 <file-typing
-	treatedFileContent="{
-			'file_id': string,
-			'columns': [{name, type}, ...],
-			'data': [
-				[column0, column1, ...],
-				... // Other rows
-			]
-	}",
-	publish="output:receiveData/[id]">
+	subscribe="receive-types/[id]:receive-types;receive-data/[id]:receive-data"
+	publish="output:receive-data/[id];ask-types:ask-types/[id]">
 </file-typing>
 ~~~
 
 ## Narrative
 -   The `file-input` component watches the data bus for incoming file input that needs to be processed and transformed into JSON format.
--   When a new file message arrives on the data bus being watched, the component starts the process.
+-   When workflow sends a new file message on the data bus being watched, the component starts the process.
 -   It identifies the file format, which can be either CSV or XLSX, and calls the appropriate JS function to transform the data.
 -   It loops through all the rows of the file, transforming each one into a JSON format.
 -   The component appends these JSON objects to the output message body.
--   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
+-   If any error occurs during the process, the component stops execution and publishes an error message on the data bus, which can be displayed by front.
 -   If all rows have been processed successfully with no errors, the transformed data in JSON format is published on the data bus.
 ---
 -   The `api-input` component listens to the data bus to wait for the spreadsheet URL inside `inputAPI` attribute to be processed in string format.
--   When a new url message arrives on the data bus being watched, the component starts the process.
+-   When workflow sends a new url message on the data bus being watched, the component starts the process.
 -   Calls the function in javascript that will make the connection with the api to obtain the data, transforming into a JSON format.
 -   The component appends these JSON objects to the output message body.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
@@ -164,7 +169,7 @@ notice    | source | message type
 ---
 -	The `file-typing` component watches the data bus for incoming JSON files that must be typed.
 -	It initiates the process on the result of the process of a `file-input` or `api-input` component.
--	It triggers the opening of an interface that asks the user to indicate the types of each column of the data in question.
+-	It sends a message triggers the opening of an interface that asks the user to indicate the types of each column of the data in question.
 -	Based on the user's response, it types the data received.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the typed data in JSON format is published on the data bus.
