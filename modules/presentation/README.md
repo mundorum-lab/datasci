@@ -23,47 +23,46 @@ estrutura das mensagens e dos componentes de nosso módulo, o que inlcui
 interfaces de I/O e a narrativa de operação do sistema.
 
 - `Daniel Credico Coimbra`
-
   - Elaboração dos message types;
   - Redação do componente Fornecedor_de_Templates;
   - Participação na elaboração da narrativa;
-  - Elaboração da formatação do markdown;
+  - Elaboração da formatação inicial do markdown;
   - Elaboração conjunta do message type JSON2HTML;
   - Elaboração do message type Request;
   - Elaboração do componente Construtor, com alteração correspondente no componente Apresentador.
 
 - `Fernanda Garcia Da Lavra`
-
   - Responsável pela organização de tarefas, intercomunicação com os demais
     grupos e codificação;
   - Responsável pela estilização dos componentes;
-  - Participação na elaboração da narrativa.
+  - Participação na elaboração inicial da narrativa;
+  - Elaboração conjunta do message type JSON2HTML;
+  - Reescrita da narrativa refletindo novos componentes.
 
 - `Leandro Hélio Ferreira da Silva`
-
   - Desenvolvimento da interface de apresentação gŕafica;
   - Auxílio na elaboração das referências em JavaScript;
-  - Participação na elaboração dos demais elementos;
+  - Participação na elaboração inicial dos demais elementos;
   - Elaboração do código do componente Painel_Workflow;
-  - Códigos JS dos componentes Fornecedor, Construtor, e Apresentador.
+  - Versão inicial dos códigos JS dos componentes Fornecedor, Construtor, e Apresentador.
 
 - `Matheus Otávio Rodrigues`
-
   - Colaboração com a documentação dos componentes incluindo sua definição,
     forma de comunicação, Narrativas e especificação;
   - Responsável pela programação dos componentes de Apresentação,
     desenvolvimento da interface visual destes componentes e intercomunicação dos
     componentes recebidos por outras equipes;
-  - Refatoração dos códigos JS dos componentes;
+  - Refatoração das versões iniciais dos códigos JS dos componentes;
   - Elaboração conjunta do message type JSON2HTML.
 
-- `Miguel Teixeira Buzato`
 
+- `Miguel Teixeira Buzato`
   - Referência em HTML, CSS e JavaScript;
   - Responsável pela estilização dos componentes;
   - Codificação dos templates;
   - Criação do branch e upload de arquivos;
-  - Código JS do componente Fornecedor.
+  - Criação do primeiro ambiente de teste ("HTML playground");
+  - Versão inicial do código JS do componente Fornecedor.
 
 ## Message Types
 
@@ -95,6 +94,13 @@ interfaces de I/O e a narrativa de operação do sistema.
     "params": [{
       "param": <string>,
       "value": <string>
+    }],
+    "children": [{
+      "tag": <string>,
+      "params": [{
+        "param": <string>,
+        "value": <string>
+       }]
     }]
   }
 }
@@ -133,7 +139,7 @@ O componente receberá as informações do tópico `workflow` no barramento de m
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `visualization_ready` | Emitido uma vez que o workflow estiver construída e pronta para utilização     |              |
+| `workflow_ready`      | Emitido uma vez que o workflow estiver construída e pronta para utilização     |              |
 
 #### Output Notices
 
@@ -212,11 +218,12 @@ O componente irá funcionar semelhantemente ao painel de workflow do Orange. Em 
   os componentes definidos pelo usuário, enviando uma mensagem no tópico
   workflow/grafo com um JSON informando as relações entre os componentes
   escolhidos e os seus parâmetros.
-- O componente Apresentador então recebe os dados (incluindo o layout) pelo
-  tópico workflow/grafo e faz a instanciação dos componentes recebidos com os
-  devidos parâmetros no layout para a visualização do usuário.
+- O componente Construtor então recebe os dados (incluindo o layout) pelo
+  tópico workflow/grafo e constroi um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
   - Caso algum componente exija dados adicionais que não são necessários no
     processo de Workflow (não é esperado), assinaremos tópicos específicos no
     BUS, definidos pelas equipes de cada componente, para obtenção dessas
     informações. Os tópicos podem seguir o padrão
     \<componente\>/\<subcomponente\>/apresentacao como sugestão.
+-O componente Apresentador recebe o JSON do do componente Construtor e faz a instanciação dos componentes recebidos com os
+  devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
