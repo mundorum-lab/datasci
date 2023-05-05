@@ -1,7 +1,7 @@
 # Module ChatGPT
 
 # Description
-> This module has the function to explain some of the generated data to the final user.
+> This module has the function to explain some of the generated data to the final user using the ChatGPT API.
 
 # Team
 * `João Vitor Baptista Moreira`
@@ -10,34 +10,38 @@
 # Message Types
 
 
-**ComponentData**
+**ValidTable**
 ~~~json
 {
-  componentData: {
-    componentName: string
-    columns: [string]
-    rows:    [[number]]
-  }
+  "columns" : [{"name":string,"type":string}],
+  "data" : [[any]]
 }
 ~~~
 
-**WorkflowConnections**
+**SingleValue**
+~~~json~~~
+{
+  "value": any
+}
+~~~
+
+**WorkflowState**
 ~~~json
 {
-  nodeList : [
-    {
-    nome: string
-    Adjacencia: [ComponentData]
-    canalPublicado: string
-    }
-  ]
+  "nodes": [{
+    "nodeId": int,
+    "nodeType": string,
+    "attributes": {...}
+  }],
+
+  "edges" : [[int, int],[int, int], ...]
 }
 ~~~
 
 **Explanation**
 ~~~json
 {
-  explanation: string
+  "explanation": string
 }
 ~~~
 
@@ -52,6 +56,7 @@
 
 property | role
 ---------| --------
+`id` | `unique identifier of the component,relative to the workflow, it let the component find itself in the workflow`
 `openAiApiKey` | `api key to access the openAI api`
 `relevantComponents` | `relevant components to generate the prompt`
 
