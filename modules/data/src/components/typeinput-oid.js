@@ -1,16 +1,8 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class TypeInputOid extends OidUI {
-  receiveData (topic, message) {
-    this.treatedData = message
-
-    this._notify('ask_types', {data: message, return_id: this.id})
-  }
-
   receiveTypes (topic, message) {
-    this.types = message["types"]
-
-    this._notify('output', {}) // Typed data goes here
+    this.column_types = message["column_types"]
   }
 }
 
@@ -19,9 +11,9 @@ Oid.component(
   id: 'ex:typeinput',
   element: 'type-input',
   properties: {
-    id: {}
+    column_types: {default: ''},
   },
-  receive: {receive_data: 'receiveData', receive_types: 'receiveTypes'},
+  receive: {data: 'receiveTypes'},
   
   implementation: TypeInputOid
 })
