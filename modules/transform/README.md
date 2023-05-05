@@ -262,6 +262,32 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação de filtrar termina e há erros` | `transformationError`
 `filterResult` | `é ativado quando a operação de filtrar termina` | `validTable`
 
+## Component `groupBy`
+
+> Agrupa as linhas cuja coluna especificada apresenta elementos em comum. Realiza operações sobre as linhas agrupadas em uma coluna específica, passada pelo usuário. Salva o resultado dessa operação em uma nova coluna, com o nome especificado pelo usuário. REtorna a nova coluna e a coluna que foi agrupada. 
+
+### Properties
+
+property | role
+---------| --------
+`table` | `salva a tabela resultante da filtragem`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`groupBy` | `agrupa as linhas da tabela fornecida` | `groupByInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação de agrupar termina e há erros` | `transformationError`
+`groupByResult` | `é ativado quando a operação de agrupar termina` | `validTable`
+
 ## Component `columnOperation`
 
 > Cria uma nova coluna a partir de dados de, no máximo duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
