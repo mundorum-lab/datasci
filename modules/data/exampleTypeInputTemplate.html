@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Example Template</title>
-  <script src="src/components/typeinput-oid.js" type="module"></script>
-</head>
-<body>
-  <h1>Type-input Component</h1>
-  <type-input id=1></type-input>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Example Template</title>
+    <script src="src/components/typeinput-oid.js" type="module"></script>
+  </head>
+  <body>
+    <h1>Type-input Component</h1>
+    <type-input id=1 subscribe="receive_types/[id]:receive_types;receive_data/[id]:receive_data" publish="output:receive_data/[id];ask_types:ask_types/[id]"></type-input>
+  </body>
 </html>

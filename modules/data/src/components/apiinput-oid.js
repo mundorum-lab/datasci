@@ -12,10 +12,9 @@ Oid.component(
   id: 'ex:apiinput',
   element: 'api-input',
   properties: {
-    url_content: {default: ''},
-    template: {default: ''}
+    id: {default: '1'}
   },
-  receive: {data: 'loadApi'},
+  receive: {load: 'loadApi'},
   
   implementation: ApiInputOid
 })
