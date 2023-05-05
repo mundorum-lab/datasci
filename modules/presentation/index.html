@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="utf-8" />
     <title>Module: Presentation (Playground)</title>
@@ -12,23 +11,22 @@
     <!-- fazendo uma requisição da lista de templates. -->
     <button-oid
       label="Request templates"
-      publish="click:presentation/templates_request"
+      publish="click~presentation/templates_request"
       value="teste"
     ></button-oid>
 
     <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
     <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
     <templates-list
-      subscribe="presentation/templates_request:requestTemplatesList"
-      publish="responseTemplatesList:presentation/templates_response"
+      subscribe="presentation/templates_request~requestTemplatesList"
+      publish="responseTemplatesList~presentation/templates_response"
     >
     </templates-list>
 
     <!-- O console serve como maneira de debuggar que o evento-resposta com a lista de templates -->
     <!-- foi disparado. -->
     <console-oid
-      subscribe="presentation/templates_response:display"
+      subscribe="presentation/templates_response~display"
     ></console-oid>
   </body>
-  
 </html>
