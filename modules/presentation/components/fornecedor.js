@@ -13,7 +13,7 @@ export class TemplatesList extends OidUI {
   }
 
   // Lida com o evento request. Envia uma mensagem de response com a lista de templates
-  handleRequestTemplatesList() {
+  handleRequestTemplatesList(topic, message) {
     const templates = TemplatesList.getTemplates();
     templates.then(json => {
       this._notify("responseTemplatesList", { value: JSON.stringify(json) })
@@ -23,8 +23,8 @@ export class TemplatesList extends OidUI {
 }
 
 Oid.component({
-  id: "templates_list",
-  element: "templates-list",
+  id: "presentation:fornecedor",
+  element: "fornecedor-oid",
   receive: ["requestTemplatesList"],
   implementation: TemplatesList,
 });
