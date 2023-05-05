@@ -1,0 +1,1 @@
+## A ideia deste diretório é começar a implementação dos diferentes módulos. Os scripts focam apenas nas transformações.
