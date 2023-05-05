@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script type="module">
+    import { Oid } from '/lib/oidlib-dev.js'
+
+    const button = Oid.create('oid:button', {label: 'Start'})
+    document.querySelector('#app').appendChild(button)
+  </script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <div id="app"></div>
+</body>
+</html>
