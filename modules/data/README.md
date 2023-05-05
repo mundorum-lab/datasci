@@ -114,14 +114,14 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`receive-data` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
-`receive-types` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+`receive_data` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
+`receive_types` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`ask-types` | `Once the component receives a JSON file, it publishes a request for a user interface to ask for typing info` | `FileTypeRequest`
+`ask_types` | `Once the component receives a JSON file, it publishes a request for a user interface to ask for typing info` | `FileTypeRequest`
 `output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
@@ -132,22 +132,22 @@ notice    | source | message type
 > `file-input` component
 ~~~html
 <file-input
-	subscribe="input-file/[id]:load"
-	publish="output:receive-data/[id]">
+	subscribe="input_file/[id]:load"
+	publish="output:receive_data/[id]">
 </file-input>
 ~~~
 > `api-input` component
 ~~~html
 <api-input 
-	subscribe="input-api/[id]:load"
-    publish="output:receive-data/[id]">
+	subscribe="input_api/[id]:load"
+    publish="output:receive_data/[id]">
 </api-input>
 ~~~
 > `file-typing` component
 ~~~html
 <file-typing
-	subscribe="receive-types/[id]:receive-types;receive-data/[id]:receive-data"
-	publish="output:receive-data/[id];ask-types:ask-types/[id]">
+	subscribe="receive_types/[id]:receive_types;receive_data/[id]:receive_data"
+	publish="output:receive_data/[id];ask_types:ask_types/[id]">
 </file-typing>
 ~~~
 
