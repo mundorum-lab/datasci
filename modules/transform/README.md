@@ -208,8 +208,6 @@ notice    | source | message type
 filter: [{        
             "type": "filter",
             "name": "Filtrar Tabela",
-            "description": "na descrição que pode aparecer como tooltip ou na janela", //add
-            "outputMessage":"validTable",                                              //add
             "compatibleInputNodes": {
                 /* Poderia ser por tipos de mensagem ?
                 entrada0: {typeIds<[string]>, listRange<(int, int)>},
