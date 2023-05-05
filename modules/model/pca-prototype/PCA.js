@@ -6,13 +6,13 @@
 //import DataFrame from 'dataframe-js'
 
 const DataFrame = require("dataframe-js").DataFrame
-var PCA = require('pca-js')
+const PCA = require('pca-js')
 
 async function getPCA(){
     //load penguins dataset
-    var df = await DataFrame.fromCSV('/home/fernando/workspace/mundorum-lab/modules/model/implementation/penguins.csv', true)
+    let df = await DataFrame.fromCSV('/home/fernando/workspace/mundorum-lab/modules/model/implementation/penguins.csv', true)
     //get only the data
-    var data = df.toArray()
+    let data = df.toArray()
     console.log(data)
     console.log('\n\n -------------------------------------------\n\n')
     //get eigen vectors
@@ -20,7 +20,7 @@ async function getPCA(){
     console.log(vectors)
 
     //compute adjusted data
-    var adData = PCA.computeAdjustedData(data,vectors[0])
+    let adData = PCA.computeAdjustedData(data,vectors[0])
     console.log('\n\n -------------------------------------------\n\n')
     console.log(adData)
 
