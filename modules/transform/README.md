@@ -208,8 +208,9 @@ notice    | source | message type
 ~~~json
 {
 filter: [{        
-            "type": "filter",
+            "type": "table/json",
             "name": "Filtrar Tabela",
+            "description": "Filtra as linhas de uma tabela com base nos valor de uma coluna especificada. O valor de comparação e o tipo de comparação também serão especificados.",
             "compatibleInputNodes": {
              /* entrada0: {typeIds<[string]>, listRange<(int, int)>},
                 entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
