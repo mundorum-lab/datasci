@@ -200,7 +200,52 @@ notice    | source | message type
 ----------| -------| ------------
 `publishNodes` | `é ativado quando a aplicação se inicia`  | `availableNodes`
 
-> A notice e o tipo da mensagem foram definidos pelo grupo de workflow e acordados entre os módulos
+> A notice e o tipo da mensagem foram definidos pelo grupo de workflow e acordados entre os módulos.
+> Um dos componentes de `Transform` realiza a operação de filtro, abaixo está um exemplo de como a mensagem `availableNodes` seria preenchida para o caso do filtro:
+
+**`availableNodes`**
+~~~json
+filter: [{        
+            "type": "filter",
+            "name": "Filtrar Tabela",
+            "description": "na descrição que pode aparecer como tooltip ou na janela", //add
+            "outputMessage":"validTable",                                              //add
+            "compatibleInputNodes": {
+                /* Poderia ser por tipos de mensagem ?
+                entrada0: {typeIds<[string]>, listRange<(int, int)>},
+                entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
+            },
+            "inputFields": [
+                {
+                    "fieldName": "Operação",
+                    "fieldType": "Dropdown", 
+                    "inputType": 
+                    {
+                      "type": "string",
+                      "parameters": {"values":[">=",">","<","<=","="]}, 
+                    }
+                },
+                {
+                    "fieldName": "Nome da Coluna filtrada",
+                    "fieldType": "Textbox", 
+                    "inputType": 
+                    {
+                        "type": "string",
+                        "parameters": {},
+                    }
+                },
+                {
+                    "fieldName": "Valor a ser comparado",
+                    "fieldType": "Textbox", 
+                    "inputType": 
+                    {
+                        "type": "string",
+                        "parameters": {},
+                    }
+                },
+            ]
+        }],
+~~~
 
 ## Component `PresentTransformation`
 
