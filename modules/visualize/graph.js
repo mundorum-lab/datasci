@@ -1,6 +1,6 @@
 import { html, Oid, OidUI, Bus} from '/lib/oidlib-dev.js'
 
-function createGraphClass(specialized_draw){
+function createGraphClass(specializedDraw){
     let new_class =  class extends OidUI{
         //handlers
         handleGetData(topic, message){}
@@ -11,11 +11,11 @@ function createGraphClass(specialized_draw){
 
         handleSetOptions(topic,message){
             console.log(message)
-            let obj_options = JSON.parse(this.options)
+            let objOptions = JSON.parse(this.options)
             for(const key in message){
-                obj_options[key] = message[key]
+                objOptions[key] = message[key]
             }
-            this.options = JSON.stringify(obj_options)
+            this.options = JSON.stringify(objOptions)
         }
 
         handleRender(topic, message){
@@ -28,13 +28,13 @@ function createGraphClass(specialized_draw){
         }
 
         //chart specific functions
-        draw=specialized_draw
+        draw=specializedDraw
     }
 
     return new_class
 }
 
-export function graph_component(element, draw_function, icon_path){
+export function graphComponent(element, drawFunction, iconPath){
     Oid.component({
         id: '--', //TODO
         element: element,
@@ -43,7 +43,7 @@ export function graph_component(element, draw_function, icon_path){
             options: {default: null}
         },
         receive: ['render','getData','setData', 'getOptions', 'setOptions'],
-        template: html`<div style='width:20px;height:20px;'><img src='${icon_path}'/></div>`,
-        implementation: createGraphClass(draw_function)
+        template: html`<div style='width:20px;height:20px;'><img src='${iconPath}'/></div>`,
+        implementation: createGraphClass(drawFunction)
     })
 }
