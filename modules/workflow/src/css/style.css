@@ -42,3 +42,31 @@ input {
     font-size: 16px;
     outline: none;
 }
+
+.menu {
+    height: 100%;
+}
+
+.menu > ul {
+    list-style: none;
+    display:flex;
+    padding-bottom: 10px;
+}
+
+.menu > ul > li {
+    width: 50px;
+    display: block;
+    float: inherit;
+    padding: 15 10;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu > ul > li > a {
+    width: 100%;
+}
+
+.menu > ul > li:hover {
+  background-color: #2e2e2e;
+  height: 60px;
+}
