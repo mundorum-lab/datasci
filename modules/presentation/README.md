@@ -225,5 +225,5 @@ O componente irá funcionar semelhantemente ao painel de workflow do Orange. Em 
     BUS, definidos pelas equipes de cada componente, para obtenção dessas
     informações. Os tópicos podem seguir o padrão
     \<componente\>/\<subcomponente\>/apresentacao como sugestão.
--O componente Apresentador recebe o JSON do do componente Construtor e faz a instanciação dos componentes recebidos com os
+- O componente Apresentador recebe o JSON do do componente Construtor e faz a instanciação dos componentes recebidos com os
   devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
