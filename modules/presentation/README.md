@@ -67,9 +67,10 @@ interfaces de I/O e a narrativa de operação do sistema.
 ## Message Types
 
 **`Request`**
+
 ```json
 {
-  message: "requestTemplate"
+  "message": "requestTemplate"
 }
 ```
 
@@ -77,153 +78,141 @@ interfaces de I/O e a narrativa de operação do sistema.
 
 ```json
 {
-  template: <string>
-  regions: [{
-    id: <string>
-    size: <string> // Small, Medium or Large
+  "template": "<string>",
+  "regions": [{
+    "id": "<string>",
+    "size": "<string>" // small, medium or large
   }]
 }
 ```
 
-**`JSON2HTML`**
+**`JsonHTMLDescription`**
 
 ```json
 {
-  "divs": [{
-    "tag": <string>,
-    "params": [{
-      "param": <string>,
-      "value": <string>
-    }],
-    "children": [{
-      "tag": <string>,
+  [
+    {
+      "component_path": "<string>",
+      "tag": "<string>",
+      "region": "<string>", // region id of the template
       "params": [{
-        "param": <string>,
-        "value": <string>
-       }]
-    }]
-  }
+        "param": "<string>",
+        "value": "<string>"
+      }],
+      "children": [{
+        "tag": "<string>",
+        "params": [{
+          "param": "<string>",
+          "value": "<string>"
+        }]
+      }]
+    }
+  ]
 }
 ```
 
 ## Components
 
-### Component `Fornecedor_De_Templates`
+### Component `Fornecedor`
 
 Retornará quando solicitado a lista com os templates disponíveis na aplicação para a criação do Workflow.
 
 #### Input Notices
 
-| notice              | action                                                | message type |
-| ------------------- | ----------------------------------------------------- | ------------ |
-| `request_templates` | Faz o pedido para a listagem de templates disponíveis |              |
+| notice                 | action                                                | message type |
+| ---------------------- | ----------------------------------------------------- | ------------ |
+| `requestTemplatesList` | Faz o pedido para a listagem de templates disponíveis | request      |
 
 #### Output Notices
 
 | notice               | source                                                                                 | message type                                          |
 | -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `templates_response` | Irá retornar os templates disponíveis uma vez que receber a notice "request templates" | JSON array com cada elemento sendo do tipo `Template` |
+| `responseTemplatesList` | Irá retornar os templates disponíveis uma vez que receber a notice "request templates" | JSON array com cada elemento sendo do tipo `Template` |
 
 ### Component `Construtor`
 
-O componente receberá as informações do tópico `workflow` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template. Então, construirá um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
-
-#### Properties
-
-| property         | role                                                                                                         |
-| ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| `workflow_graph` | Contém os dados do grafo construído na etapa de Workflow e que serão utilizados para criação da visualização |
-| `template`       | Define o template a ser utilizado pela visualização                                                          |
+O componente receberá as informações do tópico `workflow/grafo` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template. Então, construirá um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
 
 #### Input Notices
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `workflow_ready`      | Emitido uma vez que o workflow estiver construída e pronta para utilização     |              |
+| `getWorkflowGraph`      | Emitido uma vez que o workflow estiver construída e pronta para utilização     | Tipo de dado definido pelo time de Workflow             |
 
 #### Output Notices
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `visualization_ready` | Emitido assim que o JSON de tags e parâmetros de HTML estiver pronto           |              |
+| `sendJsonHTML` | Emitido assim que o JSON de tags e parâmetros de HTML estiver pronto           | Objeto `JsonHTMLDescription`             |
+
+
+### Component `Importador`
+
+O componente receberá um JSON especificando o HTML, com o qual importará os componentes necessários na página HTML.
+
+#### Input Notices
+
+| notice                | action                                                                         | message type |
+| --------------------- | ------------------------------------------------------------------------------ | ------------ |
+| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
+
 
 ### Component `Apresentador`
 
 O componente receberá um JSON especificando o HTML, com o qual instanciará todos os componentes necessários para representar a visualização desejada pelo usuário, os inserirá na tela no local e tamanho desejados e, por fim, fará as devidas conexões e configurações conforme especificado previamente no Workflow.
 
-#### Properties
-
-| property           | role                                                                                                         |
-| ------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `constructed_json` | Contém as tags e os parâmetros do HTML que será apresentado  					       |
-
 #### Input Notices
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `visualization_ready` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
+| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
 
-### Component `Painel_Workflow`
-
-O componente irá funcionar semelhantemente ao painel de workflow do Orange. Em um painel interativo o usuário seleciona elementos como tabelas, filtros, e algoritmos, que vão compor todo o fluxo de processamento dos dados. Os elementos serão unidos por setas que definirão a ordem do fluxo. Esses dados serão repassados ao módulo de workflow.
-
-#### Properties
-
-| property         | role                                                                                                         |
-| ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| `componentes`    | Contém um grafo com todos os componentes definidos pelo usuário e sua ordem de execução.                     |
-
-#### Output Notices
-
-| notice               | source                                                                                 | message type                                          |
-| -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workflow_shape`     | Irá retornar o fluxo de execução dos elementos para o módulo do Workflow               |                                                       |
 
 ## Components Narratives
 
 ### Setup
 
 ```html
-<Fornecedor_De_Templates
-  subscribe="”workflow:request_templates"
-  publish="templates_response:workflow"
+<fornecedor-oid
+subscribe="apresentacao/templates/requisicao~requestTemplatesList"
+publish="responseTemplatesList~apresentacao/templates/listagem"
 >
-</Fornecedor_De_Templates>
+</fornecedor-oid>
 
-<Apresentador
-  attribute="workflow_graph"
-  attribute="template"
-  subscribe="”workflow:visualize"
-  publish="visualization_ready:workflow"
+<construtor-oid
+subscribe="workflow/grafo~getWorkflowGraph"
+publish="sendJsonHTML~apresentacao/html/representacaoJson"
 >
-</Apresentador>
+</construtor-oid>
 
-<Painel_Workflow
-  attribute="components"
-  publish="workflow_shape:workflow"
+<importador-oid
+subscribe="apresentacao/html/representacaoJson~getJsonHTML"
 >
-</Painel_Workflow>
+</importador-oid>
+
+<apresentador-oid
+subscribe="apresentacao/html/apresentacaoJson~getJsonHTML"
+>
+</apresentador-oid>
 ```
 
 ### Narrative
 
-- O componente Fornecedor de Template recebe via barramento no tópico
-  apresentacao/templates/listagem uma requisição dos templates disponíveis por
+- O componente **Fornecedor** recebe via barramento no tópico
+ `apresentacao/templates/requisicao` uma requisição dos templates disponíveis por
   parte dos componentes de Workflow.
-  - Ao receber esta mensagem, será respondida uma outra mensagem no mesmo
-    tópico com um objeto JSON contendo informações sobre todos os templates. Os
+  - Ao receber esta mensagem, será respondida uma outra mensagem em `apresentacao/templates/listagem` com um objeto JSON contendo informações sobre todos os templates. Os
     templates estarão definidos em um arquivo específico para este fim, estático,
     com uma quantidade finita e definida de templates possíveis.
 - Os componentes do time de Workflow montam a estrutura de interconexão entre
   os componentes definidos pelo usuário, enviando uma mensagem no tópico
-  workflow/grafo com um JSON informando as relações entre os componentes
+  `workflow/grafo` com um JSON informando as relações entre os componentes
   escolhidos e os seus parâmetros.
-- O componente Construtor então recebe os dados (incluindo o layout) pelo
-  tópico workflow/grafo e constroi um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
+- O componente **Construtor** então recebe os dados (incluindo o layout) pelo
+  tópico `workflow/grafo` e constroi um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes. Após a construção deste JSON (do tipo `JsonHTMLDescription`), o mesmo será enviado para o tópico `apresentacao/html/representacaoJson`
+- O componente **Importador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a importação dos componentes na página HTML (inserção dos scripts type=module na página HTML).
+- O componente **Apresentador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a instanciação dos componentes recebidos com os devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
   - Caso algum componente exija dados adicionais que não são necessários no
     processo de Workflow (não é esperado), assinaremos tópicos específicos no
     BUS, definidos pelas equipes de cada componente, para obtenção dessas
-    informações. Os tópicos podem seguir o padrão
-    \<componente\>/\<subcomponente\>/apresentacao como sugestão.
-- O componente Apresentador recebe o JSON do do componente Construtor e faz a instanciação dos componentes recebidos com os
-  devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
+    informações. Os tópicos podem seguir o padrão `<componente\>/\<subcomponente\>/apresentacao` como sugestão.
