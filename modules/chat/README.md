@@ -64,13 +64,18 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`dataPublish` | data processing finished and is ready to publish, publish data for the children nodes | ComponentData
-
+`receiveData` | stores the data received | ValidTable
+`receiveType` | stores the type received | SingleValue
+`receiveWorkflow` | stores workflow and starts to find relevant nodes | WorkflowState
+`receiveValue` | stores single value received | SingleValue
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `showExplanation` | received result from ChatGPT API | Explanation
+`getData` | after finding the node conected to this component 
+`getType` | after finding the node conected to this component, only if component found have this parameter 
+`getValue`| after finding the node conected to this component, only if component found have this parameter 
 
 # Components Narratives
 
@@ -78,17 +83,17 @@ notice    | source | message type
 ## Setup
 
 ~~~html
-<chat-component attribute="openAiApiKey"
-                publish="showExplanation:show/explanation"
-                subscribe="workflowMap:dataPublish">
+<chat-component openAiAPIkey="<insert API key here>",id="<insert id here>"
+                publish="showExplanation:show/explanation;getData:get/<targetComponentID>/data;getType:get/<targetComponentID>/type;get/<targetComponentID>/value"
+                subscribe="workflowMap:dataPublish;receive/<targetComponentID>/data:receiveData;receive/<targetComponentID>/type:receiveType;receive/<targetComponentID>/value:receiveValue">
 </chat-component>
 
 ~~~
 
 ## Narrative
 
-* The chat component subscribes to the topic "`workflowMap", which has a map of all the connections made.
-* Then, the component searches for the most relevant components that impact on the prompt generation.
-* After that, it generates a prompt based on the relevant components attributes, such as name, columns, rows.
-* It then calls the openAI Api with the customized prompt and its attribute openAiApiKey
+* The chat component subscribes to the topic "workflowState", which has a map of all the connections made.
+* Then, the component searches for the components which the chatGPT node is connected.
+* Then, it will send getters to the component to retrive their data.
+* After receiving all of them by the proper receive/<targetComponentID> bus,it will generate the prompt and will call the openAI Api with the customized prompt and its attribute openAiApiKey
 * Finally, the response is published with the topic show/explanation
