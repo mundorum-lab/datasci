@@ -63,6 +63,14 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
+**`columnDeleteInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "column": "<string>"
+}
+~~~
+
 **`groupByInput`**
 ~~~json
 {
@@ -73,6 +81,16 @@ Fábio de Andrade Barboza - RA:168817 <br>
   "resultColumn": "<string>"
 }
 ~~~
+
+**`orderByInput`**
+~~~json
+{
+  "table": "<validTable>",
+  "orderByTargetColumn": "<string>",
+  "order": "<boolean>"
+}
+~~~
+> order -> 0: descending 1: ascending 
 
 **`minimumInput`**
 ~~~json
