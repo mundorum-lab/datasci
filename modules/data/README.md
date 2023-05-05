@@ -132,22 +132,22 @@ notice    | source | message type
 > `file-input` component
 ~~~html
 <file-input
-	subscribe="input_file/[id]:load"
-	publish="output:receive_data/[id]">
+	subscribe="input_file/[id]~load"
+	publish="output~receive_data/[id]">
 </file-input>
 ~~~
 > `api-input` component
 ~~~html
 <api-input 
-	subscribe="input_api/[id]:load"
-    publish="output:receive_data/[id]">
+	subscribe="input_api/[id]~load"
+    publish="output~receive_data/[id]">
 </api-input>
 ~~~
 > `file-typing` component
 ~~~html
 <file-typing
-	subscribe="receive_types/[id]:receive_types;receive_data/[id]:receive_data"
-	publish="output:receive_data/[id];ask_types:ask_types/[id]">
+	subscribe="receive_types/[id]~receive_types;receive_data/[id]~receive_data"
+	publish="output~receive_data/[id];ask_types~ask_types/[id]">
 </file-typing>
 ~~~
 
