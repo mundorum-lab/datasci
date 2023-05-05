@@ -27,20 +27,25 @@ interfaces de I/O e a narrativa de operação do sistema.
   - Elaboração dos message types;
   - Redação do componente Fornecedor_de_Templates;
   - Participação na elaboração da narrativa;
-  - Elaboração da formatação markdown.
+  - Elaboração da formatação do markdown;
+  - Elaboração conjunta do message type JSON2HTML;
+  - Elaboração do message type Request;
+  - Elaboração do componente Construtor, com alteração correspondente no componente Apresentador.
 
 - `Fernanda Garcia Da Lavra`
 
   - Responsável pela organização de tarefas, intercomunicação com os demais
     grupos e codificação;
   - Responsável pela estilização dos componentes;
-  - Participaçao na elaboração da narrativa.
+  - Participação na elaboração da narrativa.
 
 - `Leandro Hélio Ferreira da Silva`
 
   - Desenvolvimento da interface de apresentação gŕafica;
   - Auxílio na elaboração das referências em JavaScript;
-  - Participação na elaboração dos demais elementos.
+  - Participação na elaboração dos demais elementos;
+  - Elaboração do código do componente Painel_Workflow;
+  - Códigos JS dos componentes Fornecedor, Construtor, e Apresentador.
 
 - `Matheus Otávio Rodrigues`
 
@@ -48,15 +53,26 @@ interfaces de I/O e a narrativa de operação do sistema.
     forma de comunicação, Narrativas e especificação;
   - Responsável pela programação dos componentes de Apresentação,
     desenvolvimento da interface visual destes componentes e intercomunicação dos
-    componentes recebidos por outras equipes.
+    componentes recebidos por outras equipes;
+  - Refatoração dos códigos JS dos componentes;
+  - Elaboração conjunta do message type JSON2HTML.
 
 - `Miguel Teixeira Buzato`
+
   - Referência em HTML, CSS e JavaScript;
   - Responsável pela estilização dos componentes;
   - Codificação dos templates;
-  - Criação do branch e upload de arquivos.
+  - Criação do branch e upload de arquivos;
+  - Código JS do componente Fornecedor.
 
 ## Message Types
+
+**`Request`**
+```json
+{
+  message: "requestTemplate"
+}
+```
 
 **`Template`**
 
@@ -70,6 +86,20 @@ interfaces de I/O e a narrativa de operação do sistema.
 }
 ```
 
+**`JSON2HTML`**
+
+```json
+{
+  "divs": [{
+    "tag": <string>,
+    "params": [{
+      "param": <string>,
+      "value": <string>
+    }]
+  }
+}
+```
+
 ## Components
 
 ### Component `Fornecedor_De_Templates`
@@ -80,7 +110,7 @@ Retornará quando solicitado a lista com os templates disponíveis na aplicaçã
 
 | notice              | action                                                | message type |
 | ------------------- | ----------------------------------------------------- | ------------ |
-| `request_templates` | Faz o pedido para a listagem de templates disponíveis |
+| `request_templates` | Faz o pedido para a listagem de templates disponíveis |              |
 
 #### Output Notices
 
@@ -88,9 +118,9 @@ Retornará quando solicitado a lista com os templates disponíveis na aplicaçã
 | -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | `templates_response` | Irá retornar os templates disponíveis uma vez que receber a notice "request templates" | JSON array com cada elemento sendo do tipo `Template` |
 
-### Component `Apresentador`
+### Component `Construtor`
 
-O componente irá instanciar todos os componentes necessários para representar a visualização desejada pelo usuário, os inserirá na tela no local e tamanho desejados e, por fim, fará as devidas conexões e configurações conforme especificado previamente no Workflow.
+O componente receberá as informações do tópico `workflow` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template. Então, construirá um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
 
 #### Properties
 
@@ -103,7 +133,29 @@ O componente irá instanciar todos os componentes necessários para representar 
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `visualization_ready` | Emitido uma vez que a visualização estiver construída e pronta para utilização |
+| `visualization_ready` | Emitido uma vez que o workflow estiver construída e pronta para utilização     |              |
+
+#### Output Notices
+
+| notice                | action                                                                         | message type |
+| --------------------- | ------------------------------------------------------------------------------ | ------------ |
+| `visualization_ready` | Emitido assim que o JSON de tags e parâmetros de HTML estiver pronto           |              |
+
+### Component `Apresentador`
+
+O componente receberá um JSON especificando o HTML, com o qual instanciará todos os componentes necessários para representar a visualização desejada pelo usuário, os inserirá na tela no local e tamanho desejados e, por fim, fará as devidas conexões e configurações conforme especificado previamente no Workflow.
+
+#### Properties
+
+| property           | role                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `constructed_json` | Contém as tags e os parâmetros do HTML que será apresentado  					       |
+
+#### Input Notices
+
+| notice                | action                                                                         | message type |
+| --------------------- | ------------------------------------------------------------------------------ | ------------ |
+| `visualization_ready` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
 
 ### Component `Painel_Workflow`
 
@@ -113,13 +165,13 @@ O componente irá funcionar semelhantemente ao painel de workflow do Orange. Em 
 
 | property         | role                                                                                                         |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| `componentes` | Contém um grafo com todos os componentes definidos pelo usuário e sua ordem de execução.|                                                        |
+| `componentes`    | Contém um grafo com todos os componentes definidos pelo usuário e sua ordem de execução.                     |
 
 #### Output Notices
 
 | notice               | source                                                                                 | message type                                          |
 | -------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workflow_shape` | Irá retornar o fluxo de execução dos elementos para o módulo do Workflow | |
+| `workflow_shape`     | Irá retornar o fluxo de execução dos elementos para o módulo do Workflow               |                                                       |
 
 ## Components Narratives
 
