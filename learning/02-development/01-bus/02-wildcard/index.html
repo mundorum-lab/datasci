@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script type="module">
+    import { Bus } from '/lib/oidlib-dev.js'
+
+    var msg = ''
+
+    function notifyEqual (topic, message) {
+      msg += `<li><b>equal (news/disease):</b> [${topic}] ${message.value}</li>`
+      document.querySelector("#show-message").innerHTML = msg
+    }
+
+    function notifyWildcardOne (topic, message) {
+      msg += `<li><b>wildcard (+/dinosaur):</b> [${topic}] ${message.value}</li>`
+      document.querySelector("#show-message").innerHTML = msg
+    }
+
+    function notifyWildcardSeveral (topic, message) {
+      msg += `<li><b>wildcard (news/#):</b> [${topic}] ${message.value}</li>`
+      document.querySelector("#show-message").innerHTML = msg
+    }
+
+    // subscriber
+    Bus.i.subscribe('news/disease', notifyEqual)
+    Bus.i.subscribe('+/dinosaur', notifyWildcardOne)
+    Bus.i.subscribe('news/#', notifyWildcardSeveral)
+
+    // publisher
+    Bus.i.publish('news/disease', {value: 'dengue symptoms'})
+    Bus.i.publish('news/drug', {value: 'coronavirus vaccine'})
+    Bus.i.publish('news/dinosaur', {value: 'worldwide dinosaurs'})
+    Bus.i.publish('news/dinosaur/brazil', {value: 'brazilian dinosaurs'})
+    Bus.i.publish('report/dinosaur', {value: 'dinosaurs survey'})
+  </script>
+</head>
+<body>
+  <h1>Bus Message Wildcards</h1>
+  <ul id="show-message"></ul>
+</body>
+</html>
