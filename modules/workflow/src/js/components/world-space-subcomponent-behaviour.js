@@ -1,4 +1,5 @@
 import { Vector2 } from "./auxiliary-types.js";
+import { WorldSpace } from "./world-space.js";
 
 export class WorldSpaceSubcomponentBehaviour {
     /*
@@ -8,20 +9,15 @@ export class WorldSpaceSubcomponentBehaviour {
     /*
     individualId: Int
     position: Vector2
-    allTimeCreatedBehaviours : static int
-    onSceneComponents : static List<WorldSpaceComponents>
     */
 
-
-    static allTimeCreatedBehaviours = 0;
-    static onSceneComponents = {}
 
     constructor(position = Vector2(0, 0)) {
 
         this.position = position;
         this.individualId =allTimeCreatedBehaviours;
-        allTimeCreatedBehaviours++;
-        onSceneComponents[this.individualId] = this;
+        WorldSpace.createdWSSubcomponentsAmmount ++;
+        WorldSpace.onSceneComponents[this.individualId] = this;
     }
 
     Destroy(){
