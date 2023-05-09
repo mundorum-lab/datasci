@@ -51,8 +51,9 @@ export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector{
     //Output conections don't have limitations
     //Type : String ->logically,the ParentsNode's type is the same as all the output nodes type 
     constructor(parentWorldSpaceNode){
-        this.type = parentWorldSpaceNode.type
-        super(parentWorldSpaceNode)
+        super(parentWorldSpaceNode);
+        this.type = parentWorldSpaceNode.type;
+        
     }
 
     canConnectTo(/*worldSpaceNodeConnectorIn*/ targetInput){
