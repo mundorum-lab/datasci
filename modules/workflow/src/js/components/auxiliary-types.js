@@ -10,3 +10,14 @@ export class Vector2 {
         return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
 }
+
+export class userInputFieldsInfoTemplate{
+    //QOL: Stores the userInputField information template
+    
+    constructor(fieldName,inputTypeIdentifier,inputTypeAttributes){
+
+        this.fieldName = fieldName;
+        this.inputTypeIdentifier = inputTypeIdentifier;
+        this.inputTypeAttributes = inputTypeAttributes;
+    }
+}

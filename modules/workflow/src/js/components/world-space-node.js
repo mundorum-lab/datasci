@@ -19,8 +19,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     inputConnection : List<WorldSpaceNodeIn>  -> Stores the connectors state in the input
     outputConnection: List<WorldSpaceNodeOut>  -> Stores the connectors state in the output
 
-
-    SUGGESTION:
+    Stores all the available to use nodes' default templates
     static NodeInfoLib = 
     {
         type: 
@@ -38,10 +37,11 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         super();
         
         if(!(type in WorldSpaceNode.NodeInfoLib)){
-            console.warn(`Error: ${type} is not a known node type`);
-            return;
+            throw `Error: ${type} is not a known node type`;
         }
         var NodeInfo =  WorldSpaceNode.NodeInfoLib[type]; 
+
+
         this.type = type;
         this.name = name;
         this.iconPath = NodeInfo["iconPath"];
@@ -57,7 +57,6 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         }
         for(var i = 0 ; i <NodeInfo["compatibleInputNodes"].length ; i ++){
             var compatible = NodeInfo["compatibleInputNodes"][i];
-            console.log(compatible);
             var newInput = new worldSpaceNodeConnectorIn(this,compatible["typesId"],compatible["range"]);
             this.inputConnection.push(newInput);
 
@@ -72,7 +71,12 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     }
 
     static AddNodeInfoToLib(type = "",iconPath = "",compatibleInputNodes=[],userInputFieldsDefinition=[],outputNodesAmmount=0 ){
+        /*
         
+        Adds a node to the available nodes lib, making it useable
+        */
+
+
         // compatibleInputNodes : [{typesId : [String] , range [int,int]}]
         // ->List of tuples, each tuple stores a dict of connectable types and the connections range
         //Tuples are represented as lists

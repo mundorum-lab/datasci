@@ -1,4 +1,4 @@
-import { Vector2 } from "./auxiliary-types.js";
+import { Vector2, userInputFieldsInfoTemplate } from "./auxiliary-types.js";
 import { WorldSpace } from "./world-space.js";
 import { WorldSpaceNode } from "./world-space-node.js";
 import { NodeInputField } from "./node-input-field.js";
@@ -16,22 +16,28 @@ var compatibleInputNodes = [
 ];
 
 //Cria os campos nos quais o usuário irá escrever
+//Obs: Os identificadores e atributos utilizados são apenas exemplos
 var userFields = [
-    
+    //Definição literal
     {fieldName: "Gender", inputTypeIdentifier: "Radiobutton" , inputTypeAttributes: ["Male,Female,Other"]},
     {fieldName: "Name", inputTypeIdentifier: "Textbox" , inputTypeAttributes: [20,"LETTERSONLY"]},
+    //Alternativa mais limpa e sem margem para erros de escrita ou "tipagem"
+    new userInputFieldsInfoTemplate("Age","Range",[12,100]) 
 
 ];
+
+//Vai gerar um erro , o tipo table ainda não existe no contexto
+//var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
 
 //Registra as informações dos nós para serem usadas
 WorldSpaceNode.AddNodeInfoToLib("TABELA","/IMAGEM/TAB.JPG",compatibleInputNodes,userFields,10);
 
 
-
+//Cria um nó
 var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
 
-
+//Está funcionando !
+console.log(WorldSpaceNode.NodeInfoLib);
+console.log(WorldSpace.onWorldSpaceComponents);
 console.log(_testNode);
 
-
-console.log(WorldSpaceNode.NodeInfoLib["TABELA"] );
