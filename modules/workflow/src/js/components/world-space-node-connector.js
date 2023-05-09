@@ -12,7 +12,7 @@ export class worldSpaceNodeConnector{
     constructor(parentWorldSpaceNode){
 
     this.connectedWorldSpaceConnectors= []
-    this.parentWorldSpaceNode = parentWorldSpaceNode
+    this.parentWorldSpaceNode = parentWorldSpaceNode;
 
     }
 
@@ -29,13 +29,12 @@ export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector{
     Input Connectors have type and ammount limitations
 
     compatipleNodes = Dict{typeIds:String}   
-    connectionsRange:(int,int)
-
+    connectionsRange:[int,int]
 */
     constructor(parentWorldSpaceNode, compatibleNodes , connectionsRange){
-        super(parentWorldSpaceNode)
-        this.compatibleNodes = compatibleNodes
-        this.connectionsRange = connectionsRange
+        super(parentWorldSpaceNode);
+        this.compatibleNodes = compatibleNodes;
+        this.connectionsRange = [connectionsRange];
 
     }
     receiveConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector){
