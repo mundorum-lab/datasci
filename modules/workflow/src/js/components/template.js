@@ -23,10 +23,10 @@ var userFields = [
     {fieldName: "Name", inputTypeIdentifier: "Textbox" , inputTypeAttributes: [20,"LETTERSONLY"]},
     //Alternativa mais limpa e sem margem para erros de escrita ou "tipagem"
     new userInputFieldsInfoTemplate("Age","Range",[12,100]) 
-
+    //Equivalente a {fieldName: "Age", inputTypeIdentifier: "Range" , inputTypeAttributes: [12,100]}
 ];
 
-//Vai gerar um erro , o tipo table ainda não existe no contexto
+//Tenta criar um nó, mas vai gerar um erro, o tipo "TABELA" ainda não existe no contexto
 //var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
 
 //Registra as informações dos nós para serem usadas
