@@ -12,12 +12,12 @@ export class WorldSpaceSubcomponentBehaviour {
     */
 
 
-    constructor(position = Vector2(0, 0)) {
+    constructor(position = new Vector2(0, 0)) {
 
         this.position = position;
-        this.individualId =allTimeCreatedBehaviours;
+        this.individualId = WorldSpace.createdWSSubcomponentsAmmount;
         WorldSpace.createdWSSubcomponentsAmmount ++;
-        WorldSpace.onSceneComponents[this.individualId] = this;
+        WorldSpace.onWorldSpaceComponents[this.individualId] = this;
     }
 
     Destroy(){

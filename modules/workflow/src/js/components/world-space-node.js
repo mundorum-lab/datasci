@@ -1,8 +1,8 @@
 import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./world-space-node-connector.js";
-import { WorldSpaceBehaviour } from "./world-space-subcomponent-behaviour.js"
+import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
 
 
-export class WorldSpaceNode extends WorldSpaceBehaviour {
+export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     /*
     Representa os nodes que estarão localizados no espaço do workflow
     
@@ -19,35 +19,52 @@ export class WorldSpaceNode extends WorldSpaceBehaviour {
     outputConnection: List<WorldSpaceNodeOut>  -> Stores the connectors state in the output
 
 
+    SUGGESTION:
+    static NodeInfoLib = {type: {iconPath : String ,
+         userInputFields: Dict{NodeInputField} , 
+         compatibleInputNodes : [[{typeIds:String} ,[int,int]], ..., ...]},
+        outputNodesAmmount : int}
     */
+    static NodeInfoLib = {};
 
+    constructor(type,name) {
 
-    constructor(type, name,iconPath,userInputFields,compatibleInputNodes,outputNodesAmmount = 1) {
-
-        // compatibleInputNodes : [[{typeIds:String} ,[int,int]], ..., ...]
-        // ->List of tuples, each tuple stores a dict of connectable types and the connections range
-        //Tuples are represented as lists
         super();
         this.type = type;
         this.name = name;
-        this.iconPath = iconPath;
-        this.userInputFields = userInputFields;
-        this.compatibleInputNodes = compatibleInputNodes;
         
 
-        this.inputConnection = []
-        this.outputConnection =[]
 
+    }
 
+    static AddNodeInfoToLib(type = "",iconPath = "",userInputFields=[],compatibleInputNodes=[],outputNodesAmmount=0 ){
+        
+        // compatibleInputNodes : [[{typeIds:String} ,[int,int]], ..., ...]
+        // ->List of tuples, each tuple stores a dict of connectable types and the connections range
+        //Tuples are represented as lists
+        
+        WorldSpaceNode.NodeInfoLib[type] = {};
+        var NodeInfo = WorldSpaceNode.NodeInfoLib[type];
+
+        NodeInfo["iconPath"] = iconPath;
+        NodeInfo["userInputFields"] = userInputFields;
+        NodeInfo["compatibleInputNodes"] = compatibleInputNodes;
+        
+        
+        NodeInfo.inputConnection = [];
+        NodeInfo.outputConnection =[];
+
+    
         //Initialize the intput and output connections, the output connections don't have limitations ATM
         for (let i = 0; i < compatibleInputNodes.length; i++) {
-            newInputNode = worldSpaceNodeConnectorIn(this,compatibleInputNodes[i][0],compatibleInputNodes[i][1]) 
-            this.inputConnection.push(newInputNode)
+            newInputNode = worldSpaceNodeConnectorIn(NodeInfo,compatibleInputNodes[i][0],compatibleInputNodes[i][1]) 
+            NodeInfo.inputConnection.push(newInputNode)
         }
         for (let i = 0; i < outputNodesAmmount.length; i++) {
-            newOutputNode = worldSpaceNodeConnectorOut(this) 
-            this.outputConnection.push(newOutputNode)
+            newOutputNode = worldSpaceNodeConnectorOut(NodeInfo) 
+            NodeInfo.outputConnection.push(newOutputNode)
         }
+
 
 
     }

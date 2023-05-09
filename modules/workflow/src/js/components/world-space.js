@@ -8,7 +8,7 @@ export class WorldSpace{
     onSceneComponents : static List<WorldSpaceComponents>
    */
   static createdWSSubcomponentsAmmount = 0;
-  static onWorldSpaceComponents = []
+  static onWorldSpaceComponents = {}
 
 
   static FreeWorldSpace(){
