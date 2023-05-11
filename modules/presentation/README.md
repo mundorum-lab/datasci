@@ -45,6 +45,7 @@ interfaces de I/O e a narrativa de operação do sistema.
   - Participação na elaboração inicial dos demais elementos;
   - Elaboração do código do componente Painel_Workflow;
   - Versão inicial dos códigos JS dos componentes Fornecedor, Construtor, e Apresentador.
+  - Adicionou message type para os componentes Importador e Apresentador
 
 - `Matheus Otávio Rodrigues`
   - Colaboração com a documentação dos componentes incluindo sua definição,
@@ -154,7 +155,7 @@ O componente receberá um JSON especificando o HTML, com o qual importará os co
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
+| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização | JsonHTMLDescription             |
 
 
 ### Component `Apresentador`
@@ -165,7 +166,7 @@ O componente receberá um JSON especificando o HTML, com o qual instanciará tod
 
 | notice                | action                                                                         | message type |
 | --------------------- | ------------------------------------------------------------------------------ | ------------ |
-| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização |              |
+| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização | JsonHTMLDescription             |
 
 
 ## Components Narratives
