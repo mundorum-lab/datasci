@@ -23,6 +23,7 @@ async function getPCA(){
     let adData = PCA.computeAdjustedData(data,vectors[0])
     console.log('\n\n -------------------------------------------\n\n')
     console.log(adData)
+    return adData
 
 }
 //load penguins dataset
@@ -35,6 +36,6 @@ async function getPCA(){
 
 //)
 
-getPCA()
+module.exports = getPCA;
 
 
