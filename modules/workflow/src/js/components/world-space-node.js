@@ -30,6 +30,16 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
     */
 
+    nodeValues = {};
+
+    handleGetValues(key){
+        return nodeValues[key];
+    }
+
+    handleSetValues(key, value){
+        nodeValues[key] = value;
+    }
+
 
     constructor(type,name) {
         super();
