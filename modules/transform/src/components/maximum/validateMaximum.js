@@ -1,6 +1,6 @@
 import { Validate } from "../validate"
 
-export class ValidateFilter extends Validate{
+export class ValidateMaximum extends Validate{
    
     validate(columns, column) {
         

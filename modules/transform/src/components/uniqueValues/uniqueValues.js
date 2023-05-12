@@ -1,33 +1,34 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMinimum.js'
+import { validate } from './validateUniqueValues.js'
 import { TransformWeb } from '../transform.js'
 
-export class MinimumWeb extends TransformWeb {
+export class UniqueValuesWeb extends TransformWeb {
 
-    minimum(){
-        this.value = this.dataFrame.min(this.column)
+    uniqueValues(){
+        this.value = this.dataFrame.get(this.column).unique().length
         let json = this.toSingleValue(this.value)
         this.status = true
-        this._notify('minimumResult', json)
+        this._notify('uniqueValuesResult', json)
     }
 
-    handleMinimum (topic, message) {  //handle with notice
+    handleUniqueValues (topic, message) {  //handle with notice
         
-        //topic: minimum
-        //message: minimumInput
+        //topic: uniqueValues
+        //message: uniqueValuesInput
  
         this.toDataFrame(message)        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.operation = message.operation
         this.column = message.column
+        this.uniqueValuesValue = message.uniqueValuesValue
 
         let result = validate(this.columns, this.column)
         if(result.isValid){
-            this.minimum()
+            this.uniqueValues()
         } else {
             //return error message
             this.status = false
-            this._notify('minimumError', result.result)
+            this._notify('uniqueValuesError', result.result)
         }
 
     }
@@ -36,14 +37,14 @@ export class MinimumWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transMinimum',
-  element: 'minimum',
+  id: 'ts:transUniqueValues',
+  element: 'uniqueValues',
   properties: {
     status: {default: false},
-    name: {default: "Mínimo"},
+    name: {default: "Valores únicos"},
     type: {default: "Transformação"},
   },
-  receive: {minimum: 'handleMinimum'},
+  receive: {uniqueValues: 'handleUniqueValues'},
   /*template: html``,*/
-  implementation: MinimumWeb
+  implementation: UniqueValuesWeb
 })
