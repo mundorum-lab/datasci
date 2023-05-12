@@ -41,3 +41,8 @@ console.log(WorldSpaceNode.NodeInfoLib);
 console.log(WorldSpace.onWorldSpaceComponents);
 console.log(_testNode);
 
+var tipoNode = _testNode.type;
+console.log(WorldSpaceNode.NodeInfoLib[tipoNode].userInputFieldsDefinition);
+
+
+console.log(_testNode.getUserFields());

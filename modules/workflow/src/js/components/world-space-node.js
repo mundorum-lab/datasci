@@ -19,6 +19,14 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     inputConnection : List<WorldSpaceNodeIn>  -> Stores the connectors state in the input
     outputConnection: List<WorldSpaceNodeOut>  -> Stores the connectors state in the output
 
+    NodeUserInputParameters = {string : string}
+    Ex:
+    NodeUserInputParemeters = {
+        Nome:"Renan",
+        CPF: "123.456.789-10"
+    }
+
+
     Stores all the available to use nodes' default templates
     static NodeInfoLib = 
     {
@@ -49,6 +57,8 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         this.outputConnection = [];
         this.inputConnection = [];
         this.userInputFields = [];
+
+        this.nodeUserInputParameters = {};
 
         for(var i = 0 ; i < NodeInfo["outputNodesAmmount"] ; i ++){
             var newOutput = new worldSpaceNodeConnectorOut(this);
@@ -90,6 +100,9 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         NodeInfo["outputNodesAmmount"] = outputNodesAmmount;
 
     }
+    getUserFields(){
+        return WorldSpaceNode.NodeInfoLib[this.type].userInputFieldsDefinition
+    }
 
     Destroy(){
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
@@ -97,6 +110,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         super.Destroy()
 
     }
+    /*String*/ get
 
 
     

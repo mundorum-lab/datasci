@@ -25,4 +25,11 @@ export class WorldSpaceSubcomponentBehaviour {
         //TODO
 
     }
+    /*Vector2*/ getPosition(){
+        return this.position;
+    }
+
+    setPosition(/*Vector2*/ newPosition){
+        this.position = newPosition;
+    }
 }
