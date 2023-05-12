@@ -157,7 +157,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 }
 ~~~
 
-**`averageInput`**
+**`standardDeviationInput`**
 ~~~json
 {
   "table": "<validTable>",
@@ -594,7 +594,7 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `modeResult` | `é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina` | `singleValue`
 
-## Component `average`
+## Component `standarddeviation`
 
 > Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
 
@@ -611,14 +611,14 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`average` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `averageInput`
+`stddev` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `stddevInput`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`averageResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
+`stddevResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
 
 # Components Narratives
 
