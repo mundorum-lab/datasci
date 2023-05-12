@@ -1,37 +1,48 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { Oid } from '/lib/oidlib-dev.js'
 import { validate } from './validateGroupBy.js'
-/*import {Series, DataFrame} from 'pandas-js' can we use this library?*/
+import { TransformWeb } from '../transform.js'
+import {Series, DataFrame} from 'pandas-js'
 
-export class GroupByOid extends OidUI {
+export class GroupByWeb extends TransformWeb {
 
-    groupBy(message){   //perform GroupBy 
-        this._notify('filterResult',message)
+    groupBy(){   //TODO perform GroupBy 
+        new_message = {}
+        this._notify('groupByResult', new_message)
     }
+
     handleGroupBy (topic, message) {  //handle with notice
+
         //topic: groupBy
-        //message> groupByInput
-        result = validate(message)
+        //message: groupByInput
+
+        this.toDataFrame(message)
+        this.file_id = message.file_id
+        this.operation = message.operation
+        this.groupByTargetColumn = message.groupByTargetColumn
+        this.operationTargetColumn = message.operationTargetColumn
+
+        result = validate(this.columns, this.groupByTargetColumn, this.operationTargetColumn, this.operation)
         if(result.isValid){
-            this.filter(message)
+            this.groupBy(message)
         } else {
-            //return error message
+            this.status = false
             this._notify('groupByError', result.result)
         }
+
     }
 }
+
 
 Oid.component(
 {
   id: 'ts:transGroupBy',
   element: 'groupBy',
   properties: {
-    dataFrame: {default: {}},
-    columns: {default: []},
     status: {default: false},
-    name: {default: "Agrupar por"},
+    name: {default: "Agrupar linhas"},
     type: {default: "Transformação"},
   },
   receive: {groupBy: 'handleGroupBy'},
   /*template: html``,*/
-  implementation: GroupByOid
+  implementation: GroupByWeb
 })

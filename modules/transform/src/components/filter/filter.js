@@ -33,8 +33,8 @@ export class FilterWeb extends TransformWeb {
         
         //topic: filter
         //message: filterInput
-
-        this.toDataFrame(message)
+ 
+        this.toDataFrame(message)        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.operation = message.operation
         this.targetColumn = message.targetColumn
