@@ -25,9 +25,27 @@ export class TransformWeb extends OidWeb {
         this.dataFrame = new DataFrame(Immutable.Map(columnsObject))
     }
 
-    toJson(dataFrame){
+    toJson(dataFrame, file_id,columns){
         //convert df to json
+        table = {
+            file_id: file_id,
+            columns: [],
+            data: [],
+        }
+        columnsName = columns.keys()
+        for(let i = 0; i < listColumns.length; i++){
+            table.columns.append({
+                name: columnsName[i],
+                type: columns[i]
+            })
+        }
+        for(const [row, idx] of dataFrame) {
+            table.data.append(row.values)
+        }
+
+        return table
     }
+
 }
 
 
