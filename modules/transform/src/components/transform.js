@@ -46,6 +46,10 @@ export class TransformWeb extends OidWeb {
         return table
     }
 
+    toSingleValue(value) {
+        return {"value": value}
+    }
+
 }
 
 
