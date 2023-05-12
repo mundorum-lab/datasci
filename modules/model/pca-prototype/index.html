@@ -7,13 +7,10 @@
 </head>
 <body>
   <h1>Playground</h1>
-  <button-oid label="Start" 
+  <button-oid label="test pca" 
               value="The dinosaur jumped into the mud."
-              publish="click:statistics/pca">
+              publish="click~statistics/pca">
   </button-oid>
-  <console-oid subscribe="statistics/output:display">
-  <transformation-pca subscribe="statistics/pca:transform"
-                      publish="transform:statistics/output">
-  </transformation-pca>
+  <model-pca subscribe="statistics/pca~transform"></model-pca>
 </body>
 </html>
