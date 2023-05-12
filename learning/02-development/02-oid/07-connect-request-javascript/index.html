@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="fibonacci-oid.js" type="module"></script>
+  <script src="loop-oid.js" type="module"></script>
+</head>
+<body>
+  <script type="module">
+    import { Oid } from '/lib/oidlib-dev.js'
+
+    const fibonacci = Oid.create('ex:fibonacci', {id: 'fibo'})
+    document.querySelector('#app').appendChild(fibonacci)
+
+    const loop = Oid.create('ex:loop',
+      {title: 'Fibonacci Sequence',
+       connect: 'itf:iterate#fibo'})
+    document.querySelector('#app').appendChild(loop)
+  </script>
+  <div id="app"></div>
+</body>
+</html>

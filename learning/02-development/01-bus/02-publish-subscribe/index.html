@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script type="module">
+    import { Bus } from '/lib/oidlib-dev.js'
+
+    var ms1 = ''
+    var ms2 = ''
+
+    function notify1 (topic, message) {
+      ms1 += `[${topic}] ${message.value}`
+      const messageObj = document.querySelector("#show-message-1")
+      messageObj.innerHTML = ms1
+    }
+
+    function notify2 (topic, message) {
+      ms2 += `[${topic}] ${message.value}`
+      const messageObj = document.querySelector("#show-message-2")
+      messageObj.innerHTML = ms2
+    }
+
+    // subscriber
+    Bus.i.subscribe('test/topic', notify1)
+    Bus.i.subscribe('testando/outra', notify2)
+
+    // publisher
+    Bus.i.publish('test/topic', {value: 'Hello, world!'})
+    Bus.i.publish('testando/outra', {value: 'Asdrubal'})
+  </script>
+</head>
+<body>
+  <h1>Playground</h1>
+  Message notify1: <span id="show-message-1"></span>
+  <br>
+  Message notify2: <span id="show-message-2"></span>
+</body>
+</html>
