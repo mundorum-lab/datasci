@@ -1,7 +1,7 @@
 import { css, html, Oid, OidUI } from "../oidlib-dev.js";
 
 
-export class WorldSpaceNode extends OidUI {
+export class WorldSpaceNodeView extends OidUI {
     /*
     Representa os nodes que estarão localizados no espaço do workflow
     
@@ -37,7 +37,7 @@ Oid.component(
             inputFields: {},
             iconpath: {},
         },
-        implementation: WorldSpaceNode,
+        implementation: WorldSpaceNodeView,
         template: html`
         <div class="node" @dblclick={{this._onDoubleClick}}>
             <img 
