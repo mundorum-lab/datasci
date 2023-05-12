@@ -1,0 +1,19 @@
+{
+  "name": "datasci",
+  "version": "1.0.0",
+  "description": "Components framework for data analysis.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "http-server -c-1",
+    "tailwind-presentation": "tailwindcss build -w -i modules/presentation/styles.css -o modules/presentation/dist/styles.css"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "tailwindcss": "^3.3.2"
+  }
+}
