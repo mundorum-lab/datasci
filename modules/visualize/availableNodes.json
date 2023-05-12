@@ -1,6 +1,32 @@
 {
-  "category1": [{
-  }],
-  "category2": [{
-  }]
+  "graph": [
+    {
+      "name": "",
+      "type": "GRAPH",
+      "inputFields": [
+        {
+          "fieldName": "",
+          "fieldType": "",
+          "inputType": {
+            "type": "",
+            "parameters": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "",
+      "type": "GRAPH",
+      "inputFields": [
+        {
+          "fieldName": "",
+          "fieldType": "",
+          "inputType": {
+            "type": "",
+            "parameters": {}
+          }
+        }
+      ]
+    }
+  ]
 }
