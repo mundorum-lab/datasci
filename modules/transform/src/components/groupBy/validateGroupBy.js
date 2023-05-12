@@ -1,8 +1,5 @@
 export class ValidateGroupBy {
-    //is operation valid? avg, min, max, count (por dropdown)
-    //1 is the type of operation valid for type of column?
-    //2 is table not empty? -> don't think this is necessary, the filter will return empty
-    //3 Do the columns exist?
+ 
     validate(message) {
         let columns = message.validTable.columns //array com jsons of names and types of columns
         let typeOperationTargetColumn
