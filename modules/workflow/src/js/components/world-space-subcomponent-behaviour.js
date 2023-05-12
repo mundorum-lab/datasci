@@ -1,7 +1,7 @@
 import { Vector2 } from "./auxiliary-types.js";
 import { WorldSpace } from "./world-space.js";
 
-export class WorldSpaceSubcomponentBehaviour {
+export class WorldSpaceSubcomponentBehaviour extends OidBase {
     /*
         Representa qualquer componente que possa estar no espaço do workflow
     */
