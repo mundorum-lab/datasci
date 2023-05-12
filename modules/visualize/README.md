@@ -84,23 +84,9 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 | ------------ | :-------------------------------------------------------- |
 | `type` | String com o tipo do gráfico |
 | `id` | Int com o id do gráfico |
-| `data` | Dados a serem plotados |
 | `size` | Mapa com os tamanhos do gráfico (width e height) |
 | `options` | Objeto com os opções adicionais do gráfico (eixos, etc) |
 
-#### Objeto data
-~~~json
-{
-  columns: [
-	{name, type},
-	...
-  ],
-  data: [
-	[column0, column1, ...],
-	... other rows ...
-  ]
-}
-~~~
 
 ### Output Notices
 
@@ -173,8 +159,22 @@ Oid.component({
 
 
 * Presentation decide exibir o novo gráfico em um tamanho `width` x `height` em sua interface:
-	* Instancia um componente `<graph></graph>` contendo informações de `id`, `type`, `data`, `size` e `options`.
+	* Instancia um componente `<graph></graph>` contendo informações de `id`, `type`, `size` e `options`.
+	* Iremos esperar os dados no tópico `data/#id`, sendo que estes vão ser postados da forma `Objeto data` a seguir e o id é o `id` do nó de dados.
 
+#### Objeto data
+~~~json
+{
+  columns: [
+	{name, type},
+	...
+  ],
+  data: [
+	[column0, column1, ...],
+	... other rows ...
+  ]
+}
+~~~ 
 
 * O usuário deseja exportar a imagem do gráfico:
 	* Produz a notice "`export`"
