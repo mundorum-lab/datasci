@@ -4,10 +4,38 @@ export class ChatOid extends OidUI {
   connectedCallback(){
     super.connectedCallback()
     this.generatePrompt()
+    this.requestToOpenAI()
   }
+ 
   generatePrompt(){
-    this.prompt = `Explain a ${this.inputType} with the following data: ${this.inputData}`
+    this.prompt = `A ${this.inputType} has the following columns : ${this.columns} and the data are: ${this.inputData} Explain it to me.`
   }
+
+  requestToOpenAI() {
+    fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.openAiApiKey}`
+      },
+      body: JSON.stringify({
+        prompt: this.prompt,
+        max_tokens: 100,
+        n: 1,
+        stop: ['\n']
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      const explanation = data.choices[0].text.trim();
+      this.explanation = explanation;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+  
+
   findConnectedNodes(workflowMap){
     let edgesArray=workflowMap.edges
     let counter=0
@@ -47,12 +75,15 @@ Oid.component(
   id: 'chat',
   element: 'chat-oid',
   properties: {
+    openAiApiKey: {},
     chat_id: {default: ''},
+    'columns' : {default: ''},
     'input-data':{default: ''},
     'input-type':{default: ''},
     prompt: {default: ''},
+    explanation: {default: 'default explanation'}
   },
   // recieve: {generate: 'generatePrompt'},
-  template: html`<h1>{{this.prompt}}</h1>`,
+  template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,
   implementation: ChatOid
 })
