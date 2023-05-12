@@ -1,6 +1,7 @@
 import { NodeInputField } from "./node-input-field.js";
 import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./world-space-node-connector.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
+import { WorldSpaceNodeTypes} from "../world-space-node-types.js"
 
 
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
@@ -27,27 +28,16 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     }
 
 
-    Stores all the available to use nodes' default templates
-    static NodeInfoLib = 
-    {
-        type: 
-        {
-            iconPath : String ,
-            userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
-            compatibleInputNodes :[{typesId : [String] , range [int,int]}, ...],
-            outputNodesAmmount : int
-        } , ...
-    }
     */
-    static NodeInfoLib = {};
+
 
     constructor(type,name) {
         super();
-        
-        if(!(type in WorldSpaceNode.NodeInfoLib)){
+        var NodeInfoLib = WorldSpaceNodeTypes.NodeInfoLib;
+        if(!(type in NodeInfoLib)){
             throw `Error: ${type} is not a known node type`;
         }
-        var NodeInfo =  WorldSpaceNode.NodeInfoLib[type]; 
+        var NodeInfo =  NodeInfoLib[type]; 
 
 
         this.type = type;
@@ -91,8 +81,8 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         // ->List of tuples, each tuple stores a dict of connectable types and the connections range
         //Tuples are represented as lists
         
-        WorldSpaceNode.NodeInfoLib[type] = {};
-        var NodeInfo = WorldSpaceNode.NodeInfoLib[type];
+        WorldSpaceNodeTypes.NodeInfoLib[type] = {};
+        var NodeInfo = WorldSpaceNodeTypes.NodeInfoLib[type];
 
         NodeInfo["iconPath"] = iconPath;
         NodeInfo["userInputFieldsDefinition"] = userInputFieldsDefinition;
@@ -101,7 +91,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
     }
     getUserFields(){
-        return WorldSpaceNode.NodeInfoLib[this.type].userInputFieldsDefinition
+        return WorldSpaceNodeTypes.NodeInfoLib[this.type].userInputFieldsDefinition
     }
 
     Destroy(){
