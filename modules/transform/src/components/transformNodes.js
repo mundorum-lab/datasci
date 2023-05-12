@@ -12,8 +12,8 @@ Oid.component(
   element: 'filter',
   properties: {
     availableNodes: {default: {
-        filter: [{                         //is category the same as type?
-            type: "filter",
+        filter: [{                     
+            type: "table/json",
             name: "Filtrar Tabela",
             compatibleInputNodes: {
                 /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
@@ -43,7 +43,7 @@ Oid.component(
                     fieldType: "Textbox", 
                     inputType: 
                     {
-                        type: "string",  //could be any, but we can convert str to number
+                        type: "any",
                         parameters: {},
                     }
                 },
