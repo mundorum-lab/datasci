@@ -21,7 +21,7 @@ export class MaximumWeb extends TransformWeb {
         this.operation = message.operation
         this.column = message.column
 
-        result = validate(this.columns, this.column)
+        let result = validate(this.columns, this.column)
         if(result.isValid){
             this.maximum()
         } else {
