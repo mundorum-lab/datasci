@@ -59,6 +59,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
   "table": "<validTable>",
   "column1": "<string>",
   "column2": "<string>",
+  "constant": "<number>",
   "operation": "<string>",
   "resultColumn": "<string>"
 }

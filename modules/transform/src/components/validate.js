@@ -13,8 +13,8 @@ export class Validate extends OidBase{
     /* TODO Change the name of this methods to something more intuitive */
 
     //compare type of column to one value
-    isTypeMatch(availableColumns, value, targetColumn){
-        if(availableColumns[targetColumn]==typeof(value)){
+    isTypeMatch(availableColumns, type, targetColumn){
+        if(availableColumns[targetColumn]==type){
             return true
         }
         return false
@@ -26,8 +26,8 @@ export class Validate extends OidBase{
     }
 
     //check if operation exists
-    isOperationValid(operation){
-        if(this.validOperations.includes(operation)){
+    isOperationValid(operation, validOperations){
+        if(validOperations.includes(operation)){
             return true
         }
         return false

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "math": "^0.0.3",
     "pandas-js": "^0.2.4"
   }
 }
