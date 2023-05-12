@@ -1,18 +1,27 @@
 //druidjs contains a lot of dimensionality reduction functions
-//import * as druid from "@saehrimnir/druidjs"
+
 //we use d3 to download the penguins dataset to use in our PCA
-//import * as d3 from "d3"
+//
 //dataframe module
 //import DataFrame from 'dataframe-js'
 
-const DataFrame = require("dataframe-js").DataFrame
-const PCA = require('pca-js')
+//import druidjs and d3  
+import * as druid from "https://unpkg.com/@saehrimnir/druidjs" 
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-async function getPCA(){
+export async function getPCA(){
+    console.log('entrooouhehe')
     //load penguins dataset
-    let df = await DataFrame.fromCSV('/home/fernando/workspace/mundorum-lab/modules/model/implementation/penguins.csv', true)
+    let penguins = d3.csv("./penguins.csv")
+    let matrix = druid.Matrix.from(penguins);
+    d3.selectAll("datapoints").data(matrix.to2dArray)
+
+    //get the PCA dimensionality reduction class
+    let result = new druid.PCA(matrix).transform()
+    return result
+    /*
     //get only the data
-    let data = df.toArray()
+    let matrix = df.toArray()
     console.log(data)
     console.log('\n\n -------------------------------------------\n\n')
     //get eigen vectors
@@ -24,18 +33,8 @@ async function getPCA(){
     console.log('\n\n -------------------------------------------\n\n')
     console.log(adData)
     return adData
-
+    */
 }
-//load penguins dataset
-//let df = DataFrame.fromCSV('/home/fernando/workspace/mundorum-lab/modules/model/implementation/penguins.csv', true).then(
-//    df => df.toArray()
-//).then(
-//    df => PCA.getEigenVectors(df)
-//).then(
-    //vectors => console.log(vectors) check eigenvalue vectors
 
-//)
-
-module.exports = getPCA;
 
 

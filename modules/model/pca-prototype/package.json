@@ -1,8 +1,6 @@
 {
   "dependencies": {
     "@saehrimnir/druidjs": "^0.6.3",
-    "d3": "^7.8.4",
-    "dataframe-js": "^1.4.4",
-    "pca-js": "^1.0.2"
+    "d3.js": "^0.0.2-security"
   }
 }

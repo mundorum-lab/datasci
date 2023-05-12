@@ -1,24 +1,28 @@
 import { html, Oid, OidUI  } from '/lib/oidlib-dev.js'
-import {getPCA} from 'PCA.js'
+//import {getPCA} from './PCA.js'
+
+
 export class PCA extends OidUI {
   applyPCA (topic, message) {
     //this.table = message.value
     //import pca 
-    this.result = getPCA()
+    this.result = message.value
+    console.log('entrou apply')
+    //this.result = getPCA()
     // When operation is done, publish the data
-    this._notify('transform', {value: this.result})
+    //this._notify('transform', {value: this.result})
   }
 }
 
 Oid.component(
 {
-  id: 'transform:pca',
-  element: 'transformation-pca',
+  id: 'model:pca',
+  element: 'model-pca',
   properties: {
     name: {default: 'PCA'},
-    result: {default: ''},
+    result: {default: 'resultadis'},
   },
-  receive: {'transform': 'applyPCA'},
+  receive: {transform: 'applyPCA'},
   template: html`<h1>data returned:  {{this.result}}</h1>`,
   implementation: PCA,
-})
+});
