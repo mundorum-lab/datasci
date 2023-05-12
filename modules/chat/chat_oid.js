@@ -1,8 +1,20 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ChatOid extends OidUI {
-  connectedCallback(){
-    super.connectedCallback()
+  // connectedCallback(){
+  //   super.connectedCallback()
+  //   // this.setGraphInfo()
+  //   // this.generatePrompt()
+  //   // this.requestToOpenAI()
+  // }
+
+  setGraphInfo(topic, message){
+    console.log('=== topic/message')
+    console.log(topic)
+    console.log(message)
+    this.columns = message.columns
+    this.inputData = message.data
+    this.inputType = message.type
     this.generatePrompt()
     this.requestToOpenAI()
   }
@@ -12,28 +24,30 @@ export class ChatOid extends OidUI {
   }
 
   requestToOpenAI() {
-    fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.openAiApiKey}`
-      },
-      body: JSON.stringify({
-        prompt: this.prompt,
-        max_tokens: 100,
-        n: 1,
-        stop: ['\n']
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      const explanation = data.choices[0].text.trim();
-      this.explanation = explanation;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    this.explanation = 'explanation of the prompt'
   }
+  //   fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Bearer ${this.openAiApiKey}`
+  //     },
+  //     body: JSON.stringify({
+  //       prompt: this.prompt,
+  //       max_tokens: 100,
+  //       n: 1,
+  //       stop: ['\n']
+  //     })
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     const explanation = data.choices[0].text.trim();
+  //     this.explanation = explanation;
+  //   })
+  //   .catch(error => {
+  //     console.error('Error:', error);
+  //   });
+  // }
   
 
   findConnectedNodes(workflowMap){
@@ -81,9 +95,9 @@ Oid.component(
     'input-data':{default: ''},
     'input-type':{default: ''},
     prompt: {default: ''},
-    explanation: {default: 'default explanation'}
+    explanation: {default: ''}
   },
-  // recieve: {generate: 'generatePrompt'},
+  receive: {graph: 'setGraphInfo'},
   template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,
   implementation: ChatOid
 })
