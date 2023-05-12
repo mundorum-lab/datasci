@@ -1,64 +1,56 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { Oid } from '/lib/oidlib-dev.js'
 import { validate } from './validateFilter.js'
-/*import {Series, DataFrame} from 'pandas-js' can we use this library?*/
+import { TransformWeb } from '../transform.js'
 
-export class FilterOid extends OidUI {
-    compare(value, compared,operation){
-        if(operation=="<" && value<compared){
-            return true
+export class FilterWeb extends TransformWeb {
+
+    chooseOpAndFilter(){
+        if(operation=="<"){
+            return this.dataFrame.filter(this.dataFrame.get(this.targetColumn).lt(this.comparedValue));
         }
-        if(operation=="<=" && value<=compared){
-            return true
+        if(operation=="<="){
+            return this.dataFrame.filter(this.dataFrame.get(this.targetColumn).lte(this.comparedValue));
         }
-        if(operation==">" && value<compared){
-            return true
+        if(operation==">"){
+            return this.dataFrame.filter(this.dataFrame.get(this.targetColumn).gt(this.comparedValue));
         }
-        if(operation==">=" && value<compared){
-            return true
+        if(operation==">="){
+            return this.dataFrame.filter(this.dataFrame.get(this.targetColumn).gte(this.comparedValue));
         }
-        if(operation=="=" && value==compared){
-            return true
+        if(operation=="="){
+            return this.dataFrame.filter(this.dataFrame.get(this.targetColumn).eq(this.comparedValue));
         }
-        return false
     }
-    filter(message){
-        /*change to update params
-        let data = {}
-        //convert table to DF
-        for(let i = 0; i<message.columns.length; i++){
-            columns = []
-            for(let j = 0; j<message.data.length; j++){
-                columns.append(message.data[j][i])
-            }
-            data[message.columns[i]] =  columns
-        }*/
-        let idx = 0
-        for(let i = 0; i<message.columns.length; i++){
-           if(message.columns[i].name==message.column){
-                idx = i
-                break
-           }
-        }
-        let new_data = []
-        for(let i = 0; i<message.data.length; i++){ //rows
-            if(compare(message.data[i][idx],message.comparedValue,message.operation)){
-                new_data.append(message.data[i])
-            }
-        }
-        message.data = new_data
-        this._notify('filterResult',message)
+
+    filter(){
+        this.newDataFrame = chooseOpAndFilter()
+        let json = this.toJson(this.newDataFrame, this.file_id)
+        this.status = true
+        this._notify('filterResult', json)
     }
+
     handleFilter (topic, message) {  //handle with notice
+        
         //topic: filter
-        //message> filterInput
-        result = validate(message)
+        //message: filterInput
+
+        this.toDataFrame(message)
+        this.file_id = message.file_id
+        this.operation = message.operation
+        this.targetColumn = message.targetColumn
+        this.compared = message.comparedValue
+
+        result = validate(this.dataFrame, this.columns)
         if(result.isValid){
-            this.filter(message)
+            this.filter()
         } else {
             //return error message
+            this.status = false
             this._notify('filterError', result.result)
         }
+
     }
+
 }
 
 Oid.component(
@@ -66,13 +58,11 @@ Oid.component(
   id: 'ts:transFilter',
   element: 'filter',
   properties: {
-    dataFrame: {default: {}},
-    columns: {default: []},
     status: {default: false},
     name: {default: "Filtro"},
     type: {default: "Transformação"},
   },
   receive: {filter: 'handleFilter'},
   /*template: html``,*/
-  implementation: FilterOid
+  implementation: FilterWeb
 })
