@@ -1,10 +1,11 @@
+import { Oid, OidWeb } from '/lib/oidlib-dev.js'
 import { Series, DataFrame } from 'pandas-js';
 
 export class TransformWeb extends OidWeb {
 
     /* Get values from json and convert to a more appropriate way to perform transformation */
 
-    getDataFrame(jsonTable){
+    toDataFrame(jsonTable){
         let columnsObject = {}
         number_of_columns = len(jsonTable.columns)
         number_of_rows = len(jsonTable.data)
@@ -22,6 +23,10 @@ export class TransformWeb extends OidWeb {
         {x: new Series([1, 2]), y: new Series([2, 3])}
         */
         this.dataFrame = new DataFrame(Immutable.Map(columnsObject))
+    }
+
+    toJson(dataFrame){
+        //convert df to json
     }
 }
 

@@ -1,39 +1,38 @@
-export class ValidateFilter {
-    //is operation valid? > >= = <= (por dropdown)
-    //1 is type of comparation the same as column?
-    //2 is table not empty? -> don't think this is necessary, the filter will return empty
-    //3 Does the column exist?
-    validate(message) {
-        let columns = message.validTable.columns //array com jsons of names and types of columns
-        let typeTargetColumn
-        let typeComparedValue = typeof(message.comparedValue)
-        let columnExists = false
-        for (let i = 0; i<columns.length; i++){
-            if(columns[i].name==message.column){
-                typeTargetColumn = columns[i].type 
-                columnExists = true
-                break
-            }
-        }
-        if(!columnExists){
+import { Validate } from "../validate"
+
+export class ValidateFilter extends Validate{
+   
+    validate(columns, targetColumn, comparedValue, operation) {
+        
+        if(!this.columnExist(columns, targetColumn)){
             let result = {
                 transformationType: "filter",
                 errorType: "Column not found",
-                message: `Column ${message.column} does not exist in data base."`,
+                message: `Column ${targetColumn} does not exist in data base."`,
             }
-            return {result,isValid: false}
+            return {result, isValid: false}
         }
-        if(typeTargetColumn!=typeComparedValue){
+        
+        if(!this.isTypeMatch(columns, typeof(comparedValue), targetColumn)){
             let result = {
                 transformationType: "filter",
                 errorType: "Incompatible types",
-                message: `Column ${message.column} is type of ${typeTargetColumn}, but type of "${message.comparedValue} is ${typeComparedValue}. Expected equal types."`,
+                message: `Column ${targetColumn} is type of ${columns[targetColumn]}, but type of "${comparedValue} is ${typeof(comparedValue)}. Expected equal types."`,
             }
             return {result,isValid: false}
         }
-        let result = {
-            
+        
+        if(!this.isOperationValid(operation)){
+            let result = {
+                transformationType: "filter",
+                errorType: "Invalid operation",
+                message: `Operation ${operation} is not valit for filter transformation.`,
+            }
+            return {result,isValid: false}
         }
+        
+        let result = {}
+
         return {result,isValid: true}
     }
 }
