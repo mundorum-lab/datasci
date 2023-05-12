@@ -13,7 +13,7 @@ export class ValidateFilter extends Validate{
             return {result, isValid: false}
         }
         
-        if(!this.isTypeMatch(columns, typeof(comparedValue), targetColumn)){
+        if(!this.isTypeMatch(columns, comparedValue, targetColumn)){
             let result = {
                 transformationType: "filter",
                 errorType: "Incompatible types",

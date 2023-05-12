@@ -1,24 +1,18 @@
-export class ValidateGroupBy {
- 
-    validate(message) {
-        let columns = message.validTable.columns //array com jsons of names and types of columns
-        let typeOperationTargetColumn
-        let columnGroupByTargetColumnExists = false
-        let columnOperationTargetColumnExists = false
-        for (let i = 0; i<columns.length; i++){
-            if(columns[i].name==message.groupByTargetColumn){ //3
-                columnGroupByTargetColumnExists = true
-            }
-            if(columns[i].name==message.operationTargetColumn){
-                typeOperationTargetColumn = columns[i].type 
-                columnOperationTargetColumnExists = true
-            }
-        }
-        if(!columnGroupByTargetColumnExists && !columnOperationTargetColumnExists){
+import { Validate } from "../validate"
+
+
+export class ValidateGroupBy extends Validate {
+
+    validate(columns, groupByTargetColumn, operationTargetColumn, operation) {
+
+        let groupByTargetColumnExists = this.columnExist(columns, groupByTargetColumn)
+        let operationTargetColumnExists = this.columnExist(columns, operationTargetColumn)
+       
+        if(!groupByTargetColumnExists && !operationTargetColumnExists){
             let result = {
                 transformationType: "groupBy",
                 errorType: "Columns not found",
-                message: `Columns ${message.groupByTargetColumn} and ${message.columnOperationTargetColumn} do not exist in data base."`,
+                message: `Columns ${groupByTargetColumn} and ${operationTargetColumn} do not exist in data base."`,
             }
             return {result,isValid: false}
         }
@@ -26,7 +20,7 @@ export class ValidateGroupBy {
             let result = {
                 transformationType: "groupBy",
                 errorType: "Column not found",
-                message: `Column ${message.groupByTargetColumn} does not exist in data base."`,
+                message: `Column ${groupByTargetColumn} does not exist in data base."`,
             }
             return {result,isValid: false}
         }
@@ -34,15 +28,15 @@ export class ValidateGroupBy {
             let result = {
                 transformationType: "groupBy",
                 errorType: "Column not found",
-                message: `Column ${message.columnOperationTargetColumn} does not exist in data base."`,
+                message: `Column ${operationTargetColumn} does not exist in data base."`,
             }
             return {result,isValid: false}
         }
-        if((typeOperationTargetColumn!=typeof(1) && typeOperationTargetColumn!=typeof(1.54)) && message.operation=="avg"){ //1
+        if(this.isOperationAndTypeValid(operation,columns,operationTargetColumn)){ 
             let result = {
                 transformationType: "groupBy",
                 errorType: "Incompatible types",
-                message: `Can not average elements from "${message.columnOperationTargetColumn}". Type is not a number.`,
+                message: `Can not average elements from "${operationTargetColumn}". Type is NaN.`,
             }
             return {result,isValid: false}
         }
