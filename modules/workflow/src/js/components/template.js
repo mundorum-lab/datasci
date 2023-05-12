@@ -31,7 +31,7 @@ var userFields = [
 //var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
 
 //Registra as informações dos nós para serem usadas
-WorldSpaceNode.AddNodeInfoToLib("TABELA","/IMAGEM/TAB.JPG",compatibleInputNodes,userFields,10);
+WorldSpaceNodeTypes.AddNodeInfoToLib("TABELA","/IMAGEM/TAB.JPG",compatibleInputNodes,userFields,10);
 
 
 //Cria um nó
