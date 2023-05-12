@@ -40,7 +40,7 @@ Oid.component(
   element: 'maximum',
   properties: {
     status: {default: false},
-    name: {default: "Mínimo"},
+    name: {default: "Máximo"},
     type: {default: "Transformação"},
   },
   receive: {maximum: 'handleMaximum'},
