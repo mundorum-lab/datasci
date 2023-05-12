@@ -1,12 +1,12 @@
-import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
+import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class ChatOid extends OidWeb {
+export class ChatOid extends OidUI {
   connectedCallback(){
     super.connectedCallback()
     this.generatePrompt()
   }
   generatePrompt(){
-    this.prompt = `Explain a ${this.input_type} with the following data: ${this.input_data}`
+    this.prompt = `Explain a ${this.inputType} with the following data: ${this.inputData}`
   }
   findConnectedNodes(workflowMap){
     let edgesArray=workflowMap.edges
@@ -48,8 +48,8 @@ Oid.component(
   element: 'chat-oid',
   properties: {
     chat_id: {default: ''},
-    input_data:{default: ''},
-    input_type:{default: ''},
+    'input-data':{default: ''},
+    'input-type':{default: ''},
     prompt: {default: ''},
   },
   // recieve: {generate: 'generatePrompt'},
