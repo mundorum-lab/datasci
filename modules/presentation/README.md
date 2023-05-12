@@ -122,7 +122,7 @@ Retornará quando solicitado a lista com os templates disponíveis na aplicaçã
 
 | notice                 | action                                                | message type |
 | ---------------------- | ----------------------------------------------------- | ------------ |
-| `requestTemplatesList` | Faz o pedido para a listagem de templates disponíveis | request      |
+| `requestTemplatesList` | Faz o pedido para a listagem de templates disponíveis | Request      |
 
 #### Output Notices
 
