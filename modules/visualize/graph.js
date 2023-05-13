@@ -1,49 +1,68 @@
-import { html, Oid, OidUI, Bus} from '/lib/oidlib-dev.js'
+import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { Chart } from './libs/chart.js'
 
-function createGraphClass(specializedDraw){
-    let new_class =  class extends OidUI{
-        //handlers
-        handleGetData(topic, message){}
-        
-        handleSetData(topic, message){}
+export class GraphOid extends OidUI {
+  constructor() {
+    super()
+    this.canvas = null
+    this.placeholder = null
+  }
 
-        handleGetOptions(topic,message){}
+  connectedCallback() {
+    super.connectedCallback()
 
-        handleSetOptions(topic,message){
-            console.log(message)
-            let objOptions = JSON.parse(this.options)
-            for(const key in message){
-                objOptions[key] = message[key]
-            }
-            this.options = JSON.stringify(objOptions)
-        }
+    this.canvas = document.getElementById('chart')
+    this.placeholder = document.getElementById('canvas')
+    this.canvas.style.display = 'none';
+  }
 
-        handleRender(topic, message){
-            const canvas = document.createElement('canvas');
-            canvas.style ="max-height:400px;max-width:400px";
-            this.draw(canvas.getContext("2d"));
-            
-            const body = document.getElementsByTagName('body')[0];
-            body.appendChild(canvas);
-        }
+  handleRender(topic, message) {
+    createOptions(this.type, message, this.options)
+    new Chart(this.canvas, this.createConfiguration(message))
+    this.canvas.style.display = 'initial';
+    this.placeholder.style.display = 'none';
+  }
 
-        //chart specific functions
-        draw=specializedDraw
+  createConfiguration(data) {
+    config = {
+      type: this.type,
     }
-
-    return new_class
+    switch (this.type) {
+      case 'area':
+        break;
+      case 'bar':
+        break;
+      case 'bubble':
+        break;
+      case 'doughnut':
+        break;
+      case 'pie':
+        break;
+      case 'line':
+        break;
+      case 'polar':
+        break;
+      case 'radar':
+        break;
+      case 'scatter':
+        break;
+      default:
+        break;
+    }
+    return config
+  }
 }
 
-export function graphComponent(element, drawFunction, iconPath){
-    Oid.component({
-        id: '--', //TODO
-        element: element,
-        properties:{
-            data: {default: null},
-            options: {default: null}
-        },
-        receive: ['render','getData','setData', 'getOptions', 'setOptions'],
-        template: html`<div style='width:20px;height:20px;'><img src='${iconPath}'/></div>`,
-        implementation: createGraphClass(drawFunction)
-    })
-}
+Oid.component({
+  id: 'graph:graph',
+  element: 'graph-oid',
+  template: html`<div><p id="placeholder">Waiting for data.</p><canvas id="chart"></canvas></div>`,
+  properties: {
+    uid: {}, // Unique ID
+    data: { default: null }, // Internal
+    type: { default: null },
+    options: { default: null },
+  },
+  receive: ['render'],
+  implementation: GraphOid,
+})

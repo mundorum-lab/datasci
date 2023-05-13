@@ -76,7 +76,7 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 
 Componente visual do gráfico a ser apresentado.
 Cada tipo de gráfico será um método dentro deste componente.
-Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de área, de "pizza", de "donut", de "bolha", de radar, de dispersão e mistos.
+Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de área, de "pizza", de "donut", de "bolha", de radar e de dispersão.
 
 ### Properties
 

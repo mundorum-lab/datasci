@@ -1,5 +1,5 @@
 import { graphComponent } from '../graph.js'
-import Chart from '../libs/chart.js'
+import Chart from '../../libs/chart.js'
 
 function drawPieChart(canvas){
     let objData = JSON.parse(this.data);
