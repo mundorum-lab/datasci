@@ -9,49 +9,38 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 * Juliana Bronqueti da Silva - RA 238389
 * Marcos Cunha Rosa - RA 240815
 
+# Folder and Files Structure
+
+```
+├── availableNodes.json <- descrição dos modulos que podem ser inseridos no workflow 
+│
+├── graph.js            <- template do componente
+│
+├── libs                <- bibliotecas utilizadas
+│
+├── prototype           <- arquivos utilizados para teste/desenvolvimento do modulo
+|
+└── README.md           <- especificação do modulo
+```
+
 # Message Types
 
-**`AvailableNodes`**
+**`Data`**
 
 ~~~json
 {
-  category1: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
-      ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
-    }]
-  }],
-  category2: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
-      ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
-    }]
-  }],
-  ...
+  columns: [
+	{name, type},
+	...
+  ],
+  data: [
+	[column0, column1, ...],
+	... other rows ...
+  ]
 }
 ~~~
+
+
 
 **`ExportGraph`**
 
@@ -63,16 +52,8 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 
 # Components
 
-## Component GraphNodesRepository
 
-### Output Notices
-
-| notice            | source                                            | message type |
-| ----------------- | ------------------------------------------------- | ------------ |
-| `nodes` | O componente retorna ao workflow os tipos de nós e suas configurações | `availableNodes`  |
-
-
-## Component Graph
+## Component Graph-oid
 
 Componente visual do gráfico a ser apresentado.
 Cada tipo de gráfico será um método dentro deste componente.
@@ -83,10 +64,15 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 | property     | role                                                      |
 | ------------ | :-------------------------------------------------------- |
 | `type` | String com o tipo do gráfico |
-| `id` | Int com o id do gráfico |
-| `size` | Mapa com os tamanhos do gráfico (width e height) |
+| `size`    | Mapa com os tamanhos do gráfico (width e height)        |
 | `options` | Objeto com os opções adicionais do gráfico (eixos, etc) |
+| `data`    | Objeto com os dados que serão exibidos pelo gráfico     |
 
+### Input Notices
+
+| notice   | source                                                  | message type |
+| -------- | ------------------------------------------------------- | ------------ |
+| `render` | Recebe os dados e desenha o grafico no espaço designado | `Data`       |
 
 ### Output Notices
 
@@ -99,82 +85,27 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 
 ## Setup
 
-~~~ javascript
-export class GraphNodeCreate extends OidUI {
-	_onClick() {
-		this._notify('nodes', {value: this.availableNodes})
-	}
-}
-
-Oid.component({
-	element: GraphNodesRepository,
-	properties: {
-		availableNodes: {
-			category1: [{
-				"bar-chart",
-				"Gráfico de barras",
-				compatibleInputNodes: {
-					entrada0: {typeIds<[string]>, listRange<(int, int)>},
-					entrada1: {typeIds<[string]>, listRange<(int, int)>},
-					...
-				},
-				inputFields: [{
-					fieldName<string>,
-					fieldType<string>, 
-					inputType: {
-						type<string>,
-						parameters<Object>,
-					}
-				}]
-			}],
-			...
-		}
-	}
-	implementation: GraphNodeCreate
-})
-~~~
-
 ~~~html
-<graph  id = 1203,
-		type = "bar-chart",
-		data = {
-				columns: [{idade, int}],
-				data: [[29],[23]]
-			},
-		size = {width: 100, height: 200},
-		options = {},
-		publish = "export:export/graph">
-</graph>
+<graph-oid 	type = "bar-chart",
+			size = {width: 100, height: 200},
+			options = {},
+        	subscribe = "data/<id>:render",
+			publish = "export:export/graph">
+</graph-oid>
 ~~~
+
+O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no workflow) que irá providenciar os dados que o gráfico utilizará.
 
 ## Narrative
 
-* Dois componentes: o `GraphNodesRepository` e o `graph` (Graph).
-	* `GraphNodesRepository`: Componente que possui os dados referentes aos tipos de nós dos gráficos que podem ser apresentados ao usuário no workflow, assim como quais os outros nós que podem ser conectados a este.
-	* `Graph`: Componente que renderiza o gráfico na tela do usuário.
-
-
-* No momento em que o componente `GraphNodesRepository` é instanciado, publica no barramento uma mensagem do tipo `availableNodes`, a qual será recebida pelo time de workflow.
-	* A partir desta mensagem, o workflow será capaz de mostrar para o usuário as possibilidades de gráficos, assim como a lógica para verificação de conectividade entre tipos de nós (dado que os gráficos só poderão ser ligados a tabelas).
+* `Graph-oid`: Componente que renderiza o gráfico na tela do usuário.
 
 
 * Presentation decide exibir o novo gráfico em um tamanho `width` x `height` em sua interface:
-	* Instancia um componente `<graph></graph>` contendo informações de `id`, `type`, `size` e `options`.
-	* Iremos esperar os dados no tópico `data/#id`, sendo que estes vão ser postados da forma `Objeto data` a seguir e o id é o `id` do nó de dados.
-
-#### Objeto data
-~~~json
-{
-  columns: [
-	{name, type},
-	...
-  ],
-  data: [
-	[column0, column1, ...],
-	... other rows ...
-  ]
-}
-~~~ 
+	* Instancia um componente `graph-oid` contendo informações de `type`, `size` e `options`.
+	* O compenente `graph-oid` exibe a mensage "Waiting for data." 
+	* Algum componente posta uma mensagem de tipo `data`  no tópico `data/#id` e,consequentemente, o componente `graph-oid` recebe o notice `render`
+	* O compenente `graph-oid` apresenta o gráfico
 
 * O usuário deseja exportar a imagem do gráfico:
 	* Produz a notice "`export`"
