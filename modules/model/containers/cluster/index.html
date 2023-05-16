@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Playground</title>
+    <script src="cluster-oid.js" type="module"></script>
+    <script src="apply-cluster-oid.js" type="module"></script>
+</head>
+<body>
+    <h1>Cluster Algorithm:</h1>
+    <ml-cluster-oid num_cluster=10 publish="click~apply/cluster"></ml-cluster-oid>
+    <ml-apply-cluster subscribe="apply/cluster~transform"></ml-apply-cluster>
+    <bar-oid></bar-oid>
+</body>
+</html>
