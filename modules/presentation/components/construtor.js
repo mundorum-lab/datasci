@@ -11,6 +11,10 @@ export class ConstrutorOid extends OidUI {
       json2htmlTag[div] = attr;
     }
 
+    const sortedAttributes = Object.entries(json2htmlTag).sort(
+      (a, b) => a[0].localeCompare(b[0])
+    );
+
     let json2html = {};
     for (const [div, attr] of json2htmlTag) {
       const nestedNode = { [div]: attr };
