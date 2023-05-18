@@ -11,10 +11,20 @@ export class GraphOid extends OidUI {
 
   connectedCallback() {
     super.connectedCallback()
+    
+    const shadow = this.attachShadow({ mode: "closed" })
 
-    this.canvas = document.getElementById("forcing-canvas")
-    this.placeholder = document.getElementById('placeholder')
-    //this.canvas.style.display = 'none';
+    const canvas = document.createElement('canvas')
+    canvas.style.display = 'none';
+    canvas.id = 'myChart'
+    canvas.style.maxWidth = '400px'
+    canvas.style.maxHeight = '400px'
+    shadow.appendChild(canvas)
+    this.canvas = canvas
+    
+    const placeholder = document.createElement('p')
+    shadow.appendChild(placeholder)
+    this.placeholder = placeholder
   }
 
   handleRender(topic, message) {
@@ -30,7 +40,7 @@ export class GraphOid extends OidUI {
 Oid.component({
   id: 'graph:graph',
   element: 'graph-oid',
-  template: html`<div><p id="placeholder">{{this.wroteMessage}}</p></div>`,
+  // template: html`<div><p id="placeholder">{{this.wroteMessage}}</p></div>`,
   properties: {
     uid: {}, // Unique ID
     data: { default: null }, // Internal
