@@ -1,14 +1,68 @@
 {
   "graph": [
     {
-      "name": "",
+      "name": "Gráfico de Área",
       "type": "GRAPH",
       "inputFields": [
         {
-          "fieldName": "",
-          "fieldType": "",
+          "fieldName": "Título",
+          "fieldType": "string",
           "inputType": {
-            "type": "",
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "Eixo horizontal",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "Eixo vertical",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gráfico de Bolhas",
+      "type": "GRAPH",
+      "inputFields": [
+        {
+          "fieldName": "Título",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "Eixo horizontal",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "Eixo vertical",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "Raio",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
             "parameters": {}
           }
         }

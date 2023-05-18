@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { createConfiguration } from './graph_data_builders/create_data_configuration.js'
 import { Chart } from './libs/chart.js'
-
 export class GraphOid extends OidUI {
   constructor() {
     super()
@@ -17,40 +17,12 @@ export class GraphOid extends OidUI {
   }
 
   handleRender(topic, message) {
-    createOptions(this.type, message, this.options)
-    new Chart(this.canvas, this.createConfiguration(message))
+    //createOptions(this.type, message, this.options)
+    new Chart(this.canvas, createConfiguration(this.type, message, this.fields, this.options))
     this.canvas.style.display = 'initial';
     this.placeholder.style.display = 'none';
   }
 
-  createConfiguration(data) {
-    config = {
-      type: this.type,
-    }
-    switch (this.type) {
-      case 'area':
-        break;
-      case 'bar':
-        break;
-      case 'bubble':
-        break;
-      case 'doughnut':
-        break;
-      case 'pie':
-        break;
-      case 'line':
-        break;
-      case 'polar':
-        break;
-      case 'radar':
-        break;
-      case 'scatter':
-        break;
-      default:
-        break;
-    }
-    return config
-  }
 }
 
 Oid.component({
@@ -62,6 +34,7 @@ Oid.component({
     data: { default: null }, // Internal
     type: { default: null },
     options: { default: null },
+    fields: {default: null},
   },
   receive: ['render'],
   implementation: GraphOid,

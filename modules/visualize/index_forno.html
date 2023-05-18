@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Forno</title>
+  <script src="graph-oid.js" type="module"></script>
+  <script src="./forno/data-sender-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <data-sender-oid publish="click~render/data"></data-sender-oid>
+  <graph-oid uid="graph-1" type="bubble" fields="{'x': 0, 'y': 1, 'r': 2}" subscribe="render/data~render"></graph-oid>
+</body>
+</html>
