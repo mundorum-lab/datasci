@@ -1,4 +1,4 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 export class ValidateFilter extends Validate{
    

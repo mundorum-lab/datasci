@@ -1,5 +1,4 @@
 import { Oid, OidBase } from '/lib/oidlib-dev.js'
-import {Series, DataFrame} from 'pandas-js'
 
 export class Validate extends OidBase{
 

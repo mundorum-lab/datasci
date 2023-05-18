@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
-  <script src="/lib/oidlib.js"></script>
-  <script src="./src/components/filter/filter.js"></script>
+  <script src="./src/components/filter/filter.js" type="module"></script>
+  <script src="./filter-button.js" type="module"></script>
 </head>
 <body>
   <h1>Teste</h1>
-
-  <filter-oid label="Start">
-  </filter-oid>
-  <filter></filter>
+  <filter-button publish="click~filter/filterInput" >
+  </filter-button>
+  <button-oid label="oi"></button-oid>
+  <filter publish="filter/filterInput~filter"></filter>
 </body>
 </html>

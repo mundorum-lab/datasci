@@ -1,8 +1,9 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class FilterButton extends OidUI {
+export class FilterButtonOid extends OidUI {
   _onClick () {
-    filterInput = {
+    console.log("filtrouuu")
+    let filterInput = {
         file_id: "my_file.csv",
         columns: [
             {name: "first", type: "string"},
@@ -13,13 +14,13 @@ export class FilterButton extends OidUI {
             ["value2",2]
         ]
     }
-    this._notify('filter', )
+    this._notify('filter', filterInput)
   }
 }
 
 Oid.component(
 {
-  id: 'teste:filter-button',
+  id: 'teste:fbt',
   element: 'filter-button',
   properties: {
     name: {default: 'filtrar'}

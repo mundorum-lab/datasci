@@ -1,5 +1,5 @@
 import { Oid, OidWeb } from '/lib/oidlib-dev.js'
-import { Series, DataFrame } from 'pandas-js';
+export { Series, DataFrame } from '../../../../node_modules/pandas-js'
 
 export class TransformWeb extends OidWeb {
 

@@ -1,5 +1,5 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateFilter.js'
+import { ValidateFilter } from './validateFilter.js'
 import { TransformWeb } from '../transform.js'
 
 export class FilterWeb extends TransformWeb {
@@ -30,7 +30,7 @@ export class FilterWeb extends TransformWeb {
     }
 
     handleFilter (topic, message) {  //handle with notice
-        
+        console.log("chamou")
         //topic: filter
         //message: filterInput
  
@@ -40,7 +40,7 @@ export class FilterWeb extends TransformWeb {
         this.targetColumn = message.targetColumn
         this.compared = message.comparedValue
 
-        result = validate(this.dataFrame, this.columns)
+        result = ValidateFilter.validate(this.dataFrame, this.columns)
         if(result.isValid){
             this.filter()
         } else {
