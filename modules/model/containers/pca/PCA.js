@@ -12,12 +12,17 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 export async function getPCA(){
     console.log('entrooouhehe')
     //load penguins dataset
-    let penguins = d3.csv("./penguins.csv")
-    let matrix = druid.Matrix.from(penguins);
-    d3.selectAll("datapoints").data(matrix.to2dArray)
+    let penguins = await d3.csv("./penguins.csv")
+    
+    let data = [[1,2,3,4,5], [2,3,4,5,6],[3,4,5,6,7],[4,5,6,7,8],[5,6,7,8,9]]
+    console.log(druid.Matrix.from(data))
+    let matrix = druid.Matrix.from(data);
+
+
+    //d3.selectAll("datapoints").data(matrix.to2dArray)
 
     //get the PCA dimensionality reduction class
-    let result = new druid.PCA(matrix).transform()
+    let result =  new druid.PCA(matrix).transform()
     return result
     /*
     //get only the data

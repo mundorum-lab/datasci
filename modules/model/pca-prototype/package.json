@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@saehrimnir/druidjs": "^0.6.3",
-    "d3.js": "^0.0.2-security"
-  }
-}
