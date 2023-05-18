@@ -14,7 +14,8 @@ export function buildBubbleChartData(rawData, fields){
             y: row[fields['y']],
             r: row[fields['r']],
         };
-        data['data'].push(bubble);
+        console.log(bubble)
+        data['datasets'][0]['data'].push(bubble);
     });
     return data;
 }

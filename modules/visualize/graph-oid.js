@@ -12,14 +12,15 @@ export class GraphOid extends OidUI {
   connectedCallback() {
     super.connectedCallback()
 
-    this.canvas = document.getElementById('chart')
+    this.canvas = document.getElementById("forcing-canvas")
     this.placeholder = document.getElementById('placeholder')
-    this.canvas.style.display = 'none';
+    //this.canvas.style.display = 'none';
   }
 
   handleRender(topic, message) {
     //createOptions(this.type, message, this.options)
-    new Chart(this.canvas, createConfiguration(this.type, message, this.fields, this.options))
+    this.wroteMessage = ""
+    new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, this.options))
     this.canvas.style.display = 'initial';
     this.placeholder.style.display = 'none';
   }
@@ -29,13 +30,14 @@ export class GraphOid extends OidUI {
 Oid.component({
   id: 'graph:graph',
   element: 'graph-oid',
-  template: html`<div><p id="placeholder">Waiting for data.</p><canvas id="chart"></canvas></div>`,
+  template: html`<div><p id="placeholder">{{this.wroteMessage}}</p></div>`,
   properties: {
     uid: {}, // Unique ID
     data: { default: null }, // Internal
     type: { default: null },
     options: { default: null },
     fields: {default: null},
+    wroteMessage: {default: 'Waiting for data'}
   },
   receive: ['render'],
   implementation: GraphOid,

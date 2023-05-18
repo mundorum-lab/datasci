@@ -3,7 +3,8 @@ export function buildAreaChartData(rawData, fields){
         labels: [],
         datasets: [{
             label: 'TODO',
-            data: []
+            data: [],
+            fill:true
         }]
     };
     rawData['data'].forEach(row => {

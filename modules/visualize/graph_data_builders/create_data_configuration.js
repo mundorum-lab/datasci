@@ -2,12 +2,14 @@ import { buildAreaChartData } from "./area_chart_data_builder.js";
 import { buildBubbleChartData } from "./bubble_chart_data_builder.js";
 
 export function createConfiguration(type, rawData, fields, options) {
-    config = {
+    let config = {
       type: type,
       options: options
     }
-    switch (this.type) {
+    fields = JSON.parse(fields)
+    switch (type) {
       case 'area':
+        config.type = 'line'
         config.data = buildAreaChartData(rawData, fields);
         break;
       case 'bar':
