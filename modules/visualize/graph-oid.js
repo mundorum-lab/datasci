@@ -1,6 +1,7 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 import { createConfiguration } from './graph_data_builders/create_data_configuration.js'
-import { Chart } from './libs/chart.js'
+import './libs/chart.js'
+
 export class GraphOid extends OidUI {
   constructor() {
     super()
@@ -12,7 +13,7 @@ export class GraphOid extends OidUI {
     super.connectedCallback()
 
     this.canvas = document.getElementById('chart')
-    this.placeholder = document.getElementById('canvas')
+    this.placeholder = document.getElementById('placeholder')
     this.canvas.style.display = 'none';
   }
 
