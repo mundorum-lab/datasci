@@ -1,6 +1,6 @@
 import { getRandomColors } from "../random_colors.js";
 
-export function buildBarChartData(rawData, fields){
+export function buildColumnChartData(rawData, fields){
     let data = {
         labels: [],
         datasets: [{
