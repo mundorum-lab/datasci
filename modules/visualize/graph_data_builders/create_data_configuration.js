@@ -2,6 +2,7 @@ import { buildAreaChartData } from "./area_chart_data_builder.js";
 import { buildBubbleChartData } from "./bubble_chart_data_builder.js";
 import { buildBarChartData } from "./bar_chart_data_builder.js";
 import { buildColumnChartData } from "./column_chart_data_builder.js";
+import { buildPieChartData } from "./pie_chart_data_builder.js";
 
 export function createConfiguration(type, rawData, fields, options) {
     let config = {
@@ -32,9 +33,16 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'bubble':
         config.data = buildBubbleChartData(rawData, fields);
         break;
-      case 'doughnut':
-        break;
       case 'pie':
+          config.data = buildPieChartData(rawData, fields);
+          break;
+      case 'doughnut':
+        config.type = 'pie';
+        config.data = buildPieChartData(rawData, fields);
+        if(config.options == null){
+          config.options = {};
+        }
+        config.options.cutout = '50%';
         break;
       case 'line':
         break;
