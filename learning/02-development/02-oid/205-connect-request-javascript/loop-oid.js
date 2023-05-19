@@ -4,12 +4,10 @@ export class LoopOid extends OidUI {
   async connectionReady(cInterface, id, component) {
     super.connectionReady(cInterface, id, component)
     this.loop = await this._invoke('itf:iterate', 'first') + '<br>'
-    this.render()
   }
 
   async _onClick () {
     this.loop += await this._invoke('itf:iterate', 'next') + '<br>'
-    this.render()
   }
 }
 
@@ -19,6 +17,7 @@ Oid.component(
   element: 'loop-oid',
   properties: {
     title: {default: 'Loop'},
+    loop: {default: 0}
   },
   template: html`
   <h1 @click>{{this.title}}</h1>
