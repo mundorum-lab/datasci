@@ -1,6 +1,5 @@
-export class WorldSpaceNodeTypes{
-
-    /*static NodeInfoLib = 
+export class WorldSpaceNodeTypes {
+  /*static NodeInfoLib = 
     {
         type: 
         {
@@ -11,33 +10,28 @@ export class WorldSpaceNodeTypes{
         } , ...
     }
     */
-    static NodeInfoLib = {};
+  static NodeInfoLib = {};
 
+  static fetchNodes() {
+    // fetch a JSON from the root of the project and parse it into the variable NodeInfoLib
 
-    constructor(){
-        throw "Error, this class cannot be instantiated";
-    }
-    
-    
-    static AddNodeInfoToLib(type = "",iconPath = "",compatibleInputNodes=[],userInputFieldsDefinition=[],outputNodesAmmount=0 ){
-        /*
-        
-        Adds a node to the available nodes lib, making it useable
-        */
+    fetch("/availableNodes.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        this.NodeInfoLib = data;
+        console.log(this.NodeInfoLib);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
 
-
-        // compatibleInputNodes : [{typesId : [String] , range [int,int]}]
-        // ->List of tuples, each tuple stores a dict of connectable types and the connections range
-        //Tuples are represented as lists
-        
-        WorldSpaceNodeTypes.NodeInfoLib[type] = {};
-        var NodeInfo = WorldSpaceNodeTypes.NodeInfoLib[type];
-
-        NodeInfo["iconPath"] = iconPath;
-        NodeInfo["userInputFieldsDefinition"] = userInputFieldsDefinition;
-        NodeInfo["compatibleInputNodes"] = compatibleInputNodes;
-        NodeInfo["outputNodesAmmount"] = outputNodesAmmount;
-
-    }
-    
+  constructor() {
+    throw "Error, this class cannot be instantiated";
+  }
 }

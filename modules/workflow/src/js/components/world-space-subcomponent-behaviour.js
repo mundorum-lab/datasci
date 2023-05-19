@@ -1,7 +1,7 @@
 import { Vector2 } from "./auxiliary-types.js";
 import { WorldSpace } from "./world-space.js";
 
-export class WorldSpaceSubcomponentBehaviour {
+export class WorldSpaceSubcomponentBehaviour extends OidBase {
     /*
         Representa qualquer componente que possa estar no espaço do workflow
     */
@@ -25,11 +25,11 @@ export class WorldSpaceSubcomponentBehaviour {
         //TODO
 
     }
-    /*Vector2*/ getPosition(){
+    /*Vector2*/ handleGetPosition(){
         return this.position;
     }
 
-    setPosition(/*Vector2*/ newPosition){
+    handleSetPosition(/*Vector2*/ newPosition){
         this.position = newPosition;
     }
 }
