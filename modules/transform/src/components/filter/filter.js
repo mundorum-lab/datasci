@@ -9,8 +9,9 @@ class FilterWeb extends TransformWeb {
         //topic: filter
         //message: filterInput
         console.log("mensagem no tópico filter:",message)
-        this.columns = this.columnsObject(message.table)        //TODO add this as non-oid attributes
-        this.data = message.table.data
+        let ans = this.toDataFrame(message.table)        //TODO add this as non-oid attributes
+        console.log(ans)
+        /*this.data = message.table.data
         this.file_id = message.file_id
         this.operation = message.operation
         this.targetColumn = message.column
@@ -24,7 +25,7 @@ class FilterWeb extends TransformWeb {
             //return error message
             this.status = false
             this._notify('filterError', result.result)
-        }
+        }*/
     }
 
     chooseOpAndFilter(){

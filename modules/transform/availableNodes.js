@@ -1,4 +1,4 @@
-export const availableNodes = {default: {
+export const availableNodes = {
     filter: [{                     
         type: "table/json",
         name: "Filtrar Tabela",
@@ -36,4 +36,4 @@ export const availableNodes = {default: {
             },
         ]
     }],
-}}
+}
