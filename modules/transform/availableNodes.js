@@ -36,4 +36,76 @@ export const availableNodes = {default: {
             },
         ]
     }],
+
+    mean: [{                     
+        type: "singleValue",
+        name: "Encontra o valor médio de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    median: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da mediana de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    mode: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da moda de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    stddev: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da mediana de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
 }}
