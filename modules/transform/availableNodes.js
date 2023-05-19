@@ -109,4 +109,21 @@ export const availableNodes = {
             }
         ]
     }],
+
+    maximum: [{                     
+        type: "singleValue",
+        name: "Encontrar o valor máximo da coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            }
+        ]
+    }],
 }
