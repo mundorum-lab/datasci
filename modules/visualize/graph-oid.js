@@ -25,6 +25,7 @@ export class GraphOid extends OidUI {
     const placeholder = document.createElement('p')
     shadow.appendChild(placeholder)
     this.placeholder = placeholder
+    this.placeholder.innerHTML = this.wroteMessage;
   }
 
   handleRender(topic, message) {
