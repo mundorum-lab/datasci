@@ -9,8 +9,9 @@ export class SidebarNodeView extends OidUI {
     _onDragStart(event) {
         const dt = event.dataTransfer;
         
-        dt.effectAllowed = 'copy';
-        dt.setData('text/html', this.outerHTML);
+        dt.setData('text', this.type);
+        dt.setData('text', this.name);
+        dt.setData('text', this.iconpath);
         dt.setData('text', event.target.id);
         this.style.opacity = '0.4';
     }
@@ -27,8 +28,6 @@ Oid.component(
         properties: {
             type: {},
             name: {},
-            compatibleInputNodes: {},
-            inputFields: {},
             iconpath: {},
         },
         implementation: SidebarNodeView,
@@ -40,8 +39,6 @@ Oid.component(
             src="./{{this.iconpath}}"
             alt="{{this.name}}">
         </div>
-        `,
-        styles: css`
         `
     }
 )
