@@ -20,7 +20,6 @@
 **`RawFileContent`**
 ~~~json
 {
-  "file_id": string,
   "file_format": string,
   "file_content": string
 }
@@ -28,7 +27,6 @@
 **`TreatedDataContent`**
 ~~~json
 {
-	"file_id": string,
 	"columns": [{name, type}, ...],
 	"data": [
 		[column0, column1, ...],
@@ -52,7 +50,6 @@
 **`ErrorDuringDataProcessing`**
 ~~~json
 {
-	"file_id": string,
 	"error": string,
 	"line": number
 }
@@ -60,7 +57,6 @@
 **`RawAPIContent`**
 ~~~json
 {
-	"file_id": string,
 	"api_type": string,
 	"url_content": string
 }
