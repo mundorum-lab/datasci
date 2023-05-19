@@ -9,7 +9,14 @@
 <body>
   <h1>Chat Prototype</h1>
   <!-- <workflow-mock publish="workflow-map~info/workflow"> -->
-  <graph-mock-oid publish="infos~info/graph" columns= 'eixo x, eixo y, eixo z'data="[[0,1,2],[1,2,4],[9,5,8]]" type="scatterplot"></graph-mock-oid>
+
+  
+
+  <button-oid label="Connect to Graph"
+              publish="click~connect/graph">
+  </button-oid>
+  
+  <graph-mock-oid subscribe="connect/graph~connect"publish="infos~info/graph" columns= 'eixo x, eixo y, eixo z'data="[[0,1,2],[1,2,4],[9,5,8]]" type="scatterplot"></graph-mock-oid>
   <chat-oid subscribe= "info/graph~graph" chat-id='8'></chat-oid>
 </body>
 </html>
