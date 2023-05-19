@@ -92,4 +92,21 @@ export const availableNodes = {
             },
         ]
     }],
+
+    minimum: [{                     
+        type: "singleValue",
+        name: "Encontrar o valor mínimo da coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            }
+        ]
+    }],
 }
