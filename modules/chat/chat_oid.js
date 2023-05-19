@@ -1,12 +1,18 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ChatOid extends OidUI {
-  // connectedCallback(){
-  //   super.connectedCallback()
+  async connectedCallback(){
+    super.connectedCallback()
+    let workflowMap= await fetch("./workflowMapExample.json");
+    workflowMap=await workflowMap.json(0);
+    
+    let returnedValue=this.findConnectedNodes(workflowMap);
+    console.log(returnedValue)
+   
   //   // this.setGraphInfo()
   //   // this.generatePrompt()
   //   // this.requestToOpenAI()
-  // }
+  }
 
   setGraphInfo(topic, message){
     console.log('=== topic/message')
@@ -54,33 +60,36 @@ export class ChatOid extends OidUI {
     let edgesArray=workflowMap.edges
     let counter=0
     let id_found=edgesArray[counter][1]
-    while (id_found!=chat_id){
-      counter++
+    console.log("chatID:"+this.chatId)
+    while (id_found!=parseInt(this.chatId)){
+      counter+=1
       id_found=edgesArray[counter][1]
     }
     let objId1=edgesArray[counter][0]
     let obj1=null
-    for(i in workflowMap.nodes){
-      if (i.nodeId==objId1){
-        obj1=i
+    
+    for(let i in workflowMap.nodes){
+      if (workflowMap.nodes[i].nodeId==objId1){
+        obj1=workflowMap.nodes[i]
         break
       }
     }
     counter=0
     id_found=edgesArray[counter][1]
-    while (id_found!=obj1Id){
+    while (id_found!=objId1){
       counter++
       id_found=edgesArray[counter][1]
     }
     let objId2=edgesArray[counter][0]
     let obj2=null
-    for(i in workflowMap.nodes){
-      if (i.nodeId==objId2){
-        obj2=i
+    for(let i in workflowMap.nodes){
+      if (workflowMap.nodes[i].nodeId==objId2){
+        obj2=workflowMap.nodes[i]
         break
       }
     }
-    return obj1,obj2
+    
+    return [obj1,obj2]
   }
 }
 
@@ -90,7 +99,7 @@ Oid.component(
   element: 'chat-oid',
   properties: {
     openAiApiKey: {},
-    chat_id: {default: ''},
+    chatId: {default: '8'},
     'columns' : {default: ''},
     'input-data':{default: ''},
     'input-type':{default: ''},
