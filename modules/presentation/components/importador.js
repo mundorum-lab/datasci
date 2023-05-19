@@ -1,19 +1,29 @@
 import { Oid, OidUI } from "/lib/oidlib-dev.js"
 
 export class ImportadorOid extends OidUI {
-  function getJSON(json_parameters) {
-    let data = JSON.parse(json_parameters);
+  handleGetJsonHTMLDescription(topic, message) {
+    const json = JSON.parse(message.value)
     
-    //Pega alguns parametros do JSON
-    let titulo = data.title;
-    let description = data.description;
-  
+    // gets all the components paths removing duplicates
+    const components = new Set()
+    for (let node of json) {
+      components.add(node.component_path)
+    }
+
+    // imports the components to the page
+    const pageHead = document.querySelector("head");
+    for (let path of components) {
+      const script = document.createElement("script")
+      script.type = "module"
+      script.setAttribute("src", path)
+      pageHead.appendChild(script)
+    }
   }
 }
 
 Oid.component({
   id: "presentation:importador",
   element: "importador-oid",
-  receive: ["getJsonHTML"],
+  receive: ["getJsonHTMLDescription"],
   implementation: ImportadorOid
 })
