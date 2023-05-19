@@ -8,11 +8,15 @@ export class SidebarNodeView extends OidUI {
 
     _onDragStart(event) {
         const dt = event.dataTransfer;
-        
-        dt.setData('text', this.type);
-        dt.setData('text', this.name);
-        dt.setData('text', this.iconpath);
-        dt.setData('text', event.target.id);
+        const data = {
+            type: this.type,
+            name: this.name,
+            iconpath: this.iconpath,
+            id: event.target.id
+        }
+        const jsonData = JSON.stringify(data);
+
+        dt.setData('application/json', jsonData);
         this.style.opacity = '0.4';
     }
 
