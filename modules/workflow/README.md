@@ -42,7 +42,7 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`AvailableNodes`**
 ~~~json
 {
-  nome_da_categoria1: [{
+  "nome_da_categoria1": [{
     "type": string,
     "name": string,
     "iconPath": string,
@@ -58,7 +58,7 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     }]
   }],
 
-  nome_da_categoria2: [{
+  "nome_da_categoria2": [{
     "type": string,
     "name": string,
     "iconPath": string,
@@ -70,40 +70,10 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "inputFields": [{
       "fieldName": string,
       "inputTypeIdentifier": string, 
-      "inputTypeParameters": [number or string]
+      "inputTypeParameters": {} // depende do tipo de input (inputTypeIdentifier) Ex.: para Text, {"isPassword":boolean, "maxDigits":string}
     }]
   }],
   ...
-}
-~~~
-
-Exemplo: Componente do grupo `transform` que filtra as linhas de uma tabela com base nos valor de uma coluna especificada. O valor de comparação e o tipo de comparação também serão especificados.
-~~~json
-{
-  filter: [{        
-    "type": "table/json",
-    "name": "Filtrar Tabela",
-    "compatibleInputNodes": {
-      {"typeId": ["TABELA"], "range": [1, 1]}
-    },
-    "inputFields": [
-      {
-          "fieldName": "Operação",
-          "inputTypeIdentifier": "Dropdown",
-          "inputTypeParameters": [">=",">","<","<=","="],
-      },
-      {
-          "fieldName": "Nome da Coluna filtrada",
-          "inputTypeIdentifier": "Textbox", 
-          "inputTypeParameters": []
-      },
-      {
-          "fieldName": "Valor a ser comparado",
-          "inputTypeIdentifier": "Textbox", 
-          "inputTypeParameters": []
-      }
-    ]
-  }],
 }
 ~~~
 
@@ -132,6 +102,130 @@ Exemplo: Componente do grupo `transform` que filtra as linhas de uma tabela com 
 > One can use a second message type inside a given message type (illustrated as `<message type>`).
 
 > Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+
+# JSONs
+
+Este é o formato padrão para a declaração dos Nodes possíveis.
+
+**`availableCategories.json`**
+
+```json
+[{ "url": "/nodesNomeCategoria", "name": "NOMECATEGORIA" }]
+```
+
+**`nodesNomeCategoria.json`**
+
+```json
+[
+  {
+    "type": string,
+    "name": string,
+    "iconPath": string,
+    "compatibleInputNodes": [
+    {"typeId": [string], "range": [int, int]},
+    {"typeId": [string], "range": [int, int]},
+      ...
+      ],
+    "inputFields": [{
+      "fieldName": string,
+      "inputTypeIdentifier": string,
+      "inputTypeParameters": {} // depende do tipo de input (inputTypeIdentifier) Ex.: para Text, {"isPassword":boolean, "maxDigits":string}
+    }]
+  }
+  ...
+]
+```
+
+> Exemplo:
+
+**`availableCategories.json`**
+
+```json
+[{ "url": "/nodesGraphs", "name": "Gráficos" },
+{ "url": "/nodesInputs", "name": "Inputs" }]
+```
+
+**`nodesGraphs.json`**
+
+```json
+[
+  {
+    "type": "graph/scatter",
+    "name": "Scatter Plot",
+    "iconPath": "/assets/icon.ico",
+    "compatibleInputNodes": [
+    {"typeId": ["input"], "range": [1, 1]},
+      ],
+    "inputFields": [{
+        "fieldName" : "Título do Gráfico",
+        "inputTypeIdentifier" : "TextBox",
+        "inputTypeParameters" : {
+            "isPassword" : false,
+            "maxLength" : 10,
+            "forbiddenChars" : "abcde",
+            }
+
+        }]
+  },
+  {
+    "type": "graph/line",
+    "name": "Line Plot",
+    "iconPath": "/assets/icon.ico",
+    "compatibleInputNodes": [
+    {"typeId": ["input"], "range": [1, 1]},
+      ],
+    "inputFields": [{
+        "fieldName" : "Título do Gráfico",
+        "inputTypeIdentifier" : "TextBox",
+        "inputTypeParameters" : {
+            "isPassword" : false,
+            "maxLength" : 10,
+            "forbiddenChars" : "abcde",
+            }
+
+        }]
+  }
+]
+```
+
+**`nodesInputs.json`**
+
+```json
+[
+  {
+    "type": "input/csv",
+    "name": "Csv File",
+    "iconPath": "/assets/icon.ico",
+    "compatibleInputNodes": [],
+    "inputFields": [{
+        "fieldName" : "Nome do Eixo Y",
+        "inputTypeIdentifier" : "TextBox",
+        "inputTypeParameters" : {
+            "isPassword" : false,
+            "maxLength" : 10,
+            "forbiddenChars" : "abcde",
+            }
+
+        }]
+  },
+  {
+    "type": "input/database",
+    "name": "Database",
+    "iconPath": "/assets/icon.ico",
+    "compatibleInputNodes": [],
+    "inputFields": [{
+        "fieldName" : "URL da Database",
+        "inputTypeIdentifier" : "TextBox",
+        "inputTypeParameters" : {
+            "isPassword" : false,
+            "maxLength" : 10,
+            "forbiddenChars" : "abcde",
+            }
+
+        }]
+  },
+]
+```
 
 # Components
 
