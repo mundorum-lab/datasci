@@ -11,11 +11,7 @@ Oid.component(
       id: 'ml:cluster',
       element: 'ml-cluster-oid',
       properties: {
-        data: {default:[[1, 1, 1],
-                        [1, 2, 1],
-                        [-1,-1,-1],
-                        [-1,-1,-1.5],
-                        [-1,-1,-1.5]]},
+        data: {default:[[4, 21], [5, 19], [10, 24], [4, 17], [3, 16], [11, 25], [14, 24], [6, 22], [10, 21], [12, 21]]},
         num_cluster: {default: 2}
       },
       template: html`<h1 @click>Apply Cluster with {{this.num_cluster}} clusters</h1>`,
