@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="../../src/components/mean/mean.js" type="module"></script>
+  <script src="./filter-button.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+</head>
+<body>
+  <h1>Teste</h1>
+  <filter-button publish="click~mean/meanInput" >
+  </filter-button>
+  <mean subscribe="mean/meanInput~mean"></mean>
+</body>
+</html>
+
