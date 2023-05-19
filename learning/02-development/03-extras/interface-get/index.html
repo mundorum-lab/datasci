@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="bar-oid.js" type="module"></script>
+  <script src="parameters-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+
+  <button-oid label="Build bar"
+              connect="itf:transfer#mybar"></button-oid>
+  <bar-oid id="mybar" connect="itf:oid#myparam"></bar-oid>
+  <parameters-oid id="myparam" char="*" size="10"></parameters-oid>
+</body>
+</html>
