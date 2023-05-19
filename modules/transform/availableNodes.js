@@ -37,59 +37,75 @@ export const availableNodes = {
         ]
     }],
 
-    columnOperation: [{                     
-        type: "table/json",
-        name: "Fazer operações entre colunas",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
+    mean: [{                     
+        type: "singleValue",
+        name: "Encontra o valor médio de uma certa coluna",
+        compatibleInputNodes: { 
         },
         inputFields: [
             {
-                fieldName: "Operação",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {values:["+", "-", "*", "/", "^", "log"]}, //this parameters will change
-                }
-            },
-            {
-                fieldName: "Coluna 1",
+                fieldName: "Nome da coluna",
                 fieldType: "Textbox", 
                 inputType: 
                 {
                     type: "string",
-                    parameters: {},
+                    parameters: {}, //this parameters will change
                 }
-            },
+            }
+        ]
+    }],
+
+    median: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da mediana de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
             {
-                fieldName: "Coluna 2",
+                fieldName: "Nome da coluna",
                 fieldType: "Textbox", 
                 inputType: 
                 {
-                    type: "string", //pode ser null
-                    parameters: {},
+                    type: "string",
+                    parameters: {}, //this parameters will change
                 }
-            },
+            }
+        ]
+    }],
+
+    mode: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da moda de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
             {
-                fieldName: "Constante",
+                fieldName: "Nome da coluna",
                 fieldType: "Textbox", 
                 inputType: 
                 {
-                    type: "number", //pode ser null
-                    parameters: {},
+                    type: "string",
+                    parameters: {}, //this parameters will change
                 }
-            },
+            }
+        ]
+    }],
+
+    stddev: [{                     
+        type: "singleValue",
+        name: "Encontra o valor do desvio padrão de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
             {
-                fieldName: "Nova coluna",
+                fieldName: "Nome da coluna",
                 fieldType: "Textbox", 
                 inputType: 
                 {
-                    type: "string", 
-                    parameters: {},
+                    type: "string",
+                    parameters: {}, //this parameters will change
                 }
-            },
+            }
         ]
     }],
 
