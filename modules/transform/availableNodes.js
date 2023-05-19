@@ -168,4 +168,21 @@ export const availableNodes = {
             },
         ]
     }],
+
+    uniqueValues: [{                     
+        type: "singleValue",
+        name: "Conta quantos elementos únicos existem na coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            }
+        ]
+    }],
 }
