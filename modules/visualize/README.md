@@ -67,6 +67,7 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 | `size`    | Mapa com os tamanhos do gráfico (width e height)        |
 | `options` | Objeto com os opções adicionais do gráfico (eixos, etc) |
 | `data`    | Objeto com os dados que serão exibidos pelo gráfico     |
+| `fields`  | Objeto que mapeia o indice das colunas da tabela para os eixos do grafico     |
 
 ### Input Notices
 
@@ -87,8 +88,9 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 
 ~~~html
 <graph-oid 	type = "bar-chart",
-			size = {width: 100, height: 200},
-			options = {},
+			size = '{width: "100", height: "200"}',
+			options = '{}',
+			fields = '{"x":0, "y":1}',
         	subscribe = "data/<id>:render",
 			publish = "export:export/graph">
 </graph-oid>
@@ -102,7 +104,7 @@ O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no w
 
 
 * Presentation decide exibir o novo gráfico em um tamanho `width` x `height` em sua interface:
-	* Instancia um componente `graph-oid` contendo informações de `type`, `size` e `options`.
+	* Instancia um componente `graph-oid` contendo informações de `type`, `size`, `options` e `fields`.
 	* O compenente `graph-oid` exibe a mensage "Waiting for data." 
 	* Algum componente posta uma mensagem de tipo `data`  no tópico `data/#id` e,consequentemente, o componente `graph-oid` recebe o notice `render`
 	* O compenente `graph-oid` apresenta o gráfico
