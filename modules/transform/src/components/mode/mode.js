@@ -18,7 +18,6 @@ export class ModeWeb extends TransformWeb {
  
         this.toDataFrame(message)        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.operation = message.operation
         this.column = message.column
 
         result = validate(this.columns, this.column)
