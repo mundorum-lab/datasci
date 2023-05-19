@@ -2,12 +2,16 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ApiInputOid extends OidUI {
   handleInput_api (topic, message) {
+    console.log("Entered function")
+
     const jsonData = JSON.parse(message.value)
     const Http = new XMLHttpRequest();
     const url=jsonData.url_content;
     Http.open(jsonData.api_type, url);
     Http.send();
     Http.onreadystatechange = (e) => {
+      console.log("State change")
+
       let rawData = JSON.parse(Http.responseText)
 
       console.log(rawData)
