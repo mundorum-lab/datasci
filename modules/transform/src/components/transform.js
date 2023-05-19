@@ -14,27 +14,27 @@ export class TransformWeb extends OidWeb {
             columns_arr.push(jsonTable.columns[i].name)
         }
         let df = new dfd.DataFrame(jsonTable.data, {columns: columns_arr})
+        console.log(df)
         return {columns, df}
     }
 
-    toJson(dataFrame, file_id,columns){
+    toJson(dataFrame,file_id,columns){
+        
         //convert df to json
-        table = {
+        let table = {
             file_id: file_id,
             columns: [],
             data: [],
         }
-        columnsName = columns.keys()
-        for(let i = 0; i < listColumns.length; i++){
-            table.columns.append({
+        let columnsName = dataFrame.columns
+        console.log(columns.length)
+        for(let i = 0; i < columnsName.length; i++){
+            table.columns.push({
                 name: columnsName[i],
-                type: columns[i]
+                type: columns[columnsName[i]]
             })
         }
-        for(const [row, idx] of dataFrame) {
-            table.data.append(row.values)
-        }
-
+        table.data = dataFrame.values
         return table
     }
 

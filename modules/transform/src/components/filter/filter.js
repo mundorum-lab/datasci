@@ -26,6 +26,7 @@ class FilterWeb extends TransformWeb {
             this.status = false
             this._notify('filterError', result.result)
         }*/
+        this.toJson(ans.df,this.file_id,ans.columns)
     }
 
     chooseOpAndFilter(){
