@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "danfojs": "^1.1.2",
+    "danfojs-node": "^1.1.2",
     "math": "^0.0.3",
     "pandas-js": "^0.2.4"
   }

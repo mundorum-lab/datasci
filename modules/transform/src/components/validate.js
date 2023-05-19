@@ -1,7 +1,4 @@
-import { Oid, OidBase } from '/lib/oidlib-dev.js'
-//import {Series, DataFrame} from 'pandas-js'
-
-export class Validate extends OidBase{
+export class Validate {
 
     columnExist(availableColumns, targetColumn){
         if(availableColumns[targetColumn]){
@@ -45,13 +42,3 @@ export class Validate extends OidBase{
     }
     
 }
-
-Oid.component(
-    {
-      id: 'ts:validate',
-      element: 'transform',
-      properties: {
-        validOperations: {default: ["=",">=",">","<=","<","+","-","*"]} //add valid operations here
-      },
-      implementation: Validate
-    })

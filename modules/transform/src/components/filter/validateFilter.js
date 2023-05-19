@@ -1,7 +1,13 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 export class ValidateFilter extends Validate{
-    validatee(columns, targetColumn, comparedValue, operation) {
+
+    constructor(){
+        super()
+        this.validOperations = ["=="]
+    }
+
+    validate(columns, targetColumn, comparedValue, operation) {
         console.log("AQUI")
         if(!this.columnExist(columns, targetColumn)){
             let result = {
@@ -21,7 +27,7 @@ export class ValidateFilter extends Validate{
             return {result,isValid: false}
         }
         
-        if(!this.isOperationValid(operation)){
+        if(!this.isOperationValid(this.validOperations, operation)){
             let result = {
                 transformationType: "filter",
                 errorType: "Invalid operation",

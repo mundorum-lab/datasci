@@ -1,5 +1,9 @@
 import { Oid, OidWeb } from '/lib/oidlib-dev.js'
-import { Series, DataFrame } from 'pandas-js';
+//import { Series } from '../../../../node_modules/danfojs/lib/bundle.js'
+//import danfojs from './test.js' 
+//import * as dfd from "../../../../node_modules/danfojs-node"
+//import dfd from "https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"
+//import {Series} from "../../../../node_modules/danfojs/dist/danfojs-browser/src/core/series.js"
 
 export class TransformWeb extends OidWeb {
 
@@ -7,22 +11,34 @@ export class TransformWeb extends OidWeb {
 
     toDataFrame(jsonTable){
         let columnsObject = {}
-        number_of_columns = len(jsonTable.columns)
-        number_of_rows = len(jsonTable.data)
+        let number_of_columns = jsonTable.columns.length
+        let number_of_rows = jsonTable.data.length
+        let columns = {}
         for(let i = 0; i<number_of_columns; i++){
-            columnsObject[jsonTable[columns][i].name] = new Series()
-            this.columns[jsonTable[columns][i].name] = jsonTable[columns][i].type
+            columnsObject[jsonTable.columns[i].name] = []
+            columns[jsonTable.columns[i].name] = jsonTable.columns[i].type
         }
-        for(let i = 0; i<number_of_rows; i++){
+        console.log(columns)
+        /*for(let i = 0; i<number_of_rows; i++){
             for(let j = 0; i<number_of_columns; j++){
-                columnsObject[jsonTable[columns][j].name].add(jsonTable.data[i][j])
+                columnsObject.jsonTable.columns[j].name.append(jsonTable.data[i][j])
             }
-        }
+        }*/
         /*
         example of column object
         {x: new Series([1, 2]), y: new Series([2, 3])}
         */
-        this.dataFrame = new DataFrame(Immutable.Map(columnsObject))
+        //this.dataFrame = new DataFrame(Immutable.Map(columnsObject))
+        return {columns, columnsObject}
+    }
+
+    columnsObject(jsonTable){
+        let columns = {}
+        let number_of_columns = jsonTable.columns.length
+        for(let i = 0; i<number_of_columns; i++){
+            columns[jsonTable.columns[i].name] = jsonTable.columns[i].type
+        }
+        return columns
     }
 
     toJson(dataFrame, file_id,columns){
@@ -56,10 +72,6 @@ export class TransformWeb extends OidWeb {
 Oid.component(
     {
       id: 'ts:transform',
-      element: 'transform',
-      properties: {
-        dataFrame: {default: {}},
-        columns: {default: {}},
-      },
+      element: 'transform-data',
       implementation: TransformWeb
     })
