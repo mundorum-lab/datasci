@@ -2,39 +2,47 @@ import { Oid, OidWeb } from '/lib/oidlib-dev.js'
 
 export class TransformWeb extends OidWeb {
 
+    constructor(){
+        super()
+        this.df = null
+        this.file_id = null
+        this.columns = {}
+        this.status = false 
+        this.dfd = window.dfd
+        this.table = {}
+    }
+
     /* Get values from json and convert to a more appropriate way to perform transformation */
 
-    toDataFrame(jsonTable){
-        const dfd = window.dfd
-        let number_of_columns = jsonTable.columns.length
+    toDataFrame(){
+        let number_of_columns = this.table.columns.length
         let columns = {}
         let columns_arr = []
         for(let i = 0; i<number_of_columns; i++){
-            columns[jsonTable.columns[i].name] = jsonTable.columns[i].type
-            columns_arr.push(jsonTable.columns[i].name)
+            columns[this.table.columns[i].name] = this.table.columns[i].type
+            columns_arr.push(this.table.columns[i].name)
         }
-        let df = new dfd.DataFrame(jsonTable.data, {columns: columns_arr})
-        console.log(df)
-        return {columns, df}
+        this.df = new this.dfd.DataFrame(this.table.data, {columns: columns_arr})
+        this.columns = columns
     }
 
-    toJson(dataFrame,file_id,columns){
+    toJson(){
 
         //convert df to json
-        let message = {
-            file_id: file_id,
+        let new_json = {
+            file_id: this.file_id,
             columns: [],
             data: [],
         }
-        let columnsName = dataFrame.columns
+        let columnsName = this.df.columns
         for(let i = 0; i < columnsName.length; i++){
-            message.columns.push({
+            new_json.columns.push({
                 name: columnsName[i],
-                type: columns[columnsName[i]]
+                type: this.columns[columnsName[i]]
             })
         }
-        message.data = dataFrame.values
-        return message
+        new_json.data = this.df.values
+        this.table = new_json
     }
 
     toSingleValue(value) {

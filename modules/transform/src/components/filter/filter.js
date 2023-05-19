@@ -4,21 +4,26 @@ import { TransformWeb } from '../transform.js'
 
 class FilterWeb extends TransformWeb {
 
+    constructor(){
+        super()
+        this.operation = null
+        this.targetColumn = null
+        this.compared = null
+    }
+
     handleFilter (topic, message) {  //handle with notice
-        
+       
         //topic: filter
         //message: filterInput
-        console.log("mensagem no tópico filter:",message)
-        let ans = this.toDataFrame(message.table)   
-        this.columns = ans.columns
-        this.df = ans.df
+        console.log(this.table)
+        this.table = message.table
+        this.toDataFrame()   
         this.file_id = message.file_id
         this.operation = message.operation
         this.targetColumn = message.column
         this.compared = message.comparedValue
         let validator = new ValidateFilter()
         let result = validator.validate(this.columns, this.targetColumn, this.compared, this.operation)
-        console.log("resultado da validação:",result)
         if(result.isValid){
             this.filter()
         } else {
@@ -48,11 +53,11 @@ class FilterWeb extends TransformWeb {
 
     filter(){
         this.chooseOpAndFilter()
-        let json = this.toJson(this.df, this.file_id, this.columns)
+        this.toJson(this.df, this.file_id, this.columns)
         this.status = true
-        this._notify('filterResult', json)
+        console.log(this.table)
+        this._notify('filterResult', this.table)
     }
-
 }
 
 Oid.component(
@@ -60,15 +65,6 @@ Oid.component(
   id: 'ts:transFilter',
   element: 'filter-data',
   properties: {
-    status: {default: false},
-    name: {default: "Filtro"},
-    type: {default: "Transformação"},
-    columns: {default: {}},
-    df: {default: null},
-    file_id: {default: ""},
-    operation: {default: ""},
-    targetColumn:{default: ""},
-    compared: {default: ""},
   },
   receive: {filter: 'handleFilter'},
   implementation: FilterWeb
