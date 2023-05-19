@@ -1,11 +1,16 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMaximum.js'
+import { ValidateMean } from './validateMean.js'
 import { TransformWeb } from '../transform.js'
 
 export class MeanWeb extends TransformWeb {
 
+    constructor(){
+        super()
+    }
+
     mean(){
-        this.value = this.dataFrame.mean()[this.column]
+        this.value = this.df.column(this.column).mean()
+        console.log(this.value)
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('meanResult', json)
@@ -16,11 +21,15 @@ export class MeanWeb extends TransformWeb {
         //topic: mean
         //message: meanInput
  
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
+        console.log("chegou mensagem")
+        this.table = message.table
+        this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.column = message.column
 
-        result = validate(this.columns, this.column)
+        let validator = new ValidateMean()
+
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.mean()
         } else {
@@ -36,13 +45,10 @@ export class MeanWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMean',
-  element: 'mean',
+  element: 'mean-data',
   properties: {
-    status: {default: false},
-    name: {default: "Média"},
-    type: {default: "Transformação"},
   },
-  receive: {maximum: 'handleMean'},
-  /*template: html``,*/
+  receive: {mean: 'handleMean'},
   implementation: MeanWeb
 })
+

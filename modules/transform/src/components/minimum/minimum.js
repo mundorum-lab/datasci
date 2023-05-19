@@ -1,26 +1,31 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMinimum.js'
+import { ValidateMinimum } from './validateMinimum.js'
 import { TransformWeb } from '../transform.js'
 
 export class MinimumWeb extends TransformWeb {
 
+    constructor() {
+        super()
+        this.column = null
+    }
+
     minimum(){
-        this.value = this.dataFrame.min(this.column)
+        this.value = this.df.column(this.column).min()
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('minimumResult', json)
     }
-
+    
     handleMinimum (topic, message) {  //handle with notice
         
         //topic: minimum
         //message: minimumInput
- 
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
-        this.file_id = message.file_id
+        this.table = message.table
+        this.toDataFrame()
         this.column = message.column
 
-        let result = validate(this.columns, this.column)
+        let validator = new ValidateMinimum()
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.minimum()
         } else {
@@ -36,13 +41,9 @@ export class MinimumWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMinimum',
-  element: 'minimum',
+  element: 'minimum-data',
   properties: {
-    status: {default: false},
-    name: {default: "Mínimo"},
-    type: {default: "Transformação"},
   },
   receive: {minimum: 'handleMinimum'},
-  /*template: html``,*/
   implementation: MinimumWeb
 })
