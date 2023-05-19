@@ -1,4 +1,4 @@
-import { Oid, OidWeb } from '/lib/oidlib-dev.js'
+import { Oid } from '/lib/oidlib-dev.js'
 import { ValidateFilter } from './validateFilter.js'
 import { TransformWeb } from '../transform.js'
 
@@ -9,9 +9,9 @@ class FilterWeb extends TransformWeb {
         //topic: filter
         //message: filterInput
         console.log("mensagem no tópico filter:",message)
-        let ans = this.toDataFrame(message.table)        //TODO add this as non-oid attributes
-        console.log(ans)
-        /*this.data = message.table.data
+        let ans = this.toDataFrame(message.table)   
+        this.columns = ans.columns
+        this.df = ans.df
         this.file_id = message.file_id
         this.operation = message.operation
         this.targetColumn = message.column
@@ -25,66 +25,32 @@ class FilterWeb extends TransformWeb {
             //return error message
             this.status = false
             this._notify('filterError', result.result)
-        }*/
-        this.toJson(ans.df,this.file_id,ans.columns)
+        }
     }
 
     chooseOpAndFilter(){
-        let nrows = this.data.length
-        let ncols = this.data[0].length
         if(this.operation=="<"){
-            for(let i = 0; i<nrows; i++){
-                for(let j = 0; j<ncols; j++){
-                    if(this.data[i][j]==this.compared){
-                        this.new_data.push(this.data[i])
-                    }
-                }
-            }
+            this.df = this.df.query(this.df[this.targetColumn].lt(this.compared))
         }
         if(this.operation=="<="){
-            for(let i = 0; i<nrows; i++){
-                for(let j = 0; j<ncols; j++){
-                    if(this.data[i][j]==this.compared){
-                        this.new_data.push(this.data[i])
-                    }
-                }
-            }
+            this.df = this.df.query(this.df[this.targetColumn].lte(this.compared))
         }
         if(this.operation==">"){
-            for(let i = 0; i<nrows; i++){
-                for(let j = 0; j<ncols; j++){
-                    if(this.data[i][j]==this.compared){
-                        this.new_data.push(this.data[i])
-                    }
-                }
-            }
+            this.df = this.df.query(this.df[this.targetColumn].gt(this.compared))
         }
         if(this.operation==">="){
-            for(let i = 0; i<nrows; i++){
-                for(let j = 0; j<ncols; j++){
-                    if(this.data[i][j]==this.compared){
-                        this.new_data.push(this.data[i])
-                    }
-                }
-            }
+            this.df = this.df.query(this.df[this.targetColumn].gte(this.compared))
         }
         if(this.operation=="=="){
-            for(let i = 0; i<nrows; i++){
-                for(let j = 0; j<ncols; j++){
-                    if(this.data[i][j]==this.compared){
-                        this.new_data.push(this.data[i])
-                    }
-                }
-            }
+            this.df = this.df.query(this.df[this.targetColumn].eq(this.compared))
         }
     }
 
     filter(){
         this.chooseOpAndFilter()
-        console.log("resultado do filtro:",this.new_data)
-        /*let json = this.toJson(this.newDataFrame, this.file_id)
+        let json = this.toJson(this.df, this.file_id, this.columns)
         this.status = true
-        this._notify('filterResult', json)*/
+        this._notify('filterResult', json)
     }
 
 }
@@ -98,14 +64,12 @@ Oid.component(
     name: {default: "Filtro"},
     type: {default: "Transformação"},
     columns: {default: {}},
-    data: {default: []},
+    df: {default: null},
     file_id: {default: ""},
     operation: {default: ""},
     targetColumn:{default: ""},
     compared: {default: ""},
-    new_data: {default: []}
   },
   receive: {filter: 'handleFilter'},
-  /*template: html``,*/
   implementation: FilterWeb
 })

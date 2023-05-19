@@ -19,7 +19,7 @@ export class TransformWeb extends OidWeb {
     }
 
     toJson(dataFrame,file_id,columns){
-        
+
         //convert df to json
         let message = {
             file_id: file_id,
