@@ -1,11 +1,17 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateFilter.js'
+import { ValidateColumnDelete } from './validateDeleteColumn.js'
 import { TransformWeb } from '../transform.js'
 
 export class ColumnDeleteWeb extends TransformWeb {
 
+    constructor(){
+        super()
+        this.column = null
+    }
+
     deleteCol(){
         this.df = this.df.drop({columns: [this.column]}, axis=1, inplace=true);
+        delete this.columns[this.column];
         let json = this.toJson(this.df, this.file_id)
         this.status = true
         this._notify('deleteColumnResult', json)
@@ -23,7 +29,7 @@ export class ColumnDeleteWeb extends TransformWeb {
         this.file_id = message.file_id
         this.targetColumn = message.column
         this.compared = message.comparedValue
-        let validator = new ValidateDeleteColumn()
+        let validator = new ValidateColumnDelete()
 
         let result = validator.validate(this.columns, this.column)
         console.log("resultado da validação:",result)
