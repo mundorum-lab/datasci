@@ -8,8 +8,25 @@ export class ApiInputOid extends OidUI {
     Http.open(jsonData.api_type, url);
     Http.send();
     Http.onreadystatechange = (e) => {
-      console.log(Http.responseText)
-      this._notify('output', {value: Http.responseText}) // Processed file goes here
+      let rawData = JSON.parse(Http.responseText)
+
+      console.log(rawData)
+
+      let columns = Object.keys(rawData[0])
+      let data = []
+
+      for (let i in rawData) {
+        data.push([])
+
+        for (let key of Object.keys(rawData[i])) {
+          data[i].push(rawData[i][key]) 
+        } 
+      }
+
+      console.log(columns)
+      console.log(data)
+
+      this._notify('output', {value: JSON.stringify({columns: columns, data: data})}) // Processed file goes here
     }
   }
 }
