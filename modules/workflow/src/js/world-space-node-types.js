@@ -24,15 +24,15 @@ export class WorldSpaceNodeTypes {
         return response.json();
       })
       .then((data) => {
-        for(let node in data.availableCategories){
-          fetch(data.availableCategories[node].url).then((response) => {
+        for(let node in data){
+          fetch(data[node].url).then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
           })
           .then((categoryData) => {
-            this.NodeInfoLib[data.availableCategories[node].name] = categoryData;
+            this.NodeInfoLib[data[node].name] = categoryData;
           }).catch((error) => {
             console.error("Error fetching data:", error);
           });
