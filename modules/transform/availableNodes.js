@@ -36,4 +36,110 @@ export const availableNodes = {
             },
         ]
     }],
+
+    mean: [{                     
+        type: "singleValue",
+        name: "Encontra o valor médio de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    median: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da mediana de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    mode: [{                     
+        type: "singleValue",
+        name: "Encontra o valor da moda de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    stddev: [{                     
+        type: "singleValue",
+        name: "Encontra o valor do desvio padrão de uma certa coluna",
+        compatibleInputNodes: { 
+        },
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {}, //this parameters will change
+                }
+            }
+        ]
+    }],
+
+    minimum: [{                     
+        type: "singleValue",
+        name: "Encontrar o valor mínimo da coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            }
+        ]
+    }],
+
+    maximum: [{                     
+        type: "singleValue",
+        name: "Encontrar o valor máximo da coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            }
+        ]
+    }],
 }
