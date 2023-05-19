@@ -20,20 +20,20 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`WorkflowState`**
 ~~~json
 {
-  nodes: [{
-    nodeId: int,
-    nodeType: string,
-    attributes: {...}
-  }]
+  "nodes": [{
+    "nodeId": int,
+    "nodeType": string,
+    "attributes": {...}
+  }],
 
-  edges: [[int, int],[int, int], ...]
+  "edges": [[int, int],[int, int], ...]
 }
 ~~~
 
 **`LayoutSelection`**
 ~~~json
 {
-  layouts: [
+  "layouts": [
     ...
   ]
 }
@@ -42,38 +42,35 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`AvailableNodes`**
 ~~~json
 {
-  category1: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
+  nome_da_categoria1: [{
+    "type": string,
+    "name": string,
+    "iconPath": string,
+    "compatibleInputNodes": [
+    {"typeId": [string], "range": [int, int]},
+    {"typeId": [string], "range": [int, int]},
       ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
+      ],
+    "inputFields": [{
+      "fieldName": string,
+      "inputTypeIdentifier": string, 
+      "inputTypeParameters": []
     }]
   }],
-  category2: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
+
+  nome_da_categoria2: [{
+    "type": string,
+    "name": string,
+    "iconPath": string,
+    "compatibleInputNodes": [
+    {"typeId": [string], "range": [int, int]},
+    {"typeId": [string], "range": [int, int]},
       ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
+      ],
+    "inputFields": [{
+      "fieldName": string,
+      "inputTypeIdentifier": string, 
+      "inputTypeParameters": [number or string]
     }]
   }],
   ...
@@ -83,20 +80,18 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`SingleNode`**
 ~~~json
 {
-  type<string>,
-  name<string>,
-  compatibleInputNodes: {
-    entrada0: {typeIds<[string]>, listRange<(int, int)>},
-    entrada1: {typeIds<[string]>, listRange<(int, int)>},
+  "type": string,
+  "name": string,
+  "iconPath": string,
+  "compatibleInputNodes": [
+  {"typeId": [string], "range": [int, int]},
+  {"typeId": [string], "range": [int, int]},
     ...
-    },
-  inputFields: [{
-    fieldName<string>,
-    fieldType<string>, 
-    inputType: {
-      type<string>,
-      parameters<Object>,
-    }
+    ],
+  "inputFields": [{
+    "fieldName": string,
+    "inputTypeIdentifier": string, 
+    "inputTypeAttributes": [number or string]
   }]
 }
 ~~~
@@ -163,7 +158,7 @@ Este componente representa os nodes. Além dos comportamentos herdados, ele poss
 property | role
 ---------| --------
 `type` | `Funciona como um identificador do WorldSpaceNode`
-`name` | `Vetor de posição dentro do WorldSpace`
+`name` | `Nome do nó`
 `icon` | `Caminho para svg utilizado como ícone do nó`
 `compatibleInputNodes` | `Um dicionário que representa as entradas dos nós. Para cada chave existente, ele devolve um objeto que armazena os tipo de entrada compatível, além do range de nós que podem se conectar à entrada (Obs: O range é inclusivo)`
 `InputFields` | `Armazena uma lista dos tipos de entrada que o usuário vai fornecer ao nó, permitindo modularização e geração dinâmica. Cada entrada recebe um nome do campo e um tipo que o campo vai receber (int, string, etc), além disso, recebe um inputType do atributo, que armazena o tipo da entrada (textbox, range, radiobutton) e os parâmetros referentes à esta entrada(tamanho,filtro, etc)`
