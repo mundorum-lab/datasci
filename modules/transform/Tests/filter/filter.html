@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <script src="filter-button.js" type="module"></script>
+  <script src="/lib/oidlib-dev.js" type="module"></script>
+  <script src="../../src/components/filter/filter.js" type="module"></script>
 </head>
 <body>
   <h1>Playground</h1>
   <filter-button publish="click~filter"></filter-button>
-  <hello-oid subscribe="filter~result"></hello-oid>
+  <filter subscribe="filter~result"></filter>
 </body>
 </html>

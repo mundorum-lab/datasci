@@ -2,7 +2,8 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class FilterButton extends OidUI {
   _onClick () {
-    filterInput = {
+    console.log("clicou")
+    let filterInput = {
         file_id: "my_file.csv",
         columns: [
             {name: "first", type: "string"},
@@ -13,7 +14,7 @@ export class FilterButton extends OidUI {
             ["value2",2]
         ]
     }
-    this._notify('filter', )
+    this._notify('filter', filterInput )
   }
 }
 
@@ -25,5 +26,5 @@ Oid.component(
     name: {default: 'filtrar'}
   },
   template: html`<h1 @click>Cliqe para {{this.name}}</h1>`,
-  implementation: FilterButtonOid
+  implementation: FilterButton
 })

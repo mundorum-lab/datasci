@@ -1,9 +1,8 @@
 import { Validate } from "../validate"
 
 export class ValidateFilter extends Validate{
-   
-    validate(columns, targetColumn, comparedValue, operation) {
-        
+    validatee(columns, targetColumn, comparedValue, operation) {
+        console.log("AQUI")
         if(!this.columnExist(columns, targetColumn)){
             let result = {
                 transformationType: "filter",

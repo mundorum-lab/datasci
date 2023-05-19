@@ -3,14 +3,13 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
-  <script src="/lib/oidlib.js"></script>
-  <script src="./src/components/filter/filter.js"></script>
+  <script src="/lib/oidlib.js" type="module"></script>
+  <script src="../../src/components/filter/filter.js" type="module"></script>
 </head>
 <body>
   <h1>Teste</h1>
-
   <filter-oid label="Start">
   </filter-oid>
-  <filter></filter>
+  <filter subscribe="filter~result"></filter>
 </body>
 </html>
