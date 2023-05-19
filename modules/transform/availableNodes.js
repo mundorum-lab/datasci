@@ -298,4 +298,32 @@ export const availableNodes = {
             },
         ]
     }],
+    orderBy: [{                     
+        type: "table/json",
+        name: "Ordenar",
+        compatibleInputNodes: {
+            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
+            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
+        },
+        inputFields: [
+            {
+                fieldName: "Coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            },
+            {
+                fieldName: "Ordem",
+                fieldType: "Dropdown", 
+                inputType: 
+                {
+                    type: "boolean",
+                    parameters: {values:["Crescente", "Decrescente"]},
+                }
+            },
+        ]
+    }],
 }
