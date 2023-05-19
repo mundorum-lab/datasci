@@ -4,10 +4,17 @@
 Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi - RA:168810 <br>
-Jéssica da Silva Oliveira - RA:173931 <br>
-Isabella Garcia Fagioli - RA:173174 <br>
-Fábio de Andrade Barboza - RA:168817 <br>
+Cícero Pizzol Libardi - RA 168810 <br>
+  * Componentes: `mean`, `median`, `mode`, `standardDeviation`.
+
+Jéssica da Silva Oliveira - RA 173931 <br>
+  * Componentes: `filter`, `groupBy`.
+
+Isabella Garcia Fagioli - RA 173174 <br>
+  * Componentes: `columnOperation`, `orderBy`.
+
+Fábio de Andrade Barboza - RA 168817 <br>
+  * Componentes: `minimum`, `maximum`, `count`, `uniqueValues`.
 
 # Message Types
 
@@ -465,32 +472,6 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
 
-## Component `orderBy`
-
-> Ordena a coluna de forma crescente ou decrescente.
-
-### Properties
-
-property | role
----------| --------
-`value` | `salva o valor resultante da operação`
-`status` | `salva o estado da operação relacional`
-`name` | `nome do componente visível para o usuário`
-`type` | `tipo do componente (Transformação) visível para o usuário`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`orderBy` | `ordena a coluna` | `orderByInput`
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `validTable`
-
 ## Component `uniqueValues`
 
 > Conta quantos valores únicos estão presentes na coluna.
@@ -516,6 +497,32 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
+
+## Component `orderBy`
+
+> Ordena a coluna de forma crescente ou decrescente.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`orderBy` | `ordena a coluna` | `orderByInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `validTable`
 
 ## Component `mean`
 
@@ -595,7 +602,7 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `modeResult` | `é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina` | `singleValue`
 
-## Component `standarddeviation`
+## Component `standardDeviation`
 
 > Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
 
