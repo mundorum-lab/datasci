@@ -9,6 +9,7 @@ export class ApiInputOid extends OidUI {
     Http.send();
     Http.onreadystatechange = (e) => {
       console.log(Http.responseText)
+      this._notify('output', Http.responseText) // Processed file goes here
     }
   }
 }
