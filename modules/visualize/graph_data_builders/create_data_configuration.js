@@ -2,11 +2,8 @@ import { buildAreaChartData } from "./area_chart_data_builder.js";
 import { buildBubbleChartData } from "./bubble_chart_data_builder.js";
 import { buildBarChartData } from "./bar_chart_data_builder.js";
 import { buildColumnChartData } from "./column_chart_data_builder.js";
-<<<<<<< HEAD
 import { buildPieChartData } from "./pie_chart_data_builder.js";
-=======
 import { buildLineChartData } from "./line_chart_data_builder.js";
->>>>>>> Creating line chart
 
 export function createConfiguration(type, rawData, fields, options) {
     let config = {
