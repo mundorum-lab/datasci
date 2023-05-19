@@ -142,4 +142,30 @@ export const availableNodes = {
             }
         ]
     }],
+
+    count: [{                     
+        type: "singleValue",
+        name: "Conta quantas vezes o elemento aparece na coluna",
+        compatibleInputNodes: {},
+        inputFields: [
+            {
+                fieldName: "Nome da coluna",
+                fieldType: "Textbox",
+                inputType:
+                {
+                    type: "string",
+                    parameters: {},
+                }
+            },
+            {
+                fieldName: "Valor a ser contado",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "any",
+                    parameters: {},
+                }
+            },
+        ]
+    }],
 }
