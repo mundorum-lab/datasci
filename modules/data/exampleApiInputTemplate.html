@@ -7,6 +7,10 @@
   </head>
   <body>
     <h1>Api-input Component</h1>
-    <api-input id="1" subscribe="input_api/[id]:load" publish="output:receive_data/[id]"></api-input>
+    <button-oid label="Start1"
+                value="{url:'www.google.com'}"
+                publish="click~input_api/load">
+    </button-oid>
+    <api-input subscribe="input_api/load~" publish="output:receive_data/[id]"></api-input>
   </body>
 </html>

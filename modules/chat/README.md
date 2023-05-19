@@ -1,82 +1,99 @@
-# Module `<Title>`
+# Module ChatGPT
 
 # Description
-> Brief description of this module's role in the main project.
+> This module has the function to explain some of the generated data to the final user using the ChatGPT API.
 
 # Team
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
+* `João Vitor Baptista Moreira`
+* `Felipe Pacheco Manoel`
 
 # Message Types
 
-> This section comes before all component specifications since there are message types shared by various components.
 
-**`<type identification>`**
+**ValidTable**
 ~~~json
 {
-  <field>: <type>
-  <field>: {
-    <field>: <type>
-    ...
-  }
-  <field>: [<type>]
-  <field>: <message type>
+  "columns" : [{"name":string,"type":string}],
+  "data" : [[any]]
 }
 ~~~
 
-> Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
+**SingleValue**
+~~~json~~~
+{
+  "value": any
+}
+~~~
 
-> One can use a second message type inside a given message type (illustrated as `<message type>`).
+**WorkflowState**
+~~~json
+{
+  "nodes": [{
+    "nodeId": int,
+    "nodeType": string,
+    "attributes": {...}
+  }],
 
-> Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+  "edges" : [[int, int],[int, int], ...]
+}
+~~~
+
+**Explanation**
+~~~json
+{
+  "explanation": string
+}
+~~~
 
 # Components
 
-> Present a subsection for each component, following the model below:
 
-## Component `<Name>`
+## Component ChatGPT
 
-> Summary of the component's role and services it provides.
+> Given some input data, provides a brief text explanation to the user about its content. The input data can be a graph, statistics, connections
 
 ### Properties
 
 property | role
 ---------| --------
-`<property name>` | `<role of this property in the component>`
+`id` | `unique identifier of the component,relative to the workflow, it let the component find itself in the workflow`
+`openAiApiKey` | `api key to access the openAI api`
+`relevantComponents` | `relevant components to generate the prompt`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`<notice label>` | `<description of the action triggered by the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
-
+`receiveData` | stores the data received | ValidTable
+`receiveType` | stores the type received | SingleValue
+`receiveWorkflow` | stores workflow and starts to find relevant nodes | WorkflowState
+`receiveValue` | stores single value received | SingleValue
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`<notice label>` | `<description of the event that produced the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`showExplanation` | received result from ChatGPT API | Explanation
+`getData` | after finding the node conected to this component 
+`getType` | after finding the node conected to this component, only if component found have this parameter 
+`getValue`| after finding the node conected to this component, only if component found have this parameter 
 
 # Components Narratives
 
-> Present one or more narratives exemplifying the interaction of your components. It can be a single description comprising all components or several short descriptions. It can be only among your components or can include expected external components. External components can be less detailed.
 
 ## Setup
 
-> Specify here the components involved in the narrative and their publish/subscribe attributes in HTML.
-
 ~~~html
-<web-component1 attribute="value"
-                attribute="value"
-                publish="notice:topic">
-</web-component1>
+<chat-component openAiAPIkey="<insert API key here>",id="<insert id here>"
+                publish="showExplanation:show/explanation;getData:get/<targetComponentID>/data;getType:get/<targetComponentID>/type;get/<targetComponentID>/value"
+                subscribe="workflowMap:dataPublish;receive/<targetComponentID>/data:receiveData;receive/<targetComponentID>/type:receiveType;receive/<targetComponentID>/value:receiveValue">
+</chat-component>
 
-<web-component2 attribute="value"
-                subscribe="topic:notice">
-</web-component2>
 ~~~
 
 ## Narrative
 
-> Describe here the narrative as a sequence of steps. The format is free, but you can follow the approach suggested in the example below.
+* The chat component subscribes to the topic "workflowState", which has a map of all the connections made.
+* Then, the component searches for the components which the chatGPT node is connected.
+* Then, it will send getters to the component to retrive their data.
+* After receiving all of them by the proper receive/<targetComponentID> bus,it will generate the prompt and will call the openAI Api with the customized prompt and its attribute openAiApiKey
+* Finally, the response is published with the topic show/explanation

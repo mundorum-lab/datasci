@@ -1,9 +1,9 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ApiInputOid extends OidUI {
-  loadApi (topic, message) {
-    this.url_content = message["url_content"]
-    this._notify('output', {}) // Processed file goes here
+  handleInput_api (topic, message) {
+    console.log(topic);
+    console.log(message);
   }
 }
 
@@ -14,7 +14,6 @@ Oid.component(
   properties: {
     id: {default: '1'}
   },
-  receive: {load: 'loadApi'},
-  
+  receive: ['input_api'],
   implementation: ApiInputOid
 })
