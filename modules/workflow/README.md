@@ -110,7 +110,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 **`availableCategories.json`**
 
 ```json
-[{ "url": "/nodesNomeCategoria", "name": "NOMECATEGORIA" }]
+[{ "url": "/nodesNomeCategoria.json", "name": "NOMECATEGORIA" }]
 ```
 
 **`nodesNomeCategoria.json`**
@@ -141,8 +141,8 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 **`availableCategories.json`**
 
 ```json
-[{ "url": "/nodesGraphs", "name": "Gráficos" },
-{ "url": "/nodesInputs", "name": "Inputs" }]
+[{ "url": "/nodesGraphs.json", "name": "Gráficos" },
+{ "url": "/nodesInputs.json", "name": "Inputs" }]
 ```
 
 **`nodesGraphs.json`**
