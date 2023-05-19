@@ -105,8 +105,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -114,8 +113,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -123,8 +121,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>",
+  "column": "<string>"
   "countValue": "<any>"
 }
 ~~~
@@ -133,8 +130,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -142,8 +138,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -151,8 +146,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -160,8 +154,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -169,8 +162,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
