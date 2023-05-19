@@ -1,4 +1,4 @@
-export const availableNodes = {default: {
+export const availableNodes = {
     filter: [{                     
         type: "table/json",
         name: "Filtrar Tabela",
@@ -93,7 +93,7 @@ export const availableNodes = {default: {
 
     stddev: [{                     
         type: "singleValue",
-        name: "Encontra o valor da mediana de uma certa coluna",
+        name: "Encontra o valor do desvio padrão de uma certa coluna",
         compatibleInputNodes: { 
         },
         inputFields: [
@@ -108,4 +108,4 @@ export const availableNodes = {default: {
             }
         ]
     }],
-}}
+}
