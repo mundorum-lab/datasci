@@ -1,26 +1,31 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMaximum.js'
+import { ValidateMaximum } from './validateMaximum.js'
 import { TransformWeb } from '../transform.js'
 
 export class MaximumWeb extends TransformWeb {
 
+    constructor() {
+        super()
+        this.column = null
+    }
+
     maximum(){
-        this.value = this.dataFrame.min(this.column)
+        this.value = this.df.column(this.column).max()
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('maximumResult', json)
     }
-
+    
     handleMaximum (topic, message) {  //handle with notice
         
         //topic: maximum
         //message: maximumInput
- 
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
-        this.file_id = message.file_id
+        this.table = message.table
+        this.toDataFrame()
         this.column = message.column
 
-        let result = validate(this.columns, this.column)
+        let validator = new ValidateMaximum()
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.maximum()
         } else {
@@ -36,13 +41,9 @@ export class MaximumWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMaximum',
-  element: 'maximum',
+  element: 'maximum-data',
   properties: {
-    status: {default: false},
-    name: {default: "Máximo"},
-    type: {default: "Transformação"},
   },
   receive: {maximum: 'handleMaximum'},
-  /*template: html``,*/
   implementation: MaximumWeb
 })

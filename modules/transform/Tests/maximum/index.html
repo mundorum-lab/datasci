@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="../../src/components/maximum/maximum.js" type="module"></script>
+  <script src="./maximum-button.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+</head>
+<body>
+  <h1>Teste</h1>
+  <maximum-button publish="click~maximum/maximumInput" >
+  </maximum-button>
+  <maximum-data subscribe="maximum/maximumInput~maximum"></maximum-data>
+</body>
+</html>
+
