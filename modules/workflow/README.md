@@ -136,7 +136,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ]
 ```
 
-> Exemplo:
+* Exemplo:
 
 **`availableCategories.json`**
 
