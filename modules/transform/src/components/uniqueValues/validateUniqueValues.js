@@ -6,7 +6,7 @@ export class ValidateUniqueValues extends Validate{
         
         if(!this.columnExist(columns, column)){
             let result = {
-                transformationType: "minimum",
+                transformationType: "Update",
                 errorType: "Column not found",
                 message: `Column ${column} does not exist in data base.`,
             }
