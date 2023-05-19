@@ -21,21 +21,20 @@ export class TransformWeb extends OidWeb {
     toJson(dataFrame,file_id,columns){
         
         //convert df to json
-        let table = {
+        let message = {
             file_id: file_id,
             columns: [],
             data: [],
         }
         let columnsName = dataFrame.columns
-        console.log(columns.length)
         for(let i = 0; i < columnsName.length; i++){
-            table.columns.push({
+            message.columns.push({
                 name: columnsName[i],
                 type: columns[columnsName[i]]
             })
         }
-        table.data = dataFrame.values
-        return table
+        message.data = dataFrame.values
+        return message
     }
 
     toSingleValue(value) {
