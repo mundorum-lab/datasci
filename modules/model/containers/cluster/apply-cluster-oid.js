@@ -1,4 +1,5 @@
 import {html, Oid, OidUI} from '/lib/oidlib-dev.js'
+import kmeans from './kmeans.js'
 
 export class ApplyCluster extends OidUI {
 
@@ -7,7 +8,7 @@ export class ApplyCluster extends OidUI {
     this.result = "[Cluster Result]"
   }
   applyCluster (topic, message) {
-    this.result = "** ***"
+    this.result = kmeans(message.data, 2).centroids
   }
 }
 
