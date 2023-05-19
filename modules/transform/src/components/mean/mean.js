@@ -9,7 +9,8 @@ export class MeanWeb extends TransformWeb {
     }
 
     mean(){
-        this.value = this.df.mean()[this.column]
+        this.value = this.df.column(this.column).mean()
+        console.log(this.value)
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('meanResult', json)
@@ -44,7 +45,7 @@ export class MeanWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMean',
-  element: 'mean',
+  element: 'mean-data',
   properties: {
   },
   receive: {mean: 'handleMean'},
