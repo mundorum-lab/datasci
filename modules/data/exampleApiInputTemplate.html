@@ -8,9 +8,9 @@
   <body>
     <h1>Api-input Component</h1>
     <button-oid label="Start1"
-                value="{url:'www.google.com'}"
+                value="{'file_id': '1','api_type': 'GET','url_content': 'www.google.com'    }"
                 publish="click~input_api/load">
     </button-oid>
-    <api-input subscribe="input_api/load~" publish="output:receive_data/[id]"></api-input>
+    <api-input subscribe="input_api/load~input_api"></api-input>
   </body>
 </html>
