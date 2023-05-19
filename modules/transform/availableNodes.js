@@ -49,7 +49,7 @@ export const availableNodes = {
                 inputType: 
                 {
                     type: "string",
-                    parameters: {}, //this parameters will change
+                    parameters: {}, 
                 }
             }
         ]
@@ -67,7 +67,7 @@ export const availableNodes = {
                 inputType: 
                 {
                     type: "string",
-                    parameters: {}, //this parameters will change
+                    parameters: {}, 
                 }
             }
         ]
@@ -85,7 +85,7 @@ export const availableNodes = {
                 inputType: 
                 {
                     type: "string",
-                    parameters: {}, //this parameters will change
+                    parameters: {}, 
                 }
             }
         ]
@@ -103,7 +103,7 @@ export const availableNodes = {
                 inputType: 
                 {
                     type: "string",
-                    parameters: {}, //this parameters will change
+                    parameters: {},
                 }
             }
         ]
@@ -232,6 +232,7 @@ export const availableNodes = {
             },
         ]
     }],
+    
     columnOperation: [{                     
         type: "table/json",
         name: "Fazer operações com uma colunas",
