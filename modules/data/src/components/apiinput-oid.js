@@ -2,13 +2,11 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ApiInputOid extends OidUI {
   handleInput_api (topic, message) {
-    console.log(topic);
-    console.log(message)
+    const jsonData = JSON.parse(message.value)
     const Http = new XMLHttpRequest();
-    const url='https://jsonplaceholder.typicode.com/posts';
-    Http.open("GET", url);
+    const url=jsonData.url_content;
+    Http.open(jsonData.api_type, url);
     Http.send();
-
     Http.onreadystatechange = (e) => {
       console.log(Http.responseText)
     }
