@@ -13,6 +13,9 @@ export class GraphMockOid extends OidUI {
                                     }
                                     )
     }
+    handleConnect(){
+      this.status = `I am a ${this.type} with columns ${this.columns} and data ${this.data}`
+    }
 }
 
 Oid.component(
@@ -23,7 +26,10 @@ Oid.component(
     columns:{},
     data:{},
     type:{},
+    status:{default : ""}
   },
-  template: html`<h1>I am a {{this.type}} with columns {{this.columns}} and data {{this.data}}</h1><h1 @click={{this._graphInfo}}>Click to Explain</h1>`,
+  receive: {connect: 'handleConnect'},
+  template: html`<h1>{{this.status}}</h1>
+                <h1 @click={{this._graphInfo}}>Click to Explain</h1>`,
   implementation: GraphMockOid
 })

@@ -24,7 +24,18 @@ export class ChatOid extends OidUI {
   }
 
   requestToOpenAI() {
-    this.explanation = 'explanation of the prompt'
+  
+    this.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
+
+    Let's break down the data:
+    
+        The first row [0, 1, 2] represents a point in the scatterplot with coordinates (0, 1, 2). The value 0 corresponds to the x-axis, 1 corresponds to the y-axis, and 2 corresponds to the z-axis.
+    
+        The second row [1, 2, 4] represents a point with coordinates (1, 2, 4). Here, 1 is the value along the x-axis, 2 is the value along the y-axis, and 4 is the value along the z-axis.
+    
+        The third row [9, 5, 8] represents a point with coordinates (9, 5, 8). The value 9 represents the x-coordinate, 5 represents the y-coordinate, and 8 represents the z-coordinate.
+    
+    In a scatterplot, each point is plotted as a single marker based on its coordinates in the three-dimensional space. The x-axis, y-axis, and z-axis represent different variables or dimensions that you are examining. The scatterplot allows you to visualize the relationships or patterns between these variables in a three-dimensional space.`
   }
   //   fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
   //     method: 'POST',
@@ -40,6 +51,7 @@ export class ChatOid extends OidUI {
   //     })
   //   })
   //   .then(response => response.json())
+  //   console.log(response)
   //   .then(data => {
   //     const explanation = data.choices[0].text.trim();
   //     this.explanation = explanation;
@@ -48,6 +60,45 @@ export class ChatOid extends OidUI {
   //     console.error('Error:', error);
   //   });
   // }
+
+//   requestToOpenAI() {
+//     console.log("Calling GPT3")
+//     var url = "https://api.openai.com/v1/engines/davinci/completions";
+//     var bearer = 'Bearer ' + this.openAiApiKey
+//     fetch(url, {
+//         method: 'POST',
+//         headers: {
+//             'Authorization': bearer,
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             "prompt": "Once upon a time",
+//             "max_tokens": 5,
+//             "temperature": 1,
+//             "top_p": 1,
+//             "n": 1,
+//             "stream": false,
+//             "logprobs": null,
+//             "stop": "\n"
+//         })
+
+
+//     }).then(response => {
+        
+//         return response.json()
+       
+//     }).then(data=>{
+//         console.log(data)
+//         console.log(typeof data)
+//         console.log(Object.keys(data))
+//         console.log(data['choices'][0].text)
+        
+//     })
+//         .catch(error => {
+//             console.log('Something bad happened ' + error)
+//         });
+
+// }
   
 
   findConnectedNodes(workflowMap){
@@ -89,7 +140,7 @@ Oid.component(
   id: 'chat',
   element: 'chat-oid',
   properties: {
-    openAiApiKey: {},
+    openAiApiKey: "",
     chat_id: {default: ''},
     'columns' : {default: ''},
     'input-data':{default: ''},
