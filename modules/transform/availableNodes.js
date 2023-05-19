@@ -200,7 +200,7 @@ export const availableNodes = {
                 inputType: 
                 {
                     type: "string",
-                    parameters: {values:["+", "-", "*", "/", "^", "log"]}, //this parameters will change
+                    parameters: {values:["+", "-", "*", "/", "^"]}, //this parameters will change
                 }
             },
             {
@@ -217,7 +217,44 @@ export const availableNodes = {
                 fieldType: "Textbox", 
                 inputType: 
                 {
-                    type: "string", //pode ser null
+                    type: "string", 
+                    parameters: {},
+                }
+            },
+            {
+                fieldName: "Nova coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string", 
+                    parameters: {},
+                }
+            },
+        ]
+    }],
+    columnOperation: [{                     
+        type: "table/json",
+        name: "Fazer operações com uma colunas",
+        compatibleInputNodes: {
+            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
+            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
+        },
+        inputFields: [
+            {
+                fieldName: "Operação",
+                fieldType: "Dropdown", 
+                inputType: 
+                {
+                    type: "string",
+                    parameters: {values:["+", "-", "*", "/", "^", "log"]}, //this parameters will change
+                }
+            },
+            {
+                fieldName: "Coluna",
+                fieldType: "Textbox", 
+                inputType: 
+                {
+                    type: "string",
                     parameters: {},
                 }
             },
@@ -226,7 +263,7 @@ export const availableNodes = {
                 fieldType: "Textbox", 
                 inputType: 
                 {
-                    type: "number", //pode ser null
+                    type: "number", 
                     parameters: {},
                 }
             },
