@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="/lib/oidlib.js"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+
+  <button-oid label="Disease" publish="click~news/disease" value="dengue symptoms">
+  </button-oid>
+  
+  <button-oid label="Drug" publish="click~news/drug" value="coronavirus vaccine">
+  </button-oid>
+  
+  <button-oid label="Dinosaur" publish="click~news/dinosaur" value="brazilian dinosaurs">
+  </button-oid>
+  
+  <console-oid prompt="I heard about: " subscribe="news/#~display">
+  </console-oid>
+
+  <console-oid prompt="I heard about: " subscribe="news/disease~display">
+  </console-oid>
+
+  <console-oid prompt="I heard about: " subscribe="+/dinosaur~display">
+  </console-oid>
+</body>
+</html>

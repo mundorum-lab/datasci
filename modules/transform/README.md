@@ -1,13 +1,13 @@
 # Module Transform
 
 # Description
-Esse módulo pretende fazer transformações relacionais nos dados, como por exemplo: filtro, join, dropar colunas etc.
+Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi RA:168810 <br>
-Jéssica da Silva Oliveira RA:173931 <br>
-Isabella Garcia Fagioli RA:173174 <br>
-Fábio de Andrade Barboza RA:168817 <br>
+Cícero Pizzol Libardi - RA 168810 <br>
+Fábio de Andrade Barboza - RA 168817 <br>
+Isabella Garcia Fagioli - RA 173174 <br>
+Jéssica da Silva Oliveira - RA 173931 <br>
 
 # Message Types
 
@@ -25,60 +25,135 @@ Fábio de Andrade Barboza RA:168817 <br>
 
 > A tabela é um JSON no qual os campos são as colunas, e esses representam um array com os valores de cada linha. A tipagem dos dados depende da tabela inserida pelo usuário
 
+**`filterInput`**
+~~~json
+{
+  table: table
+  column: string
+  operation: string
+  compared_value: any
+}
+~~~
+
+**`columnInput`**
+~~~json
+{
+  table: table
+  column1: string
+  column2: string
+  operation: string
+  outputColumn: string
+}
+~~~
+
+**`operationResult`**
+~~~json
+{
+  table: table
+  status: boolean
+}
+~~~
+
+
 # Components
 
-> Cada transformação possível terá um componente próprio, vamos especificar alguns
+> Cada componente é responsável por uma operação relacional.
+> Além disso há um componente de validação, para verificar se os parâmetros de cada operação são válidos
 
-## Component `Operação com colunas`
+## Component `validateFilter`
 
-> Quando queremos uma nova coluna construída a partir de dados de colunas presentes no dataset
+> Valida os argumentos passados para a operação de filtro correspondente. Por exemplo, verifica se o valor de comparação utilizado no filtro é válido e é do mesmo tipo dos valores da coluna com base na qual se deseja filtrar.
 
 ### Properties
 
 property | role
 ---------| --------
-`Coluna 1` | `Uma das colunas envolvidas na operação`
-`Coluna 2` | `Uma das colunas envolvidas na operação, pode ser nula para operações com uma coluna só`
-`Operação` | `Indica a operação a ser realizada com a(s) coluna(s)`
-`Coluna Saída` | `O nome da nova coluna`
+`status` | `salva o estado da validação realizada`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`transformar` | `Fará a operação solicitada e devolverá a tabela resultante` | `Tabela`
+`filter` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`pronto` | `A operação é finalizada` | `Tabela`
+`validationSucceed` | `é ativado pelo próprio componente quando termina uma validação bem sucedida` | `filterInput`
+`validationFailed` | `é ativado pelo próprio componente quando termina uma validação que falhou` | `operationResult`
+
+## Component `filter`
+
+> Filtra as linhas de uma tabela com base na coluna, operação e valor de comparação passados por mensagem.
+
+### Properties
+
+property | role
+---------| --------
+`table` | `salva a tabela resultante da filtragem`
+`status` | `salva o estado da operação relacional`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`filterOperation` | `filtra uma tabela de dados, gerando outra` | `filterInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`filtered` | `é ativado quando a operação de filtrar termina` | `operationResult`
+
+## Component `columnOperation`
+
+> Cria uma nova coluna a partir de dados de, no máximo duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
+
+### Properties
+
+property | role
+---------| --------
+`table` | `salva a tabela resultante da operação`
+`status` | `salva o estado da operação relacional`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`transform` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `transformInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`getTable` | `a entrada de um componente no worflow é adicionada a saída de um componente de transformação` | `table`
 
 # Components Narratives
 
 ## Setup
 
 ~~~html
-<entrada publish="operação:análise/relacional/operacao_coluna/op/coluna_destino/coluna1/coluna2"
-         subscribe="análise/relacional/pronto">
-</entrada>
+<validateFilter 
+        status=false
+        table = {}
+        subscribe="filter/filterInput:validate"
+        publish="validationSucceed:filterOperation/filterInput"
+        publish="validationFailed:filterResult/operationResult"
+        >
+</validateFilter>
 
-<operacao-colunas subscribe="análise/relacional/operacao_coluna/op/coluna_destino/coluna1/coluna2:transformar">
-</Operacao-colunas>
+<filter
+        status=false
+        subscribe="filterOperation/filterInput:filter"
+        publish="filtered:filterResult/operationResult">
+</filter>
 ~~~
 
 ## Narrative
 
-* Dois componentes: módulo que recebe os dados (`entrada`) e o módulo de operações (`operacao-colunas`).
-* O módulo de operações assina o tópico "`análise/relacional`".
-* O módulo de entrada recebe uma mensagem do componente de workflow com a operação solicitada pelo usuário e a tabela de dados.
-* O módulo de entrada valida a mensagem recebida:
-  * Checa a operação;
-  * Verifica se tem todos os parâmetros necessários para ela;
-  * Publica uma mensagem com o tópico `análise/relacional`.
-* O módulo de entrada assina o tópico `análise/relacional/pronto`.
-* O módulo de operações recebe a mensagem com o tópico `Análise/relacional` e:
-  * Mapeia para o aviso `transformar`;
-  * Realiza a operação;
-  * Publica uma mensagem com o tópico `análise/relacional/pronto`.
- 
+* O componente `validateFilter` apresenta o notice de entrada `validate` que assina o tópico `filter`. Assim, toda vez que se deseja fazer um filtro, a filtragem passa primeiro pela validação, que recebe também a mensagem do tipo `filterInput`, com os argumentos a serem usados no filtro. Após a validação ser realizada, o componente, a depender do resultado da validação, ativa os notices
+  * `onValidationFail`: caso a validação falhe, no segundo caso, o resultado é publicado direto, com o tópico  `operationResult` e a mensagem `operationResult`
+  * `onValidationSuccess`: se a validação é bem-sucessida, então é publicado um tópico de  `filterOperation`, com a mensagem `filterInput`
+    * Esse tópico é assinado pelo componente de filtro propriamente dito, que aciona a operação de filtro. Após ser finalizada, ela ativa o notice `getResult`, que publica o resultado da filtragem com o tópico `operationResult` e a mensagem contendo o resultado, `operationResult`. 
+* A mensagem do tipo `operationResult` é compartilhada por todos os componentes de transformações relacionais, já que o resultado é sempre uma tabela e o estado da transformação.

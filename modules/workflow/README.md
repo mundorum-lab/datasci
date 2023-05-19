@@ -1,30 +1,106 @@
-# Module `<Title>`
+# Module `Workflow`
 
 # Description
-> Brief description of this module's role in the main project.
+Esse módulo tem como função prover as funcionalidades para interação dos usuários no que diz respeito a autoria. Assim, iremos implementar tanto a parte lógica de conexão dos componentes, quanto a visualização do estado atual da aplicação.
 
 # Team
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
-* `<complete member name>`
-  * `<brief description of the activities developed by this member>`
+* César Devens Grazioti
+  * <brief description of the activities developed by this member>
+* João Augusto Rosa Feltran
+  * <brief description of the activities developed by this member>
+* João Miguel de Oliveira Guimarães
+  * <brief description of the activities developed by this member>
+* Lucas Eduardo Ramos de Oliveira
+  * <brief description of the activities developed by this member>
+* Renan Luis Moraes de Sousa
+  * <brief description of the activities developed by this member>
 
 # Message Types
 
-> This section comes before all component specifications since there are message types shared by various components.
-
-**`<type identification>`**
+**`WorkflowState`**
 ~~~json
 {
-  <field>: <type>
-  <field>: {
-    <field>: <type>
-    ...
-  }
-  <field>: [<type>]
-  <field>: <message type>
+  nodes: [{
+    nodeId: int,
+    nodeType: string,
+    attributes: {...}
+  }]
+
+  edges: [[int, int],[int, int], ...]
 }
 ~~~
+
+**`LayoutSelection`**
+~~~json
+{
+  layouts: [
+    ...
+  ]
+}
+~~~
+
+**`AvailableNodes`**
+~~~json
+{
+  category1: [{
+    type<string>,
+    name<string>,
+    compatibleInputNodes: {
+      entrada0: {typeIds<[string]>, listRange<(int, int)>},
+      entrada1: {typeIds<[string]>, listRange<(int, int)>},
+      ...
+      },
+    inputFields: [{
+      fieldName<string>,
+      fieldType<string>, 
+      inputType: {
+        type<string>,
+        parameters<Object>,
+      }
+    }]
+  }],
+  category2: [{
+    type<string>,
+    name<string>,
+    compatibleInputNodes: {
+      entrada0: {typeIds<[string]>, listRange<(int, int)>},
+      entrada1: {typeIds<[string]>, listRange<(int, int)>},
+      ...
+      },
+    inputFields: [{
+      fieldName<string>,
+      fieldType<string>, 
+      inputType: {
+        type<string>,
+        parameters<Object>,
+      }
+    }]
+  }],
+  ...
+}
+~~~
+
+**`SingleNode`**
+~~~json
+{
+  type<string>,
+  name<string>,
+  compatibleInputNodes: {
+    entrada0: {typeIds<[string]>, listRange<(int, int)>},
+    entrada1: {typeIds<[string]>, listRange<(int, int)>},
+    ...
+    },
+  inputFields: [{
+    fieldName<string>,
+    fieldType<string>, 
+    inputType: {
+      type<string>,
+      parameters<Object>,
+    }
+  }]
+}
+~~~
+
 
 > Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
 
@@ -34,49 +110,112 @@
 
 # Components
 
-> Present a subsection for each component, following the model below:
+## Component `WorldSpaceView`
 
-## Component `<Name>`
-
-> Summary of the component's role and services it provides.
+Este componente é responsável por conter todos os nodes e administrar o workflow.
 
 ### Properties
 
 property | role
 ---------| --------
-`<property name>` | `<role of this property in the component>`
+`id` | `Identifica o workflow`
+`name` | `Nome da instância do workflow`
+`nodes` | `Todos os nodes presentes dentro do workflow`
+`edges` | `Todas as ligações entre nodes presentes dentro do workflow`
+`initialPosition` | `Vetor de posição inicial da visualização da página`
+`initialZoom` | `Posição do zoom inicial da visualização da página`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`<notice label>` | `<description of the action triggered by the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`addNode` | `Renderiza o nó dentro do espaço de pipeline` | `tipo do SingleNode`
+`removeNode` | `Remove o nó dentro do espaço de pipeline` | `id do node`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`<notice label>` | `<description of the event that produced the notice>` | `<the type of message body attached to the notice --  empty if there is no message>`
+`exportWorkflow` | `Emitido quando o usuário aperta no botão "executar"` | `tipo do WorkflowState`
+
+---
+
+## Component `WorldSpaceBehaviour`
+
+Este componente é herdado por outros, atribuindo funcionalidades básicas a elementos na tela, como: mobilidade no espaço, identificação etc.
+
+### Properties
+
+property | role
+---------| --------
+`IndividualId` | `Identifica o Behaviour dentro do Pipeline`
+`Position` | `Vetor de posição dentro do WorldSpace`
+`OnWorldSpaceBehaviours` | `Uma lista estática que armazena todos os Behaviours no WorldSpace`
+`AllTimeCreateBehaviours` | `Armazena todos os WorldSpaces que já foram criados - Utilizado para gerar um Id único`
+
+
+## Component `WorldSpaceNode` extends WorldSpaceBehaviour
+
+Este componente representa os nodes. Além dos comportamentos herdados, ele possui funcionalidades mais específicas, incluindo: conexão com outros nodes, especificação de cada node etc.
+
+### Properties
+
+property | role
+---------| --------
+`type` | `Funciona como um identificador do WorldSpaceNode`
+`name` | `Vetor de posição dentro do WorldSpace`
+`icon` | `Caminho para svg utilizado como ícone do nó`
+`compatibleInputNodes` | `Um dicionário que representa as entradas dos nós. Para cada chave existente, ele devolve um objeto que armazena os tipo de entrada compatível, além do range de nós que podem se conectar à entrada (Obs: O range é inclusivo)`
+`InputFields` | `Armazena uma lista dos tipos de entrada que o usuário vai fornecer ao nó, permitindo modularização e geração dinâmica. Cada entrada recebe um nome do campo e um tipo que o campo vai receber (int, string, etc), além disso, recebe um inputType do atributo, que armazena o tipo da entrada (textbox, range, radiobutton) e os parâmetros referentes à esta entrada(tamanho,filtro, etc)`
+`userInputs` | `Armazena parâmetros editados pelo usuário`
+
+
+
+## Component `AvailableNodes`
+
+Este componente representa o conjunto de nodes que podem ser arrastados para o workflow.
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`availableNodes` | `Recebe a lista de todos os nós disponíveis, com as categorias` | `Tipo availableNodes`
+
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`addNode` | `Adiciona um novo nó a lista` | `Tipo singleNode`
 
 # Components Narratives
 
-> Present one or more narratives exemplifying the interaction of your components. It can be a single description comprising all components or several short descriptions. It can be only among your components or can include expected external components. External components can be less detailed.
+## Sessão do workflow
+
+Essa sessão descreve o pipeline do nosso workflow, desde a recepção dos nós do outro grupo até a exportação do workflow feito pelo usuário.
 
 ## Setup
-
-> Specify here the components involved in the narrative and their publish/subscribe attributes in HTML.
-
 ~~~html
-<web-component1 attribute="value"
-                attribute="value"
-                publish="notice:topic">
-</web-component1>
+<other-group publish="nodes:availableNodes">
+</other-group>
 
-<web-component2 attribute="value"
-                subscribe="topic:notice">
-</web-component2>
+<available-nodes subscribe="availableNodes:nodes" publish="node:addNode">
+</available-nodes>
+
+<world-space-view subscribe="addNode:addNode" publish="exportWorkflow:exportWorkflow">
+</world-space-view>
+
+<another-group subscribe="exportWorkflow:exportWorkflow">
+</another-group>
 ~~~
 
 ## Narrative
 
-> Describe here the narrative as a sequence of steps. The format is free, but you can follow the approach suggested in the example below.
+* Os outros grupos publicam as informações de seus nós no barramento por meio da mensagem `availableNodes`, mapeada do parâmetro `nodes`
+* O componente `<available-nodes>` recebe a mensagem, mapeia para o parâmetro `nodes` e processa os dados criando os nós disponíveis e os renderizando na "gaveta" para que o usuário selecione.
+* Após selecionar um nó, o usuário o arrasta para o espaço de workflow, o componente `<world-space-view>`.
+  * Isso inicia o evento `addNode`, mapeia para o parâmetro `addNode` e atualiza o estado do workflow.
+  * Assim, o novo nó é criado no workflow:
+    * O componente do Workflow instancia cada `<world-space-node>` com a informação recebida pelo addNode sendo passada como parâmetro.
+* O usuário conecta os nós criados o que atualiza novamente o estado do workflow
+* Por fim, ao clicar em exportar, o componente `<world-space-view>` lança o evento `exportWorkflow`, mapeia para o parâmetro `exportWorkflow` e publica no barramento o estado atual do pipeline para que o próximo grupo o execute.
