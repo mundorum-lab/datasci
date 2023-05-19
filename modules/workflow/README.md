@@ -77,6 +77,36 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 }
 ~~~
 
+Exemplo: Componente do grupo `transform` que filtra as linhas de uma tabela com base nos valor de uma coluna especificada. O valor de comparação e o tipo de comparação também serão especificados.
+~~~json
+{
+  filter: [{        
+    "type": "table/json",
+    "name": "Filtrar Tabela",
+    "compatibleInputNodes": {
+      {"typeId": ["TABELA"], "range": [1, 1]}
+    },
+    "inputFields": [
+      {
+          "fieldName": "Operação",
+          "inputTypeIdentifier": "Dropdown",
+          "inputTypeParameters": [">=",">","<","<=","="],
+      },
+      {
+          "fieldName": "Nome da Coluna filtrada",
+          "inputTypeIdentifier": "Textbox", 
+          "inputTypeParameters": []
+      },
+      {
+          "fieldName": "Valor a ser comparado",
+          "inputTypeIdentifier": "Textbox", 
+          "inputTypeParameters": []
+      }
+    ]
+  }],
+}
+~~~
+
 **`SingleNode`**
 ~~~json
 {
