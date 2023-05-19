@@ -22,7 +22,7 @@ export class MeanWeb extends TransformWeb {
  
         console.log("chegou mensagem")
         this.table = message.table
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
+        this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.column = message.column
 
