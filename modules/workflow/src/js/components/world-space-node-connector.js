@@ -20,6 +20,38 @@ export class worldSpaceNodeConnector{
         //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
         //TODO
 
+        if(!sourceConnector.canConnectTo(targetConnector)){
+            return false;
+            console.log("CANNOT CONNECT");
+        }
+
+    }
+    static onHierarchy(/*string*/ sourceType , /*string*/ targetType){ 
+        //Return if the source type can connect to the targetType
+        
+        /*
+
+        //TODO: DIVIDIR AS BARRAS
+        const sourceType = "INPUT/TABELA/CSV";
+        const targetType = "INPUT/TABELA";
+        */
+
+
+        if (sourceType.startsWith(targetType)) 
+            return true;
+
+        return false;
+
+    }
+
+    /*string*/ handleGetParentComponentOutputType(){
+        //Returns the type hierarchy
+        return this.parentWorldSpaceNode.type;
+    }
+
+    /*string*/ handleGetParentComponentCompatibleInputTypes(){
+        //Returns the type hierarchy
+        return this.parentWorldSpaceNode.type;
     }
 
 }
@@ -37,7 +69,7 @@ export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector{
         this.connectionsRange = [connectionsRange];
 
     }
-    receiveConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector){
+    receiveConnectionFrom(/*worldSpaceNodeConnectorOut*/ sourceConnector){
         //add the connector to this input's registered connections
         //TODO
     }
@@ -58,8 +90,21 @@ export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector{
     canConnectTo(/*worldSpaceNodeConnectorIn*/ targetInput){
         //Verifies if the parentNode type can be connected to the targetInput
         //TODO
+
+        sourceOutType = this.handleGetParentComponentOutputType();
+        targetCompatibleInputs = targetInput.handleGetParentComponentCompatibleInputTypes();
+
+        targetCompatibleInputs.forEach(inputType => {
+
+            if(this.onHierarchy(sourceOutType,inputType))
+                return true;
+
+          });
+
+
+
     }
-    supplyConnection(/*worldSpaceNodeConnectorOut*/ targeInput){
+    makeConnectionTo(/*worldSpaceNodeConnectorOut*/ targetInput){
         //add the connector to this input's registered connections
         //TODO
 

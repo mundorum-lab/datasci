@@ -23,6 +23,8 @@ export class WorldSpaceSubcomponentBehaviour extends OidBase {
     Destroy(){
         /*Deletes itself and removes references if necessary*/
         //TODO
+        delete onWorldSpaceComponents[this.individualId];
+
 
     }
     /*Vector2*/ handleGetPosition(){

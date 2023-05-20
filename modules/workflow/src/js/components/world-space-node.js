@@ -79,8 +79,8 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         }
 
     }
-
-    getUserFields(){
+    //userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
+    /*List<userInputFieldsDefinition>*/ handleGetUserFields(){
         return WorldSpaceNodeTypes.NodeInfoLib[this.type].userInputFieldsDefinition
     }
 
@@ -89,8 +89,8 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         //TODO ->Remove reference from the nodes receiving and giving connections to this
         super.Destroy()
 
+
     }
-    /*String*/ get
 
 
     
