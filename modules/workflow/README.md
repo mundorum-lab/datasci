@@ -21,8 +21,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 ~~~json
 {
   "nodes": [{
-    "nodeId": int,
-    "nodeType": string,
+    "id": int,
+    "type": string,
     "attributes": {...}
   }],
 
@@ -43,34 +43,34 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 ~~~json
 {
   "nome_da_categoria1": [{
-    "type": string,
+    "output": string,
     "name": string,
-    "iconPath": string,
-    "compatibleInputNodes": [
-    {"typeId": [string], "range": [int, int]},
-    {"typeId": [string], "range": [int, int]},
+    "icon": string,
+    "input": [
+    {"type": [string], "range": [int, int]},
+    {"type": [string], "range": [int, int]},
       ...
       ],
-    "inputFields": [{
-      "fieldName": string,
-      "inputTypeIdentifier": string, 
-      "inputTypeParameters": []
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": []
     }]
   }],
 
   "nome_da_categoria2": [{
-    "type": string,
+    "output": string,
     "name": string,
-    "iconPath": string,
-    "compatibleInputNodes": [
-    {"typeId": [string], "range": [int, int]},
-    {"typeId": [string], "range": [int, int]},
+    "icon": string,
+    "input": [
+    {"type": [string], "range": [int, int]},
+    {"type": [string], "range": [int, int]},
       ...
       ],
-    "inputFields": [{
-      "fieldName": string,
-      "inputTypeIdentifier": string, 
-      "inputTypeParameters": {} // depende do tipo de input (inputTypeIdentifier) Ex.: para Text, {"isPassword":boolean, "maxDigits":string}
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": {} // depende do tipo de input (kind) Ex.: para Text, {"password":boolean, "maxDigits":string}
     }]
   }],
   ...
@@ -80,18 +80,18 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`SingleNode`**
 ~~~json
 {
-  "type": string,
+  "output": string,
   "name": string,
-  "iconPath": string,
-  "compatibleInputNodes": [
-  {"typeId": [string], "range": [int, int]},
-  {"typeId": [string], "range": [int, int]},
+  "icon": string,
+  "input": [
+  {"type": [string], "range": [int, int]},
+  {"type": [string], "range": [int, int]},
     ...
     ],
-  "inputFields": [{
-    "fieldName": string,
-    "inputTypeIdentifier": string, 
-    "inputTypeAttributes": [number or string]
+  "fields": [{
+    "name": string,
+    "kind": string, 
+    "parameters": [number or string]
   }]
 }
 ~~~
@@ -118,18 +118,18 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "type": string,
+    "output": string,
     "name": string,
-    "iconPath": string,
-    "compatibleInputNodes": [
-    {"typeId": [string], "range": [int, int]},
-    {"typeId": [string], "range": [int, int]},
+    "icon": string,
+    "input": [
+    {"type": [string], "range": [int, int]},
+    {"type": [string], "range": [int, int]},
       ...
       ],
-    "inputFields": [{
-      "fieldName": string,
-      "inputTypeIdentifier": string,
-      "inputTypeParameters": {} // depende do tipo de input (inputTypeIdentifier) Ex.: para Text, {"isPassword":boolean, "maxDigits":string}
+    "fields": [{
+      "name": string,
+      "kind": string,
+      "parameters": {} // depende do tipo de input () Ex.: para Text, {"password":boolean, "maxDigits":string}
     }]
   }
   ...
@@ -150,37 +150,37 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "type": "graph/scatter",
+    "output": "graph/scatter",
     "name": "Scatter Plot",
-    "iconPath": "/assets/icon.ico",
-    "compatibleInputNodes": [
-    {"typeId": ["input"], "range": [1, 1]},
+    "icon": "/assets/icon.ico",
+    "input": [
+    {"type": ["input"], "range": [1, 1]},
       ],
-    "inputFields": [{
-        "fieldName" : "Título do Gráfico",
-        "inputTypeIdentifier" : "TextBox",
-        "inputTypeParameters" : {
-            "isPassword" : false,
+    "fields": [{
+        "name" : "Título do Gráfico",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
             "maxLength" : 10,
-            "forbiddenChars" : "abcde",
+            "forbidden" : "abcde",
             }
 
         }]
   },
   {
-    "type": "graph/line",
+    "output": "graph/line",
     "name": "Line Plot",
-    "iconPath": "/assets/icon.ico",
-    "compatibleInputNodes": [
-    {"typeId": ["input"], "range": [1, 1]},
+    "icon": "/assets/icon.ico",
+    "input": [
+    {"type": ["input"], "range": [1, 1]},
       ],
-    "inputFields": [{
-        "fieldName" : "Título do Gráfico",
-        "inputTypeIdentifier" : "TextBox",
-        "inputTypeParameters" : {
-            "isPassword" : false,
-            "maxLength" : 10,
-            "forbiddenChars" : "abcde",
+    "fields": [{
+        "name" : "Título do Gráfico",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "length" : 10,
+            "forbidden" : "abcde",
             }
 
         }]
@@ -193,33 +193,33 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "type": "input/csv",
+    "output": "input/csv",
     "name": "Csv File",
-    "iconPath": "/assets/icon.ico",
-    "compatibleInputNodes": [],
-    "inputFields": [{
-        "fieldName" : "Nome do Eixo Y",
-        "inputTypeIdentifier" : "TextBox",
-        "inputTypeParameters" : {
-            "isPassword" : false,
+    "icon": "/assets/icon.ico",
+    "input": [],
+    "fields": [{
+        "name" : "Nome do Eixo Y",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
             "maxLength" : 10,
-            "forbiddenChars" : "abcde",
+            "forbidden" : "abcde",
             }
 
         }]
   },
   {
-    "type": "input/database",
+    "output": "input/database",
     "name": "Database",
-    "iconPath": "/assets/icon.ico",
-    "compatibleInputNodes": [],
-    "inputFields": [{
-        "fieldName" : "URL da Database",
-        "inputTypeIdentifier" : "TextBox",
-        "inputTypeParameters" : {
-            "isPassword" : false,
+    "icon": "/assets/icon.ico",
+    "input": [],
+    "fields": [{
+        "name" : "URL da Database",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
             "maxLength" : 10,
-            "forbiddenChars" : "abcde",
+            "forbidden" : "abcde",
             }
 
         }]
