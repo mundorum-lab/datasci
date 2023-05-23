@@ -1,12 +1,17 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMaximum.js'
+import { ValidateMedian } from './validateMedian.js'
 import { TransformWeb } from '../transform.js'
 
 export class MedianWeb extends TransformWeb {
 
+    constructor(){
+        super()
+    }
+
     median(){
-        this.value = this.dataFrame.median()[this.column]
+        this.value = this.df.column(this.column).median()
         let json = this.toSingleValue(this.value)
+        console.log(this.value)
         this.status = true
         this._notify('medianResult', json)
     }
@@ -16,11 +21,15 @@ export class MedianWeb extends TransformWeb {
         //topic: median
         //message: medianInput
  
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
+        this.table = message.table
+        this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.column = message.column
+        
+        let validator = new ValidateMedian()
 
-        result = validate(this.columns, this.column)
+        let result = validator.validate(this.columns, this.column)
+
         if(result.isValid){
             this.median()
         } else {
@@ -34,13 +43,9 @@ export class MedianWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMedian',
-  element: 'median',
+  element: 'median-data',
   properties: {
-    status: {default: false},
-    name: {default: "Mediana"},
-    type: {default: "Transformação"},
   },
-  receive: {maximum: 'handleMedian'},
-  /*template: html``,*/
+  receive: {median: 'handleMedian'},
   implementation: MedianWeb
 })
