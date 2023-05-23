@@ -1,11 +1,42 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMaximum.js'
+import { ValidateMode } from './validateMode.js'
 import { TransformWeb } from '../transform.js'
 
 export class ModeWeb extends TransformWeb {
 
+    constructor(){
+        super()
+    }    
+    
+    // Função para calcular a moda
+    calcular_moda(arr) {
+        let frequencia = {}
+        let moda = []
+        let maxFrequencia = 0
+    
+        for (let i = 0; i < arr.length; i++) {
+            const valor = arr[i]
+            frequencia[valor] = (frequencia[valor] || 0) + 1
+    
+            if (frequencia[valor] > maxFrequencia) {
+                maxFrequencia = frequencia[valor];
+            }
+        }
+    
+        for (const valor in frequencia) {
+            if (frequencia[valor] === maxFrequencia) {
+                moda.push(Number(valor))
+            }
+        }
+    
+        return moda
+    }
+
+
     mode(){
-        this.value = this.dataFrame.mode()[this.column]
+        this.value = this.df.column(this.column).values
+        let moda = calcular_moda(this.value)
+        console.log(this.value)
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('modeResult', json)
@@ -16,11 +47,14 @@ export class ModeWeb extends TransformWeb {
         //topic: mode
         //message: modeInput
  
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
+        this.table = message.table
+        this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.column = message.column
 
-        result = validate(this.columns, this.column)
+        let validator = new ValidateMode()
+        
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.mode()
         } else {
@@ -35,13 +69,9 @@ export class ModeWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMode',
-  element: 'mode',
+  element: 'mode-data',
   properties: {
-    status: {default: false},
-    name: {default: "Moda"},
-    type: {default: "Transformação"},
   },
-  receive: {maximum: 'handleMode'},
-  /*template: html``,*/
+  receive: {mode: 'handleMode'},
   implementation: ModeWeb
 })

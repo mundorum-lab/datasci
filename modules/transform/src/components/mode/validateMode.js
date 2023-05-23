@@ -1,7 +1,11 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 export class ValidateMode extends Validate{
    
+    constructor(){
+        super()
+    }
+
     validate(columns, targetColumn) {
         
         if(!this.columnExist(columns, targetColumn)){

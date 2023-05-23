@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
-  <script src="../../src/components/mean/mean.js" type="module"></script>
+  <script src="../../src/components/mode/mode.js" type="module"></script>
   <script src="./filter-button.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
 </head>
 <body>
   <h1>Teste</h1>
-  <filter-button publish="click~mean/meanInput" >
+  <filter-button publish="click~mode/modeInput" >
   </filter-button>
-  <mean-data subscribe="mean/meanInput~mean"></mean-data>
+  <mode-data subscribe="mode/modeInput~mode"></mode-data>
 </body>
 </html>
 

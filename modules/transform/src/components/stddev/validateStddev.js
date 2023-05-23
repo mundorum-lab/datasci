@@ -1,6 +1,10 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 export class ValidateStddev extends Validate{
+
+    constructor(){
+        super()
+    }
    
     validate(columns, targetColumn) {
         
