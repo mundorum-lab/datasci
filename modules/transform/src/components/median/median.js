@@ -11,7 +11,6 @@ export class MedianWeb extends TransformWeb {
     median(){
         this.value = this.df.column(this.column).median()
         let json = this.toSingleValue(this.value)
-        console.log(this.value)
         this.status = true
         this._notify('medianResult', json)
     }
