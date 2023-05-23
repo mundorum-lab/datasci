@@ -1,11 +1,15 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateMaximum.js'
+import { ValidateStddev } from './validateStddev.js'
 import { TransformWeb } from '../transform.js'
 
 export class StddevWeb extends TransformWeb {
 
+    constructor(){
+        super()
+    }
+
     stddev(){
-        this.value = this.dataFrame.std()[this.column]
+        this.value = this.df.column(this.column).std()
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('stddevResult', json)
@@ -16,11 +20,14 @@ export class StddevWeb extends TransformWeb {
         //topic: stddev
         //message: stddevInput
  
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
+        this.table = message.table
+        this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         this.column = message.column
+        
+        let validator = new ValidateStddev()
 
-        result = validate(this.columns, this.column)
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.stddev()
         } else {
@@ -34,13 +41,9 @@ export class StddevWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transStddev',
-  element: 'stddev',
+  element: 'stddev-data',
   properties: {
-    status: {default: false},
-    name: {default: "Desvio Padrão"},
-    type: {default: "Transformação"},
   },
-  receive: {maximum: 'handleStddev'},
-  /*template: html``,*/
+  receive: {stddev: 'handleStddev'},
   implementation: StddevWeb
 })
