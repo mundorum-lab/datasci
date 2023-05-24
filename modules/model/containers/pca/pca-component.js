@@ -3,10 +3,10 @@ import {getPCA} from './PCA.js'
 
 
 export class PCA extends OidUI {
-  applyPCA (topic, message) {
+  async applyPCA (topic, message) {
     //this.table = message.value
     //this.result = message.value
-    this.result =  getPCA()
+    this.result = await getPCA()
     // When operation is done, publish the data
     //this._notify('transform', {value: this.result})
   }
