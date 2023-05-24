@@ -1,4 +1,4 @@
-export class worldSpaceNodeConnector{
+export class worldSpaceNodeConnector {
 
     /*
     Representa os pontos do WorldSpaceNode nos quais as conexões serão feitas
@@ -9,105 +9,123 @@ export class worldSpaceNodeConnector{
 
     */
 
-    constructor(parentWorldSpaceNode){
+    constructor(parentWorldSpaceNode) {
 
-    this.connectedWorldSpaceConnectors= []
-    this.parentWorldSpaceNode = parentWorldSpaceNode;
+        this.connectedWorldSpaceConnectors = []
+        this.parentWorldSpaceNode = parentWorldSpaceNode;
 
     }
 
-    static makeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector , /*worldSpaceNodeConnectorIn*/ targetConnector){
-        //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
-        //TODO
+    canConnectionHappen(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
+        //Verifies if the parentNode type can be connected to the targetInput
 
-        if(!sourceConnector.canConnectTo(targetConnector)){
-            return false;
+        //VERIFY IF INPUT AND OUTPUT ARE COMPATIBLE
+
+        //VERIFY IN GRAPH IF CONNECTION IS POSSIBLE
+
+        return true;
+
+    }
+
+    static makeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
+        //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
+
+
+        if (canConnectionHappen(sourceConnector, targetConnector)) {
+            sourceConnector.addConnectionTo(targetConnector);
+            targetConnector.receiveConnectionFrom(sourceConnector);
+            return true;
+        }
+        else {
             console.log("CANNOT CONNECT");
+            return false;
+
         }
 
     }
-    static onHierarchy(/*string*/ sourceType , /*string*/ targetType){ 
-        //Return if the source type can connect to the targetType
-        
-        /*
+    static removeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
 
+
+
+    }
+    static onHierarchy(/*string*/ sourceType, /*string*/ targetType) {
+        //Return if the source type can connect to the targetType
+
+        /*
         //TODO: DIVIDIR AS BARRAS
         const sourceType = "INPUT/TABELA/CSV";
         const targetType = "INPUT/TABELA";
         */
 
 
-        if (sourceType.startsWith(targetType)) 
+        if (sourceType.startsWith(targetType))
             return true;
 
         return false;
 
     }
 
-    /*string*/ handleGetParentComponentOutputType(){
+    handleGetParentComponentOutputType() {
         //Returns the type hierarchy
         return this.parentWorldSpaceNode.type;
     }
 
-    /*string*/ handleGetParentComponentCompatibleInputTypes(){
+    handleGetParentComponentCompatibleInputTypes() {
         //Returns the type hierarchy
         return this.parentWorldSpaceNode.type;
     }
+
 
 }
-export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector{
-/*
-
-    Input Connectors have type and ammount limitations
-
-    compatipleNodes = Dict{typeIds:String}   
-    connectionsRange:[int,int]
-*/
-    constructor(parentWorldSpaceNode, compatibleNodes , connectionsRange){
+export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
+    /*
+    
+        Input Connectors have type and ammount limitations
+    
+        compatipleNodes = Dict{typeIds:String}   
+        connectionsRange:[int,int]
+    */
+    constructor(parentWorldSpaceNode, compatibleNodes, connectionsRange) {
         super(parentWorldSpaceNode);
         this.compatibleNodes = compatibleNodes;
         this.connectionsRange = [connectionsRange];
 
     }
-    receiveConnectionFrom(/*worldSpaceNodeConnectorOut*/ sourceConnector){
+
+    receiveConnectionFrom(/*worldSpaceNodeConnectorOut*/ sourceConnector) {
         //add the connector to this input's registered connections
-        //TODO
+        this.connectedWorldSpaceConnectors.push(sourceConnector);
+
+    }
+
+    removeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector) {
+
+        index = indexOf(sourceConnector)
+        if (index >= 0)
+            this.connectedWorldSpaceConnectors.splice(index, 1);
     }
 
 
 
 }
-export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector{
+export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
 
     //Output conections don't have limitations
     //Type : String ->logically,the ParentsNode's type is the same as all the output nodes type 
-    constructor(parentWorldSpaceNode){
+    constructor(parentWorldSpaceNode) {
         super(parentWorldSpaceNode);
         this.type = parentWorldSpaceNode.type;
-        
-    }
-
-    canConnectTo(/*worldSpaceNodeConnectorIn*/ targetInput){
-        //Verifies if the parentNode type can be connected to the targetInput
-        //TODO
-
-        sourceOutType = this.handleGetParentComponentOutputType();
-        targetCompatibleInputs = targetInput.handleGetParentComponentCompatibleInputTypes();
-
-        targetCompatibleInputs.forEach(inputType => {
-
-            if(this.onHierarchy(sourceOutType,inputType))
-                return true;
-
-          });
-
-
 
     }
-    makeConnectionTo(/*worldSpaceNodeConnectorOut*/ targetInput){
-        //add the connector to this input's registered connections
-        //TODO
+    addConnectionTo(/*worldSpaceNodeConnector*/ targetConnector) {
 
+        this.connectedWorldSpaceConnectors.push(targetConnector);
 
+    }
+    removeConnection(/*worldSpaceNodeConnector*/ targetConnector) {
+
+        index = indexOf(targetConnector)
+        if (index >= 0)
+            this.connectedWorldSpaceConnectors.splice(index, 1);
     }
 }
