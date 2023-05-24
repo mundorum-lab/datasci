@@ -21,7 +21,7 @@ export class ValidateFilter extends Validate{
             let result = {
                 transformationType: "filter",
                 errorType: "Incompatible types",
-                message: `Column ${targetColumn} is type of ${columns[targetColumn]}, but type of "${comparedValue} is ${typeof(comparedValue)}. Expected equal types."`,
+                message: `Column ${targetColumn} is type of ${columns[targetColumn]}, but type of "${comparedValue}" is ${typeof(comparedValue)}. Expected equal types.`,
             }
             return {result,isValid: false}
         }
@@ -30,7 +30,7 @@ export class ValidateFilter extends Validate{
             let result = {
                 transformationType: "filter",
                 errorType: "Invalid operation",
-                message: `Operation ${operation} is not valit for filter transformation.`,
+                message: `Operation ${operation} is not valid for filter transformation.`,
             }
             return {result,isValid: false}
         }

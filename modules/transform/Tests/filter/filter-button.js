@@ -14,13 +14,13 @@ export class FilterButton extends OidUI {
             ["value2",2]
         ]
     }
-    let filterInput = {
+    /*let filterInput = {  !!!!! Não vai ser mais necessário usar
       table: table,
       column: "second",
       operation: "==",
       comparedValue: 1,
-    }
-    this._notify('click', filterInput )
+    }*/
+    this._notify('click', table )
   }
 }
 
