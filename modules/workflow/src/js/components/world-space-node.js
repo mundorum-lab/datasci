@@ -87,10 +87,56 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this
-        super.Destroy()
+        super.Destroy();
 
 
     }
 
+    //GRAPH RELATED METHODS -> WILL BE ADDED TO ITS OWN LIB ON REFACTOR
+
+    //NODE -> VERTICE
+    //EDGE -> CONNECTION
+
+    getTargetVertices() {
+        //RETURNS THE VERTICES THIS ONE IS MAKING CONNECTION **TO**
+        vertices = [];
+
+        this.outputConnection.forEach((targetInConnector) => {
+
+            vertices.push(targetInConnector.getParentNodeId);
+
+        });
+
+        return vertices;
+
+    }
+
+    isGraphCyclic() {
+        const stack = [this];
+        const visited = new Set();
+
+        while (stack.length > 0) {
+            const currentNode = stack.pop();
+
+            if (visited.has(currentNode)) {
+                // Se o nó já foi visitado, indica que há um ciclo
+                return true;
+            }
+
+            visited.add(currentNode);
+
+            const targetVertices = currentNode.getTargetVertices();
+
+            for (const targetId of targetVertices) {
+                const targetNode = getById(targetId);
+
+                if (!visited.has(targetNode)) {
+                    stack.push(targetNode);
+                }
+            }
+        }
+
+        return false;
+    }
 
 }

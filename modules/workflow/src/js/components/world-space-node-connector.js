@@ -30,14 +30,21 @@ export class worldSpaceNodeConnector {
             return false;
         }
         //VERIFY IF INPUT AND OUTPUT ARE COMPATIBLE
-        var inputRestrictions = targetConnector.getAcceptedInputTypes();
-        var outputType = sourceConnector.getProvidedOutputTypes();
+        let inputRestrictions = targetConnector.getAcceptedInputTypes();
+        let outputType = sourceConnector.getProvidedOutputTypes();
 
-        inputRestrictions.forEach(function (restriction) {
+        for (let i = 0; i < inputRestrictions.length; i++) {
+            const restriction = inputRestrictions[i];
             const resultado = worldSpaceNodeConnector.isRestrictionRespected(outputType, restriction);
             if (resultado) return true;
-        });
-        //VERIFY IN GRAPH IF CONNECTION IS POSSIBLE
+        }
+
+        //VERIFY IN GRAPH IF CONNECTION IS POSSIBLE (RESULT IS NOT CYCLIC)
+        worldSpaceNodeConnector.makeConnection(sourceConnector, targetConnector);
+        if (sourceConnector.getParentNode().isGraphCyclic()) {
+            this.removeConnection(sourceConnector, targetConnector);
+            return false;
+        }
 
         return true;
 
@@ -47,7 +54,7 @@ export class worldSpaceNodeConnector {
         //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
 
 
-        if (canConnectionHappen(sourceConnector, targetConnector)) {
+        if (this.canConnectionHappen(sourceConnector, targetConnector)) {
             sourceConnector.addConnectionTo(targetConnector);
             targetConnector.receiveConnectionFrom(sourceConnector);
             return true;
@@ -62,6 +69,8 @@ export class worldSpaceNodeConnector {
 
     removeConnection(/*worldSpaceNodeConnector*/ connector) {
 
+        var indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
+        var indexOther = this.connectedWorldSpaceConnectors.indexOf(sourceConnector);
 
         if (this.isConnectedTo(connector)) {
             this.connectedWorldSpaceConnectors.splice(indexOther, 1);
@@ -75,8 +84,8 @@ export class worldSpaceNodeConnector {
     }
     isConnectedTo(/*worldSpaceNodeConnector*/ connected) {
 
-        indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
-        indexOther = this.connectedWorldSpaceConnectors.indexOf(sourceConnector);
+        var indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
+        var indexOther = this.connectedWorldSpaceConnectors.indexOf(connected);
 
         return indexSelf >= 0 && indexOther >= 0;
     }
@@ -93,7 +102,7 @@ export class worldSpaceNodeConnector {
     Destroy() {
         //Destroy the connectorcleaning all the connections
 
-        connectedWorldSpaceConnectors.forEach(function (connector) {
+        this.connectedWorldSpaceConnectors.forEach(function (connector) {
             this.removeConnection(connector);
         });
 
@@ -128,8 +137,7 @@ export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
     constructor(parentWorldSpaceNode, compatibleNodes, connectionsRange) {
         super(parentWorldSpaceNode);
         this.compatibleNodes = compatibleNodes;
-        this.connectionsRange = [connectionsRange];
-
+        this.connectionsRange = connectionsRange;
     }
 
     receiveConnectionFrom(/*worldSpaceNodeConnectorOut*/ sourceConnector) {
