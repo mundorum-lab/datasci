@@ -5,6 +5,8 @@ export class worldSpaceNodeConnector {
     
     
     parentWorldSpaceNode = worldSpaceNode
+
+
     connectedWorldSpaceConnectors = List<worldSpaceNodeConnector>
 
     */
@@ -16,11 +18,25 @@ export class worldSpaceNodeConnector {
 
     }
 
+
+
     canConnectionHappen(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
         //Verifies if the parentNode type can be connected to the targetInput
 
-        //VERIFY IF INPUT AND OUTPUT ARE COMPATIBLE
+        //VERIFY IF THE CONNECTION DOESN'T ALREADY EXISTS
 
+        if (sourceConnector.isConnectedTo(targetConnector)) {
+            console.log("Connection already exists");
+            return false;
+        }
+        //VERIFY IF INPUT AND OUTPUT ARE COMPATIBLE
+        var inputRestrictions = targetConnector.getAcceptedInputTypes();
+        var outputType = sourceConnector.getProvidedOutputTypes();
+
+        inputRestrictions.forEach(function (restriction) {
+            const resultado = worldSpaceNodeConnector.isRestrictionRespected(outputType, restriction);
+            if (resultado) return true;
+        });
         //VERIFY IN GRAPH IF CONNECTION IS POSSIBLE
 
         return true;
@@ -43,36 +59,60 @@ export class worldSpaceNodeConnector {
         }
 
     }
-    static removeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
+
+    removeConnection(/*worldSpaceNodeConnector*/ connector) {
 
 
-
-    }
-    static onHierarchy(/*string*/ sourceType, /*string*/ targetType) {
-        //Return if the source type can connect to the targetType
-
-        /*
-        //TODO: DIVIDIR AS BARRAS
-        const sourceType = "INPUT/TABELA/CSV";
-        const targetType = "INPUT/TABELA";
-        */
-
-
-        if (sourceType.startsWith(targetType))
+        if (this.isConnectedTo(connector)) {
+            this.connectedWorldSpaceConnectors.splice(indexOther, 1);
+            connector.connectedWorldSpaceConnectors.splice(indexSelf, 1);
             return true;
+        }
 
+        console.log("Problem removing connection")
         return false;
 
     }
+    isConnectedTo(/*worldSpaceNodeConnector*/ connected) {
 
-    handleGetParentComponentOutputType() {
-        //Returns the type hierarchy
-        return this.parentWorldSpaceNode.type;
+        indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
+        indexOther = this.connectedWorldSpaceConnectors.indexOf(sourceConnector);
+
+        return indexSelf >= 0 && indexOther >= 0;
     }
 
-    handleGetParentComponentCompatibleInputTypes() {
-        //Returns the type hierarchy
-        return this.parentWorldSpaceNode.type;
+    getParentNode() {
+        return this.parentWorldSpaceNode;
+    }
+
+    getParentNodeId() {
+        return this.parentWorldSpaceNode.individualId;
+    }
+
+
+    Destroy() {
+        //Destroy the connectorcleaning all the connections
+
+        connectedWorldSpaceConnectors.forEach(function (connector) {
+            this.removeConnection(connector);
+        });
+
+    }
+    static isRestrictionRespected(outType, inRestriction) {
+
+        const segmentosA = outType.split("/");
+        const segmentosB = inRestriction.split("/");
+
+        if (segmentosA.length < segmentosB.length) {
+            return false;
+        }
+
+        for (let i = 0; i < segmentosB.length; i++) {
+            if (segmentosA[i] !== segmentosB[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -98,14 +138,11 @@ export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
 
     }
 
-    removeConnection(/*worldSpaceNodeConnectorOut*/ sourceConnector) {
+    getAcceptedInputTypes() {
+        //Returns the accepted types hierarchy
+        return this.compatibleNodes;
 
-        index = indexOf(sourceConnector)
-        if (index >= 0)
-            this.connectedWorldSpaceConnectors.splice(index, 1);
     }
-
-
 
 }
 export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
@@ -122,10 +159,9 @@ export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
         this.connectedWorldSpaceConnectors.push(targetConnector);
 
     }
-    removeConnection(/*worldSpaceNodeConnector*/ targetConnector) {
 
-        index = indexOf(targetConnector)
-        if (index >= 0)
-            this.connectedWorldSpaceConnectors.splice(index, 1);
+    getProvidedOutputTypes() {
+        //Returns the exported types hierarchy
+        return this.type;
     }
 }
