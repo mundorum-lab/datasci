@@ -1,4 +1,4 @@
-import { Oid } from "./oidlib-dev.js";
+import { Oid } from "../../../../lib/oidlib-dev.js";
 
 Oid.cInterface ({
     id: 'itf:node-view',

@@ -1,4 +1,4 @@
-import { css, html, Oid, OidUI } from "../oidlib-dev.js";
+import { css, html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
 
 
 export class SidebarNodeView extends OidUI {
