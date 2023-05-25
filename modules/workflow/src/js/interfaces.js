@@ -18,6 +18,6 @@ Oid.cInterface ({
     'handleGetInputParameterValue','handleSetInputParameterValue'
 
     IConnectableComponent
-    'MakeConnectionTo' , 'ReceiveConnectionFrom'
+    'handleMakeConnectionTo' , 'handleReceiveConnectionFrom' , 'handleGetParentComponentType'
 
     */

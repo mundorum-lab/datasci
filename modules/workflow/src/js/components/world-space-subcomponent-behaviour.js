@@ -16,22 +16,32 @@ export class WorldSpaceSubcomponentBehaviour extends OidBase {
 
         this.position = position;
         this.individualId = WorldSpace.createdWSSubcomponentsAmmount;
-        WorldSpace.createdWSSubcomponentsAmmount ++;
+        WorldSpace.createdWSSubcomponentsAmmount++;
         WorldSpace.onWorldSpaceComponents[this.individualId] = this;
     }
 
-    Destroy(){
+    Destroy() {
         /*Deletes itself and removes references if necessary*/
         //TODO
         delete onWorldSpaceComponents[this.individualId];
 
 
     }
-    /*Vector2*/ handleGetPosition(){
+    /*Vector2*/ handleGetPosition() {
         return this.position;
     }
 
-    handleSetPosition(/*Vector2*/ newPosition){
+    handleSetPosition(/*Vector2*/ newPosition) {
         this.position = newPosition;
+    }
+
+    getId() {
+        return this.individualId;
+    }
+
+    static getById(id) {
+
+        return WorldSpace.onWorldSpaceComponents[id]
+
     }
 }
