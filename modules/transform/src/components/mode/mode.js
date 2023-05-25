@@ -6,14 +6,14 @@ export class ModeWeb extends TransformWeb {
 
     constructor(){
         super()
-    }    
+    }
     
     // Função para calcular a moda
     calcular_moda(arr) {
         let frequencia = {}
         let moda = []
         let maxFrequencia = 0
-    
+        
         for (let i = 0; i < arr.length; i++) {
             const valor = arr[i]
             frequencia[valor] = (frequencia[valor] || 0) + 1
@@ -34,10 +34,9 @@ export class ModeWeb extends TransformWeb {
 
 
     mode(){
-        this.value = this.df.column(this.column).values
-        let moda = calcular_moda(this.value)
-        console.log(this.value)
+        this.value = this.calcular_moda(this.df.column(this.column).values)
         let json = this.toSingleValue(this.value)
+        console.log(json)
         this.status = true
         this._notify('modeResult', json)
     }

@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
-  <script src="../../src/components/stddev/stddev.js" type="module"></script>
+  <script src="../../src/components/mode/mode.js" type="module"></script>
   <script src="./filter-button.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
 </head>
 <body>
   <h1>Teste</h1>
-  <filter-button publish="click~stddev/stddevInput" >
+  <filter-button publish="click~mode/modeInput" >
   </filter-button>
-  <stddev-data subscribe="stddev/stddevInput~stddev"></stddev-data>
+  <mode-data subscribe="mode/modeInput~mode"></mode-data>
 </body>
 </html>
 

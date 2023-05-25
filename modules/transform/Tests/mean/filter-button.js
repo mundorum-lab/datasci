@@ -12,16 +12,16 @@ export class FilterButton extends OidUI {
         data: [
             ["value1", 1],
             ["value2",2],
-            ["value3",3],
-            ["value4",4],
+            ["value3",2],
+            ["value4",1],
           ]
     }
-    let stddevInput = {
+    let modeInput = {
       table: table,
       column: "second",
     }
     console.log("clicou 12312313")
-    this._notify('click', stddevInput )
+    this._notify('click', modeInput )
   }
 }
 
