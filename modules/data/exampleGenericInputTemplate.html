@@ -1,30 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Leitura de arquivo Excel</title>
-  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-</head>
-<body>
-  <input type="file" id="input" />
-
-  <script>
-    document.getElementById('input').addEventListener('change', function(e) {
-      var arquivo = e.target.files[0];
-      var leitor = new FileReader();
-
-      leitor.onload = function(e) {
-        var conteudo = e.target.result;
-        var dados = XLSX.read(conteudo, { type: 'binary' });
-
-        var primeiraPlanilha = dados.Sheets[dados.SheetNames[0]];
-        var celulas = XLSX.utils.sheet_to_json(primeiraPlanilha, { header: 1 });
-
-        console.log(celulas);
-        // Faça o que quiser com os dados da planilha
-      };
-
-      leitor.readAsBinaryString(arquivo);
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Example Template</title>
+    <script src="src/components/fileinput-oid.js" type="module"></script>
+  </head>
+  <body>
+    <h1>File-input Component</h1>
+    <file-oid publish="loaded~load_file/load"></file-oid>
+    <file-input subscribe="load_file/load~load_file" publish="output~show/message"></fileinput-oid>
+    <console-oid subscribe="show/message~display"></console-oid>
+  </body>
 </html>
