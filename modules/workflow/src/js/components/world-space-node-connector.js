@@ -20,7 +20,7 @@ export class worldSpaceNodeConnector {
 
 
 
-    canConnectionHappen(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
+    static canConnectionHappen(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
         //Verifies if the parentNode type can be connected to the targetInput
 
         //VERIFY IF THE CONNECTION DOESN'T ALREADY EXISTS
@@ -54,7 +54,7 @@ export class worldSpaceNodeConnector {
         //Uses the sourceConnector and targetConnector methods to verify it the connection can be made and if so, do it accordingly
 
 
-        if (this.canConnectionHappen(sourceConnector, targetConnector)) {
+        if (worldSpaceNodeConnector.canConnectionHappen(sourceConnector, targetConnector)) {
             sourceConnector.addConnectionTo(targetConnector);
             targetConnector.receiveConnectionFrom(sourceConnector);
             return true;
