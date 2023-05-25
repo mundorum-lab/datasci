@@ -13,6 +13,18 @@ export class GraphOid extends OidUI {
     if (this.chart) this.chart.destroy();
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, this.options))
   }
+
+  handleExport(topic, message){
+    if(this.canvas == null){
+      return 
+    }
+    let url = this.canvas.toDataURL(`image/${message['type']}`);
+    const download = document.createElement('a');
+    download.href = url;
+    download.download = this.uid;
+    download.click();
+    download.remove();
+  }
 }
 
 Oid.component({
@@ -27,6 +39,6 @@ Oid.component({
     fields: {default: null},
     wroteMessage: {default: 'Waiting for data'}
   },
-  receive: ['render'],
+  receive: ['render', 'export'],
   implementation: GraphOid,
 })
