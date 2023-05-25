@@ -36,7 +36,6 @@ export class ModeWeb extends TransformWeb {
     mode(){
         this.value = this.calcular_moda(this.df.column(this.column).values)
         let json = this.toSingleValue(this.value)
-        console.log(json)
         this.status = true
         this._notify('modeResult', json)
     }
