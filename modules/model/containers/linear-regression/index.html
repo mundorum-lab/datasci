@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="lr-component.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <button-oid label="Calculate"
+              publish="click~data/transform"></button-oid>
+  <ml-lr-oid subscribe="data/transform~transform"></lr-oid>
+</body>
+</html>
