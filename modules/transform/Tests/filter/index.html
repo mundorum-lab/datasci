@@ -7,11 +7,21 @@
   <script src="./filter-button.js" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
 </head>
+
 <body>
   <h1>Teste</h1>
-  <filter-button publish="click~filter/filterInput" >
-  </filter-button>
-  <filter-data subscribe="filter/filterInput~filter"></filter-data>
-</body>
-</html>
 
+  <filter-button publish="click~data/2">
+  </data>
+
+  <filter-data 
+    operation="=="      
+    target_column="second" 
+    compared_value=1
+    subscribe="data/2~filter" 
+    publish="filtered~data/3">
+  </filter-data>
+
+</body>
+
+</html>

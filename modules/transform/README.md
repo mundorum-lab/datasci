@@ -11,7 +11,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 
 # Message Types
 
-**`validTable`**
+**`table`**
 ~~~json
 {
   "file_id": "<string>",

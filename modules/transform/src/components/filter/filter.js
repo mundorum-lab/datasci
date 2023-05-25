@@ -6,57 +6,61 @@ class FilterWeb extends TransformWeb {
 
     constructor(){
         super()
-        this.operation = null
-        this.targetColumn = null
-        this.compared = null
     }
 
     handleFilter (topic, message) {  //handle with notice
        
         //topic: filter
-        //message: filterInput
+        if(Number(this.compared_value)){
+            this.compared_value = Number(this.compared_value)
+        }
+        this.table = message
+        console.log("Tabela Recebida por barramento:")
         console.log(this.table)
-        this.table = message.table
         this.toDataFrame()   
+        console.log("Tabela no formato de df:")
+        this.df.print()
         this.file_id = message.file_id
-        this.operation = message.operation
-        this.targetColumn = message.column
-        this.compared = message.comparedValue
         let validator = new ValidateFilter()
-        let result = validator.validate(this.columns, this.targetColumn, this.compared, this.operation)
+        let result = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
         if(result.isValid){
             this.filter()
         } else {
             //return error message
             this.status = false
+            console.log("Exemplo de Erro:")
+            console.log(result.result)
             this._notify('filterError', result.result)
         }
     }
 
     chooseOpAndFilter(){
         if(this.operation=="<"){
-            this.df = this.df.query(this.df[this.targetColumn].lt(this.compared))
+            this.df = this.df.query(this.df[this.target_column].lt(this.compared_value))
         }
         if(this.operation=="<="){
-            this.df = this.df.query(this.df[this.targetColumn].lte(this.compared))
+            this.df = this.df.query(this.df[this.target_column].lte(this.compared_value))
         }
         if(this.operation==">"){
-            this.df = this.df.query(this.df[this.targetColumn].gt(this.compared))
+            this.df = this.df.query(this.df[this.target_column].gt(this.compared_value))
         }
         if(this.operation==">="){
-            this.df = this.df.query(this.df[this.targetColumn].gte(this.compared))
+            this.df = this.df.query(this.df[this.target_column].gte(this.compared_value))
         }
         if(this.operation=="=="){
-            this.df = this.df.query(this.df[this.targetColumn].eq(this.compared))
+            this.df = this.df.query(this.df[this.target_column].eq(this.compared_value))
         }
     }
 
     filter(){
         this.chooseOpAndFilter()
         this.toJson(this.df, this.file_id, this.columns)
+        console.log("Resultado do Filtro:")
+        this.df.print()
         this.status = true
+        console.log("Tabela retornada no barramento:")
         console.log(this.table)
-        this._notify('filterResult', this.table)
+        this._notify('filtered', this.table)
     }
 }
 
@@ -65,6 +69,9 @@ Oid.component(
   id: 'ts:transFilter',
   element: 'filter-data',
   properties: {
+    target_column: {default: null},
+    operation: {default: null},
+    compared_value: {default: null},
   },
   receive: {filter: 'handleFilter'},
   implementation: FilterWeb
