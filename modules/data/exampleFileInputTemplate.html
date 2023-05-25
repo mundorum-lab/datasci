@@ -7,10 +7,12 @@
   </head>
   <body>
     <h1>File-input Component</h1>
-    <file-input id=1></file-input>
+    <button-oid label="Start1"
+            value='{"file_id":"1","file_format":"csv","file_content":""}'
+            publish="click~load_file/load">
+    </button-oid>
+    <file-input subscribe="load_file/load~load_file" publish="output~show/message"></fileinput-oid>
+    <console-oid subscribe="show/message~display"></console-oid>
   </body>
 </html>
 
-
-<file-input id="1" subscribe="input_file/[id]:load" publish="data:loadFile/arrives"></fileinput-oid>
-<typeinput-oid columns_types="[]"></hello-oid>
