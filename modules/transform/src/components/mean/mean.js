@@ -10,7 +10,6 @@ export class MeanWeb extends TransformWeb {
 
     mean(){
         this.value = this.df.column(this.column).mean()
-        console.log(this.value)
         let json = this.toSingleValue(this.value)
         this.status = true
         this._notify('meanResult', json)
@@ -21,7 +20,6 @@ export class MeanWeb extends TransformWeb {
         //topic: mean
         //message: meanInput
  
-        console.log("chegou mensagem")
         this.table = message.table
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
