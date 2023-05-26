@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="../../src/components/mode/mode.js" type="module"></script>
+  <script src="./mode-button.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+</head>
+<body>
+  <h1>Teste</h1>
+  <mode-button publish="click~data/2" >
+  </mode-button>
+  <mode-data 
+    subscribe="data/2~mode"
+    column="second">
+  </mode-data>
+</body>
+</html>
+
