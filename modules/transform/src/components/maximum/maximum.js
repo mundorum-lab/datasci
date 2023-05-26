@@ -13,6 +13,7 @@ export class MaximumWeb extends TransformWeb {
         this.value = this.df.column(this.column).max()
         let json = this.toSingleValue(this.value)
         this.status = true
+        console.log(this.value, this.status)
         this._notify('maximumResult', json)
     }
     
@@ -20,9 +21,8 @@ export class MaximumWeb extends TransformWeb {
         
         //topic: maximum
         //message: maximumInput
-        this.table = message.table
+        this.table = message
         this.toDataFrame()
-        this.column = message.column
 
         let validator = new ValidateMaximum()
         let result = validator.validate(this.columns, this.column)
@@ -43,6 +43,7 @@ Oid.component(
   id: 'ts:transMaximum',
   element: 'maximum-data',
   properties: {
+    column: {default: null},
   },
   receive: {maximum: 'handleMaximum'},
   implementation: MaximumWeb
