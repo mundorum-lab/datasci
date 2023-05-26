@@ -83,7 +83,7 @@ interfaces de I/O e a narrativa de operação do sistema.
   "template": "<string>",
   "regions": [{
     "id": "<string>",
-    "size": "<string>" // small, medium or large
+    "size": "<string>" // small, medium, large or xlarge
   }]
 }
 ```
