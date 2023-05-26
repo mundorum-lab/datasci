@@ -1,29 +1,31 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateGroupBy.js'
+import { ValidateGroupBy } from './validateGroupBy.js'
 import { TransformWeb } from '../transform.js'
-import {Series, DataFrame} from 'pandas-js'
 
 export class GroupByWeb extends TransformWeb {
 
-    groupBy(){   //TODO perform GroupBy 
-        new_message = {}
-        this._notify('groupByResult', new_message)
+    constructor(){
+        super()
+        this.validFunctions = {}
+    }
+
+    groupBy(){ 
+        this.df = this.df.groupby([this.group_by_target_column]).sum()
     }
 
     handleGroupBy (topic, message) {  //handle with notice
 
         //topic: groupBy
-        //message: groupByInput
+        //message: table
+        console.log("aaaaaaaaaaa",this.dfd.sum)
 
         this.toDataFrame(message)
         this.file_id = message.file_id
-        this.operation = message.operation
-        this.groupByTargetColumn = message.groupByTargetColumn
-        this.operationTargetColumn = message.operationTargetColumn
-
-        result = validate(this.columns, this.groupByTargetColumn, this.operationTargetColumn, this.operation)
+        let validator = new ValidateGroupBy()
+        result = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
         if(result.isValid){
-            this.groupBy(message)
+            this.groupBy()
+            this.status = true
         } else {
             this.status = false
             this._notify('groupByError', result.result)
@@ -36,13 +38,12 @@ export class GroupByWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transGroupBy',
-  element: 'groupBy',
+  element: 'groupBy-data',
   properties: {
-    status: {default: false},
-    name: {default: "Agrupar linhas"},
-    type: {default: "Transformação"},
+    operation: {default: null},
+    group_by_target_column: {default: null},
+    operation_target_column: {default: null},
   },
   receive: {groupBy: 'handleGroupBy'},
-  /*template: html``,*/
   implementation: GroupByWeb
 })
