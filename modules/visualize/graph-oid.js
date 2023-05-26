@@ -11,6 +11,8 @@ export class GraphOid extends OidUI {
     this.placeholder = this.shadowRoot.getElementById('placeholder')
     this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
+
+    // Chart.register(ChartDataLabels);
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, this.options))
   }
 

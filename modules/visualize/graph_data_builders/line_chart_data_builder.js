@@ -5,7 +5,6 @@ export function buildLineChartData(rawData, fields){
             label: 'TODO',
             data: [],
             fill: false,
-            borderColor: 'rgb(75, 192, 192)',
             tension: 0.1,
         }]
     };

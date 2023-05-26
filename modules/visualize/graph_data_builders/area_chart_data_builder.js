@@ -4,7 +4,7 @@ export function buildAreaChartData(rawData, fields){
         datasets: [{
             label: 'TODO',
             data: [],
-            fill:true
+            fill: true
         }]
     };
     rawData['data'].forEach(row => {

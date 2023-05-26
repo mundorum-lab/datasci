@@ -30,6 +30,14 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'column':
         config.type = 'bar'
         config.data = buildColumnChartData(rawData, fields);
+        config.options = {
+          scales: {
+              x: {
+                  beginAtZero: true
+              }
+          },
+          indexAxis: 'x',
+        }
         break;
       case 'bubble':
         config.data = buildBubbleChartData(rawData, fields);
@@ -57,5 +65,6 @@ export function createConfiguration(type, rawData, fields, options) {
       default:
         break;
     }
+
     return config
   }

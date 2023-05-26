@@ -1,4 +1,4 @@
-import { getRandomColors } from "../random_colors.js";
+import {interpolateColors} from "../utils/color_generator.js";
 
 export function buildBarChartData(rawData, fields){
     let data = {
@@ -6,7 +6,6 @@ export function buildBarChartData(rawData, fields){
         datasets: [{
             label: 'TODO',
             data: [],
-            backgroundColor: [],
         }]
     };
 
@@ -15,7 +14,8 @@ export function buildBarChartData(rawData, fields){
         data['datasets'][0]['data'].push(row[fields['y']]);
     });
 
-    data.datasets[0].backgroundColor = getRandomColors(rawData['data'].length)
+    const dataLength = rawData['data'].length;
+    data.datasets[0].backgroundColor = interpolateColors(dataLength);    
 
     return data;
 }

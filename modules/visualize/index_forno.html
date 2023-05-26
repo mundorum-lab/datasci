@@ -6,12 +6,20 @@
   <script src="graph-oid.js" type="module"></script>
   <script src="./forno/data-sender-oid.js" type="module"></script>
   <script src="./prototype/export_button.js" type="module"></script>
+  <!-- Import DataLabels plugin via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <!-- Import D3 Scale Chromatic via CDN -->
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="./utils/color_generator.js"></script>
 </head>
 <body>
   <h1>Playground</h1>
-  <data-sender-oid publish="click~render/data"></data-sender-oid>
+  <data-sender-oid publish="click~render/data"> </data-sender-oid>
   <export-button-oid publish="export~graph/export"></export-button-oid>
-  <graph-oid uid="graph-1" type="area" fields='{"x": 0, "y": 1}' subscribe="render/data~render;graph/export~export"></graph-oid>
+  <graph-oid uid="graph-1" type="pie" fields='{"x": 0, "y": 1}' subscribe="render/data~render;graph/export~export"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>
