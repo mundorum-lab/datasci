@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class MeanButton extends OidUI {
+export class StddevButton extends OidUI {
   _onClick () {
   
     let table = {
@@ -22,11 +22,11 @@ export class MeanButton extends OidUI {
 
 Oid.component(
 {
-  id: 'teste:mean-button',
-  element: 'mean-button',
+  id: 'teste:stddev-button',
+  element: 'stddev-button',
   properties: {
-    name: {default: 'média'}
+    name: {default: 'desvio padrão'}
   },
   template: html`<h1 @click>Clique para {{this.name}}</h1>`,
-  implementation: MeanButton
+  implementation: StddevButton
 })
