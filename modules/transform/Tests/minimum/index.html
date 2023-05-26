@@ -9,9 +9,12 @@
 </head>
 <body>
   <h1>Teste</h1>
-  <minimum-button publish="click~minimum/minimumInput" >
+  <minimum-button publish="click~data/2" >
   </minimum-button>
-  <minimum-data subscribe="minimum/minimumInput~minimum"></minimum-data>
+  <minimum-data 
+    subscribe="data/2~minimum"
+    column="second">
+  </minimum-data>
 </body>
 </html>
 

@@ -14,11 +14,7 @@ export class MinimumButton extends OidUI {
             ["value2",2]
         ]
     }
-    let minimumInput = {
-      table: table,
-      column: "second",
-    }
-    this._notify('click', minimumInput )
+    this._notify('click', table )
   }
 }
 
