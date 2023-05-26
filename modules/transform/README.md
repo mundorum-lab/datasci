@@ -14,7 +14,7 @@ Isabella Garcia Fagioli - RA 173174 <br>
   * Componentes: `columnOperation`, `orderBy`.
 
 Fábio de Andrade Barboza - RA 168817 <br>
-  * Componentes: `minimum`, `maximum`, `count`, `uniqueValues`.
+  * Componentes: `minimum`, `maximum`, `count`, `unique`.
 
 # Message Types
 
@@ -126,7 +126,7 @@ Fábio de Andrade Barboza - RA 168817 <br>
 }
 ~~~
 
-**`uniqueValuesInput`**
+**`uniqueInput`**
 ~~~json
 {
   "table": "<validTable>",
@@ -464,7 +464,7 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
 
-## Component `uniqueValues`
+## Component `unique`
 
 > Conta quantos valores únicos estão presentes na coluna.
 
@@ -481,14 +481,14 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`uniqueValues` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `uniqueValuesInput`
+`unique` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `uniqueInput`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
+`uniqueResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
 
 ## Component `orderBy`
 
