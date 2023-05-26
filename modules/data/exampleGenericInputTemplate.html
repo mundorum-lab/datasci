@@ -8,7 +8,8 @@
   <body>
     <h1>File-input Component</h1>
     <file-oid publish="loaded~load_file/load"></file-oid>
-    <file-input subscribe="load_file/load~load_file" publish="output~show/message"></fileinput-oid>
+    <file-input sep="," 
+                subscribe="load_file/load~load_file" publish="output~show/message"></fileinput-oid>
     <console-oid subscribe="show/message~display"></console-oid>
   </body>
 </html>

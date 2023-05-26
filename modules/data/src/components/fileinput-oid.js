@@ -3,11 +3,11 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 export class FileInputOid extends OidUI {
   handleLoad_file (topic, message) {
     const lines = message.value.split(/\r?\n/);//Only windows separates with both
-    const columns = lines[0].split(";");
+    const columns = lines[0].split(this.sep);
     const list_data = [];
-
+    console.log("sep:", this.sep);
     for (let i = 1; i < lines.length; i++) {
-      const row = lines[i].split(";");
+      const row = lines[i].split(this.sep);
       list_data.push(row);
     }
 
@@ -31,7 +31,8 @@ Oid.component(
   id: 'ex:fileinput',
   element: 'file-input',
   properties: {
-    id: {default: '1'}
+    id: {default: '1'},
+    sep: {default: ';'}
   },
   receive: ['load_file'],
   implementation: FileInputOid
