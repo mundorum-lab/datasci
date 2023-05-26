@@ -32,12 +32,8 @@ export function subtractArrays(array1, array2){
 }
 
 // Given 1 array with n lines and 1 column, return the sum of all the array elements
-export function sumArray(array1){
-  let result = 0;
-  array1.forEach(el => {
-    result += el
-  });
-  return result;
+export function sumArray(array){
+  return array.reduce((acc, cur) => acc + cur, 0);
 }
 
 export function splitColumns(data){
