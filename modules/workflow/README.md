@@ -43,14 +43,12 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 ~~~json
 {
   "nome_da_categoria1": [{
-    "output": string,
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
     "name": string,
+    "presentable": boolean,
     "icon": string,
-    "input": [
-    {"type": [string], "range": [int, int]},
-    {"type": [string], "range": [int, int]},
-      ...
-      ],
+    "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
       "kind": string, 
@@ -59,14 +57,12 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
   }],
 
   "nome_da_categoria2": [{
-    "output": string,
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
     "name": string,
+    "presentable": boolean,
     "icon": string,
-    "input": [
-    {"type": [string], "range": [int, int]},
-    {"type": [string], "range": [int, int]},
-      ...
-      ],
+    "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
       "kind": string, 
@@ -80,18 +76,16 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`SingleNode`**
 ~~~json
 {
-  "output": string,
-  "name": string,
-  "icon": string,
-  "input": [
-  {"type": [string], "range": [int, int]},
-  {"type": [string], "range": [int, int]},
-    ...
-    ],
-  "fields": [{
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
     "name": string,
-    "kind": string, 
-    "parameters": [number or string]
+    "presentable": boolean,
+    "icon": string,
+    "input": [{"type": [string], "range": [int, int]}, ...],
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": [number or string]
   }]
 }
 ~~~
@@ -118,14 +112,12 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "output": string,
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
     "name": string,
+    "presentable": boolean,
     "icon": string,
-    "input": [
-    {"type": [string], "range": [int, int]},
-    {"type": [string], "range": [int, int]},
-      ...
-      ],
+    "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
       "kind": string,
@@ -150,12 +142,12 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "output": "graph/scatter",
+    "output": [{"type": ["graph/scatter"], "range": [1, 1]}],
+    "id": "visualize:scatter-plot",
     "name": "Scatter Plot",
+    "presentable": true,
     "icon": "/assets/icon.ico",
-    "input": [
-    {"type": ["input"], "range": [1, 1]},
-      ],
+    "input": [{"type": ["input"], "range": [1, 1]}],
     "fields": [{
         "name" : "Título do Gráfico",
         "kind" : "TextBox",
@@ -168,12 +160,12 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
         }]
   },
   {
-    "output": "graph/line",
+    "output": [{"type": "graph/line", "range": [1, 1]}],
+    "id": "visualize:line-plot",
     "name": "Line Plot",
+    "presentable": true,
     "icon": "/assets/icon.ico",
-    "input": [
-    {"type": ["input"], "range": [1, 1]},
-      ],
+    "input": [{"type": ["input"], "range": [1, 1]}],
     "fields": [{
         "name" : "Título do Gráfico",
         "kind" : "TextBox",
@@ -193,8 +185,10 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-    "output": "input/csv",
+    "output": [{"type": "input/csv", "range": [1, 5]}],
+    "id": "data:csv-file",
     "name": "Csv File",
+    "presentable": false,
     "icon": "/assets/icon.ico",
     "input": [],
     "fields": [{
@@ -209,8 +203,10 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
         }]
   },
   {
-    "output": "input/database",
+    "output": [{"type": "input/database", "range": [1, 5]}],
+    "id": "data:database",
     "name": "Database",
+    "presentable": false,
     "icon": "/assets/icon.ico",
     "input": [],
     "fields": [{
