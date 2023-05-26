@@ -1,6 +1,6 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
-export class ValidateUniqueValues extends Validate{
+export class ValidateUnique extends Validate{
    
     validate(columns, column) {
         
