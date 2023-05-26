@@ -12,7 +12,6 @@ export class MeanWeb extends TransformWeb {
         this.value = this.df.column(this.column).mean()
         let json = this.toSingleValue(this.value)
         this.status = true
-        console.log("saída: " + this.value + ' ' + this.status)
         this._notify('meanResult', json)
     }
 
@@ -25,7 +24,6 @@ export class MeanWeb extends TransformWeb {
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
 
-        console.log("aqui sim")
         let validator = new ValidateMean()
 
         let result = validator.validate(this.columns, this.column)

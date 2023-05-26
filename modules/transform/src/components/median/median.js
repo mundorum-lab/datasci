@@ -12,6 +12,7 @@ export class MedianWeb extends TransformWeb {
         this.value = this.df.column(this.column).median()
         let json = this.toSingleValue(this.value)
         this.status = true
+        console.log(this.status, this.value)
         this._notify('medianResult', json)
     }
 
@@ -20,10 +21,10 @@ export class MedianWeb extends TransformWeb {
         //topic: median
         //message: medianInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
+        console.log("chegou")
         
         let validator = new ValidateMedian()
 
@@ -44,6 +45,7 @@ Oid.component(
   id: 'ts:transMedian',
   element: 'median-data',
   properties: {
+    column: {default: null},
   },
   receive: {median: 'handleMedian'},
   implementation: MedianWeb
