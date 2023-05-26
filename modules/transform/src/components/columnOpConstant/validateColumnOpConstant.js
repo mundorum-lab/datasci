@@ -1,8 +1,8 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
-export class ValidateColumnOp extends Validate{
+export class ValidateColumnOpConstant extends Validate{
    
-    validate(operation, columns, column, constant) {
+    validate(operation, columns, column) {
         
         //checks if column 1 exists
         if(!this.columnExist(columns, column)){

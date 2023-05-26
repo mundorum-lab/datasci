@@ -1,8 +1,8 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 export class ValidateColumnOp extends Validate{
    
-    validate(operation, columns, column1, column2, constant) {
+    validate(operation, columns, column1, column2) {
         
         //checks if column 1 and 2 exist
         if(!this.columnExist(columns, column1)){
@@ -14,26 +14,13 @@ export class ValidateColumnOp extends Validate{
             return {result, isValid: false}
         }
 
-        if(operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "^"){
-            //if there's no column 2 and no constant
-            if((column2 == null || !this.columnExist(columns, column2)) && constant == null ){
+        if(!this.columnExist(columns, column2)){
                 let result = {
                     transformationType: "columnOp",
                     errorType: "Missing value",
-                    message: `The operation requires two values, but only one was provided.`,
+                    message: `Column ${column2} does not exist in data base.`,
                 }
                 return {result, isValid: false}
-            }
-        }
-
-
-        if(column2 && !this.columnExist(columns, column2)){
-            let result = {
-                transformationType: "columnOp",
-                errorType: "Column not found",
-                message: `Column ${column2} does not exist in data base."`,
-            }
-            return {result, isValid: false}
         }
 
         //checks if both columns are numerical values
@@ -57,7 +44,7 @@ export class ValidateColumnOp extends Validate{
         }
 
         //checks if the operation is valid for the type of transformation
-        let validOperations = ["+", "-", "*", "/", "^", "log"]
+        let validOperations = ["+", "-", "*", "/", "^"]
         
         if(!this.isOperationValid(operation, validOperations)){
             let result = {

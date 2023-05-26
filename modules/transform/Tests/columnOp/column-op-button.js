@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class DeleteButton extends OidUI {
+export class ColumnOpButton extends OidUI {
   _onClick () {
   
     let table = {
@@ -21,11 +21,11 @@ export class DeleteButton extends OidUI {
 
 Oid.component(
 {
-  id: 'teste:delete-button',
-  element: 'delete-button',
+  id: 'teste:column-op-button',
+  element: 'column-op-button',
   properties: {
-    name: {default: 'deletar'}
+    name: {default: 'fazer operação'}
   },
   template: html`<h1 @click>Clique para {{this.name}}</h1>`,
-  implementation: DeleteButton
+  implementation: ColumnOpButton
 })

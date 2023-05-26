@@ -6,14 +6,14 @@ export class ColumnDeleteWeb extends TransformWeb {
 
     constructor(){
         super()
-        this.column = null
     }
 
     deleteCol(){
-        this.df = this.df.drop({columns: [this.column]}, axis=1, inplace=true);
+        this.df = this.df.drop({columns: [this.column]});
         delete this.columns[this.column];
         let json = this.toJson(this.df, this.file_id)
         this.status = true
+        console.log(this.df)
         this._notify('deleteColumnResult', json)
         
     }
@@ -22,13 +22,12 @@ export class ColumnDeleteWeb extends TransformWeb {
         
         //topic: deleteColumn
         //message: deleteColumnInput
+        this.table = message
+        console.log(this.table)
 
-        let ans = this.toDataFrame(message.table)   
-        this.columns = ans.columns
-        this.df = ans.df
-        this.file_id = message.file_id
-        this.targetColumn = message.column
-        this.compared = message.comparedValue
+        this.columns = this.table.columns
+        this.file_id = this.table.file_id
+        this.toDataFrame()  
         let validator = new ValidateColumnDelete()
 
         let result = validator.validate(this.columns, this.column)
@@ -50,9 +49,7 @@ Oid.component(
   id: 'ts:transDeleteColumn',
   element: 'delete-column',
   properties: {
-    status: {default: false},
-    name: {default: "DeleteColumn"},
-    type: {default: "Transformação"},
+    column: {default: null},
   },
   receive: {deleteColumn: 'handleDeleteColumn'},
   /*template: html``,*/

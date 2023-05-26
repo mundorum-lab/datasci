@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="../../src/components/orderBy/orderBy.js" type="module"></script>
+  <script src="./order-by-button.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+</head>
+<body>
+  <h1>Teste</h1>
+  <order-by-button publish="click~data/2">
+  </order-by-button>
+
+  <order-by   
+    column="second" 
+    ascending=false
+    subscribe="data/2~OrderBy" 
+    publish="orderByResult~data/3">
+</order-by>
+
+
+</body>
+</html>

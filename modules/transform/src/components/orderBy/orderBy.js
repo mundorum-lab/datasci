@@ -1,30 +1,36 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateFilter.js'
+import { ValidateOrderBy } from './validateOrderBy.js'
 import { TransformWeb } from '../transform.js'
-import * as dfd from "danfojs-node"
 
 export class OrderByWeb extends TransformWeb {
 
+    constructor(){
+        super()
+    }
+
     orderBy(){
-        let newDF = dfd.DataFrame(this.dataFrame);
-        newDF = newDF.sortValues(this.columns, { ascending: this.order });
-        let json = this.toJson(newDF, this.file_id)
+        this.ascending = this.ascending == true
+        console.log(typeof(this.ascending))
+        this.df = this.df.sortValues(this.column, { ascending: this.ascending });
+        let json = this.toJson(this.df, this.file_id)
         this.status = true
+        console.log(this.df)
         this._notify('orderByResult', json)
     }
 
     handleOrderBy (topic, message) {  //handle with notice
-        
-        //topic: orderBy
-        //message: orderByInput
- 
-        this.dataFrame = this.toDataFrame(message.table.data)        //TODO add this as non-oid attributes
-        this.file_id = message.table.file_id
-        this.columns = message.table.columns
-        this.column = message.column
-        this.order = message.order
 
-        result = validate(this.columns, this.column)
+
+        this.table = message
+        console.log(this.table)
+
+        this.columns = this.table.columns
+        this.file_id = this.table.file_id
+        this.toDataFrame()  
+        let validator = new ValidateOrderBy()
+
+        let result = validator.validate(this.columns, this.column)
+        console.log("resultado da validação:",result)
         if(result.isValid){
             this.orderBy()
         } else {
@@ -34,6 +40,7 @@ export class OrderByWeb extends TransformWeb {
         }
 
     }
+        
 
 }
 
@@ -42,11 +49,10 @@ Oid.component(
   id: 'ts:orderBy',
   element: 'order-by',
   properties: {
-    status: {default: false},
-    name: {default: "OrderBy"},
-    type: {default: "Transformação"},
+    column: {default: null},
+    ascending: {default: true},
   },
-  receive: {deleteColumn: 'handleOrderBy'},
+  receive: {OrderBy: 'handleOrderBy'},
   /*template: html``,*/
   implementation: OrderByWeb
 })
