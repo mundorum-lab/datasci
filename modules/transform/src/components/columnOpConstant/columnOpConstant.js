@@ -5,6 +5,10 @@ import { TransformWeb } from '../transform.js'
 
 export class ColumnOpConstantWeb extends TransformWeb {
 
+    logSolve(x){
+        return Math.log(x)
+    }
+
     operation(){
         if(this.op=="+"){
             let newCol = this.df[this.column].add(this.constant);
@@ -31,8 +35,15 @@ export class ColumnOpConstantWeb extends TransformWeb {
             this.df.addColumn(this.result, newCol, { inplace: true });
             this.columns[this.result] = "number"
         }
-        console.log(this.df)
-        console.log(this.columns)
+        if(this.op=="log"){
+            let copy = this.df[this.column]
+            copy = copy.apply(this.logSolve)
+            copy = copy.div(Math.log(this.constant));
+            this.df.addColumn(this.result, copy, { inplace: true }); //copy the column source in the result
+            this.columns[this.result] = "number"
+            console.log(this.df)
+        }
+    
 
     }
 
@@ -46,11 +57,13 @@ export class ColumnOpConstantWeb extends TransformWeb {
 
     handleColumnOpConstant (topic, message) {  //handle with notice
         
+        
         this.table = message     
         this.file_id = this.table.file_id
         this.columns = this.table.columns
         this.constant = parseInt(this.constant)
         this.toDataFrame()  
+        
         
 
         let validator = new ValidateColumnOpConstant()

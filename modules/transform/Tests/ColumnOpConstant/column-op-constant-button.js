@@ -11,8 +11,8 @@ export class ColumnOpConstantButton extends OidUI {
             {name: "third", type: "number"},
         ],
         data: [
-            ["value1", 1, 3],
-            ["value2", 2, 4]
+            ["value1", 4, 3],
+            ["value2", 8, 4]
         ]
     }
     this._notify('click', table )
