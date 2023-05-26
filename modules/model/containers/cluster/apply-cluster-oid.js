@@ -8,7 +8,7 @@ export class ApplyCluster extends OidUI {
     this.result = "[Cluster Result]"
   }
   applyCluster (topic, message) {
-    let res = kmeans(message.data, message.num_cluster)
+    let res = kmeans(message.data, message.num_cluster).centroids
     this.result = res
   }
 }
