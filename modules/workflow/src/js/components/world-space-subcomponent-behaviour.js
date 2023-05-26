@@ -1,5 +1,7 @@
 import { Vector2 } from "./auxiliary-types.js";
 import { WorldSpace } from "./world-space.js";
+import { OidBase } from "../oidlib-dev.js";
+
 
 export class WorldSpaceSubcomponentBehaviour extends OidBase {
     /*
