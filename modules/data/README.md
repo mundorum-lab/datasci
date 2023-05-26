@@ -104,7 +104,7 @@ notice    | source | message type
 ---
 ## Component `file-typing`
 
-> This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. After this process is finished, it inserts the typed data into the data bus.
+> This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. It separates by 'sep' input the information column and data. After this process is finished, it inserts the typed data into the data bus.
 
 ### Input Notices
 
@@ -142,8 +142,9 @@ notice    | source | message type
 > `file-typing` component
 ~~~html
 <file-typing
-	subscribe="receive_types/[id]~receive_types;receive_data/[id]~receive_data"
-	publish="output~receive_data/[id];ask_types~ask_types/[id]">
+	sep=";"
+	subscribe="load_file/load/[id]~load_file"
+	publish="output~[show/message]">
 </file-typing>
 ~~~
 
