@@ -101,23 +101,17 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 
 Este é o formato padrão para a declaração dos Nodes possíveis.
 
-**`availableCategories.json`**
-
-```json
-[{ "url": "/nodesNomeCategoria.json", "name": "NOMECATEGORIA" }]
-```
-
-**`nodesNomeCategoria.json`**
+**`nodeNome.json`**
 
 ```json
 [
   {
-    "output": [{"type": [string], "range": [int, int]}, ...],
+   "output": [{"type": [string], "name": string, "range": [int, int]}, ...],
     "id": string,
     "name": string,
     "presentable": boolean,
     "icon": string,
-    "input": [{"type": [string], "range": [int, int]}, ...],
+    "input": [{"type": [string], "name": string, "range": [int, int]}, ...],
     "fields": [{
       "name": string,
       "kind": string,
@@ -130,62 +124,57 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 
 * Exemplo:
 
-**`availableCategories.json`**
+**`nodeGraphScatter.json`**
 
 ```json
-[{ "url": "/nodesGraphs.json", "name": "Gráficos" },
-{ "url": "/nodesInputs.json", "name": "Inputs" }]
-```
-
-**`nodesGraphs.json`**
-
-```json
-[
   {
-    "output": [{"type": ["graph/scatter"], "range": [1, 1]}],
+    "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
     "id": "visualize:scatter-plot",
     "name": "Scatter Plot",
     "presentable": true,
     "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "range": [1, 1]}],
+    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
     "fields": [{
         "name" : "Título do Gráfico",
         "kind" : "TextBox",
         "parameters" : {
             "password" : false,
             "maxLength" : 10,
-            "forbidden" : "abcde",
+            "forbidden" : "abcde"
             }
 
         }]
-  },
-  {
-    "output": [{"type": "graph/line", "range": [1, 1]}],
+  }
+```
+ 
+**`nodeGraphLine.json`**
+
+```json
+ {
+    "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
     "id": "visualize:line-plot",
     "name": "Line Plot",
     "presentable": true,
     "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "range": [1, 1]}],
+    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
     "fields": [{
         "name" : "Título do Gráfico",
         "kind" : "TextBox",
         "parameters" : {
             "password" : false,
             "length" : 10,
-            "forbidden" : "abcde",
+            "forbidden" : "abcde"
             }
 
         }]
   }
-]
 ```
 
-**`nodesInputs.json`**
+**`nodeInputCsv.json`**
 
 ```json
-[
   {
-    "output": [{"type": "input/csv", "range": [1, 5]}],
+    "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
     "id": "data:csv-file",
     "name": "Csv File",
     "presentable": false,
@@ -197,13 +186,18 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
         "parameters" : {
             "password" : false,
             "maxLength" : 10,
-            "forbidden" : "abcde",
+            "forbidden" : "abcde"
             }
 
         }]
-  },
+  }
+```
+ 
+**`nodeInputDatabase.json`**
+
+```json
   {
-    "output": [{"type": "input/database", "range": [1, 5]}],
+    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
     "id": "data:database",
     "name": "Database",
     "presentable": false,
@@ -215,12 +209,11 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
         "parameters" : {
             "password" : false,
             "maxLength" : 10,
-            "forbidden" : "abcde",
+            "forbidden" : "abcde"
             }
 
         }]
-  },
-]
+  }
 ```
 
 # Components
