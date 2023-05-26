@@ -1,13 +1,18 @@
-import { InputField } from "./input-field";
+import { InputField } from "./input-field.js";
+import { NumberField } from "./number-field.js";
 
 class InputFactory {
-    create(name, args) {
+    static create(name, args) {
         let input;
 
         switch (name) {
             case 'InputField':
                 input = new InputField(args);
                 break;
+            case 'NumberField':
+                input = new NumberField(args);
+                break;
+            
             default:
                 return null;
         }
@@ -15,3 +20,5 @@ class InputFactory {
         return input;
     }
 }
+
+export { InputFactory };

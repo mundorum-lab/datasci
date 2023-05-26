@@ -1,6 +1,6 @@
 import { GenericInput } from "./generic-input.js";
 
-class InputField extends GenericInput {
+class NumberField extends GenericInput {
     render(label = null) {
         const agrs_str = this._parseArgs();
         let label_tag = "";
@@ -9,8 +9,8 @@ class InputField extends GenericInput {
             label_tag = `<label for="${this._args["id"]}">${label}:</label>`;
         }
 
-        return `${label_tag}<input type="text" ${agrs_str}><br>`;
+        return `${label_tag}<input type="number" ${agrs_str}><br>`;
     }
 }
 
-export { InputField };
+export { NumberField };
