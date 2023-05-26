@@ -12,6 +12,7 @@ export class StddevWeb extends TransformWeb {
         this.value = this.df.column(this.column).std()
         let json = this.toSingleValue(this.value)
         this.status = true
+        console.log(this.value, this.status)
         this._notify('stddevResult', json)
     }
 
@@ -20,10 +21,10 @@ export class StddevWeb extends TransformWeb {
         //topic: stddev
         //message: stddevInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
+
         
         let validator = new ValidateStddev()
 
@@ -43,6 +44,7 @@ Oid.component(
   id: 'ts:transStddev',
   element: 'stddev-data',
   properties: {
+    column: {default: null},
   },
   receive: {stddev: 'handleStddev'},
   implementation: StddevWeb

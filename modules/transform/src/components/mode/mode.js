@@ -45,10 +45,9 @@ export class ModeWeb extends TransformWeb {
         //topic: mode
         //message: modeInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
 
         let validator = new ValidateMode()
         
@@ -69,6 +68,7 @@ Oid.component(
   id: 'ts:transMode',
   element: 'mode-data',
   properties: {
+    column: {default: null},
   },
   receive: {mode: 'handleMode'},
   implementation: ModeWeb
