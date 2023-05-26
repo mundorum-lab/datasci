@@ -9,9 +9,16 @@
 </head>
 <body>
   <h1>Teste</h1>
-  <delete-button publish="click~delete/deleteColumnInput" >
+  <delete-button publish="click~data/2">
   </delete-button>
-  <delete-column subscribe="delete/deleteColumnInput~delete"></delete-column>
+
+  <delete-column    
+    column="second" 
+    subscribe="data/2~deleteColumn" 
+    publish="deleteColumnResult~data/3">
+  </delete-column>
+
+
 </body>
 </html>
 

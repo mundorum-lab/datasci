@@ -17,7 +17,6 @@ export class DeleteButton extends OidUI {
     }
     let deleteColumnInput = {
       table: table,
-      column: "second",
     }
     this._notify('click', deleteColumnInput )
   }
