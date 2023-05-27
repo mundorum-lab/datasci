@@ -1,0 +1,88 @@
+{
+    "nodes":
+    [
+    {
+        "nodeId":1,
+        "nodeType":"file-input",
+        "attributes":{}
+    },
+    {
+        "nodeId":2,
+        "nodeType":"file-typing",
+        "attributes":{}
+    },
+    {
+        "nodeId":3,
+        "nodeType":"filter",
+        "attributes":{   
+            "table" : {},
+            "status" : true,
+            "name" : "",
+            "type" : ""
+        }
+
+    },
+    {
+        "nodeId":4,
+        "nodeType":"minimum",
+        "attributes":{   
+            "value" : 0,
+            "status" : true,
+            "name" : "",
+            "type" : ""
+        }
+    },
+    {
+        "nodeId":5,
+        "nodeType":"cluster",
+        "attributes":{}
+    },
+    {
+        "nodeId":6,
+        "nodeType":"graph",
+        "attributes":{   
+            "size" : {},
+            "id" : 0,
+            "options" : "",
+            "type" : ""
+        }
+    },
+    {
+        "nodeId":7,
+        "nodeType":"graph",
+        "attributes":{   
+            "size" : {},
+            "id" : 0,
+            "options" : "",
+            "type" : ""
+        }
+    },
+    {
+        "nodeId":8,
+        "nodeType":"chatGPT",
+        "attributes":{
+            "chat-id":0,
+            "prompt":""
+        }
+    },
+    {
+        "nodeId":9,
+        "nodeType":"chatGPT",
+        "attributes":{
+            "chat-id":0,
+            "prompt":""
+        }
+    },
+    {
+        "nodeId":10,
+        "nodeType":"chatGPT",
+        "attributes":{
+            "chat-id":0,
+            "prompt":""
+        }
+    }
+
+
+    ],
+    "edges":[[1,2],[2,3],[3,4],[3,5],[4,8],[5,6],[5,7],[6,9],[7,10]]
+}
