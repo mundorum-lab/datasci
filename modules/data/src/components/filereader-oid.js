@@ -30,34 +30,52 @@ export class FileReaderOid extends OidUI {
       console.log(jsonData);
 
       // Abre ou cria o banco de dados
-      var request = indexedDB.open('MundorunDatabase', 3);
+    const request = indexedDB.open('MundorunDatabase', 3);
 
-      // Manipula o evento de sucesso da abertura do banco de dados
-      request.onsuccess = function(event) {
-        var db = event.target.result;
+    // Manipula o evento de upgrade needed da abertura do banco de dados
+    request.onupgradeneeded = function (event) {
+      const db = event.target.result;
 
+      // Verifica se o objeto de armazenamento já existe
+      if (!db.objectStoreNames.contains(`Mundorun_${file_name}`)) {
+        // Cria o objeto de armazenamento
+        const store = db.createObjectStore(`Mundorun_${file_name}`, { keyPath: 'id', autoIncrement: true });
+        console.log(`Mundorun_${file_name} criado com sucesso.`);
+      }
+    };
+
+    // Manipula o evento de sucesso da abertura do banco de dados
+    request.onsuccess = function (event) {
+      const db = event.target.result;
+
+      // Verifica se o objeto de armazenamento existe
+      if (db.objectStoreNames.contains(`Mundorun_${file_name}`)) {
         // Cria ou acessa o objeto de armazenamento (tabela)
-        var transaction = db.transaction(`Mundorun_${file_name}`, 'readwrite');
-        var store = transaction.objectStore(`Mundorun_${file_name}`);
+        const transaction = db.transaction(`Mundorun_${file_name}`, 'readwrite');
+        const store = transaction.objectStore(`Mundorun_${file_name}`);
 
         // Adiciona o objeto jsonData ao objeto de armazenamento
-        var addRequest = store.add(jsonData);
+        const addRequest = store.add(jsonData);
 
         // Manipula o evento de sucesso da adição
-        addRequest.onsuccess = function(event) {
+        addRequest.onsuccess = function (event) {
           console.log('Dados adicionados com sucesso ao IndexedDB.');
         };
 
         // Manipula o evento de erro da adição
-        addRequest.onerror = function(event) {
+        addRequest.onerror = function (event) {
           console.error('Erro ao adicionar dados ao IndexedDB:', event.target.error);
         };
-      };
+      } else {
+        console.error(`PObjeto de armazenamento Mundorun_${file_name} não encontrado no banco de dados.`);
+      }
+    };
 
-      // Manipula o evento de erro da abertura do banco de dados
-      request.onerror = function(event) {
-        console.error('Erro ao abrir o banco de dados:', event.target.error);
-      };
+    // Manipula o evento de erro da abertura do banco de dados
+    request.onerror = function(event) {
+      console.error('Erro ao abrir o banco de dados:', event.target.error);
+    };
+
 
     }
     else if(file_extension === 'csv'){
