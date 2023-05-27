@@ -22,7 +22,7 @@ export class FileReaderOid extends OidUI {
       file = event.dataTransfer.files[0]
 
     const file_extension = file.name.split('.').pop();
-    const file_name = file.name.split.split('.')[0];
+    const file_name = file.name.split('.')[0];
     console.log("file extension", file_extension)
     if(file_extension === 'json'){
       var text = await file.text();
@@ -69,7 +69,7 @@ export class FileReaderOid extends OidUI {
     }
     const content = await file.text()
     this._notify('loaded', {value: content})
-    this._invoke('itf:transfer', 'send', {value: content})
+    this._invoke('itf:transfer', 'send', {value: file_name})
   }
 }
 
