@@ -6,7 +6,7 @@ export class GroupbyButton extends OidUI {
     let table = {
         file_id: "my_file.csv",
         columns: [
-            {name: "first", type: "string"},
+            {name: "first", type: "number"},
             {name: "second", type: "number"},
         ],
         data: [
