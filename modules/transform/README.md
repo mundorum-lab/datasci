@@ -4,10 +4,17 @@
 Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi - RA:168810 <br>
-Jéssica da Silva Oliveira - RA:173931 <br>
-Isabella Garcia Fagioli - RA:173174 <br>
-Fábio de Andrade Barboza - RA:168817 <br>
+Cícero Pizzol Libardi - RA 168810 <br>
+  * Componentes: `mean`, `median`, `mode`, `standardDeviation`.
+
+Jéssica da Silva Oliveira - RA 173931 <br>
+  * Componentes: `filter`, `groupBy`.
+
+Isabella Garcia Fagioli - RA 173174 <br>
+  * Componentes: `columnOperation`, `orderBy`.
+
+Fábio de Andrade Barboza - RA 168817 <br>
+  * Componentes: `minimum`, `maximum`, `count`, `unique`.
 
 # Message Types
 
@@ -59,6 +66,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
   "table": "<validTable>",
   "column1": "<string>",
   "column2": "<string>",
+  "constant": "<number>",
   "operation": "<string>",
   "resultColumn": "<string>"
 }
@@ -97,8 +105,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -106,8 +113,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -115,18 +121,16 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>",
+  "column": "<string>"
   "countValue": "<any>"
 }
 ~~~
 
-**`uniqueValuesInput`**
+**`uniqueInput`**
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -134,8 +138,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -143,8 +146,7 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -152,17 +154,15 @@ Fábio de Andrade Barboza - RA:168817 <br>
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
-**`averageInput`**
+**`standardDeviationInput`**
 ~~~json
 {
   "table": "<validTable>",
-  "column": "<string>",
-  "operation": "<string>"
+  "column": "<string>"
 }
 ~~~
 
@@ -464,6 +464,32 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
 
+## Component `unique`
+
+> Conta quantos valores únicos estão presentes na coluna.
+
+### Properties
+
+property | role
+---------| --------
+`value` | `salva o valor resultante da operação`
+`status` | `salva o estado da operação relacional`
+`name` | `nome do componente visível para o usuário`
+`type` | `tipo do componente (Transformação) visível para o usuário`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`unique` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `uniqueInput`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`uniqueResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
+
 ## Component `orderBy`
 
 > Ordena a coluna de forma crescente ou decrescente.
@@ -489,32 +515,6 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `validTable`
-
-## Component `uniqueValues`
-
-> Conta quantos valores únicos estão presentes na coluna.
-
-### Properties
-
-property | role
----------| --------
-`value` | `salva o valor resultante da operação`
-`status` | `salva o estado da operação relacional`
-`name` | `nome do componente visível para o usuário`
-`type` | `tipo do componente (Transformação) visível para o usuário`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`uniqueValues` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `uniqueValuesInput`
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
 
 ## Component `mean`
 
@@ -594,7 +594,7 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `modeResult` | `é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina` | `singleValue`
 
-## Component `average`
+## Component `standardDeviation`
 
 > Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
 
@@ -611,14 +611,14 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`average` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `averageInput`
+`stddev` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `stddevInput`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`averageResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
+`stddevResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
 
 # Components Narratives
 
