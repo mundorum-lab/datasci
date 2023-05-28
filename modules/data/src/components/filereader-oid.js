@@ -149,7 +149,8 @@ export class FileReaderOid extends OidUI {
 
 
   
-    const content = await file.text();
+    const content = {'database':dbName, 'table': objectStoreName, 'file_name': file_name, 'file_extension': file_extension};
+    console.log(content)
     this._notify('loaded', { value: content });
     this._invoke('itf:transfer', 'send', { value: file_name });
   }
