@@ -1,28 +1,39 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { validate } from './validateCount.js'
+import { ValidateCount } from './validateCount.js'
 import { TransformWeb } from '../transform.js'
 
 export class CountWeb extends TransformWeb {
 
-    count(){
-        this.value = this.dataFrame.get(this.column).valueCounts().get(this.countValue)
-        let json = this.toSingleValue(this.value)
-        this.status = true
-        this._notify('countResult', json)
+    constructor() {
+        super()
+        this.column = null
+        this.count_value = null
     }
 
+    count(){
+        if(Number(this.count_value)){
+            this.count_value = Number(this.count_value)
+        }
+        this.value = 0;
+        for (const item of this.df.column(this.column).values) {
+            if (item === this.count_value) this.value ++
+        }
+        let json = this.toSingleValue(this.value)
+        this.status = true
+        console.log(this.value, this.status)
+        this._notify('countResult', json)
+    }
+    
     handleCount (topic, message) {  //handle with notice
         
         //topic: count
         //message: countInput
- 
-        this.toDataFrame(message)        //TODO add this as non-oid attributes
-        this.file_id = message.file_id
-        this.operation = message.operation
-        this.column = message.column
-        this.countValue = message.countValue
+        
+        this.table = message
+        this.toDataFrame()
 
-        let result = validate(this.columns, this.column)
+        let validator = new ValidateCount()
+        let result = validator.validate(this.columns, this.column)
         if(result.isValid){
             this.count()
         } else {
@@ -38,13 +49,11 @@ export class CountWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transCount',
-  element: 'count',
+  element: 'count-data',
   properties: {
-    status: {default: false},
-    name: {default: "Contar"},
-    type: {default: "Transformação"},
+    column: {default: null},
+    count_value: {default: null},
   },
   receive: {count: 'handleCount'},
-  /*template: html``,*/
   implementation: CountWeb
 })

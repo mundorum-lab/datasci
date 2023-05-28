@@ -20,10 +20,9 @@ export class MedianWeb extends TransformWeb {
         //topic: median
         //message: medianInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
         
         let validator = new ValidateMedian()
 
@@ -44,6 +43,7 @@ Oid.component(
   id: 'ts:transMedian',
   element: 'median-data',
   properties: {
+    column: {default: null},
   },
   receive: {median: 'handleMedian'},
   implementation: MedianWeb

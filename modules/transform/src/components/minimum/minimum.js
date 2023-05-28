@@ -13,6 +13,7 @@ export class MinimumWeb extends TransformWeb {
         this.value = this.df.column(this.column).min()
         let json = this.toSingleValue(this.value)
         this.status = true
+        console.log(this.value, this.status)
         this._notify('minimumResult', json)
     }
     
@@ -20,9 +21,8 @@ export class MinimumWeb extends TransformWeb {
         
         //topic: minimum
         //message: minimumInput
-        this.table = message.table
+        this.table = message
         this.toDataFrame()
-        this.column = message.column
 
         let validator = new ValidateMinimum()
         let result = validator.validate(this.columns, this.column)
@@ -43,6 +43,7 @@ Oid.component(
   id: 'ts:transMinimum',
   element: 'minimum-data',
   properties: {
+    column: {default: null},
   },
   receive: {minimum: 'handleMinimum'},
   implementation: MinimumWeb

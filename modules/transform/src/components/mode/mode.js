@@ -9,22 +9,22 @@ export class ModeWeb extends TransformWeb {
     }
     
     // Função para calcular a moda
-    calcular_moda(arr) {
+    calcularModa(arr) {
         let frequencia = {}
         let moda = []
-        let maxFrequencia = 0
+        let max_frequencia = 0
         
         for (let i = 0; i < arr.length; i++) {
             const valor = arr[i]
             frequencia[valor] = (frequencia[valor] || 0) + 1
     
-            if (frequencia[valor] > maxFrequencia) {
-                maxFrequencia = frequencia[valor];
+            if (frequencia[valor] > max_frequencia) {
+                max_frequencia = frequencia[valor];
             }
         }
     
         for (const valor in frequencia) {
-            if (frequencia[valor] === maxFrequencia) {
+            if (frequencia[valor] === max_frequencia) {
                 moda.push(Number(valor))
             }
         }
@@ -34,8 +34,8 @@ export class ModeWeb extends TransformWeb {
 
 
     mode(){
-        this.value = this.calcular_moda(this.df.column(this.column).values)
-        let json = this.toSingleValue(this.value)
+        this.value = this.calcularModa(this.df.column(this.column).values)
+        let json = this.toSingleValue(this.value) // Fix return: Json or singleValue.
         this.status = true
         this._notify('modeResult', json)
     }
@@ -45,10 +45,9 @@ export class ModeWeb extends TransformWeb {
         //topic: mode
         //message: modeInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
 
         let validator = new ValidateMode()
         
@@ -69,6 +68,7 @@ Oid.component(
   id: 'ts:transMode',
   element: 'mode-data',
   properties: {
+    column: {default: null},
   },
   receive: {mode: 'handleMode'},
   implementation: ModeWeb

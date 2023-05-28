@@ -20,10 +20,9 @@ export class MeanWeb extends TransformWeb {
         //topic: mean
         //message: meanInput
  
-        this.table = message.table
+        this.table = message
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
-        this.column = message.column
 
         let validator = new ValidateMean()
 
@@ -45,9 +44,7 @@ Oid.component(
   id: 'ts:transMean',
   element: 'mean-data',
   properties: {
-    result: {},
-    column: {},
-    table: {},
+    column: {default: null},
   },
   receive: {mean: 'handleMean'},
   implementation: MeanWeb

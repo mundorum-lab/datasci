@@ -14,11 +14,7 @@ export class MaximumButton extends OidUI {
             ["value2",2]
         ]
     }
-    let maximumInput = {
-      table: table,
-      column: "second",
-    }
-    this._notify('click', maximumInput )
+    this._notify('click', table )
   }
 }
 

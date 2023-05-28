@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class ColumnOpConstantButton extends OidUI {
+export class UniqueValuesButton extends OidUI {
   _onClick () {
   
     let table = {
@@ -8,11 +8,11 @@ export class ColumnOpConstantButton extends OidUI {
         columns: [
             {name: "first", type: "string"},
             {name: "second", type: "number"},
-            {name: "third", type: "number"},
         ],
         data: [
-            ["value1", 4, 3],
-            ["value2", 8, 4]
+            ["value1", 1],
+            ["value2", 2],
+            ["value3", 1]
         ]
     }
     this._notify('click', table )
@@ -21,11 +21,11 @@ export class ColumnOpConstantButton extends OidUI {
 
 Oid.component(
 {
-  id: 'teste:column-op-constant-button',
-  element: 'column-op-constant-button',
+  id: 'teste:unique-button',
+  element: 'unique-button',
   properties: {
-    name: {default: 'fazer operação com cte'}
+    name: {default: 'valores únicos'}
   },
   template: html`<h1 @click>Clique para {{this.name}}</h1>`,
-  implementation: ColumnOpConstantButton
+  implementation: UniqueValuesButton
 })

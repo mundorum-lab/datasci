@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class FilterButton extends OidUI {
+export class CountButton extends OidUI {
   _onClick () {
   
     let table = {
@@ -11,27 +11,21 @@ export class FilterButton extends OidUI {
         ],
         data: [
             ["value1", 1],
-            ["value2",2],
-            ["value3",2],
-            ["value4",1],
-          ]
+            ["value2", 2],
+            ["value3", 1]
+        ]
     }
-    let modeInput = {
-      table: table,
-      column: "second",
-    }
-    console.log("clicou 12312313")
-    this._notify('click', modeInput )
+    this._notify('click', table )
   }
 }
 
 Oid.component(
 {
-  id: 'teste:filter-button',
-  element: 'filter-button',
+  id: 'teste:count-button',
+  element: 'count-button',
   properties: {
-    name: {default: 'filtrar'}
+    name: {default: 'contar'}
   },
   template: html`<h1 @click>Clique para {{this.name}}</h1>`,
-  implementation: FilterButton
+  implementation: CountButton
 })

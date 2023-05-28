@@ -9,9 +9,12 @@
 </head>
 <body>
   <h1>Teste</h1>
-  <maximum-button publish="click~maximum/maximumInput" >
+  <maximum-button publish="click~data/2" >
   </maximum-button>
-  <maximum-data subscribe="maximum/maximumInput~maximum"></maximum-data>
+  <maximum-data 
+    subscribe="data/2~maximum"
+    column="second">
+  </maximum-data>
 </body>
 </html>
 
