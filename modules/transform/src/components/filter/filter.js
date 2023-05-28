@@ -10,12 +10,6 @@ class FilterWeb extends TransformWeb {
     
     handleFilter (topic, message) {  //handle with notice
 
-        /*const sum = (a,b)=>{
-            return a+b;
-        } 
-        dfd["sum"] = sum;
-        const a = "sum"*/
-
         //topic: filter
         if(Number(this.compared_value)){
             this.compared_value = Number(this.compared_value)
@@ -24,8 +18,6 @@ class FilterWeb extends TransformWeb {
         console.log("Tabela Recebida por barramento:")
         console.log(this.table)
         this.toDataFrame()   
-        let r1 = this.df.groupby(["second"])["sum"]()
-        console.log("aaaaaaaaaaa",r1)
         console.log("Tabela no formato de df:")
         this.df.print()
         this.file_id = message.file_id

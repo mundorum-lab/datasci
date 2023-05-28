@@ -45,6 +45,9 @@ Oid.component(
   id: 'ts:transMean',
   element: 'mean-data',
   properties: {
+    result: {},
+    column: {},
+    table: {},
   },
   receive: {mean: 'handleMean'},
   implementation: MeanWeb

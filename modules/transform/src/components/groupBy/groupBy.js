@@ -10,26 +10,35 @@ export class GroupByWeb extends TransformWeb {
     }
 
     groupBy(){ 
-        this.df = this.df.groupby([this.group_by_target_column]).sum()
+        /*this.df = this.df.groupby([this.group_by_target_column]).sum()*/
+        let test = this.df.groupby([this.group_by_target_column])
+        console.log(test)
+        console.log(test.colDict)
+        test.print()
+        /*test.df.get_groups([2]).print()
+        let grp = df.groupby(["A"])
+        grp.get_groups(["foo"]).print()*/
+        /* [this.operation]() */
     }
 
     handleGroupBy (topic, message) {  //handle with notice
 
         //topic: groupBy
         //message: table
-        console.log("aaaaaaaaaaa",this.dfd.sum)
-
-        this.toDataFrame(message)
+        /*console.log("aaaaaaaaaaa",this.dfd.sum)*/
+        this.table = message
+        this.toDataFrame()
         this.file_id = message.file_id
         let validator = new ValidateGroupBy()
+        this.groupBy()
         result = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
-        if(result.isValid){
+        /*if(result.isValid){
             this.groupBy()
             this.status = true
         } else {
             this.status = false
             this._notify('groupByError', result.result)
-        }
+        }*/
 
     }
 }
@@ -38,12 +47,13 @@ export class GroupByWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transGroupBy',
-  element: 'groupBy-data',
+  element: 'groupby-data',
   properties: {
     operation: {default: null},
     group_by_target_column: {default: null},
     operation_target_column: {default: null},
+    result_column: {default: null},
   },
-  receive: {groupBy: 'handleGroupBy'},
+  receive: {groupby: 'handleGroupBy'},
   implementation: GroupByWeb
 })

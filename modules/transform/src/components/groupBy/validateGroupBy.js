@@ -1,4 +1,4 @@
-import { Validate } from "../validate"
+import { Validate } from "../validate.js"
 
 
 export class ValidateGroupBy extends Validate {
