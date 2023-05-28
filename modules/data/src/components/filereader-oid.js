@@ -54,6 +54,9 @@ export class FileReaderOid extends OidUI {
   
         dataArray.push(obj);
       }
+    } else {
+      console.error("File Extension not found - Please use .json or .csv");
+      return -1;
     }
   
     console.log("data:", dataArray);
