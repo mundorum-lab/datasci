@@ -16,7 +16,7 @@ export class NodeInputField{
         //Stores the input provided by the user
         inputValue : Any
 
-        //Exemple:
+        //Example:
         {
         name : Senha,
         kind : TextBox,

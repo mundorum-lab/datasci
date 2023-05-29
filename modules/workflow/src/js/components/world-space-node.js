@@ -7,26 +7,41 @@ import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     /*
     Representa os nodes que estarão localizados no espaço do workflow
+    Possui:
+        output: Lista de portas de saída e suas informações
+        id: Identificador geral da função do nó
+        name: Nome do nó, utilizado somente para a sua visualização
+        presentable: Se o nó possui visualização gráfica ao final do workflow
+        icon: Caminho para o ícone que representa visualmente o nó
+        input: Lista de portas de entrada e suas informações
+        fields: Lista de campos onde o usuário coloca informações para modificar o posicionamento
     
-    */
+    output : [{"type": [string], "name": string, "range": [int, int]}]
+    id : string
+    name : string
+    presentable : boolean
+    icon : string
+    input : [{"type": [string], "name": string, "range": [int, int]}]
+    fields : [inputField]
 
-    /*
-    type : String
-    name : String
-    iconPath : String
-   
-    userInputFields : List<NodeInputField>
-
-    inputConnection : List<WorldSpaceNodeIn>  -> Stores the connectors state in the input
-    outputConnection: List<WorldSpaceNodeOut>  -> Stores the connectors state in the output
-
-    NodeUserInputParameters = {string : string}
-    Ex:
-    NodeUserInputParemeters = {
-        Nome:"Renan",
-        CPF: "123.456.789-10"
-    }
-
+    Example:
+        output : [{type: ["graph/scatter"], name: Saída do Gráfico, range: [1, 1]}],
+        id : "visualize:scatter-plot",
+        name : "Scatter Plot",
+        presentable : true,
+        icon : "/assets/scatter.jpg",
+        input : [{type: ["input"], name: Dados, range: [1, 1]}],
+        fields : {
+            name : "Título", 
+            kind : "TextBox", 
+            parameters : {
+                password : false,
+                maxLength : 10,
+                minLength : 1,
+                forbidden : ["abcde"],
+                placeholder : "Insira o título aqui"
+            }
+        }
 
     */
 
