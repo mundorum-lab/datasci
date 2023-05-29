@@ -3,7 +3,7 @@ import { html, Oid, OidUI } from "/lib/oidlib-dev.js";
 export class FileInputOid extends OidUI {
   handleLoad_file(topic, message) {
     var request = indexedDB.open("MundorunDatabase");
-    console.log("Database Information", message.value.database);
+    console.log("Database Name:", message.value.database);
 
     request.onsuccess = function (event) {
       const db = event.target.result;
@@ -40,7 +40,7 @@ export class FileInputOid extends OidUI {
 
 Oid.component({
   id: "ex:fileinput",
-  element: "file-input",
+  element: "fileinput-oid",
   properties: {
     id: { default: "1" },
     sep: { default: ";" },
