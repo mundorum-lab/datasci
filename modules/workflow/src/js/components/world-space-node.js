@@ -21,8 +21,8 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     name : string
     presentable : boolean
     icon : string
-    input : [{"type": [string], "name": string, "range": [int, int]}]
-    fields : [inputField]
+    input : [{type: [string], name: string, range: [int, int]}]
+    fields : [name : string, view : string, parameters : {par1 : value01 , par2 : value02, ...}]
 
     Example:
         output : [{type: ["graph/scatter"], name: Saída do Gráfico, range: [1, 1]}],
@@ -33,7 +33,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         input : [{type: ["input"], name: Dados, range: [1, 1]}],
         fields : {
             name : "Título", 
-            kind : "TextBox", 
+            view : "TextBox", 
             parameters : {
                 password : false,
                 maxLength : 10,
@@ -42,7 +42,6 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
                 placeholder : "Insira o título aqui"
             }
         }
-
     */
 
     nodeValues = {};
@@ -55,56 +54,45 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         nodeValues[key] = value;
     }
 
-
-    constructor(type, name) {
+    constructor(id, name) {
         super();
         var NodeInfoLib = WorldSpaceNodeTypes.NodeInfoLib;
-        if (!(type in NodeInfoLib)) {
-            throw `Error: ${type} is not a known node type`;
+        if (!(id in NodeInfoLib)) {
+            throw `Error: ${id} is not a known node`;
         }
-        var NodeInfo = NodeInfoLib[type];
+        var NodeInfo = NodeInfoLib[id];
 
-
-        this.type = type;
+        this.id = id;
         this.name = name;
-        this.iconPath = NodeInfo["iconPath"];
+        this.presentable = NodeInfo["presentable"];
+        this.icon = NodeInfo["icon"];
+        this.fields = [];
 
-        this.outputConnection = [];
-        this.inputConnection = [];
-        this.userInputFields = [];
-
-        this.nodeUserInputParameters = {};
-
-        for (var i = 0; i < NodeInfo["outputNodesAmmount"]; i++) {
+        for (var i = 0; i < NodeInfo["output"].length; i++) {
             var newOutput = new worldSpaceNodeConnectorOut(this);
             this.outputConnection.push(newOutput);
-
         }
-        for (var i = 0; i < NodeInfo["compatibleInputNodes"].length; i++) {
-            var compatible = NodeInfo["compatibleInputNodes"][i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible["typesId"], compatible["range"]);
+        for (var i = 0; i < NodeInfo["input"].length; i++) {
+            var compatible = NodeInfo["input"][i];
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible["type"], compatible["range"]);
             this.inputConnection.push(newInput);
-
         }
-        for (var i = 0; i < NodeInfo["userInputFieldsDefinition"].length; i++) {
-            var fieldInfo = NodeInfo["userInputFieldsDefinition"][i];
-            var newField = new NodeInputField(fieldInfo["fieldName"], fieldInfo["inputTypeIdentifier"], fieldInfo["inputTypeParameter"]);
-            this.userInputFields.push(newField);
-
+        for (var i = 0; i < NodeInfo["fields"].length; i++) {
+            var fieldInfo = NodeInfo["fields"][i];
+            var newField = new NodeInputField(fieldInfo["name"], fieldInfo["view"], fieldInfo["parameters"]);
+            this.fields.push(newField);
         }
 
     }
-    //userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
-    /*List<userInputFieldsDefinition>*/ handleGetUserFields() {
-        return WorldSpaceNodeTypes.NodeInfoLib[this.type].userInputFieldsDefinition
+    //fields: [ {name: string, view: string , parameters: [number or string]}]
+    /*List<fields>*/ handleGetUserFields() {
+        return WorldSpaceNodeTypes.NodeInfoLib[this.type]["fields"]
     }
 
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this
         super.Destroy();
-
-
     }
 
     //GRAPH RELATED METHODS -> WILL BE ADDED TO ITS OWN LIB ON REFACTOR
