@@ -3,44 +3,38 @@ export class NodeInputField{
     /*
         Representa os campos de entrada dos nós,
         Possui:
-            Nome do componente que poderá aparecer na tela
-            inputTypeIdentifier: Identificador de tipo de entrada (Ex : Textbox , Radiobtn, Button, Dropdown ...)
-            inputTypeParameters: Parâmetros equivalentes ao tipo de entrada escolhida , similar a um *void em c
+            name: Nome do componente que poderá aparecer na tela
+            kind: Identificador de tipo de entrada (Ex : Textbox , Radio, Button, Dropdown ...)
+            parameters: Parâmetros equivalentes ao tipo de entrada escolhida , similar a um *void em c
 
 
         //Information necessary to display 
-        fieldName : String
-        inputTypeIdentifier : String
-        inputTypeParameters : {par1 : value01 , par2 : value02, ...}
+        name : string
+        kind : string
+        parameters : {par1 : value01 , par2 : value02, ...}
 
         //Stores the input provided by the user
         inputValue : Any
 
-    
-    */
-
-        /*
-        EXEMPLO
+        //Exemple:
         {
-        fieldName : Senha,
-        inputTypeIdentifier : TextBox,
-        inputTypeParameters : {
-
-            isPassword : True,
-            maxLength : 10,
-            forbidenChars : "abcde",
-            
+        name : Senha,
+        kind : TextBox,
+        parameters : {
+            maxLength: 10,
+            minLength: 5,
+            password: true,
+            forbiden: ["abcde", "senha", "12345"],
+            placeholder: "Digite sua senha aqui"
             }
-
         }
-        
         */
 
-    constructor(fieldName, inputTypeIdentifier, inputTypeParameters){
+    constructor(name, kind, parameters){
 
-        this.fieldName = fieldName;
-        this.inputTypeIdentifier =  inputTypeIdentifier;
-        this.inputTypeParameters = inputTypeParameters;
+        this.name = name;
+        this.kind =  kind;
+        this.parameters = parameters;
 
         this.inputValue = null
 
