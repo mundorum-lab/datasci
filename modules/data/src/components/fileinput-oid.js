@@ -2,9 +2,8 @@ import { html, Oid, OidUI } from "/lib/oidlib-dev.js";
 
 export class FileInputOid extends OidUI {
   handleLoad_file(topic, message) {
-    var request = indexedDB.open("MundorunDatabase", 3);
-
-    console.log(message.value);
+    var request = indexedDB.open("MundorunDatabase");
+    console.log("Database Information", message.value.database);
 
     request.onsuccess = function (event) {
       const db = event.target.result;

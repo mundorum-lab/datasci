@@ -25,8 +25,8 @@ export class FileReaderOid extends OidUI {
     const file_name = file.name.split('.')[0];
     console.log("file extension", file_extension);
   
-    const dbName = "DatabaseMundorun";
-    const objectStoreName = `${file_name.replace(/[^a-zA-Z0-9-_]/g, "")}_mundorundataStore`;
+    const dbName = "DatabaseMundorum";
+    const objectStoreName = `${file_name.replace(/[^a-zA-Z0-9-_]/g, "")}_MundorumDS`;
     const text = await file.text();
     let dataArray = [];
   
@@ -153,8 +153,7 @@ export class FileReaderOid extends OidUI {
 
   
     const content = {'database':dbName, 'table': objectStoreName, 'file_name': file_name, 'file_extension': file_extension};
-    console.log(content)
-    this._notify('loaded', { value: content });
+    this._notify('loaded', { value: JSON.stringify(content) });
     this._invoke('itf:transfer', 'send', { value: file_name });
   }
   
@@ -165,10 +164,10 @@ Oid.component(
   id: 'oid:file',
   element: 'filereader-oid',
   properties: {
-    label: { default: 'Drop Zone' },
-    pre:   { default: 'Drop your file here' },
-    post:  { default: 'File loaded' },
-    sep: { default: ''}
+    label: { default: 'Arraste o arquivo aqui.' },
+    pre:   { default: 'Solte o arquivo aqui.' },
+    post:  { default: 'Arquivo Gravado.' },
+    sep: { default: ','}
   },
   implementation: FileReaderOid,
   styles: css`
