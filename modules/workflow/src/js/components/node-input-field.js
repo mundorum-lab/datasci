@@ -1,26 +1,25 @@
 export class NodeInputField{
 
     /*
-        Representa os campos de entrada dos nós,
-        Possui:
-            name: Nome do componente que poderá aparecer na tela
-            kind: Identificador de tipo de entrada (Ex : Textbox , Radio, Button, Dropdown ...)
-            parameters: Parâmetros equivalentes ao tipo de entrada escolhida , similar a um *void em c
+    Representa os campos de entrada dos nós.
+    Possui:
+        name: Nome do componente que poderá aparecer na tela
+        view: Identificador de tipo de entrada (Ex : Textbox , Radio, Button, Dropdown ...)
+        parameters: Parâmetros equivalentes ao tipo de entrada escolhida , similar a um *void em c
+        inputValue: armazena o input do usuário
 
 
-        //Information necessary to display 
-        name : string
-        kind : string
-        parameters : {par1 : value01 , par2 : value02, ...}
+    Informações necessárias para renderização
+        name: string
+        view: string
+        parameters: {par1 : value01 , par2 : value02, ...}
+        inputValue: Any
 
-        //Stores the input provided by the user
-        inputValue : Any
-
-        //Example:
+    Example:
         {
-        name : Senha,
-        kind : TextBox,
-        parameters : {
+        name: Senha,
+        view: TextBox,
+        parameters: {
             maxLength: 10,
             minLength: 5,
             password: true,
@@ -28,34 +27,29 @@ export class NodeInputField{
             placeholder: "Digite sua senha aqui"
             }
         }
-        */
+    */
 
-    constructor(name, kind, parameters){
-
+    constructor(name, view, parameters){
         this.name = name;
-        this.kind =  kind;
+        this.view =  view;
         this.parameters = parameters;
-
         this.inputValue = null
-
     }
 
 
-    /*Any*/  handleGetInputParameterValue(/*string*/ parameter ){
-        return this.inputTypeParameters[parameter];
-
+    /*Any*/ handleGetParameterValue(/*string*/ parameter){
+        return this.parameters[parameter];
     } 
-    /*bool*/ handleSetInputParameterValue(/*string*/ parameter , /* any*/ value){
-        //Set the parameter - If the parameter didn't exist , return false, else true
+
+    /*bool*/ handleSetParameterValue(/*string*/ parameter, /* any*/ value){
+        //Set the parameter value. If the parameter doesn't have a value, return false, else true.
         let exists = true;
         
-        if (inputTypeParameters[parameter] == undefined)
+        if (parameters[parameter] == undefined)
             exists = false
-        this.inputTypeParameters[parameter] = value;
+        this.parameters[parameter] = value;
         return exists
-
     }
-
 
     handleGetInputValue(){
         return this.inputValue;
@@ -65,5 +59,4 @@ export class NodeInputField{
         this.inputValue = inputValue;
     }
     
-
 }
