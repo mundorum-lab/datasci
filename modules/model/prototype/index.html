@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="transformation-cluster.js" type="module"></script>
+  <script src="data-mocker.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <button-oid label="Start" 
+              value="The dinosaur jumped into the mud."
+              publish="click:statistics/cluster">
+  </button-oid>
+  <data-mocker publish="click:statistics/cluster"></data-mocker>
+  <console-oid subscribe="statistics/output:display">
+  </console-oid>
+  <transformation-cluster subscribe="statistics/cluster:transform"
+                          publish="transform:statistics/output"></transformation-cluster>
+</body>
+</html>
