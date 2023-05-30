@@ -4,10 +4,10 @@
 Esse módulo pretende receber pedidos de transformações relacionais para determinados dados, e retornar os dados já processados como foi desejado pela entrada, como por exemplo: filtrar dados, join de colunas, drop de colunas, etc.
 
 # Team
-Cícero Pizzol Libardi - RA:168810 <br>
-Jéssica da Silva Oliveira - RA:173931 <br>
-Isabella Garcia Fagioli - RA:173174 <br>
-Fábio de Andrade Barboza - RA:168817 <br>
+Cícero Pizzol Libardi - RA 168810 <br>
+Fábio de Andrade Barboza - RA 168817 <br>
+Isabella Garcia Fagioli - RA 173174 <br>
+Jéssica da Silva Oliveira - RA 173931 <br>
 
 # Message Types
 
@@ -73,7 +73,7 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`present` | `recebe a entrada e modifica html para organizar a apresentação correspondente` | `table`, `singleValue`
+`filter` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
 
 ## Component `Transform`
 
@@ -114,7 +114,7 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`filter` | `filtra uma tabela de dados, gerando outra` | `table`
+`filterOperation` | `filtra uma tabela de dados, gerando outra` | `filterInput`
 
 ### Output Notices
 
@@ -412,18 +412,20 @@ notice    | source | message type
 ## Setup
 
 ~~~html
-<previous-node publish="notice~data/2"></previous-node>
+<validateFilter 
+        status=false
+        table = {}
+        subscribe="filter/filterInput:validate"
+        publish="validationSucceed:filterOperation/filterInput"
+        publish="validationFailed:filterResult/operationResult"
+        >
+</validateFilter>
 
-<filter-web
-  operation="=="      
-  target_column="second" 
-  compared_value=1
-  subscribe="data/2~filter" 
-  publish="filterResult~data/3"
-  publish="filterError~error">
-</filter-web>
-
-<next-node subscribe="data/3~notice"></next-node>
+<filter
+        status=false
+        subscribe="filterOperation/filterInput:filter"
+        publish="filtered:filterResult/operationResult">
+</filter>
 ~~~
 
 ## Narrative

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example Template</title>
+    <script src="src/components/apiinput-oid.js" type="module"></script>
+  </head>
+  <body>
+    <h1>Api-input Component</h1>
+    <button-oid label="Start1"
+                value='{"file_id":"1","api_type":"GET","url_content":"https://jsonplaceholder.typicode.com/posts"}'
+                publish="click~input_api/load">
+    </button-oid>
+    <api-input subscribe="input_api/load~input_api" publish="output~show/message"></api-input>
+    <console-oid subscribe="show/message~display"></console-oid>
+  </body>
+</html>
