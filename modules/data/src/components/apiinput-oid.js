@@ -34,6 +34,29 @@ export class ApiInputOid extends OidUI {
     }
   }
 
+  restRequest(method, url) {
+    request = new XMLHttpRequest()
+    request.open(method, url)
+    request.send()
+
+    request.onreadystatechange = (e) => {
+      if (request.readyState == XMLHttpRequest.DONE) {
+        response = {}
+
+        if (request.status == 200) {
+          // Successful operation
+          console.log("Success - " + JSON.parse(request.responseText))
+        } else {
+          // Error in operation
+          console.log("Error - " + JSON.parse(request.responseText))
+        }
+
+        this._notify('output', request) // Processed file goes here
+      }
+    }
+  }
+
+  /*
   restRequest(method, parameters) {
     let result = null
 
@@ -106,6 +129,7 @@ export class ApiInputOid extends OidUI {
     }
     return result
   }
+  */
 }
 
 Oid.component(
