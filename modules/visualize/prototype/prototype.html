@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="module" src = "pie_chart/pie_chart.js"></script>
+        <script type="module" src = "component_simulator.js"></script>
+    </head>
+    <body>
+        <button onclick="openGraphCreator()">New Pie Chart</button>
+        <button onclick="updatePieChart()">Update</button>
+        <button onclick="visualizeGraph()">Visualize</button>
+        <button onclick="stopVisualize()">Stop Visualize</button>
+        
+        <div id='create_graph' style='visibility: hidden; height:0'>
+            <h1>Editing graph</h1>
+            Graph Title: <input id='graph_creator_graph_title' type='text'><br>
+            Display Title <select id='graph_creator_display_graph_title'>
+                <option value=true>True</option>
+                <option value=false>False</option>
+            </select><br>
+            Animations <select id='graph_creator_animations'>
+                <option value=true>True</option>
+                <option value=false>False</option>
+            </select><br>
+            Cut Out <input id="graph_creator_cut_out" type="range" min="0" max="90"><br>
+            Radius <input id="graph_creator_radius" type="range" min="10" max="100"><br>
+            <button onclick="createPieChart()">save</button>
+        </div>
+        
+        <p>Gráficos no workflow:</p>
+    </body>
+</html>
