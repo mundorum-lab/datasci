@@ -167,7 +167,7 @@ Oid.component(
     label: { default: 'Arraste o arquivo aqui.' },
     pre:   { default: 'Solte o arquivo aqui.' },
     post:  { default: 'Arquivo Gravado.' },
-    sep: { default: ','}
+    sep: { default: ''}
   },
   implementation: FileReaderOid,
   styles: css`
