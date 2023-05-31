@@ -8,24 +8,41 @@
   </head>
   <body>
     <h1>Api-input Component</h1>
-    <div class="api_data">
-      API URL: <input id='api_url' type='text' value="https://jsonplaceholder.typicode.com/posts">
+    <div id="api_data">
+      API URL: <input id='api_url' type='text' value="https://jsonplaceholder.typicode.com/posts"><br>
+      METHOD: <input id="method" type="text" value="GET"><br>
+      BODY: <br><textarea id="body" cols="50" rows="10"></textarea><br>
+      HEADERS: <br><textarea id="headers" cols="50" rows="10"></textarea>
     </div>
-    <button-oid id="start-button" label="Start1"
-                value='{"file_id":"1","api_type":"GET","url_content":"https://jsonplaceholder.typicode.com/posts"}'
+    <button-oid id="send-button" label="Send request"
+                value="{'api_url':'','method':'','headers':'','body':''}"
                 publish="click~input_api/load">
     </button-oid>
     <api-input subscribe="input_api/load~input_api" publish="output~show/message"></api-input>
     <console-oid subscribe="show/message~display"></console-oid>
 
     <script>
-      var apiUrlInput = document.getElementById('api_url');
-      var startButton = document.getElementById('start-button');
+      var apiUrlInput = document.getElementById("api_url");
+      var methodInput = document.getElementById("method");
+      var bodyInput = document.getElementById("body");
+      var headersInput = document.getElementById("headers");
 
-      apiUrlInput.addEventListener('input', function() {
-        var apiUrl = apiUrlInput.value;
-        startButton.setAttribute('value', '{"file_id":"1","api_type":"GET","url_content":"' + apiUrl + '"}');
-      });
+      var sendButton = document.getElementById('send-button');
+
+      for (let i of [apiUrlInput, methodInput, bodyInput, headersInput]) {
+        i.addEventListener("input", updateSendButtonData);
+      }
+
+      document.addEventListener('DOMContentLoaded', updateSendButtonData);
+
+      function updateSendButtonData() {
+        sendButton.setAttribute('value', '{"api_url":"' + apiUrlInput.value +
+                                            '","method":"' + methodInput.value +
+                                            '","headers":"' + headersInput.value +
+                                            '","body":"' + bodyInput.value + '"}');
+
+        console.log("Updated button data - " + sendButton.value);
+      }
     </script>
   </body>
 </html>
