@@ -6,7 +6,8 @@ export class ApiInputOid extends OidUI {
 
     const jsonData = JSON.parse(message.value)
     const Http = new XMLHttpRequest();
-    const url=jsonData.url_content;
+    const url = jsonData.url_content;
+    const fileId = jsonData.file_id;
     Http.open(jsonData.api_type, url);
     Http.send();
     Http.onreadystatechange = (e) => {
@@ -30,7 +31,7 @@ export class ApiInputOid extends OidUI {
       console.log(columns)
       console.log(data)
 
-      this._notify('output', {value: JSON.stringify({columns: columns, data: data})}) // Processed file goes here
+      this._notify('output', {value: JSON.stringify({"file_id": fileId, columns: columns, data: data})}) // Processed file goes here
     }
   }
 
