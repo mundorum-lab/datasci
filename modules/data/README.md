@@ -57,8 +57,10 @@
 **`RawAPIContent`**
 ~~~json
 {
-	"api_type": string,
-	"url_content": string
+	"url": string,
+	"method": string,
+	"headers": string,
+	"body": string
 }
 ~~~
 
