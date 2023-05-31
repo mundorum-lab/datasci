@@ -66,7 +66,7 @@ class FilterWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transFilter',
+  id: 'ts:filter',
   element: 'filter-data',
   properties: {
     target_column: {default: null},

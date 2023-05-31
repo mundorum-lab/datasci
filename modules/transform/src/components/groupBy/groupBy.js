@@ -48,7 +48,7 @@ export class GroupByWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transGroupBy',
+  id: 'ts:groupBy',
   element: 'groupby-data',
   properties: {
     operation: {default: null},

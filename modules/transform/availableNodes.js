@@ -1,39 +1,78 @@
 export const availableNodes = {
-    filter: [{                     
-        type: "table/json",
-        name: "Filtrar Tabela",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+    filter: [{
+        output: [
             {
-                fieldName: "Operação",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {values:[">=",">","<","<=","="]}, //this parameters will change
-                }
+                type: ["json/table"], 
+                range: [1,1]
+            }
+        ], //TODO: Better understanding of types
+        id: "ts:filter",
+        name: "Filtro",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/filter.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                kind: "TextBox", 
+                parameters: []    //TODO: Think about Parameters
             },
             {
-                fieldName: "Nome da Coluna filtrada",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                name: "Operação",
+                kind: "",         //TODO think about possible values
+                parameters: []  
             },
             {
-                fieldName: "Valor a ser comparado",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "any",
-                    parameters: {},
-                }
+                name: "Valor de Comparação",
+                kind: "TextBox", 
+                parameters: []    
+            }
+        ]
+    }],
+
+    groupby: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,1]
+            }
+        ], 
+        id: "ts:groupby",
+        name: "Agrupar linhas",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/groupby.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Operação",
+                kind: "", 
+                parameters: [] 
             },
+            {
+                name: "Coluna agrupada",
+                kind: "TextBox", 
+                parameters: []
+            },
+            {
+                name: "Coluna Analisada",
+                kind: "TextBox", 
+                parameters: []
+            },
+            {
+                name: "Nome da Coluna Resultante",
+                kind: "TextBox", 
+                parameters: []
+            }
         ]
     }],
 
