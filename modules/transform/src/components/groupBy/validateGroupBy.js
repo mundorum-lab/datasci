@@ -16,7 +16,7 @@ export class ValidateGroupBy extends Validate {
             }
             return {result,isValid: false}
         }
-        if(!columnGroupByTargetColumnExists){
+        if(!groupByTargetColumnExists){
             let result = {
                 transformationType: "groupBy",
                 errorType: "Column not found",
@@ -24,7 +24,7 @@ export class ValidateGroupBy extends Validate {
             }
             return {result,isValid: false}
         }
-        if(!columnOperationTargetColumnExists){
+        if(!operationTargetColumnExists){
             let result = {
                 transformationType: "groupBy",
                 errorType: "Column not found",

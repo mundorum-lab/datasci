@@ -32,15 +32,14 @@ export class GroupByWeb extends TransformWeb {
         this.groupBy()
         this.toJson()
         this._notify('groupby_result', this.table)
-        /* TODO: VALIDADTE
-        result = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
+        let result = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
         if(result.isValid){
             this.groupBy()
             this.status = true
         } else {
             this.status = false
             this._notify('groupByError', result.result)
-        }*/
+        }
 
     }
 }
