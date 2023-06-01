@@ -28,6 +28,7 @@ export class FileReaderOid extends OidUI {
     const dbName = "DatabaseMundorum";
     const objectStoreName = `${file_name.replace(/[^a-zA-Z0-9-_]/g, "")}_MundorumDS`;
     const text = await file.text();
+    console.log(text)
     let dataArray = [];
   
     if (file_extension === 'json') {
@@ -39,8 +40,7 @@ export class FileReaderOid extends OidUI {
       const lines = text.split(/\r?\n/);
       const keys = lines[0].split(sep); // Obtém as chaves do cabeçalho
       for (let i = 0; i< keys.length; i++) {
-        keys[i] = keys[i].replace(" ", "_");
-        keys[i] = keys[i].replace(/[^a-zA-Z0-9-_]/g, "");
+        keys[i] = keys[i].replace(/[^a-zA-Z0-9-_()]/g, "");
       }
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(sep);
@@ -48,7 +48,7 @@ export class FileReaderOid extends OidUI {
         for (let j = 0; j < keys.length; j++) {
           obj[keys[j]] = values[j];
           if (!isNaN(values[j])) {
-            obj[keys[j]] = parseInt(values[j]);
+            obj[keys[j]] = parseFloat(values[j]);
           }
         }
         console.log(obj)
