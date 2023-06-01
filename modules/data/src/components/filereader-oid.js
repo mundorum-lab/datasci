@@ -35,22 +35,22 @@ export class FileReaderOid extends OidUI {
       console.log(jsonData);
       dataArray = jsonData;
     } else if (file_extension === 'csv') {
-      console.log("Guarda csv no banco");
       let sep = this.sep === '' ? ',' : this.sep;
-  
       const lines = text.split(/\r?\n/);
       const keys = lines[0].split(sep); // Obtém as chaves do cabeçalho
-  
+      for (let i = 0; i< keys.length; i++) {
+        keys[i] = keys[i].replace(" ", "_");
+      }
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(sep);
         const obj = {};
-  
         for (let j = 0; j < keys.length; j++) {
           obj[keys[j]] = values[j];
           if (!isNaN(values[j])) {
             obj[keys[j]] = parseInt(values[j]);
           }
         }
+        console.log(obj)
   
         dataArray.push(obj);
       }
@@ -97,6 +97,7 @@ export class FileReaderOid extends OidUI {
             const newObjectStore = newDb.createObjectStore(objectStoreName, { keyPath: "id", autoIncrement: true });
           
             for (const key of Object.keys(dataArray[0])) {
+              console.log(key)
               newObjectStore.createIndex(key, key, { unique: false });
             }
           };
@@ -149,12 +150,8 @@ export class FileReaderOid extends OidUI {
         }
       };
     }
-
-
-  
     const content = {'database':dbName, 'table': objectStoreName, 'file_name': file.name, 'file_extension': file_extension};
     this._notify('loaded', { value: JSON.stringify(content) });
-    this._invoke('itf:transfer', 'send', { value: file_name });
   }
   
 }
