@@ -2,11 +2,18 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 async function makeHttpRequest(method, body, headers, url) {
   try {
-    const response = await fetch(url, {
+    const headersObj = headers ? JSON.parse(headers) : {};
+    const requestOptions = {
       method: method,
-      // body: JSON.stringify(body)
-      // headers: JSON.stringify(headers)
-    });
+      headers: headersObj
+    };
+
+    if (body) {
+      const bodyObj = JSON.parse(body);
+      requestOptions.body = JSON.stringify(bodyObj);
+    }
+
+    const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -20,11 +27,12 @@ async function makeHttpRequest(method, body, headers, url) {
   }
 }
 
+
 export class ApiInputOid extends OidUI {
   async handleInput_api (topic, message) {
     const jsonData = JSON.parse(message.value)
 
-    let rawData = await makeHttpRequest(jsonData.api_type, jsonData.body, jsonData.headers, jsonData.api_url)
+    let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
 
     let columns = Object.keys(rawData[0])
     let data = []
