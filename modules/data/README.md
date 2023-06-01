@@ -5,15 +5,15 @@
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
-	* `Responsible for architecting and developing the api-input component to transform into JSON.`
+	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
 * `Gustavo Araújo Morais`
-	* `Responsible for architecting and developing the file-typing, this processes JSON data and send to data bus.`
+	* `Responsible for architecting and developing the api-input, this processes JSON data and send to data bus.`
 * `João Guilherme Alves Santos`
-	* `Responsible for architecting and developing the api-input component to transform into JSON.`
+	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
 * `Raniery Rodrigues da SIlva`
-	* `Responsible for architecting and developing the file input component to transform into JSON.`
+	* `Responsible for architecting and developing the file typing component to transform into JSON.`
 * `Leonardo Livrare Martins`
-	* `Responsible for architecting and developing the file input component to transform into JSON.`
+	* `Responsible for architecting and developing the api-input component to transform into JSON.`
 
 # Message Types
 
@@ -32,6 +32,15 @@
 		[column0, column1, ...],
 		... // Other rows
 	]
+}
+~~~
+**`TreatedReaderContent`**
+~~~json
+{
+	"database": string, 
+	"table": string, 
+	"file_name": string, 
+	"file_extension": string
 }
 ~~~
 **`FileTypeRequest`**
