@@ -3,10 +3,10 @@ export class WorldSpaceNodeTypes {
     {
         type: 
         {
-            iconPath : String ,
-            userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
-            compatibleInputNodes :[{typesId : [String] , range [int,int]}, ...],
-            outputNodesAmmount : int
+            output :[{id : [string], range [int, int]}, ...],
+            icon : string,
+            fields: [ {name: string, view: string , parameters: [number or string]}], 
+            input :[{id : [string], range [int, int]}, ...],
         } , ...
     }
     */
@@ -14,8 +14,9 @@ export class WorldSpaceNodeTypes {
 
   static fetchNodes() {
     // fetch a JSON from the root of the project and parse it into the variable NodeInfoLib
+    // this is a static method, so it can be called without creating an instance of the class
 
-    fetch("/availableNodes.json")
+    fetch("/availableCategories.json")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -23,8 +24,19 @@ export class WorldSpaceNodeTypes {
         return response.json();
       })
       .then((data) => {
-        this.NodeInfoLib = data;
-        console.log(this.NodeInfoLib);
+        for(let node in data){
+          fetch(data[node].url).then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((categoryData) => {
+            this.NodeInfoLib[data[node].name] = categoryData;
+          }).catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

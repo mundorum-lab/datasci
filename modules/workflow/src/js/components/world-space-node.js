@@ -7,27 +7,41 @@ import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     /*
     Representa os nodes que estarão localizados no espaço do workflow
+    Possui:
+        output: Lista de portas de saída e suas informações
+        id: Identificador geral da função do nó
+        name: Nome do nó, utilizado somente para a sua visualização
+        presentable: Se o nó possui visualização gráfica ao final do workflow
+        icon: Caminho para o ícone que representa visualmente o nó
+        input: Lista de portas de entrada e suas informações
+        fields: Lista de campos onde o usuário coloca informações para modificar o posicionamento
     
-    */
+    output : [{"type": [string], "name": string, "range": [int, int]}]
+    id : string
+    name : string
+    presentable : boolean
+    icon : string
+    input : [{type: [string], name: string, range: [int, int]}]
+    fields : [name : string, view : string, parameters : {par1 : value01 , par2 : value02, ...}]
 
-    /*
-    type : String
-    name : String
-    iconPath : String
-   
-    userInputFields : List<NodeInputField>
-
-    inputConnection : List<WorldSpaceNodeIn>  -> Stores the connectors state in the input
-    outputConnection: List<WorldSpaceNodeOut>  -> Stores the connectors state in the output
-
-    NodeUserInputParameters = {string : string}
-    Ex:
-    NodeUserInputParemeters = {
-        Nome:"Renan",
-        CPF: "123.456.789-10"
-    }
-
-
+    Example:
+        output : [{type: ["graph/scatter"], name: Saída do Gráfico, range: [1, 1]}],
+        id : "visualize:scatter-plot",
+        name : "Scatter Plot",
+        presentable : true,
+        icon : "/assets/scatter.jpg",
+        input : [{type: ["input"], name: Dados, range: [1, 1]}],
+        fields : {
+            name : "Título", 
+            view : "TextBox", 
+            parameters : {
+                password : false,
+                maxLength : 10,
+                minLength : 1,
+                forbidden : ["abcde"],
+                placeholder : "Insira o título aqui"
+            }
+        }
     */
 
     nodeValues = {};
@@ -40,56 +54,46 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         nodeValues[key] = value;
     }
 
-
-    constructor(type, name) {
+    constructor(id, name) {
         super();
         var NodeInfoLib = WorldSpaceNodeTypes.NodeInfoLib;
-        if (!(type in NodeInfoLib)) {
-            throw `Error: ${type} is not a known node type`;
+        if (!(id in NodeInfoLib)) {
+            throw `Error: ${id} is not a known node`;
         }
-        var NodeInfo = NodeInfoLib[type];
+        var NodeInfo = NodeInfoLib[id];
 
-
-        this.type = type;
+        this.id = id;
         this.name = name;
-        this.iconPath = NodeInfo["iconPath"];
+        this.presentable = NodeInfo["presentable"];
+        this.icon = NodeInfo["icon"];
+        this.fields = [];
 
-        this.outputConnection = [];
-        this.inputConnection = [];
-        this.userInputFields = [];
-
-        this.nodeUserInputParameters = {};
-
-        for (var i = 0; i < NodeInfo["outputNodesAmmount"]; i++) {
-            var newOutput = new worldSpaceNodeConnectorOut(this);
+        for (var i = 0; i < NodeInfo["output"].length; i++) {
+            var compatible = NodeInfo["output"][i];
+            var newOutput = new worldSpaceNodeConnectorOut(this, compatible["type"], compatible["range"]);
             this.outputConnection.push(newOutput);
-
         }
-        for (var i = 0; i < NodeInfo["compatibleInputNodes"].length; i++) {
-            var compatible = NodeInfo["compatibleInputNodes"][i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible["typesId"], compatible["range"]);
+        for (var i = 0; i < NodeInfo["input"].length; i++) {
+            var compatible = NodeInfo["input"][i];
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible["type"], compatible["range"]);
             this.inputConnection.push(newInput);
-
         }
-        for (var i = 0; i < NodeInfo["userInputFieldsDefinition"].length; i++) {
-            var fieldInfo = NodeInfo["userInputFieldsDefinition"][i];
-            var newField = new NodeInputField(fieldInfo["fieldName"], fieldInfo["inputTypeIdentifier"], fieldInfo["inputTypeParameter"]);
-            this.userInputFields.push(newField);
-
+        for (var i = 0; i < NodeInfo["fields"].length; i++) {
+            var fieldInfo = NodeInfo["fields"][i];
+            var newField = new NodeInputField(fieldInfo["name"], fieldInfo["view"], fieldInfo["parameters"]);
+            this.fields.push(newField);
         }
 
     }
-    //userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
-    /*List<userInputFieldsDefinition>*/ handleGetUserFields() {
-        return WorldSpaceNodeTypes.NodeInfoLib[this.type].userInputFieldsDefinition
+    //fields: [ {name: string, view: string , parameters: [number or string]}]
+    /*List<fields>*/ handleGetUserFields() {
+        return WorldSpaceNodeTypes.NodeInfoLib[this.type]["fields"]
     }
 
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this
         super.Destroy();
-
-
     }
 
     //GRAPH RELATED METHODS -> WILL BE ADDED TO ITS OWN LIB ON REFACTOR
