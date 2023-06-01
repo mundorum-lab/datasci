@@ -14,7 +14,10 @@ export class GraphOid extends OidUI {
     this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
 
-    Chart.register(ChartDataLabels);
+    if(this.type != "pie" && this.type != "doughnut"){
+      Chart.register(ChartDataLabels);
+    }
+    
     Chart.register(zoomPlugin);
     
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, 
