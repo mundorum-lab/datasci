@@ -3,10 +3,10 @@ export class WorldSpaceNodeTypes {
     {
         type: 
         {
-            iconPath : String ,
-            userInputFieldsDefinition: [ {fieldName: String, inputTypeIdentifier: String , inputTypeAttributes: Array}] , 
-            compatibleInputNodes :[{typesId : [String] , range [int,int]}, ...],
-            outputNodesAmmount : int
+            output :[{id : [string], range [int, int]}, ...],
+            icon : string,
+            fields: [ {name: string, view: string , parameters: [number or string]}], 
+            input :[{id : [string], range [int, int]}, ...],
         } , ...
     }
     */
