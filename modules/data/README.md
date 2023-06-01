@@ -50,14 +50,13 @@
 **`ErrorDuringDataProcessing`**
 ~~~json
 {
-	"error": string,
-	"line": number
+	"error": string
 }
 ~~~
 **`RawAPIContent`**
 ~~~json
 {
-	"url": string,
+	"api_url": string,
 	"method": string,
 	"headers": string,
 	"body": string
