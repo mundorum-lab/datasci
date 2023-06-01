@@ -9,6 +9,7 @@
   <body>
     <h1>Api-input Component</h1>
     <div id="api_data">
+      IDENTIFIER: <input id='identifier' type='text' value="api_test_123"><br>
       API URL: <input id='api_url' type='text' value="https://jsonplaceholder.typicode.com/posts"><br>
       METHOD: <input id="method" type="text" value="GET"><br>
       BODY: <br><textarea id="body" cols="50" rows="10"></textarea><br>
@@ -22,6 +23,7 @@
     <console-oid subscribe="show/message~display"></console-oid>
 
     <script>
+      var apiIdentifier = document.getElementById("identifier");
       var apiUrlInput = document.getElementById("api_url");
       var methodInput = document.getElementById("method");
       var bodyInput = document.getElementById("body");
@@ -29,7 +31,7 @@
 
       var sendButton = document.getElementById('send-button');
 
-      for (let i of [apiUrlInput, methodInput, bodyInput, headersInput]) {
+      for (let i of [apiUrlInput, methodInput, bodyInput, headersInput, apiIdentifier]) {
         i.addEventListener("input", updateSendButtonData);
       }
 
@@ -41,7 +43,8 @@
             api_url: apiUrlInput.value,
             method: methodInput.value,
             headers: headersInput.value,
-            body: bodyInput.value
+            body: bodyInput.value,
+            identifier: apiIdentifier.value
           };
 
           const jsonString = JSON.stringify(requestData);

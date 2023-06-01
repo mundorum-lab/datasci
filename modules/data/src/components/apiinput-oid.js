@@ -48,7 +48,7 @@ export class ApiInputOid extends OidUI {
     console.log(columns)
     console.log(data)
 
-    this._notify('output', {value: JSON.stringify({columns: columns, data: data})}) // Processed file goes here
+    this._notify('output', {value: JSON.stringify({"id": jsonData.identifier, columns: columns, data: data})}) // Processed file goes here
   }
 }
 
