@@ -36,12 +36,21 @@
       document.addEventListener('DOMContentLoaded', updateSendButtonData);
 
       function updateSendButtonData() {
-        sendButton.setAttribute('value', '{"api_url":"' + apiUrlInput.value +
-                                            '","method":"' + methodInput.value +
-                                            '","headers":"' + headersInput.value +
-                                            '","body":"' + bodyInput.value + '"}');
+        try {
+          const requestData = {
+            api_url: apiUrlInput.value,
+            method: methodInput.value,
+            headers: headersInput.value,
+            body: bodyInput.value
+          };
 
-        console.log("Updated button data - " + sendButton.value);
+          const jsonString = JSON.stringify(requestData);
+          sendButton.setAttribute('value', jsonString);
+
+          console.log("Updated button data - " + sendButton.value);
+        } catch (error) {
+          console.error('Error updating button data:', error);
+        }
       }
     </script>
   </body>
