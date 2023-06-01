@@ -8,11 +8,12 @@ export class GroupbyButton extends OidUI {
         columns: [
             {name: "first", type: "number"},
             {name: "second", type: "number"},
+            {name: "third", type: "string"},
         ],
         data: [
-            [3, 1],
-            [3,2],
-            [3,1]
+            [3, 1, "hey"],
+            [3,2, "au"],
+            [3,1, "qs"]
         ]
     }
     console.log("click")

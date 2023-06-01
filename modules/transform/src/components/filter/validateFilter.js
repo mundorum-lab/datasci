@@ -4,7 +4,7 @@ export class ValidateFilter extends Validate{
 
     constructor(){
         super()
-        this.validOperations = ["=="]
+        this.validOperations = ["==","<=",">","!=",">=","<"]
     }
 
     validate(columns, targetColumn, comparedValue, operation) {

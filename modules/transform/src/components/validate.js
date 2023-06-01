@@ -31,11 +31,11 @@ export class Validate {
     }
 
     //check if type of column is adequate for the operation performed on the column
-    isOperationAndTypeValid(operation,availableColumns,targetColumn){
-        if(!this.isOperationValid(operation)){
+    isOperationAndTypeValid(operation,availableColumns,targetColumn,validOperations){
+        if(!validOperations[0].includes(operation) && !validOperations[1].includes(operation) && !validOperations[2].includes(operation)){
             return false
         }
-        if(operation=="avg" && (availableColumns[targetColumn]!="int" || availableColumns[targetColumn]!="float")){
+        if((validOperations[0].includes(operation) && availableColumns[targetColumn]!="number") || (validOperations[1].includes(operation) && availableColumns[targetColumn]!="string")){
             return false
         }
         return true
