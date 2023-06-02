@@ -28,6 +28,8 @@ export class NodeInputField{
             }
         }
     */
+   
+
 
     constructor(name, view, parameters){
         this.name = name;
@@ -57,6 +59,9 @@ export class NodeInputField{
 
     handleSetInputValue(inputValue){
         this.inputValue = inputValue;
+    }
+    getName(){
+        return this.name
     }
     
 }
