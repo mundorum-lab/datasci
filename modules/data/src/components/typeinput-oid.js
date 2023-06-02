@@ -3,6 +3,7 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 export class TypeInputOid extends OidUI {
   handleType_input (topic, message) {
     const jsonData = JSON.parse(message.value);
+
     let columnType = Array(jsonData.columns.length).fill(null)
     console.log(jsonData)
     for(let line in jsonData.data){
@@ -10,6 +11,7 @@ export class TypeInputOid extends OidUI {
         console.log(parseInt(jsonData.data[line][index]))
         console.log(Array(jsonData.columns.length).fill(null))
         if((columnType[index] === null || columnType[index] === 'int') && !isNaN(parseInt(jsonData.data[line][index]))){
+          jsonData.columns[index] = 
           columnType[index] = 'int';
         }else if((columnType[index] === null || columnType[index] === 'boolean') &&(
             jsonData.data[line][index] === 'true' ? true :
@@ -20,7 +22,12 @@ export class TypeInputOid extends OidUI {
         }
       }
     }
-    console.log(columnType)
+
+    for (let i in jsonData.columns) {
+      jsonData.columns[i] = {name: jsonData.columns[i], type: columnType[i]}
+    }
+
+    console.log(JSON.stringify(jsonData))
   }
 
 }
