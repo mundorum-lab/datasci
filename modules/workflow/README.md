@@ -51,8 +51,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": []
+      "view": string, 
+      "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }],
 
@@ -65,8 +65,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": {} // depende do tipo de input (kind) Ex.: para Text, {"password":boolean, "maxDigits":string}
+      "view": string, 
+      "parameters": {}
     }]
   }],
   ...
@@ -84,8 +84,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": [number or string]
+      "view": string, 
+      "parameters": {}
   }]
 }
 ~~~
@@ -244,106 +244,98 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
     "input": [{"type": [string], "name": string, "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string,
-      "parameters": {} // depende do tipo de input () Ex.: para Text, {"password":boolean, "maxDigits":string}
+      "view": string,
+      "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }
   ...
 ]
 ```
 
-* Exemplo:
+* Exemplos:
 
 **`nodeGraphScatter.json`**
 
 ```json
-  {
-    "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
-    "id": "visualize:scatter-plot",
-    "name": "Scatter Plot",
-    "presentable": true,
-    "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
-    "fields": [{
-        "name" : "Título do Gráfico",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
+  "id": "visualize:scatter-plot",
+  "name": "Scatter Plot",
+  "presentable": true,
+  "icon": "/assets/icon.ico",
+  "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+  "fields": [{
+      "name": "Título do Gráfico",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 10,
+          "forbidden": "abcde"
+          }
+      }]
+}
 ```
  
 **`nodeGraphLine.json`**
 
 ```json
- {
-    "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
-    "id": "visualize:line-plot",
-    "name": "Line Plot",
-    "presentable": true,
-    "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
-    "fields": [{
-        "name" : "Título do Gráfico",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "length" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
+  "id": "visualize:line-plot",
+  "name": "Line Plot",
+  "presentable": true,
+  "icon": "/assets/icon.ico",
+  "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+  "fields": [{
+      "name": "Título do Gráfico",
+      "view": "TextBox",
+      "parameters": {
+          "length": 10,
+          "forbidden": "abcde"
+          }
+      }]
+}
 ```
 
 **`nodeInputCsv.json`**
 
 ```json
-  {
-    "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
-    "id": "data:csv-file",
-    "name": "Csv File",
-    "presentable": false,
-    "icon": "/assets/icon.ico",
-    "input": [],
-    "fields": [{
-        "name" : "Nome do Eixo Y",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
+  "id": "data:csv-file",
+  "name": "Csv File",
+  "presentable": false,
+  "icon": "/assets/icon.ico",
+  "input": [],
+  "fields": [{
+      "name": "Nome do Eixo Y",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 10,
+          "forbidden": "abcde"
+          }
+      }]
+}
 ```
  
 **`nodeInputDatabase.json`**
 
 ```json
-  {
-    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
-    "id": "data:database",
-    "name": "Database",
-    "presentable": false,
-    "icon": "/assets/icon.ico",
-    "input": [],
-    "fields": [{
-        "name" : "URL da Database",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
+  "id": "data:database",
+  "name": "Database",
+  "presentable": false,
+  "icon": "/assets/icon.ico",
+  "input": [],
+  "fields": [{
+      "name": "URL da Database",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 10,
+          "forbidden": "abcde"
+          }
+      }]
+}
 ```
 
 # Components
