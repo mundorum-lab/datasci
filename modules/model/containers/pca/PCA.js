@@ -7,7 +7,10 @@ export async function getPCA(data){
     let adData = PCA.computeAdjustedData(data,vectors[0])
     let compressed =  adData.formattedAdjustedData
     console.log(compressed)
-    return compressed
+    let returnedTable = {
+        'columns':[{'PCA' : 'number'}],
+        'data' : compressed} 
+    return returnedTable
 }
 
 
