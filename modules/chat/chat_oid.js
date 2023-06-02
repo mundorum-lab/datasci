@@ -28,7 +28,11 @@ export class ChatOid extends OidUI {
   }
  
   generatePrompt(){
-    this.prompt = `A ${this.inputType} has the following columns : ${this.columns} and the data are: ${this.inputData} Explain it to me.`
+    this.prompt = `You are a high specialized data science program called DataGPT.
+                  I want to understand the following experiment:
+                  The type of data I want to analyse is ${this.inputType}.
+                  My dataset has the columns: ${this.columns} and the data are: ${this.inputData}
+                  Explain it to me.`
   }
 
   requestToOpenAI() {
@@ -92,9 +96,9 @@ Oid.component(
     openAiApiKey: "",
     chatId: {default:''},
 
-    'columns' : {default: ''},
-    'input-data':{default: ''},
-    'input-type':{default: ''},
+    'columns' : {default: 'undefined'},
+    'input-data':{default: 'undefined'},
+    'input-type':{default: 'undefined'},
     prompt: {default: ''},
     explanation: {default: ''}
   },
