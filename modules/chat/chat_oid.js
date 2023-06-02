@@ -103,6 +103,6 @@ Oid.component(
     explanation: {default: ''}
   },
   receive: {graph: 'setGraphInfo'},
-  template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,
+  template: html`<h1>{{this.prompt}}</h1><h1>{{this.explanation}}</h1>`,
   implementation: ChatOid
 })
