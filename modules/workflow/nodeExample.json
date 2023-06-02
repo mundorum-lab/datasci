@@ -1,0 +1,18 @@
+{
+    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
+    "id": "data:database",
+    "name": "Database",
+    "presentable": false,
+    "icon": "/assets/icon.ico",
+    "input": [],
+    "fields": [{
+        "name" : "URL da Database",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "maxLength" : 10,
+            "forbidden" : "abcde"
+            }
+
+        }]
+}
