@@ -1,15 +1,11 @@
 import { GenericInput } from "./generic-input.js";
 
 class InputField extends GenericInput {
-    render(label = null) {
+    render() {
         const agrs_str = this._parseArgs();
-        let label_tag = "";
-        
-        if (label != null) {
-            label_tag = `<label for="${this._args["id"]}">${label}:</label>`;
-        }
+        const config_params = this._parseConfig();
 
-        return `${label_tag}<input type="text" ${agrs_str}><br>`;
+        return `${this._generateLabel()}<input type="text" ${agrs_str} ${config_params}><br>`;
     }
 }
 

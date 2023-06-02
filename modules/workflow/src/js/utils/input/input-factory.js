@@ -1,18 +1,21 @@
 import { InputField } from "./input-field.js";
 import { NumberField } from "./number-field.js";
+import { RadioButton } from "./radio-button.js";
 
 class InputFactory {
-    static create(name, args) {
+    static create(view, label, html_args, config_params) {
         let input;
 
-        switch (name) {
+        switch (view) {
             case 'InputField':
-                input = new InputField(args);
+                input = new InputField(label, html_args, config_params);
                 break;
             case 'NumberField':
-                input = new NumberField(args);
+                input = new NumberField(label, html_args, config_params);
                 break;
-            
+            case 'RadioButton':
+                input = new RadioButton(label, html_args, config_params);
+                break;
             default:
                 return null;
         }

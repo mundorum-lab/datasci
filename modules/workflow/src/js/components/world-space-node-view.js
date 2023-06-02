@@ -1,6 +1,7 @@
 import { css, html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
 import { WorldSpaceNodeTypes } from "../world-space-node-types.js";
 import { InputFactory } from "../utils/input/input-factory.js";
+import { generate as uuid } from "short-uuid";
 
 
 export class WorldSpaceNodeView extends OidUI {
@@ -45,11 +46,22 @@ export class WorldSpaceNodeView extends OidUI {
                 name: "Ipsum",
                 view: "NumberField",
                 parameters: {}
+            },
+            {
+                name: "Dolor",
+                view: "RadioButton",
+                parameters: {
+                    values: [
+                        {name: "A", value: "A"},
+                        {name: "B", value: "B"},
+                        {name: "C", value: "C"}
+                    ]
+                }
             }
             ];
         
         for (let field of requiredInputs) {
-            input = InputFactory.create(field.view, {id: [field.name]});
+            input = InputFactory.create(field.view, field.name, {id: [uuid()]}, field.parameters);
             partial += `
             <div class="flex w-1/3 px-4">
                 ${input.render(field.name)}
