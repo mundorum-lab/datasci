@@ -7,6 +7,10 @@
   </head>
   <body>
     <h1>Type-input Component</h1>
-    <type-input id=1 subscribe="receive_types/[id]:receive_types;receive_data/[id]:receive_data" publish="output:receive_data/[id];ask_types:ask_types/[id]"></type-input>
+    <button-oid label="Start"
+                value='{"columns":["Coluna_0","Coluna_1","Coluna_2","Coluna_3","Coluna_4","Coluna_5","id"],"data":[["true","linha 01","linha02","linha 03","linha 04","linha 05",1],["true","linha 11","linha12","linha 13","linha 14","linha 15",2]]}'
+                publish="click~type_input/transform">
+    </button-oid>
+    <type-input subscribe="type_input/transform~type_input"></type-input>
   </body>
 </html>
