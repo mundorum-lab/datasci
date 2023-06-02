@@ -8,8 +8,10 @@
     <body>
     <h1>Playground</h1>
 
-    <filereader-oid sep=";" publish="loaded~file/loaded">
+    <filereader-oid sep="," publish="loaded~file/loaded">
     </filereader-oid>
-    <fileinput-oid subscribe="file/loaded~load_file"></fileinput-oid>
+
+    <console-oid prompt="" subscribe="file/loaded~display">
+    </console-oid>
     </body>
 </html>

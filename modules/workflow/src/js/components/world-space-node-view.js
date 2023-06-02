@@ -1,7 +1,9 @@
-import { css, html, Oid, OidUI } from "../oidlib-dev.js";
+import { css, html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
+import { WorldSpaceNodeTypes } from "../world-space-node-types.js";
+import { InputFactory } from "../utils/input/input-factory.js";
 
 
-export class WorldSpaceNode extends OidUI {
+export class WorldSpaceNodeView extends OidUI {
     /*
     Representa os nodes que estarão localizados no espaço do workflow
     
@@ -24,6 +26,52 @@ export class WorldSpaceNode extends OidUI {
         const modal = this.shadowRoot.querySelector(".node dialog");
         modal.showModal();
     }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
+    }
+
+    generate_modal() {
+        let input, partial = "";
+        
+        const requiredInputs = [
+            {
+                fieldName: "Lorem",
+                inputTypeIdentifier: "InputField",
+                inputTypeParameters: []
+            },
+            {
+                fieldName: "Ipsum",
+                inputTypeIdentifier: "NumberField",
+                inputTypeParameters: []
+            }
+            ];
+        
+        for (let field of requiredInputs) {
+            input = InputFactory.create(field.inputTypeIdentifier, {id: [field.fieldName]});
+            partial += `
+            <div class="flex w-1/3 px-4">
+                ${input.render(field.fieldName)}
+            </div>`;
+        }
+
+        return partial;
+    }
+
+    template () {
+        const modal_content = this.generate_modal();
+
+        return html`
+        <div class="node" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
+        @dragend={{this._onDragEnd}} draggable="true">
+            <img src="./{{this.iconpath}}"alt="{{this.name}}">
+            <dialog data-modal>
+                ${modal_content}
+            </dialog>
+        </div>
+        `;
+    }
 }
 
 Oid.component(
@@ -37,19 +85,7 @@ Oid.component(
             inputFields: {},
             iconpath: {},
         },
-        implementation: WorldSpaceNode,
-        template: html`
-        <div class="node" @dblclick={{this._onDoubleClick}}>
-            <img 
-            @dragstart={{this._onDragStart}} 
-            @dragend={{this._onDragEnd}} 
-            src="./{{this.iconpath}}"
-            alt="{{this.name}}">
-            <dialog data-modal>
-                <span>Lorem Ipsum</span>
-            </dialog>
-        </div>
-        `,
+        implementation: WorldSpaceNodeView,
         styles: css`
         .node {
             border: 1px solid black;
