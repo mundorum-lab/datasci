@@ -6,24 +6,22 @@ export class ApplicationOid extends OidUI {
   presenting = false;
 
   tabChanged() {
-    const documentRef = this.constructor.spec.shadow
-      ? this.shadowRoot
-      : document;
-
-    documentRef
+    this.shadowRoot
       .getElementById("application-tabs--workflow-btn")
       ?.setAttribute("data-state", !this.presenting ? "active" : "");
-    documentRef
+    this.shadowRoot
       .getElementById("application-tabs--presentation-btn")
       ?.setAttribute("data-state", this.presenting ? "active" : "");
 
     if (this.presenting) {
-      documentRef.getElementById("workflow-container").style.display = "none";
-      documentRef.getElementById("presentation-container").style.display =
+      this.shadowRoot.getElementById("workflow-container").style.display =
+        "none";
+      this.shadowRoot.getElementById("presentation-container").style.display =
         "block";
     } else {
-      documentRef.getElementById("workflow-container").style.display = "block";
-      documentRef.getElementById("presentation-container").style.display =
+      this.shadowRoot.getElementById("workflow-container").style.display =
+        "block";
+      this.shadowRoot.getElementById("presentation-container").style.display =
         "none";
     }
   }
