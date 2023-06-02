@@ -469,4 +469,35 @@ export const availableNodes = {
         ]
     }],
 
+    alias: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transAlias',
+        name: "Renomear coluna",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/alias.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: []  
+            },
+            {
+                name: "Novo nome",
+                view: "TextInput", 
+                parameters: []  
+            },
+        ]
+    }],
+
 }
