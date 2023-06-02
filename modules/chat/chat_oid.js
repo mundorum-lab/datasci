@@ -1,15 +1,15 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 
-export class ChatOid extends OidUI {
+export class ChatOid extends OidWeb {
   async connectedCallback(){
     super.connectedCallback()
-    let workflowMap= await fetch("./workflowMapExample.json");
-    workflowMap=await workflowMap.json(0);
+    // let workflowMap= await fetch("./workflowMapExample.json");
+    // workflowMap=await workflowMap.json(0);
     
-    let myComponent=this.findComponent(workflowMap,4);
-    console.log([4,myComponent])
-    let previousComponents=this.findPreviousComponents(workflowMap,4)
-    console.log(previousComponents)
+    // let myComponent=this.findComponent(workflowMap,4);
+    // console.log([4,myComponent])
+    // let previousComponents=this.findPreviousComponents(workflowMap,4)
+    // console.log(previousComponents)
    
   //   // this.setGraphInfo()
   //   // this.generatePrompt()
@@ -20,11 +20,12 @@ export class ChatOid extends OidUI {
     console.log('=== topic/message')
     console.log(topic)
     console.log(message)
-    this.columns = message.columns
-    this.inputData = message.data
-    this.inputType = message.type
-    this.generatePrompt()
-    this.requestToOpenAI()
+    // this.columns = message.columns
+    // this.inputData = message.data
+    // this.inputType = message.type
+    // this.generatePrompt()
+    // this.requestToOpenAI()
+    this.workflowMap=message
   }
  
   generatePrompt(){
@@ -85,24 +86,40 @@ export class ChatOid extends OidUI {
     
     return componentsFound
   }
+
+  handlePrompt(componentId){
+    mainComponent=this.findComponent(this.wworkflowMap,componentId)
+    previousComponents=this.findPreviousComponents(this.workflowMap,componentID)
+    return [mainComponent,previousComponents]
+  }
+
 }
 
+Oid.cInterface ({
+  id: 'itf:chat',
+  operations: {
+    'prompt': {
+      response: true
+    }
+  },
+  cardinality: '1:n'
+})
 
 Oid.component(
 {
   id: 'chat',
   element: 'chat-oid',
   properties: {
-    openAiApiKey: "",
-    chatId: {default:''},
-
-    'columns' : {default: 'undefined'},
-    'input-data':{default: 'undefined'},
-    'input-type':{default: 'undefined'},
+    workflowMap: {default:null},
+    // 'columns' : {default: 'undefined'},
+    // 'input-data':{default: 'undefined'},
+    // 'input-type':{default: 'undefined'},
     prompt: {default: ''},
-    explanation: {default: ''}
   },
   receive: {graph: 'setGraphInfo'},
-  template: html`<h1>{{this.prompt}}</h1><h1>{{this.explanation}}</h1>`,
+
+  provide: ['itf:chat'],
+  // template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,
+
   implementation: ChatOid
 })
