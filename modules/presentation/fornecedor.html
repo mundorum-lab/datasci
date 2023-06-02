@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Module: Presentation (Playground)</title>
+    <script src="./components/fornecedor.js" type="module"></script>
+  </head>
+
+  <body>
+    <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
+    <!-- fazendo uma requisição da lista de templates. -->
+    <button-oid
+      label="Request templates"
+      publish="click~apresentacao/templates/requisicao"
+      value="teste"
+    ></button-oid>
+
+    <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
+    <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
+    <fornecedor-oid
+      subscribe="apresentacao/templates/requisicao~requestTemplatesList"
+      publish="responseTemplatesList~apresentacao/templates/listagem"
+    >
+    </fornecedor-oid>
+
+    <!-- O console serve como maneira de debuggar que o evento-resposta com a lista de templates -->
+    <!-- foi disparado. -->
+    <console-oid
+      subscribe="apresentacao/templates/listagem~display"
+    ></console-oid>
+  </body>
+  
+</html>

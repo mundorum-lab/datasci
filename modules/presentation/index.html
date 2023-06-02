@@ -1,34 +1,165 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="utf-8" />
     <title>Module: Presentation (Playground)</title>
-    <script src="./components/fornecedor.js" type="module"></script>
+    <script src="./components/construtor.js" type="module"></script>
+    <script src="./components/importador.js" type="module"></script>
+    <script src="./components/apresentador.js" type="module"></script>
+
+    <style>
+      body {
+        background-color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
-    <!-- fazendo uma requisição da lista de templates. -->
+    <!-- TODO: make it work without having the publish and subscribe as attributes 
+               maybe we will need to query a component manifest file or something
+               like that to get the publish and subscribe topics
+    -->
     <button-oid
-      label="Request templates"
-      publish="click~apresentacao/templates/requisicao"
-      value="teste"
+      label="Grafo 1"
+      publish="click~workflow/grafo"
+      value='
+        {
+        "nodes":[
+          {
+            "nodeId":0,
+            "nodeType":"template1-oid",
+            "nodePath":"/modules/presentation/components/templates/template1.js",
+            "nodeRegion":"template",
+            "attributes":{}
+          },
+          {
+            "nodeId":1,
+            "nodeType":"medium-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/medium-component.js",
+            "nodeRegion":"region1",
+            "attributes":{
+              "publish":"componentClick~apresentacao/stub/large-component-top",
+              "bgcolor":"gold"
+            }
+          },
+          {
+            "nodeId":2,
+            "nodeType":"medium-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/medium-component.js",
+            "nodeRegion":"region1",
+            "attributes":{}
+          },
+          {
+            "nodeId":3,
+            "nodeType":"large-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/large-component.js",
+            "nodeRegion":"region2",
+            "attributes":{
+              "subscribe":"apresentacao/stub/large-component-top~changeColor"
+            }
+          },
+          {
+            "nodeId":4,
+            "nodeType":"medium-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/medium-component.js",
+            "nodeRegion":"region3",
+            "attributes":{}
+          },
+          {
+            "nodeId":5,
+            "nodeType":"large-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/large-component.js",
+            "nodeRegion":"region4",
+            "attributes":{}
+          }
+        ],
+        "edges":[
+          [1, 3], [2, 3]
+        ]
+      }'
     ></button-oid>
 
-    <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
-    <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
-    <fornecedor-oid
-      subscribe="apresentacao/templates/requisicao~requestTemplatesList"
-      publish="responseTemplatesList~apresentacao/templates/listagem"
-    >
-    </fornecedor-oid>
+    <button-oid
+      label="Grafo 2"
+      publish="click~workflow/grafo"
+      value='
+      {
+        "nodes":[
+           {
+              "nodeId":0,
+              "nodeType":"template2-oid",
+              "nodePath":"/modules/presentation/components/templates/template2.js",
+              "nodeRegion":"template",
+              "attributes":{}
+           },
+           {
+            "nodeId":1,
+            "nodeType":"xlarge-stub-oid",
+            "nodePath":"/modules/presentation/components/stub/xlarge-component.js",
+            "nodeRegion":"region1",
+            "attributes":{
+               "publish":"componentClick~apresentacao/stub/small-component",
+               "subscribe":"apresentacao/stub/xlarge-component~changeColor"
+            }
+            },
+           {
+              "nodeId":2,
+              "nodeType":"small-stub-oid",
+              "nodePath":"/modules/presentation/components/stub/small-component.js",
+              "nodeRegion":"region2",
+              "attributes":{
+                "bgcolor":"lightgray"
+              }
+            },
+            {
+              "nodeId":3,
+              "nodeType":"small-stub-oid",
+              "nodePath":"/modules/presentation/components/stub/small-component.js",
+              "nodeRegion":"region2",
+              "attributes":{
+                "bgcolor":"lightgray"
+              }
+            },
+           {
+              "nodeId":4,
+              "nodeType":"small-stub-oid",
+              "nodePath":"/modules/presentation/components/stub/small-component.js",
+              "nodeRegion":"region2",
+              "attributes":{
+                 "publish":"componentClick~apresentacao/stub/xlarge-component",
+                 "subscribe":"apresentacao/stub/small-component~changeColor"
+              }
+           }
+        ],
+        "edges":[
+           [
+              1,
+              3
+           ],
+           [
+              2,
+              3
+           ]
+        ]
+     }
+      '
+    ></button-oid>
 
-    <!-- O console serve como maneira de debuggar que o evento-resposta com a lista de templates -->
-    <!-- foi disparado. -->
-    <console-oid
-      subscribe="apresentacao/templates/listagem~display"
-    ></console-oid>
+    <construtor-oid
+      subscribe="workflow/grafo~getJsonHTML"
+      publish="returnJsonHTMLDescription~apresentacao/html/representacaoJson"
+    ></construtor-oid>
+
+    <importador-oid
+      subscribe="apresentacao/html/representacaoJson~getJsonHTMLDescription"
+    ></importador-oid>
+
+    <apresentador-oid
+      subscribe="apresentacao/html/representacaoJson~getJsonHTMLDescription"
+    ></apresentador-oid>
   </body>
-  
 </html>

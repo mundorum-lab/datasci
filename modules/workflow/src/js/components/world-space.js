@@ -17,6 +17,13 @@ export class WorldSpace{
     */
 
     //TODO
+    onWorldSpaceComponents.forEach(component => {
+      if (typeof component.OnDestroy === 'function') {
+        component.OnDestroy();
+      }
+    });
+    this.onWorldSpaceComponents = {}
+    
 
   }
 

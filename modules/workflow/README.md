@@ -20,20 +20,20 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`WorkflowState`**
 ~~~json
 {
-  nodes: [{
-    nodeId: int,
-    nodeType: string,
-    attributes: {...}
-  }]
+  "nodes": [{
+    "id": int,
+    "type": string,
+    "attributes": {...}
+  }],
 
-  edges: [[int, int],[int, int], ...]
+  "edges": [[int, int],[int, int], ...]
 }
 ~~~
 
 **`LayoutSelection`**
 ~~~json
 {
-  layouts: [
+  "layouts": [
     ...
   ]
 }
@@ -42,38 +42,31 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`AvailableNodes`**
 ~~~json
 {
-  category1: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
-      ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
+  "nome_da_categoria1": [{
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
+    "name": string,
+    "presentable": boolean,
+    "icon": string,
+    "input": [{"type": [string], "range": [int, int]}, ...],
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": []
     }]
   }],
-  category2: [{
-    type<string>,
-    name<string>,
-    compatibleInputNodes: {
-      entrada0: {typeIds<[string]>, listRange<(int, int)>},
-      entrada1: {typeIds<[string]>, listRange<(int, int)>},
-      ...
-      },
-    inputFields: [{
-      fieldName<string>,
-      fieldType<string>, 
-      inputType: {
-        type<string>,
-        parameters<Object>,
-      }
+
+  "nome_da_categoria2": [{
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
+    "name": string,
+    "presentable": boolean,
+    "icon": string,
+    "input": [{"type": [string], "range": [int, int]}, ...],
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": {} // depende do tipo de input (kind) Ex.: para Text, {"password":boolean, "maxDigits":string}
     }]
   }],
   ...
@@ -83,20 +76,16 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`SingleNode`**
 ~~~json
 {
-  type<string>,
-  name<string>,
-  compatibleInputNodes: {
-    entrada0: {typeIds<[string]>, listRange<(int, int)>},
-    entrada1: {typeIds<[string]>, listRange<(int, int)>},
-    ...
-    },
-  inputFields: [{
-    fieldName<string>,
-    fieldType<string>, 
-    inputType: {
-      type<string>,
-      parameters<Object>,
-    }
+    "output": [{"type": [string], "range": [int, int]}, ...],
+    "id": string,
+    "name": string,
+    "presentable": boolean,
+    "icon": string,
+    "input": [{"type": [string], "range": [int, int]}, ...],
+    "fields": [{
+      "name": string,
+      "kind": string, 
+      "parameters": [number or string]
   }]
 }
 ~~~
@@ -107,6 +96,125 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 > One can use a second message type inside a given message type (illustrated as `<message type>`).
 
 > Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+
+# JSONs
+
+Este é o formato padrão para a declaração dos Nodes possíveis.
+
+**`nodeNome.json`**
+
+```json
+[
+  {
+   "output": [{"type": [string], "name": string, "range": [int, int]}, ...],
+    "id": string,
+    "name": string,
+    "presentable": boolean,
+    "icon": string,
+    "input": [{"type": [string], "name": string, "range": [int, int]}, ...],
+    "fields": [{
+      "name": string,
+      "kind": string,
+      "parameters": {} // depende do tipo de input () Ex.: para Text, {"password":boolean, "maxDigits":string}
+    }]
+  }
+  ...
+]
+```
+
+* Exemplo:
+
+**`nodeGraphScatter.json`**
+
+```json
+  {
+    "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
+    "id": "visualize:scatter-plot",
+    "name": "Scatter Plot",
+    "presentable": true,
+    "icon": "/assets/icon.ico",
+    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+    "fields": [{
+        "name" : "Título do Gráfico",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "maxLength" : 10,
+            "forbidden" : "abcde"
+            }
+
+        }]
+  }
+```
+ 
+**`nodeGraphLine.json`**
+
+```json
+ {
+    "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
+    "id": "visualize:line-plot",
+    "name": "Line Plot",
+    "presentable": true,
+    "icon": "/assets/icon.ico",
+    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+    "fields": [{
+        "name" : "Título do Gráfico",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "length" : 10,
+            "forbidden" : "abcde"
+            }
+
+        }]
+  }
+```
+
+**`nodeInputCsv.json`**
+
+```json
+  {
+    "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
+    "id": "data:csv-file",
+    "name": "Csv File",
+    "presentable": false,
+    "icon": "/assets/icon.ico",
+    "input": [],
+    "fields": [{
+        "name" : "Nome do Eixo Y",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "maxLength" : 10,
+            "forbidden" : "abcde"
+            }
+
+        }]
+  }
+```
+ 
+**`nodeInputDatabase.json`**
+
+```json
+  {
+    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
+    "id": "data:database",
+    "name": "Database",
+    "presentable": false,
+    "icon": "/assets/icon.ico",
+    "input": [],
+    "fields": [{
+        "name" : "URL da Database",
+        "kind" : "TextBox",
+        "parameters" : {
+            "password" : false,
+            "maxLength" : 10,
+            "forbidden" : "abcde"
+            }
+
+        }]
+  }
+```
 
 # Components
 
@@ -163,7 +271,7 @@ Este componente representa os nodes. Além dos comportamentos herdados, ele poss
 property | role
 ---------| --------
 `type` | `Funciona como um identificador do WorldSpaceNode`
-`name` | `Vetor de posição dentro do WorldSpace`
+`name` | `Nome do nó`
 `icon` | `Caminho para svg utilizado como ícone do nó`
 `compatibleInputNodes` | `Um dicionário que representa as entradas dos nós. Para cada chave existente, ele devolve um objeto que armazena os tipo de entrada compatível, além do range de nós que podem se conectar à entrada (Obs: O range é inclusivo)`
 `InputFields` | `Armazena uma lista dos tipos de entrada que o usuário vai fornecer ao nó, permitindo modularização e geração dinâmica. Cada entrada recebe um nome do campo e um tipo que o campo vai receber (int, string, etc), além disso, recebe um inputType do atributo, que armazena o tipo da entrada (textbox, range, radiobutton) e os parâmetros referentes à esta entrada(tamanho,filtro, etc)`
