@@ -17,9 +17,9 @@ export class ChatOid extends OidWeb {
   }
 
   setGraphInfo(topic, message){
-    console.log('=== topic/message')
-    console.log(topic)
-    console.log(message)
+    // console.log('=== topic/message')
+    // console.log(topic)
+    // console.log(message)
     // this.columns = message.columns
     // this.inputData = message.data
     // this.inputType = message.type
@@ -87,10 +87,13 @@ export class ChatOid extends OidWeb {
     return componentsFound
   }
 
-  handlePrompt(componentId){
-    mainComponent=this.findComponent(this.wworkflowMap,componentId)
-    previousComponents=this.findPreviousComponents(this.workflowMap,componentID)
-    return [mainComponent,previousComponents]
+  handlePrompt(op,message){
+    let componentId=message.value
+    console.log("component id = ", componentId)
+    let mainComponent=this.findComponent(this.workflowMap,componentId)
+    let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
+    return {value:[mainComponent,previousComponents]}
+
   }
 
 }
@@ -114,7 +117,7 @@ Oid.component(
     // 'columns' : {default: 'undefined'},
     // 'input-data':{default: 'undefined'},
     // 'input-type':{default: 'undefined'},
-    prompt: {default: ''},
+    // prompt: {default: ''},
   },
   receive: {graph: 'setGraphInfo'},
   provide: ['itf:chat'],
