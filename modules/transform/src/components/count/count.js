@@ -6,8 +6,6 @@ export class CountWeb extends TransformWeb {
 
     constructor() {
         super()
-        this.column = null
-        this.count_value = null
     }
 
     count(){
@@ -18,10 +16,10 @@ export class CountWeb extends TransformWeb {
         for (const item of this.df.column(this.column).values) {
             if (item === this.count_value) this.value ++
         }
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('countResult', json)
+        this._notify('countResult', this.json_result)
     }
     
     handleCount (topic, message) {  //handle with notice
@@ -53,6 +51,7 @@ Oid.component(
   properties: {
     column: {default: null},
     count_value: {default: null},
+    json_result: {default: null},
   },
   receive: {count: 'handleCount'},
   implementation: CountWeb
