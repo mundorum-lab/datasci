@@ -77,6 +77,15 @@
 
 ![Component specification](images/Data.png)
 
+## Component `file-reader`
+
+> The responsibility of this component is to collect a file (CSV or JSON) from the user, process it doing some fell steps of pre-processing data steps and stores it in the browser's Local Storage.
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`loaded` | `As soon as the component finishes to store the content in Local Storage, it publishes the information about the database and stored data on the data bus.` | `TreatedReaderContent`
 ## Component `file-input`
 
 > The responsibility of this component is to collect data from Local Storage and transform it into a useful format for other components. Specifically, this component catch data from the Browser Local Storage, which is then inserted into the data bus.
