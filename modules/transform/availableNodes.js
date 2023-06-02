@@ -382,27 +382,33 @@ export const availableNodes = {
         ]
     }],
 
-
-    
-    deleteColumn: [{                     
-        type: "table/json",
-        name: "Deletar coluna",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+    deleteColumn: [{
+        output: [
             {
-                fieldName: "Coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transDeleteColumn',
+        name: "Deletar coluna",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnDelete.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: []  
             },
         ]
     }],
+
+
     orderBy: [{                     
         type: "table/json",
         name: "Ordenar",
