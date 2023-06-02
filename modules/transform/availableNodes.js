@@ -163,80 +163,127 @@ export const availableNodes = {
         ]
     }],
 
-    minimum: [{                     
-        type: "singleValue",
-        name: "Encontrar o valor mínimo da coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+    minimum: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
-        ]
-    }],
-
-    maximum: [{                     
-        type: "singleValue",
-        name: "Encontrar o valor máximo da coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+        ],
+        id: "ts:minimum",
+        name: "Mínimo",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/minimum.png",
+        input: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
             }
-        ]
-    }],
-
-    count: [{                     
-        type: "singleValue",
-        name: "Conta quantas vezes o elemento aparece na coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+        ],
+        fields: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
-            },
-            {
-                fieldName: "Valor a ser contado",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "any",
-                    parameters: {},
-                }
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
 
-    uniqueValues: [{                     
-        type: "singleValue",
-        name: "Conta quantos elementos únicos existem na coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+    maximum: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:maximum",
+        name: "Máximo",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/maximum.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+        ]
+    }],
+
+    count: [{
+        output: [
+            {
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:count",
+        name: "Contar",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/count.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+            {
+                name: "Valor",
+                view: "TextInput",
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Valor a ser comparado"
+                }]
+            },
+        ]
+    }],
+
+    unique: [{
+        output: [
+            {
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:unique",
+        name: "Valores únicos",
+        presentable: false,
+        icon: "datasci/modules/transform/icons/unique.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
