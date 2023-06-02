@@ -22,8 +22,7 @@ async function makeHttpRequest(method, body, headers, url) {
     const jsonResult = await response.json();
     return jsonResult;
   } catch (error) {
-    console.error('Error:', error);
-    return null;
+    throw new Error(`Error: ${error}`);
   }
 }
 
@@ -32,23 +31,28 @@ export class ApiInputOid extends OidUI {
   async handleInput_api (topic, message) {
     const jsonData = JSON.parse(message.value)
 
-    let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
+    try {
+      let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
+    
+      console.log(`Success`)
+      let columns = Object.keys(rawData[0])
+      let data = []
 
-    let columns = Object.keys(rawData[0])
-    let data = []
+      for (let i in rawData) {
+        data.push([])
 
-    for (let i in rawData) {
-      data.push([])
+        for (let key of Object.keys(rawData[i])) {
+          data[i].push(rawData[i][key]) 
+        } 
+      }
 
-      for (let key of Object.keys(rawData[i])) {
-        data[i].push(rawData[i][key]) 
-      } 
+      console.log(columns)
+      console.log(data)
+
+      this._notify('output', {value: JSON.stringify({"id": jsonData.identifier, columns: columns, data: data})}) // Processed file goes here
+    } catch (e) {
+      this._notify('output', {value: e.toString()})
     }
-
-    console.log(columns)
-    console.log(data)
-
-    this._notify('output', {value: JSON.stringify({"id": jsonData.identifier, columns: columns, data: data})}) // Processed file goes here
   }
 }
 
