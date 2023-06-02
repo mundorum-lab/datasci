@@ -136,10 +136,15 @@ notice    | source | message type
 ## Setup
 > `file-input` component
 ~~~html
-<file-input
+<filereader-oid
+	sep=";"
 	subscribe="input_file/[id]~load"
 	publish="output~receive_data/[id]">
-</file-input>
+</filereader-oid>
+<fileinput-oid
+	subscribe="input_file/[id]~load"
+	publish="output~receive_data/[id]">
+</fileinput-oid>
 ~~~
 > `api-input` component
 ~~~html
@@ -151,7 +156,6 @@ notice    | source | message type
 > `file-typing` component
 ~~~html
 <file-typing
-	sep=";"
 	subscribe="load_file/load/[id]~load_file"
 	publish="output~[show/message]">
 </file-typing>
