@@ -146,7 +146,7 @@ export class WorldSpaceNodeView extends OidUI {
         <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
         @dragend={{this._onDragEnd}} draggable="true">
             <img src="./{{this.iconpath}}"alt="{{this.name}}">
-            <dialog data-modal class="w-1/3 rounded-xl">
+            <dialog data-modal class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">
