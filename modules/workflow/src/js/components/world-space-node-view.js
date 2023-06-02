@@ -28,6 +28,11 @@ export class WorldSpaceNodeView extends OidUI {
         modal.showModal();
     }
 
+    _onClose(event) {
+        const modal = this.shadowRoot.querySelector(".node dialog");
+        modal.close();
+    }
+
     connectedCallback() {
         super.connectedCallback();
         this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
@@ -96,10 +101,13 @@ export class WorldSpaceNodeView extends OidUI {
         const modal_content = this.generate_modal();
 
         return html`
-        <div class="node" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
+        <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
         @dragend={{this._onDragEnd}} draggable="true">
             <img src="./{{this.iconpath}}"alt="{{this.name}}">
-            <dialog data-modal>
+            <dialog data-modal class="w-1/3 h-2/3 rounded-xl">
+                <button @click={{this._onClose}} class="w-12 h-12 float-right focus:ring-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                </button>
                 ${modal_content}
             </dialog>
         </div>
@@ -119,21 +127,9 @@ Oid.component(
             iconpath: {},
         },
         implementation: WorldSpaceNodeView,
+        stylesheet: ['../../../../../style.css'],
         styles: css`
-        .node {
-            border: 1px solid black;
-            border-radius: 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 48px;
-            height: 48px;
-        }
-
-        .node > img {
-            width: 32px;
-            height: 32px;'
-        }
+            .node { /* */ }
         `
     }
 )

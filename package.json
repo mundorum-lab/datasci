@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "chartjs-plugin-datalabels": "^2.2.0",
-    "chartjs-plugin-zoom": "^2.0.1"
+    "chartjs-plugin-zoom": "^2.0.1",
+    "short-uuid": "^4.2.2"
   }
 }
