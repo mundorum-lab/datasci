@@ -12,7 +12,6 @@ export class StddevWeb extends TransformWeb {
         this.value = this.df.column(this.column).std()
         this.json_result = this.toSingleValue(this.value)
         this.status = true
-        console.log(this.value, this.status)
         this._notify('stddevResult', this.json_result)
     }
 
