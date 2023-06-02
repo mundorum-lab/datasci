@@ -23,9 +23,25 @@ export const availableNodes = {
                 parameters: []    //TODO: Think about Parameters
             },
             {
-                name: "Operação",
-                kind: "",         //TODO think about possible values
-                parameters: []  
+
+                /*<form action="/action_page.php">
+                <label for="cars">Choose a car:</label>
+                <select id="cars" name="cars">
+                  <option value="volvo">Volvo XC90</option>
+                  <option value="saab">Saab 95</option>
+                  <option value="mercedes">Mercedes SLK</option>
+                  <option value="audi">Audi TT</option>
+                </select>
+                <input type="submit" value="Submit">
+              </form> */
+
+                name: "Volvo",
+                kind: "option",        
+                parameters: [
+                    {
+                        value: "volvo"
+                    }
+                ],
             },
             {
                 name: "Valor de Comparação",
