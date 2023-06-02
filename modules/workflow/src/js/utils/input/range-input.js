@@ -11,7 +11,7 @@ class RangeInput extends GenericInput {
 
         return `
         ${this._generateLabel()}
-        <input ${agrs_str} ${config_params} type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-primary">
+        <input ${agrs_str} ${config_params} type="range" class="w-full h-2 bg-foreground accent-accent-foreground rounded-lg cursor-pointer bg-accent">
         `;
     }
 }

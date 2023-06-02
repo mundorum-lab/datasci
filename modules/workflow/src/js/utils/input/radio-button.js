@@ -22,7 +22,7 @@ class RadioButton extends GenericInput {
             partial += `
             <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" or="${obj.name}">${obj.name}</label>
-                <input type="radio" id="${obj.name}-${this._html_args["id"]}" name="${this._html_args["id"]}" value="${obj.value}" ${checked} aria-checked="false" data-state="unchecked" class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="r1" tabindex="-1" data-radix-collection-item=""></button>
+                <input type="radio" id="${obj.name}-${this._html_args["id"]}" name="${this._html_args["id"]}" value="${obj.value}" ${checked} aria-checked="false" data-state="unchecked" class="accent-accent-foreground aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="r1" tabindex="-1" data-radix-collection-item=""></button>
             </div>
             `;
         }
