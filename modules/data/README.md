@@ -20,8 +20,10 @@
 **`RawFileContent`**
 ~~~json
 {
-  "file_format": string,
-  "file_content": string
+	"database": string, 
+	"table": string, 
+	"file_name": string, 
+	"file_extension": string
 }
 ~~~
 **`TreatedDataContent`**
@@ -71,15 +73,13 @@
 }
 ~~~
 
-
-
 # Components
 
 ![Component specification](images/Data.png)
 
 ## Component `file-input`
 
-> The responsibility of this component is to collect raw data from csv and xlsx files and transform it into a useful format for other components. Specifically, we convert the raw data into a JSON format, which is then inserted into the data bus.
+> The responsibility of this component is to collect raw data from csv and json files and transform it into a useful format for other components. Specifically, we convert the raw data into a JSON format, which is then inserted into the data bus.
 
 ### Input Notices
 
@@ -158,9 +158,10 @@ notice    | source | message type
 ~~~
 
 ## Narrative
--   The `file-input` component watches the data bus for incoming file input that needs to be processed and transformed into JSON format.
+- The `file-component` component recieves a file (csv or json), process the data and stores the data into the Browser Local Storage. 
+-   The `file-input` component recieves the information about the database and consults the Local Storage to give the data in a Json Format.
 -   When workflow sends a new file message on the data bus being watched, the component starts the process.
--   It identifies the file format, which can be either CSV or XLSX, and calls the appropriate JS function to transform the data.
+-   It identifies the file format, which can be either CSV or JSON, and calls the appropriate JS function to transform the data.
 -   It loops through all the rows of the file, transforming each one into a JSON format.
 -   The component appends these JSON objects to the output message body.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus, which can be displayed by front.
