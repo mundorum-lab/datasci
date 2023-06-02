@@ -47,10 +47,17 @@
 	"types": [type, ...]
 }
 ~~~
-**`ErrorDuringDataProcessing`**
+**`ErrorDuringDataIngestion`**
 ~~~json
 {
 	"error": string
+}
+~~~
+**`ErrorDuringDataProcessing`**
+~~~json
+{
+	"error": string,
+	"line": number
 }
 ~~~
 **`RawAPIContent`**
@@ -83,7 +90,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `api-input`
@@ -100,7 +107,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `file-typing`
