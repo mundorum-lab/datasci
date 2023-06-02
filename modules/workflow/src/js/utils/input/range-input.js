@@ -9,7 +9,10 @@ class RangeInput extends GenericInput {
         const agrs_str = this._parseArgs();
         const config_params = this._parseConfig();
 
-        return `${this._generateLabel()}<input type="range" ${agrs_str} ${config_params}><br>`;
+        return `
+        ${this._generateLabel()}
+        <input ${agrs_str} ${config_params} type="range" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-primary">
+        `;
     }
 }
 

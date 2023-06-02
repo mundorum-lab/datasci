@@ -130,7 +130,7 @@ export class WorldSpaceNodeView extends OidUI {
             input = InputFactory.create(field.view, field.name, {id: [elementID]}, field.parameters);
             this.formListID.push({view: field.view, name: field.name, id: elementID});
             partial += `
-            <div class="flex w-1/3 px-4">
+            <div class="flex px-4 gap-2 content-center">
                 ${input.render(field.name)}
             </div>`;
         }
@@ -146,14 +146,21 @@ export class WorldSpaceNodeView extends OidUI {
         <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
         @dragend={{this._onDragEnd}} draggable="true">
             <img src="./{{this.iconpath}}"alt="{{this.name}}">
-            <dialog data-modal class="w-1/3 h-2/3 rounded-xl">
-                <button @click={{this._onClose}} class="w-12 h-12 float-right focus:ring-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-                </button>
-                <form @submit={{this._onSubmit}} action="" id="${formID}">
+            <dialog data-modal class="w-1/3 rounded-xl">
+            <div class="flex flex-col gap-y-4 justify-center">
+                <div class="flex items-center justify-between">
+                    <div class="w-6">
+                    </div>
+                    <h2 class="text-2xl">Lorem Ipsum</h2>
+                    <button @click={{this._onClose}} class="w-6 h-6 focus:ring-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                    </button>
+                </div>
+                <form @submit={{this._onSubmit}} action="" id="${formID}" class="flex flex-col gap-y-4">
                     ${modalContent}
-                    <button class="bg-blue-500" type="submit" form="${formID}">Submit</button>
+                    <button type="submit" form="${formID}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4">Salvar</button>
                 </form>
+            </div>
             </dialog>
         </div>
         `;

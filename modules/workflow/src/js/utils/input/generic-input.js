@@ -9,7 +9,7 @@ class GenericInput {
         if (!("id" in this._html_args))
             return "";
         
-        return `<label for="${this._html_args["id"]}">${this._label}:</label>`;
+        return `<label for="${this._html_args["id"]}" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="terms">${this._label}</label>`
     }
 
     _parseConfig() {
