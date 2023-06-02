@@ -22,7 +22,7 @@ async function makeHttpRequest(method, body, headers, url) {
     const jsonResult = await response.json();
     return jsonResult;
   } catch (error) {
-    throw new Error(`Error: ${error}`);
+    throw new Error(error);
   }
 }
 
@@ -51,7 +51,7 @@ export class ApiInputOid extends OidUI {
 
       this._notify('output', {value: JSON.stringify({"id": jsonData.identifier, columns: columns, data: data})}) // Processed file goes here
     } catch (e) {
-      this._notify('output', {value: e.toString()})
+      this._notify('output', {value: e.message})
     }
   }
 }
