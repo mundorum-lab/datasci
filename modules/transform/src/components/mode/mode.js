@@ -65,8 +65,8 @@ export class ModeWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transMode',
-  element: 'mode-data',
+  id: 'ts:mode',
+  element: 'mode-oid',
   properties: {
     column: {default: null},
   },

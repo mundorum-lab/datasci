@@ -46,8 +46,8 @@ export class ColumnDeleteWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transDeleteColumn',
-  element: 'delete-column',
+  id: 'ts:deleteColumn',
+  element: 'deleteColumn-oid',
   properties: {
     column: {default: null},
   },

@@ -101,7 +101,7 @@ export const availableNodes = {
                 range: [1,1]
             }
         ],
-        id: "ts:transMean",
+        id: "ts:mean",
         name: "Média",
         presentable: true,
         icon: "datasci/modules/transform/icons/average.png",
@@ -130,7 +130,7 @@ export const availableNodes = {
                 range: [1,1]
             }
         ],
-        id: "ts:transMedian",
+        id: "ts:median",
         name: "Mediana",
         presentable: true,
         icon: "datasci/modules/transform/icons/median.png",
@@ -159,7 +159,7 @@ export const availableNodes = {
                 range: [1,1]
             }
         ],
-        id: "ts:transMode",
+        id: "ts:mode",
         name: "Moda",
         presentable: true,
         icon: "datasci/modules/transform/icons/mode.png",
@@ -188,7 +188,7 @@ export const availableNodes = {
                 range: [1,1]
             }
         ],
-        id: "ts:transStddev",
+        id: "ts:stddev",
         name: "Desvio padrão",
         presentable: true,
         icon: "datasci/modules/transform/icons/stddev.png",
@@ -342,7 +342,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transColumnOp',
+        id: 'ts:columnOp',
         name: "Operação entre colunas",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnOp.png",
@@ -398,7 +398,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transColumnOpConstant',
+        id: 'ts:columnOpConstant',
         name: "Operação entre coluna e constante",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnOpConstant.png",
@@ -452,7 +452,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transDeleteColumn',
+        id: 'ts:deleteColumn',
         name: "Deletar coluna",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnDelete.png",
@@ -481,7 +481,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transOrderBy',
+        id: 'ts:orderby',
         name: "Ordenar",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnDelete.png",
@@ -519,7 +519,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transNormalize',
+        id: 'ts:normalize',
         name: "Normalizar",
         presentable: true,
         icon: "datasci/modules/transform/icons/zscoreNorm.png",

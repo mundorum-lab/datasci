@@ -68,8 +68,8 @@ export class ColumnOpWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transColumnOp',
-  element: 'column-op',
+  id: 'ts:columnOp',
+  element: 'columnOp-oid',
   properties: {
     first: {default: null},
     second: {default: null},
