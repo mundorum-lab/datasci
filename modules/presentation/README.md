@@ -85,6 +85,11 @@ Retornará quando solicitado a lista com os templates disponíveis na aplicaçã
 | ----------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | `responseTemplatesList` | Irá retornar os templates disponíveis uma vez que receber a notice "request templates" | JSON array com cada elemento sendo do tipo `Template` |
 
+### Component `application`
+
+O componente controla vários aspectos importantes, como alternar o tema entre `dark` e `light` utilizando o theme-switcher, e as abas para alternar entre os fluxos de workflow e apresentação.
+Este componente não recebe e nem envia informações no barramento.
+
 ### Component `builder`
 
 O componente receberá as informações do tópico `workflow/grafo` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template.
