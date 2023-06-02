@@ -62,22 +62,27 @@ export class ChatOid extends OidUI {
   findPreviousComponents(workflowMap,Id){
     let edgesArray=workflowMap.edges
     let baseComponentId=Id
-    let counter=0
-    let id_found=edgesArray[counter][1]
+    let componentsFound=[]
+    for(let i in edgesArray){
+      if (i[1]==baseComponentId)
+        componentsFound.push([i[0],none])
+    }
     while (id_found!=baseComponentId){
       counter++
       id_found=edgesArray[counter][1]
     }
-    let objId2=edgesArray[counter][0]
-    let obj2=null
-    for(let i in workflowMap.nodes){
-      if (workflowMap.nodes[i].nodeId==objId2){
-        obj2=workflowMap.nodes[i]
-        break
+
+    for (let i in componentsFound){
+      for(let j in workflowMap.nodes){
+        if (workflowMap.nodes[j].nodeId==i[0]){
+          i[1]=workflowMap.nodes[j]
+          break
+        }
       }
     }
     
-    return [objId2,obj2]
+    
+    return componentsFound
   }
 }
 
