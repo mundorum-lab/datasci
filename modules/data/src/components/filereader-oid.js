@@ -81,7 +81,7 @@ export class FileReaderOid extends OidUI {
 
         // Cria um índice para cada chave dos objetos
         for (const key in dataArray[0]) {
-          objectStore.createIndex(key, key, { unique: false });
+          objectStore.createIndex(key.replace(/[^a-zA-Z0-9-_]/g, ""), key.replace(/[^a-zA-Z0-9-_]/g, ""), { unique: false });
         }
       };
 
@@ -100,7 +100,7 @@ export class FileReaderOid extends OidUI {
           
             for (const key of Object.keys(dataArray[0])) {
               console.log(key)
-              newObjectStore.createIndex(key, key, { unique: false });
+              newObjectStore.createIndex(key.replace(/[^a-zA-Z0-9-_]/g, ""), key.replace(/[^a-zA-Z0-9-_]/g, ""), { unique: false });
             }
           };
           
