@@ -105,7 +105,7 @@ A seguir serão apresentados as “views” dos “fields” que podem ser utili
 
 ## TextInput
 
-Parâmetros permitidos: **maxLength**, **minLength**, **forbidden**, **list**, **pattern**, **placeholder**.
+Parâmetros permitidos: **maxLength**, **minLength**, **list**, **pattern**, **placeholder**.
 
 Descrição dos parâmetros:
 ~~~
@@ -115,14 +115,12 @@ Descrição dos parâmetros:
 - minLength: <int>  
     -> tamanho mínimo permitido para o input
 
-- forbidden: [<string>] 
-    -> caracteres/palavras que são proibidos
-
 - list: []  
     -> lista de valores sugeridos (não restringe outras possíveis entradas)
 
 - pattern: <string> 
     -> expressão regular para validação do input
+    -> use para filtrar caracteres/palavras que são proibidas
 
 - placeholder: <string>  
     -> texto que aparece de fundo no textInput 
@@ -268,8 +266,9 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
       "name": "Título do Gráfico",
       "view": "TextBox",
       "parameters": {
-          "maxLength": 10,
-          "forbidden": "abcde"
+          "maxLength": 20,
+          "minLength": 5,
+          "placeholder": "Insira o título aqui:"
           }
       }]
 }
@@ -289,8 +288,9 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
       "name": "Título do Gráfico",
       "view": "TextBox",
       "parameters": {
-          "length": 10,
-          "forbidden": "abcde"
+          "maxLength": 20,
+          "minLength": 5,
+          "placeholder": "Insira o título aqui:"
           }
       }]
 }
@@ -311,7 +311,8 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
       "view": "TextBox",
       "parameters": {
           "maxLength": 10,
-          "forbidden": "abcde"
+          "minLength": 1,
+          "placeholder": "Insira o nome aqui:"
           }
       }]
 }
@@ -331,8 +332,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
       "name": "URL da Database",
       "view": "TextBox",
       "parameters": {
-          "maxLength": 10,
-          "forbidden": "abcde"
+          "maxLength": 10
           }
       }]
 }
