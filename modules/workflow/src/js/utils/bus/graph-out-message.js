@@ -1,5 +1,6 @@
-import { WorldSpaceNode } from "../../components/world-space-node";
-
+/**
+ * @typedef {Object.<string, any>} attributes
+ */
 export class GraphOutMessage{
 
 
@@ -19,7 +20,10 @@ export class GraphOutMessage{
         E.G:
 
         */
-        attributes = {}
+       
+
+
+        let attributes = {}
             for(let j = 0; j < fields.length;j++){
                 curField = fields[i]
                 attributes[curField.getName()] = curField.handleGetInputValue();
@@ -38,12 +42,35 @@ export class GraphOutMessage{
           Workflow Nodes Ids:                   Output ids:
           [33,22,43,543,657,123,123]            [0,1,2,3,4,5,6]
         */
-        let nodes = []
-        let edges = []
 
+        /**
+         * Stores attributes.
+         * @type {[
+         *      {     
+         * id:Number,
+         * type:String,   
+         * attributes : attributes
+         * }
+         * ]}
+         */
+
+        let nodes = []
+
+
+        /**
+         * Stores edges.
+         * @type {Array.<Array.<number,number>>}
+        */
+        let edges = []
+        
+        /**
+        * Stores edges.
+        * @type {Object.<Number, Number>}
+        */
         let newIds = {}
 
         for(let i = 0 ; i < this.nodeGraph.length; i++){
+            
             //Register the newIds and add the nodes
 
             let currentNode = this.nodeGraph[i]
@@ -78,13 +105,8 @@ export class GraphOutMessage{
 
         return {
             nodes:nodes,
-            edges,edges
+            edges:edges
         }
 
     }
-
-
-
-
-
 }
