@@ -6,15 +6,14 @@ export class UniqueWeb extends TransformWeb {
 
     constructor() {
         super()
-        this.column = null
     }
 
     unique(){
         this.value = this.df.column(this.column).nUnique()
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('uniqueResult', json)
+        this._notify('uniqueResult', this.json_result)
     }
     
     handleUnique (topic, message) {  //handle with notice
@@ -44,6 +43,7 @@ Oid.component(
   element: 'unique-data',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {unique: 'handleUnique'},
   implementation: UniqueWeb
