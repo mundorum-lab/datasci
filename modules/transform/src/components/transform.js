@@ -1,4 +1,5 @@
 import { Oid, OidWeb } from '/lib/oidlib-dev.js'
+import * as dfd from "danfojs"
 
 export class TransformWeb extends OidWeb {
 
@@ -8,7 +9,6 @@ export class TransformWeb extends OidWeb {
         this.file_id = null
         this.columns = {}
         this.status = false 
-        this.dfd = window.dfd
         this.table = {}
     }
 
@@ -22,7 +22,7 @@ export class TransformWeb extends OidWeb {
             columns[this.table.columns[i].name] = this.table.columns[i].type
             columns_arr.push(this.table.columns[i].name)
         }
-        this.df = new this.dfd.DataFrame(this.table.data, {columns: columns_arr})
+        this.df = new DataFrame(this.table.data, {columns: columns_arr})
         this.columns = columns
     }
 
