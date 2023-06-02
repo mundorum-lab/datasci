@@ -3,9 +3,9 @@ export const availableNodes = {
         output: [
             {
                 type: ["json/table"], 
-                range: [1,1]
+                range: [1,2]
             }
-        ], //TODO: Better understanding of types
+        ],
         id: "ts:filter",
         name: "Filtro",
         presentable: false,
@@ -19,34 +19,20 @@ export const availableNodes = {
         fields: [
             {
                 name: "Coluna",
-                kind: "TextBox", 
-                parameters: []    //TODO: Think about Parameters
+                view: "TextInput", 
+                parameters: []  
             },
             {
-
-                /*<form action="/action_page.php">
-                <label for="cars">Choose a car:</label>
-                <select id="cars" name="cars">
-                  <option value="volvo">Volvo XC90</option>
-                  <option value="saab">Saab 95</option>
-                  <option value="mercedes">Mercedes SLK</option>
-                  <option value="audi">Audi TT</option>
-                </select>
-                <input type="submit" value="Submit">
-              </form> */
-
-                name: "Volvo",
-                kind: "option",        
+                name: "Operação",
+                view: "DropDown",
                 parameters: [
-                    {
-                        value: "volvo"
-                    }
-                ],
-            },
-            {
-                name: "Valor de Comparação",
-                kind: "TextBox", 
-                parameters: []    
+                    {name: "maior que", value: "gt"},
+                    {name: "maior ou igual que", value: "ge"},
+                    {name: "menor que", value: "lt"},
+                    {name: "menor ou igual que", value: "le"},
+                    {name: "igual a", value: "eq"},
+                    {name: "diferente de", value: "ne"},
+                ]
             }
         ]
     }],
@@ -55,7 +41,7 @@ export const availableNodes = {
         output: [
             {
                 type: ["json/table"], 
-                range: [1,1]
+                range: [1,2]
             }
         ], 
         id: "ts:groupby",
@@ -71,22 +57,35 @@ export const availableNodes = {
         fields: [
             {
                 name: "Operação",
-                kind: "", 
-                parameters: [] 
+                view: "DropDown", 
+                parameters: [ { options: [
+                    {name: "produto acumulativo", value: "cumProd"},
+                    {name: "soma acumulativa" , value: "cumSum"},
+                    {name: "media", value:"mean"},
+                    {name: "desvio padrao", value: "std"},
+                    {name: "soma", value: "sum"},
+                    {name: "variância", value: "var"},
+                    {name: "máximo acumulativo", value: "cumMax"},
+                    {name: "mínimo acumulativo", value: "cumMin"},
+                    {name: "máximo", value: "max"},
+                    {name: "minimo", value: "min"},
+                    {name: "contar", value: "count"}
+        
+                ]}] 
             },
             {
                 name: "Coluna agrupada",
-                kind: "TextBox", 
+                kind: "TextInput", 
                 parameters: []
             },
             {
                 name: "Coluna Analisada",
-                kind: "TextBox", 
+                kind: "TextInput", 
                 parameters: []
             },
             {
-                name: "Nome da Coluna Resultante",
-                kind: "TextBox", 
+                name: "Nome da Coluna Analisada Resultante",
+                kind: "TextInput", 
                 parameters: []
             }
         ]
