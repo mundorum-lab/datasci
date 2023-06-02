@@ -1,3 +1,12 @@
+import { Oid } from "/lib/oidlib-dev";
 import "./style.css";
-import "./modules/presentation/components/application/application.js";
-import "./modules/presentation/components/theme-switcher/theme-switcher.js";
+
+Oid.setDefault({
+  stylesheet: [],
+  stylable: true,
+  shadow: false,
+});
+
+// Componentes de Presentation
+import("./modules/presentation/components/aplicacao/aplicacao.js");
+import("./modules/presentation/components/theme-switcher/theme-switcher.js");

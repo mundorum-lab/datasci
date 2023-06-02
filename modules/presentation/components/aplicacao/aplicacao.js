@@ -1,7 +1,7 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
 
-export class ApplicationOid extends OidUI {
-  activeTab = "presentation";
+export class AplicacaoOid extends OidUI {
+  activeTab = "workflow";
 
   tabChanged() {
     this.shadowRoot
@@ -23,9 +23,8 @@ export class ApplicationOid extends OidUI {
 
   template() {
     return html`
-      <link rel="stylesheet" href="./style.css" />
       <div class="p-4 flex items-center justify-between border-b">
-        <h1 class="flex-1 text-3xl font-bold">datasci</h1>
+        <h1 class="flex-1 text-3xl font-bold">Datasci</h1>
         <div class="flex-1 text-center">
           <div
               class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
@@ -64,11 +63,12 @@ export class ApplicationOid extends OidUI {
     }
 
     this.tabChanged();
+    this.render();
   }
 }
 
 Oid.component({
-  id: "presentation:application",
-  element: "application-oid",
-  implementation: ApplicationOid,
+  id: "presentation:aplicacao",
+  element: "aplicacao-oid",
+  implementation: AplicacaoOid,
 });
