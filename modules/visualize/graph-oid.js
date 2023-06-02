@@ -4,6 +4,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import './libs/chart.js'
 
+const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
     //createOptions(this.type, message, this.options)
@@ -14,7 +15,7 @@ export class GraphOid extends OidUI {
     this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
 
-    if(this.type != "pie" && this.type != "doughnut"){
+    if(!graphsWithoutDataLabel.includes(this.type)){
       Chart.register(ChartDataLabels);
     }
     
@@ -25,10 +26,15 @@ export class GraphOid extends OidUI {
         ...this.options,
         plugins: {
           zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+           },
             zoom: {
               wheel: {
                 enabled: true,
               },
+              
               pinch: {
                 enabled: true
               },
