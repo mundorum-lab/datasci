@@ -10,10 +10,10 @@ export class StddevWeb extends TransformWeb {
 
     stddev(){
         this.value = this.df.column(this.column).std()
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('stddevResult', json)
+        this._notify('stddevResult', this.json_result)
     }
 
     handleStddev (topic, message) {  //handle with notice
@@ -45,6 +45,7 @@ Oid.component(
   element: 'stddev-data',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {stddev: 'handleStddev'},
   implementation: StddevWeb
