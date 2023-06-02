@@ -286,7 +286,7 @@ export const availableNodes = {
             },
         ]
     }],
-    
+
     columnOperation: [{
         output: [
             {
@@ -294,7 +294,7 @@ export const availableNodes = {
                 range: [1,2]
             }
         ],
-        id: 'ts:transColumnOpConstant',
+        id: 'ts:transColumnOp',
         name: "Operação entre colunas",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnOp.png",
@@ -333,6 +333,55 @@ export const availableNodes = {
             },
         ]
     }],
+
+    columnOperationConstant: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transColumnOpConstant',
+        name: "Operação entre coluna e constante",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnOpConstant.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Nova coluna",
+                view: "TextInput", 
+                parameters: []  
+            },
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: []  
+            },
+            {
+                name: "Operação",
+                view: "DropDown",
+                parameters: [{ options: [
+                    {name: "Soma", value: "+"},
+                    {name: "Subtração", value: "-"},
+                    {name: "Multiplicação", value: "*"},
+                    {name: "Divisão", value: "/"},
+                    {name: "Potência", value: "^"},
+                    {name: "Log", value: "log"},
+                ]}]
+            },
+            {
+                name: "Constante",
+                view: "NumberField", 
+                parameters: []  
+            },
+        ]
+    }],
+
 
     
     deleteColumn: [{                     
