@@ -57,6 +57,17 @@ export class WorldSpaceNodeView extends OidUI {
                         {name: "C", value: "C"}
                     ]
                 }
+            },
+            {
+                name: "Sit",
+                view: "CheckBox",
+                parameters: {
+                    values: [
+                        {name: "A", value: "A", checked: true},
+                        {name: "B", value: "B", checked: true},
+                        {name: "C", value: "C", checked: true}
+                    ]
+                }
             }
             ];
         
