@@ -117,7 +117,9 @@ Oid.component(
     prompt: {default: ''},
   },
   receive: {graph: 'setGraphInfo'},
+
   provide: ['itf:chat'],
   // template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,
+
   implementation: ChatOid
 })

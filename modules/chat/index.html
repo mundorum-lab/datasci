@@ -19,9 +19,7 @@
   
   <graph-mock-oid subscribe="connect/graph~connect"publish="infos~info/graph" columns= 'eixo x, eixo y, eixo z'data="[[0,1,2],[1,2,4],[9,5,8]]" type="scatterplot"></graph-mock-oid>
   <chat-oid subscribe= "info/graph~graph" chat-id='8'></chat-oid>
-  <button-oid label="Copy Prompt and open ChatGPT"
-              publish="click~chat/explain">
-  </button-oid>
   <chat-button-oid subscribe="chat/explain~explain"></chat-button-oid>
 </body>
 </html>
+
