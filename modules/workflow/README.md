@@ -215,6 +215,18 @@ Descrição dos parâmetros:
     -> define se aceita mais de um arquivo
 ~~~
 
+## Dropdown
+
+Parâmetro permitido: **options**.
+
+Descrição do parâmetro:
+
+~~~
+- options: [{"name": <string>, "value": <string>}]	
+    -> lista de opções do menu DropDown
+    -> cada opção é um objeto contendo nome e valor
+~~~
+
 ## Extras
 
 Abaixo seguem alguns exemplos de views que **não serão implementadas**, mas se os grupos precisarem, podem implementar.
@@ -222,7 +234,6 @@ Abaixo seguem alguns exemplos de views que **não serão implementadas**, mas se
 - **PasswordInput** (semelhante ao TextInput mas com os caracteres substituidos por *)
 - **TextBox** (semelhante ao TextInput com tamanho da caixa de texto maior)
 - **TextList**
-- **Dropdown** (muito semelhante ao Select)
 
 
 # JSONs

@@ -7,11 +7,9 @@
     "input": [],
     "fields": [{
         "name" : "URL da Database",
-        "kind" : "TextBox",
+        "view" : "TextBox",
         "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
+            "maxLength" : 10
             }
 
         }]
