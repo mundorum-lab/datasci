@@ -408,33 +408,39 @@ export const availableNodes = {
         ]
     }],
 
-
-    orderBy: [{                     
-        type: "table/json",
+    orderBy: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transOrderBy',
         name: "Ordenar",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnDelete.png",
+        input: [
             {
-                fieldName: "Coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: []  
             },
             {
-                fieldName: "Ordem",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "boolean",
-                    parameters: {values:["Crescente", "Decrescente"]},
-                }
+                name: "Order",
+                view: "DropDown",
+                parameters: [{ options: [
+                    {name: "Crescente", value: "true"},
+                    {name: "Decrescente", value: "false"},
+                ]}]
             },
+
         ]
     }],
+
 }
