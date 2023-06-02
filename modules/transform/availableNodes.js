@@ -8,7 +8,7 @@ export const availableNodes = {
         ],
         id: "ts:filter",
         name: "Filtro",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/filter.png",
         input: [
             {
@@ -20,7 +20,10 @@ export const availableNodes = {
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
                 name: "Operação",
@@ -46,7 +49,7 @@ export const availableNodes = {
         ], 
         id: "ts:groupby",
         name: "Agrupar linhas",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/groupby.png",
         input: [
             {
@@ -91,77 +94,122 @@ export const availableNodes = {
         ]
     }],
 
-    mean: [{                     
-        type: "singleValue",
-        name: "Encontra o valor médio de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    mean: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:transMean",
+        name: "Média",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/average.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
-    median: [{                     
-        type: "singleValue",
-        name: "Encontra o valor da mediana de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    median: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:transMedian",
+        name: "Mediana",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/median.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
-    mode: [{                     
-        type: "singleValue",
-        name: "Encontra o valor da moda de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    mode: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:transMode",
+        name: "Moda",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/mode.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
-    stddev: [{                     
-        type: "singleValue",
-        name: "Encontra o valor do desvio padrão de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    stddev: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:transStddev",
+        name: "Desvio padrão",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/stddev.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
+
 
     minimum: [{
         output: [
@@ -172,7 +220,7 @@ export const availableNodes = {
         ],
         id: "ts:minimum",
         name: "Mínimo",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/minimum.png",
         input: [
             {
@@ -201,7 +249,7 @@ export const availableNodes = {
         ],
         id: "ts:maximum",
         name: "Máximo",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/maximum.png",
         input: [
             {
@@ -230,7 +278,7 @@ export const availableNodes = {
         ],
         id: "ts:count",
         name: "Contar",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/count.png",
         input: [
             {
@@ -267,7 +315,7 @@ export const availableNodes = {
         ],
         id: "ts:unique",
         name: "Valores únicos",
-        presentable: false,
+        presentable: true,
         icon: "datasci/modules/transform/icons/unique.png",
         input: [
             {
@@ -308,12 +356,18 @@ export const availableNodes = {
             {
                 name: "Nova coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna resultante",
+                }]  
             },
             {
                 name: "Coluna 1",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da primeira coluna",
+                }]  
             },
             {
                 name: "Operação",
@@ -329,7 +383,10 @@ export const availableNodes = {
             {
                 name: "Coluna 2",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da segunda coluna",
+                }]  
             },
         ]
     }],
@@ -355,12 +412,18 @@ export const availableNodes = {
             {
                 name: "Nova coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna resultante",
+                }]  
             },
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
                 name: "Operação",
@@ -403,7 +466,10 @@ export const availableNodes = {
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
@@ -429,7 +495,10 @@ export const availableNodes = {
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
                 name: "Order",
@@ -464,7 +533,10 @@ export const availableNodes = {
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
@@ -490,12 +562,18 @@ export const availableNodes = {
             {
                 name: "Coluna",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
                 name: "Novo nome",
                 view: "TextInput", 
-                parameters: []  
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Novo nome da coluna",
+                }]  
             },
         ]
     }],
