@@ -8,5 +8,5 @@ Oid.setDefault({
 });
 
 // Componentes de Presentation
-import("./modules/presentation/components/aplicacao/aplicacao.js");
-import("./modules/presentation/components/theme-switcher/theme-switcher.js");
+import("./modules/presentation/components/application.js");
+import("./modules/presentation/components/theme-switcher.js");

@@ -1,24 +1,31 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
 
-export class AplicacaoOid extends OidUI {
-  activeTab = "workflow";
+export class ApplicationOid extends OidUI {
+  // presenting = false -> workflow
+  // presenting = true -> presentation
+  presenting = false;
 
   tabChanged() {
-    this.shadowRoot
-      .getElementById("application-tabs--workflow-btn")
-      ?.setAttribute(
-        "data-state",
-        this.activeTab === "workflow" ? "active" : ""
-      );
-    this.shadowRoot
-      .getElementById("application-tabs--presentation-btn")
-      ?.setAttribute(
-        "data-state",
-        this.activeTab === "presentation" ? "active" : ""
-      );
+    const documentRef = this.constructor.spec.shadow
+      ? this.shadowRoot
+      : document;
 
-    this.shadowRoot.getElementById("application-container").innerHTML =
-      this.activeTab;
+    documentRef
+      .getElementById("application-tabs--workflow-btn")
+      ?.setAttribute("data-state", !this.presenting ? "active" : "");
+    documentRef
+      .getElementById("application-tabs--presentation-btn")
+      ?.setAttribute("data-state", this.presenting ? "active" : "");
+
+    if (this.presenting) {
+      documentRef.getElementById("workflow-container").style.display = "none";
+      documentRef.getElementById("presentation-container").style.display =
+        "block";
+    } else {
+      documentRef.getElementById("workflow-container").style.display = "block";
+      documentRef.getElementById("presentation-container").style.display =
+        "none";
+    }
   }
 
   template() {
@@ -30,7 +37,7 @@ export class AplicacaoOid extends OidUI {
               class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
             <button
                 type="button"
-                data-state="${this.activeTab === "workflow" ? "active" : ""}"
+                data-state="${!this.presenting ? "active" : ""}"
                 class="rounded-sm px-3 py-1.5 font-medium transition-all focus-visible:outline-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                 id="application-tabs--workflow-btn"
                 @click>
@@ -38,8 +45,7 @@ export class AplicacaoOid extends OidUI {
             </button>
             <button
                 type="button"
-                data-state="${this.activeTab === "presentation" ? "active" : ""
-      }"
+                data-state="${this.presenting ? "active" : ""}"
                 class="rounded-sm px-3 py-1.5 font-medium transition-all focus-visible:outline-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                 id="application-tabs--presentation-btn"
                 @click>
@@ -51,24 +57,24 @@ export class AplicacaoOid extends OidUI {
           <theme-switcher-oid><theme-switcher-oid />
         </div>
       </div>
-      <div id="application-container">{{this.activeTab}}</div>
+      <div id="workflow-container">workflow</div>
+      <div id="presentation-container" style="display: none">presentation</div>
     `;
   }
 
   _onClick(evt) {
     if (evt.target.innerText === "Workflow") {
-      this.activeTab = "workflow";
+      this.presenting = false;
     } else if (evt.target.innerText === "Presentation") {
-      this.activeTab = "presentation";
+      this.presenting = true;
     }
 
     this.tabChanged();
-    this.render();
   }
 }
 
 Oid.component({
-  id: "presentation:aplicacao",
-  element: "aplicacao-oid",
-  implementation: AplicacaoOid,
+  id: "presentation:application",
+  element: "application-oid",
+  implementation: ApplicationOid,
 });
