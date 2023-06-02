@@ -11,7 +11,6 @@ export class GroupByWeb extends TransformWeb {
 
     groupBy(){ 
         let result = this.df.loc({columns: [this.operation_target_column, this.group_by_target_column]})
-        console.log("aaaaaaaaaaaaaaaaaaaaaaa",this.operation)
         result = result.groupby([this.group_by_target_column])[this.operation]()
         let generated_name = `${this.operation_target_column}_${this.operation}`
         result.rename({[generated_name]: this.result_column }, { inplace: true })
@@ -40,7 +39,6 @@ export class GroupByWeb extends TransformWeb {
             this.df.print()
         } else {
             this.status = false
-            console.log(result)
             this._notify('groupByError', result.result)
         }
 

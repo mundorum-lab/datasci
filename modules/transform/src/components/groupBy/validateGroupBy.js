@@ -37,6 +37,14 @@ export class ValidateGroupBy extends Validate {
             }
             return {result,isValid: false}
         }
+        if(!this.isOperationValid(operation, this.validOperations[0]) && !this.isOperationValid(operation,this.validOperations[1]) && !this.isOperationValid(operation,this.validOperations[2])){
+            let result = {
+                transformationType: "groupBy",
+                errorType: "Invalid operation",
+                message: `Operation ${operation} is not valid for groupBy transformation.`,
+            }
+            return {result, isValid: false}
+        }
         if(!this.isOperationAndTypeValid(operation,columns,operationTargetColumn, this.validOperations)){ 
             let result = {
                 transformationType: "groupBy",
