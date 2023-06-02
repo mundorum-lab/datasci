@@ -2,10 +2,12 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ValueToRawOid extends OidUI {
   handleTransform (topic, message) {
-    this._notify('output-raw', message.value);
+    console.log(`Transforming - ${JSON.stringify(message)}`)
+    this._notify('output-raw', JSON.parse(message.value));
   }
 
   handleDetransform (topic, message) {
+    console.log(`Detransforming - ${JSON.stringify(message)}`)
     this._notify('output-value', {value: JSON.stringify(message)});
   }
 }
