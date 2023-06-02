@@ -68,6 +68,16 @@ export class WorldSpaceNodeView extends OidUI {
                         {name: "C", value: "C", checked: true}
                     ]
                 }
+            },
+            {
+                name: "Amet",
+                view: "RangeInput",
+                parameters: {
+                    max: "100",
+                    min: "0",
+                    value: "20",
+                    step: "10"
+                }
             }
             ];
         

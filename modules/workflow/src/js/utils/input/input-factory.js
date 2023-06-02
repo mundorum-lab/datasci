@@ -2,6 +2,7 @@ import { InputField } from "./input-field.js";
 import { NumberField } from "./number-field.js";
 import { RadioButton } from "./radio-button.js";
 import { CheckBox } from "./check-box.js";
+import { RangeInput } from "./range-input.js";
 
 class InputFactory {
     static create(view, label, html_args, config_params) {
@@ -19,6 +20,9 @@ class InputFactory {
                 break;
             case 'CheckBox':
                 input = new CheckBox(label, html_args, config_params);
+                break;
+            case 'RangeInput':
+                input = new RangeInput(label, html_args, config_params);
                 break;
             default:
                 return null;
