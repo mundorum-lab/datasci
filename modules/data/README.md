@@ -5,23 +5,25 @@
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
-	* `Responsible for architecting and developing the api-input component to transform into JSON.`
+	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
 * `Gustavo Araújo Morais`
-	* `Responsible for architecting and developing the file-typing, this processes JSON data and send to data bus.`
+	* `Responsible for architecting and developing the api-input, this processes JSON data and send to data bus.`
 * `João Guilherme Alves Santos`
-	* `Responsible for architecting and developing the api-input component to transform into JSON.`
+	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
 * `Raniery Rodrigues da SIlva`
-	* `Responsible for architecting and developing the file input component to transform into JSON.`
+	* `Responsible for architecting and developing the file typing component to transform into JSON.`
 * `Leonardo Livrare Martins`
-	* `Responsible for architecting and developing the file input component to transform into JSON.`
+	* `Responsible for architecting and developing the api-input component to transform into JSON.`
 
 # Message Types
 
 **`RawFileContent`**
 ~~~json
 {
-  "file_format": string,
-  "file_content": string
+	"database": string, 
+	"table": string, 
+	"file_name": string, 
+	"file_extension": string
 }
 ~~~
 **`TreatedDataContent`**
@@ -32,6 +34,15 @@
 		[column0, column1, ...],
 		... // Other rows
 	]
+}
+~~~
+**`TreatedReaderContent`**
+~~~json
+{
+	"database": string, 
+	"table": string, 
+	"file_name": string, 
+	"file_extension": string
 }
 ~~~
 **`FileTypeRequest`**
@@ -62,27 +73,34 @@
 }
 ~~~
 
-
-
 # Components
 
 ![Component specification](images/Data.png)
 
-## Component `file-input`
+## Component `file-reader`
 
-> The responsibility of this component is to collect raw data from csv and xlsx files and transform it into a useful format for other components. Specifically, we convert the raw data into a JSON format, which is then inserted into the data bus.
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`load` | `The component collects data from the received message and initiates the process of transforming the raw data from the file into the JSON format.` | `RawFileContent`
+> The responsibility of this component is to collect a file (CSV or JSON) from the user, process it doing some fell steps of pre-processing data steps and stores it in the browser's Local Storage.
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`loaded` | `As soon as the component finishes to store the content in Local Storage, it publishes the information about the database and stored data on the data bus.` | `TreatedReaderContent`
+## Component `file-input`
+
+> The responsibility of this component is to collect data from Local Storage and transform it into a useful format for other components. Specifically, this component catch data from the Browser Local Storage, which is then inserted into the data bus.
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `RawReaderContent` 
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`output` | `As soon as the component finishes to get the content in JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 ---
 ## Component `api-input`
@@ -125,12 +143,19 @@ notice    | source | message type
 ![Components Narratives](images/DataWorkflow.png)
 
 ## Setup
+> `file-reader` component
+~~~html
+<filereader-oid 
+	sep="," 
+	publish="loaded~file/loaded/[id]">
+</filereader-oid>
+~~~
 > `file-input` component
 ~~~html
-<file-input
-	subscribe="input_file/[id]~load"
-	publish="output~receive_data/[id]">
-</file-input>
+<fileinput-oid
+	subscribe="file/loaded/[id]~load_file"
+	publish="output~show/message">
+</fileinput-oid>
 ~~~
 > `api-input` component
 ~~~html
@@ -142,16 +167,16 @@ notice    | source | message type
 > `file-typing` component
 ~~~html
 <file-typing
-	sep=";"
 	subscribe="load_file/load/[id]~load_file"
 	publish="output~[show/message]">
 </file-typing>
 ~~~
 
 ## Narrative
--   The `file-input` component watches the data bus for incoming file input that needs to be processed and transformed into JSON format.
+- The `file-component` component recieves a file (csv or json), process the data and stores the data into the Browser Local Storage. 
+-   The `file-input` component recieves the information about the database and consults the Local Storage to give the data in a Json Format.
 -   When workflow sends a new file message on the data bus being watched, the component starts the process.
--   It identifies the file format, which can be either CSV or XLSX, and calls the appropriate JS function to transform the data.
+-   It identifies the file format, which can be either CSV or JSON, and calls the appropriate JS function to transform the data.
 -   It loops through all the rows of the file, transforming each one into a JSON format.
 -   The component appends these JSON objects to the output message body.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus, which can be displayed by front.
