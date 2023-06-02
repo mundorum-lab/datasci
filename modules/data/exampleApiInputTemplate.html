@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Example Template</title>
     <script src="src/components/apiinput-oid.js" type="module"></script>
-    <script src="src/components/apiinput-oid.js" type="module"></script>
+    <script src="src/components/value-to-raw-oid.js" type="module"></script>
   </head>
   <body>
     <h1>Api-input Component</h1>
@@ -17,10 +17,13 @@
     </div>
     <button-oid id="send-button" label="Send request"
                 value="{'api_url':'','method':'','headers':'','body':''}"
-                publish="click~input_api/load">
+                publish="click~transform/to_input_api">
     </button-oid>
-    <api-input subscribe="input_api/load~input_api" publish="output~show/message"></api-input>
-    <console-oid subscribe="show/message~display"></console-oid>
+    <api-input subscribe="transformed/to_input_api~input_api" publish="output~detransform/to_console"></api-input>
+    <value-to-raw publish="output-raw~transformed/to_input_api;output-value~detransformed/to_console"
+                      subscribe="transform/to_input_api~transform;detransform/to_console~detransform">
+    </value-to-raw>
+    <console-oid subscribe="detransformed/to_console~display"></console-oid>
 
     <script>
       var apiIdentifier = document.getElementById("identifier");
