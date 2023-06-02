@@ -2,7 +2,8 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ChatButtonOid extends OidUI {
   copyAndExplain(){
-    var text = this.prompt;
+    let text = this.prompt;
+    console.log(text)
     navigator.clipboard.writeText(text).then(function() {
     console.log('Async: Copying to clipboard was successful!');
     alert("Prompt copied to clipboard!")
@@ -21,5 +22,8 @@ Oid.component(
     prompt: {default : 'teste do prompt'},
   },
   receive: {explain: 'copyAndExplain'},
+  template: html`    <button-oid label="Copy Prompt and open ChatGPT"
+  publish="click~chat/explain">
+</button-oid>`,
   implementation: ChatButtonOid
 })
