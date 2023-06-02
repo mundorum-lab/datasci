@@ -29,11 +29,23 @@
 **`TreatedDataContent`**
 ~~~json
 {
+	"columns": [name, ...],
+	"data": [
+		[column0, column1, ...],
+		... // Other rows
+	]
+}
+~~~
+**`TypedDataContent`**
+~~~json
+{
+	{
 	"columns": [{name, type}, ...],
 	"data": [
 		[column0, column1, ...],
 		... // Other rows
 	]
+}
 }
 ~~~
 **`TreatedReaderContent`**
@@ -136,15 +148,13 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`receive_data` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
-`receive_types` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+`type-input` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`ask_types` | `Once the component receives a JSON file, it publishes a request for a user interface to ask for typing info` | `FileTypeRequest`
-`output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+`output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TypedDataContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
 
