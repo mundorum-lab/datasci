@@ -443,4 +443,30 @@ export const availableNodes = {
         ]
     }],
 
+    zScoreNorm: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transNormalize',
+        name: "Normalizar",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/zscoreNorm.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: []  
+            },
+        ]
+    }],
+
 }
