@@ -34,6 +34,10 @@ class GenericInput {
         return results.join(" ");
     }
 
+    getIDs() {
+        return [];
+    }
+    
     render() {
         return "";
     }

@@ -25,12 +25,49 @@ export class WorldSpaceNodeView extends OidUI {
 
     _onDoubleClick(event) {
         const modal = this.shadowRoot.querySelector(".node dialog");
-        modal.showModal();
+
+        if (!this.isOpen) {
+            modal.showModal();
+            this.isOpen = true;
+        }
+
     }
 
     _onClose(event) {
         const modal = this.shadowRoot.querySelector(".node dialog");
-        modal.close();
+
+        if (this.isOpen) {
+            modal.close();
+            this.isOpen = false;
+        }
+    }
+
+    _onSubmit(event) {
+        let formResponses = {};
+        let complexValue;
+        let formInput;
+
+        event.preventDefault();
+
+        for (let element of this.formListID) {
+            formInput = this.shadowRoot.getElementById(element.id);
+
+            if (element.view == "RadioButton" || element.view == "CheckBox") {
+                complexValue = [];
+                for (let child of formInput.children) {
+                    if (child.tagName.toLowerCase() == 'label')
+                        continue;
+                    complexValue.push(
+                        {id: child.id, value: child.value}
+                    );
+                }
+                formResponses[element.name] = complexValue;
+                continue;
+            }
+
+            formResponses[element.name] = formInput.value;
+        }
+        console.log(formResponses);
     }
 
     connectedCallback() {
@@ -40,6 +77,7 @@ export class WorldSpaceNodeView extends OidUI {
 
     generate_modal() {
         let input, partial = "";
+        this.formListID = [];
         
         const requiredInputs = [
             {
@@ -87,7 +125,10 @@ export class WorldSpaceNodeView extends OidUI {
             ];
         
         for (let field of requiredInputs) {
-            input = InputFactory.create(field.view, field.name, {id: [uuid()]}, field.parameters);
+            const elementID = uuid();
+
+            input = InputFactory.create(field.view, field.name, {id: [elementID]}, field.parameters);
+            this.formListID.push({view: field.view, name: field.name, id: elementID});
             partial += `
             <div class="flex w-1/3 px-4">
                 ${input.render(field.name)}
@@ -98,7 +139,8 @@ export class WorldSpaceNodeView extends OidUI {
     }
 
     template () {
-        const modal_content = this.generate_modal();
+        const modalContent = this.generate_modal();
+        const formID = uuid();
 
         return html`
         <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
@@ -108,7 +150,10 @@ export class WorldSpaceNodeView extends OidUI {
                 <button @click={{this._onClose}} class="w-12 h-12 float-right focus:ring-4">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
                 </button>
-                ${modal_content}
+                <form @submit={{this._onSubmit}} action="" id="${formID}">
+                    ${modalContent}
+                    <button class="bg-blue-500" type="submit" form="${formID}">Submit</button>
+                </form>
             </dialog>
         </div>
         `;
