@@ -6,8 +6,10 @@ export class ChatOid extends OidUI {
     let workflowMap= await fetch("./workflowMapExample.json");
     workflowMap=await workflowMap.json(0);
     
-    let returnedValue=this.findConnectedNodes(workflowMap);
-    console.log(returnedValue)
+    let myComponent=this.findComponent(workflowMap,4);
+    console.log([4,myComponent])
+    let previousComponents=this.findPreviousComponents(workflowMap,4)
+    console.log(previousComponents)
    
   //   // this.setGraphInfo()
   //   // this.generatePrompt()
