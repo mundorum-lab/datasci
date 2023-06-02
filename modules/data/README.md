@@ -134,16 +134,18 @@ notice    | source | message type
 ![Components Narratives](images/DataWorkflow.png)
 
 ## Setup
+> `file-reader` component
+~~~html
+<filereader-oid 
+	sep="," 
+	publish="loaded~file/loaded/[id]">
+</filereader-oid>
+~~~
 > `file-input` component
 ~~~html
-<filereader-oid
-	sep=";"
-	subscribe="input_file/[id]~load"
-	publish="output~receive_data/[id]">
-</filereader-oid>
 <fileinput-oid
-	subscribe="input_file/[id]~load"
-	publish="output~receive_data/[id]">
+	subscribe="file/loaded/[id]~load_file"
+	publish="output~show/message">
 </fileinput-oid>
 ~~~
 > `api-input` component
