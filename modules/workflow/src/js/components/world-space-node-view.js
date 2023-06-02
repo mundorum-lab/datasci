@@ -37,22 +37,22 @@ export class WorldSpaceNodeView extends OidUI {
         
         const requiredInputs = [
             {
-                fieldName: "Lorem",
-                inputTypeIdentifier: "InputField",
-                inputTypeParameters: []
+                name: "Lorem",
+                view: "InputField",
+                parameters: {}
             },
             {
-                fieldName: "Ipsum",
-                inputTypeIdentifier: "NumberField",
-                inputTypeParameters: []
+                name: "Ipsum",
+                view: "NumberField",
+                parameters: {}
             }
             ];
         
         for (let field of requiredInputs) {
-            input = InputFactory.create(field.inputTypeIdentifier, {id: [field.fieldName]});
+            input = InputFactory.create(field.view, {id: [field.name]});
             partial += `
             <div class="flex w-1/3 px-4">
-                ${input.render(field.fieldName)}
+                ${input.render(field.name)}
             </div>`;
         }
 
