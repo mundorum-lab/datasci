@@ -8,8 +8,30 @@ export class ApplyCluster extends OidUI {
     this.result = "[Cluster Result]"
   }
   applyCluster (topic, message) {
-    let res = kmeans(message.data, message.num_cluster).centroids
-    this.result = res
+    let res = kmeans(message.data, message.num_clusters)
+    let centroids = res.centroids
+    let clusters = res.clusters
+
+    for (let j = 1; j <= clusters.length; j++) {
+      //this.result += "<br></br>Cluster " + j + ":     "
+      for (let i = 0; i < clusters[j-1].points.length; i++) {
+        clusters[j-1].points[i].push(j);
+      }
+      //this.result += clusters[j-1].points
+    }
+
+    message.columns.push({"category":"number"})
+
+    for (let i = 0; i < centroids.length; i++) {
+      message.data.push([centroids[i][0], centroids[i][1], 0])
+    }
+
+    let final = {
+      "columns" : message.columns,
+      "data" : message.data
+    }
+
+    this.result = "Output: <br></br> " + JSON.stringify(final, false, "\t");
   }
 }
 
@@ -19,7 +41,8 @@ Oid.component(
   element: 'ml-apply-cluster',
   properties: {
     data: {},
-    num_cluster: {default: 2},
+    num_clusters: {default: 2},
+    columns: {},
     result: {}
   },
   receive: {transform: 'applyCluster'},
