@@ -79,19 +79,19 @@
 
 ## Component `file-input`
 
-> The responsibility of this component is to collect raw data from csv and json files and transform it into a useful format for other components. Specifically, we convert the raw data into a JSON format, which is then inserted into the data bus.
+> The responsibility of this component is to collect data from Local Storage and transform it into a useful format for other components. Specifically, this component catch data from the Browser Local Storage, which is then inserted into the data bus.
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects data from the received message and initiates the process of transforming the raw data from the file into the JSON format.` | `RawFileContent`
+`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `RawReaderContent` 
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes to get the content in JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
 
 ---
 ## Component `api-input`
