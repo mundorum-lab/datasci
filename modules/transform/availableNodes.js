@@ -25,14 +25,14 @@ export const availableNodes = {
             {
                 name: "Operação",
                 view: "DropDown",
-                parameters: [
+                parameters: [ { options: [
                     {name: "maior que", value: "gt"},
                     {name: "maior ou igual que", value: "ge"},
                     {name: "menor que", value: "lt"},
                     {name: "menor ou igual que", value: "le"},
                     {name: "igual a", value: "eq"},
                     {name: "diferente de", value: "ne"},
-                ]
+                ]}]
             }
         ]
     }],
