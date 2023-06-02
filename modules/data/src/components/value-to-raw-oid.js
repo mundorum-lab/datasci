@@ -6,7 +6,7 @@ export class ValueToRawOid extends OidUI {
   }
 
   handleDetransform (topic, message) {
-    this._notify('output-value', message.value);
+    this._notify('output-value', {value: JSON.stringify(message)});
   }
 }
 
