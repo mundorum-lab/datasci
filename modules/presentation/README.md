@@ -83,7 +83,7 @@ interfaces de I/O e a narrativa de operação do sistema.
   "template": "<string>",
   "regions": [{
     "id": "<string>",
-    "size": "<string>" // small, medium or large
+    "size": "<string>" // small, medium, large or xlarge
   }]
 }
 ```
@@ -207,3 +207,5 @@ subscribe="apresentacao/html/apresentacaoJson~getJsonHTML"
 - O componente **Importador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a importação dos componentes na página HTML (inserção dos scripts type=module na página HTML).
 - O componente **Apresentador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a instanciação dos componentes recebidos com os devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
   - Caso algum componente exija dados adicionais que não são necessários no processo de Workflow (não é esperado), assinaremos tópicos específicos no BUS, definidos pelas equipes de cada componente, para obtenção dessas informações. Os tópicos podem seguir o padrão `<componente\>/\<subcomponente\>/apresentacao` como sugestão.
+- Os Componentes **Templantes** recebem regions, estas regions são então apresentadas na tela de acordo com a posição na qual foram instanciadas. 
+Eles não se utilizam do barramneto e recebem os Htmls dos componentes criados pelos outros grupos. Hoje, enquanto os componentes dos outros grupos ainda não foram implementados, foram criados stubs, estes tem cores e podem ou náo ter conexões entre outros, caso exista tal conexão, as cores de um componente clicado e os conectados a ele mudam.
