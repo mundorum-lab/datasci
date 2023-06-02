@@ -1,8 +1,12 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 export class ValueToRawOid extends OidUI {
-  async handleTransform (topic, message) {
-    this._notify('output', message.value);
+  handleTransform (topic, message) {
+    this._notify('output-raw', message.value);
+  }
+
+  handleDetransform (topic, message) {
+    this._notify('output-value', message.value);
   }
 }
 
@@ -13,6 +17,6 @@ Oid.component(
   properties: {
     id: {default: '1'}
   },
-  receive: ['transform'],
+  receive: ['transform', 'detransform'],
   implementation: ValueToRawOid
 })

@@ -29,7 +29,7 @@ async function makeHttpRequest(method, body, headers, url) {
 
 export class ApiInputOid extends OidUI {
   async handleInput_api (topic, message) {
-    const jsonData = JSON.parse(message.value)
+    const jsonData = message
 
     try {
       let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
