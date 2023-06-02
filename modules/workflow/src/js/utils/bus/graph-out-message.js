@@ -1,3 +1,5 @@
+import { WorldSpaceNode } from "../../components/world-space-node";
+
 export class GraphOutMessage{
 
 
@@ -36,26 +38,48 @@ export class GraphOutMessage{
           Workflow Nodes Ids:                   Output ids:
           [33,22,43,543,657,123,123]            [0,1,2,3,4,5,6]
         */
-        nodes = []
+        let nodes = []
+        let edges = []
 
+        let newIds = {}
 
         for(let i = 0 ; i < this.nodeGraph.length; i++){
-            currentNode = this.nodeGraph[i]
-            fields = currentNode.handleGetUserFields()
-            attributes = currentNode.handleGetUserFields(fields)
+            //Register the newIds and add the nodes
+
+            let currentNode = this.nodeGraph[i]
+
+            currentId = currentNode.getId()
+            newIds[currentId] = i
+
+            const getNewId = (_old)=>{return newIds[_old]};
+
+            let fields = currentNode.handleGetUserFields()
+            let attributes = currentNode.handleGetUserFields(fields)
             nodes.append(
                 {
-                    id:i, 
+                    id:getNewId(currentId), 
                     type: currentNode.getNodeType(),
                     attributes: attributes
 
                 }
             )
+        }
+
+        for(let i = 0 ; i < this.nodeGraph.length; i++){
+            //Use the registered ids and add the edges
+            let targetNodes = currentNode.getTargetVertices()
+            targetNodes.forEach(target => {
+                edges.append([i,getNewId(target)])
+            });
+            
 
         }
 
 
-
+        return {
+            nodes:nodes,
+            edges,edges
+        }
 
     }
 

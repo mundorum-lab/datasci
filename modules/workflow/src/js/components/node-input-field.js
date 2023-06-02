@@ -58,5 +58,8 @@ export class NodeInputField{
     handleSetInputValue(inputValue){
         this.inputValue = inputValue;
     }
+    getName(){
+        return this.name
+    }
     
 }

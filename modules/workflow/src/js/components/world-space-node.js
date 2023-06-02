@@ -31,7 +31,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         presentable : true,
         icon : "/assets/scatter.jpg",
         input : [{type: ["input"], name: Dados, range: [1, 1]}],
-        fields : {
+        fields : [{
             name : "Título", 
             view : "TextBox", 
             parameters : {
@@ -40,7 +40,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
                 minLength : 1,
                 forbidden : ["abcde"],
                 placeholder : "Insira o título aqui"
-            }
+            }]
         }
     */
 
@@ -87,9 +87,12 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     }
     //fields: [ {name: string, view: string , parameters: [number or string]}]
     /*List<fields>*/ handleGetUserFields() {
-        return WorldSpaceNodeTypes.NodeInfoLib[this.type]["fields"]
+        return this.fields;
     }
 
+    getNodeType(){
+        return this.id;
+    }
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this
