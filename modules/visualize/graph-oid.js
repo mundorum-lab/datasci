@@ -1,7 +1,10 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 import { createConfiguration } from './graph_data_builders/create_data_configuration.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import './libs/chart.js'
 
+const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
     //createOptions(this.type, message, this.options)
@@ -12,8 +15,34 @@ export class GraphOid extends OidUI {
     this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
 
-    // Chart.register(ChartDataLabels);
-    this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, this.options))
+    if(!graphsWithoutDataLabel.includes(this.type)){
+      Chart.register(ChartDataLabels);
+    }
+    
+    Chart.register(zoomPlugin);
+    
+    this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, 
+      {
+        ...this.options,
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+           },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              
+              pinch: {
+                enabled: true
+              },
+              mode: 'xy',
+            }
+          }
+        }
+      }));
   }
 
   handleExport(topic, message){
