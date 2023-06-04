@@ -131,6 +131,13 @@ export class WorldSpaceNodeView extends OidUI {
                         {name: "C", value: "C"}
                     ]
                 }
+            },
+            {
+                name: "Dolor Ipsum",
+                view: "FileInput",
+                parameters: {
+                    sep: ","
+                }
             }
             ];
         

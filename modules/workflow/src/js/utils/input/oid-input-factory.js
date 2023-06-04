@@ -1,3 +1,5 @@
+import { generate as uuid } from "short-uuid";
+
 class OidInputFactory {
     static parseInterface(interfaceOid) {
         let partial = "";
@@ -35,6 +37,9 @@ class OidInputFactory {
             case 'DropDown':
                 input = this.createDropDownOid(bind, interfaceOid);
                 break;
+            case 'FileInput':
+                input = this.createFileInputOid(bind, interfaceOid);
+                break;
             default:
                 input = "";
         }
@@ -42,13 +47,14 @@ class OidInputFactory {
         return input;
     }
 
-    static createInputOid(bind, {maxLength = null, minLength = null, pattern = null, placeholder = null, label = null, name = null} = {}) {
+    static createInputOid(bind, {maxLength = null, minLength = null, pattern = null, placeholder = null, value = null, label = null, name = null} = {}) {
         const bindCommunication = bind != null ? `/${bind}` : "";
         const interfaceOid = {
             "max-length": maxLength,
             "min-length": minLength,
             "pattern": pattern,
             "placeholder": placeholder,
+            "value": value,
             "label": label,
             "name": name
         };
@@ -126,6 +132,29 @@ class OidInputFactory {
         };
 
         return `<dropdown-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></dropdown-oid>`;
+    }
+
+    static createFileInputOid(bind, {name = null, label = null, sep = null} = {}) {
+        bind = uuid();
+
+        const valueAlreadySelected = sep != null ? `value="${sep}"` : "";
+        const bindCommunication = bind != null ? `/${bind}` : "";
+        const interfaceOid = {
+            "sep": sep
+        };
+        
+
+        return `
+        <div class="w-full flex flex-col gap-x-4 content-center">
+            <div class="flex flex-col gap-y-2">
+                <label-oid text="${label}" for="${name}"></label-oid>
+            </div>
+            <div class="flex gap-x-4">
+                <input-oid publish="update~input/changed${bindCommunication}" class="w-2/5" ${valueAlreadySelected} placeholder="Entre um separador" max-length="2" min-length="1"></input-oid>
+                <filereader-oid class="h-10 w-full" subscribe="input/changed${bindCommunication}~separator" publish="loaded~file/loaded" ${this.parseInterface(interfaceOid)}></filereader-oid>
+            </div>
+        </div>
+        `;
     }
 }
 
