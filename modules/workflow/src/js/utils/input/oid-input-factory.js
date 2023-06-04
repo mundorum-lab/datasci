@@ -32,6 +32,9 @@ class OidInputFactory {
             case 'Switch':
                 input = this.createSwitchOid(bind, interfaceOid);
                 break;
+            case 'DropDown':
+                input = this.createDropDownOid(bind, interfaceOid);
+                break;
             default:
                 input = "";
         }
@@ -111,7 +114,18 @@ class OidInputFactory {
             "label": label
         };
 
-        return `<switch-toggle-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></range-oid>`;
+        return `<switch-toggle-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></switch-toggle-oid>`;
+    }
+
+    static createDropDownOid(bind, {values = null, name = null, label = null} = {}) {
+        const bindCommunication = bind != null ? `/${bind}` : "";
+        const interfaceOid = {
+            "values": JSON.stringify(values).replaceAll('"', "'"),
+            "label": label,
+            "name": name
+        };
+
+        return `<dropdown-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></dropdown-oid>`;
     }
 }
 
