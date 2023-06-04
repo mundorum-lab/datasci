@@ -5,6 +5,7 @@ import { NumberOid } from "../utils/input/number-field.js";
 import { RangeOid } from "../utils/input/range-input.js";
 import { RadioOid } from "../utils/input/radio-button.js";
 import { CheckOid } from "../utils/input/check-box.js";
+import { SwitchOid } from "../utils/input/switch-input.js";
 import { OidInputFactory } from "../utils/input/oid-input-factory.js";
 import { generate as uuid } from "short-uuid";
 
@@ -110,6 +111,13 @@ export class WorldSpaceNodeView extends OidUI {
                     min: "0",
                     value: "20",
                     step: "10"
+                }
+            },
+            {
+                name: "Lorem Ipsum",
+                view: "Switch",
+                parameters: {
+                    name: "SwitchTest",
                 }
             }
             ];

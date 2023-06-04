@@ -29,6 +29,9 @@ class OidInputFactory {
             case 'RangeInput':
                 input = this.createRangeOid(bind, interfaceOid);
                 break;
+            case 'Switch':
+                input = this.createSwitchOid(bind, interfaceOid);
+                break;
             default:
                 input = "";
         }
@@ -99,6 +102,16 @@ class OidInputFactory {
         };
 
         return `<range-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></range-oid>`;
+    }
+
+    static createSwitchOid(bind, {name = null, label = null} = {}) {
+        const bindCommunication = bind != null ? `/${bind}` : "";
+        const interfaceOid = {
+            "name": name,
+            "label": label
+        };
+
+        return `<switch-toggle-oid publish="update~input/changed${bindCommunication}" class="w-full" ${this.parseInterface(interfaceOid)}></range-oid>`;
     }
 }
 
