@@ -61,92 +61,41 @@ export class WorldSpaceNodeView extends OidUI {
         // We can assume that the inputs inside dialog will
         // always publish in the correct category
         Bus.i.subscribe(`input/changed/${this.id}`, this.handleUpdate);
-        this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
+
+        // Gets Node Info from Library
+        // this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
+        // Stub for testing:
+        this.nodeInfo = {
+            "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
+            "id": "data:database",
+            "name": "Database",
+            "presentable": false,
+            "icon": "modules/workflow/src/assets/templateselection.png",
+            "input": [],
+            "fields": [{
+                "name": "URL",
+                "label": "URL da Database",
+                "view": "InputField",
+                "parameters": {
+                    "maxLength": 10
+                    }
+                }]
+        }
+        this.fields = this.nodeInfo.fields;
     }
 
     generate_modal() {
+        const requiredInputs = this.fields;
         let input, partial = "";
         this.formListID = [];
         
-        const requiredInputs = [
-            {
-                name: "Lorem",
-                view: "InputField",
-                parameters: {
-                    maxLength: 10,
-                    pattern: "[A-Za-z0-9]"
-                }
-            },
-            {
-                name: "Ipsum",
-                view: "NumberField",
-                parameters: {}
-            },
-            {
-                name: "Dolor",
-                view: "RadioButton",
-                parameters: {
-                    values: [
-                        {name: "A", value: "A"},
-                        {name: "B", value: "B"},
-                        {name: "C", value: "C"}
-                    ]
-                }
-            },
-            {
-                name: "Sit",
-                view: "CheckBox",
-                parameters: {
-                    values: [
-                        {name: "A", value: "A", checked: true},
-                        {name: "B", value: "B", checked: true},
-                        {name: "C", value: "C", checked: true}
-                    ]
-                }
-            },
-            {
-                name: "Amet",
-                view: "RangeInput",
-                parameters: {
-                    max: "100",
-                    min: "0",
-                    value: "20",
-                    step: "10"
-                }
-            },
-            {
-                name: "Lorem Ipsum",
-                view: "Switch",
-                parameters: {
-                    name: "SwitchTest",
-                }
-            },
-            {
-                name: "Dolor Sit",
-                view: "DropDown",
-                parameters: {
-                    values: [
-                        {name: "A", value: "A", selected: true},
-                        {name: "B", value: "B"},
-                        {name: "C", value: "C"}
-                    ]
-                }
-            },
-            {
-                name: "Dolor Ipsum",
-                view: "FileInput",
-                parameters: {
-                    sep: ","
-                }
-            }
-            ];
         
         for (let field of requiredInputs) {
             const elementID = uuid();
             
             partial += `
             <div class="flex px-4 gap-2 content-center">
-                ${OidInputFactory.createView(field.view, this.id, {name: field.name, label: "Lorem Ipsum", ...field.parameters})}
+                ${OidInputFactory.createView(field.view, this.id, {name: field.name, label: field.label, ...field.parameters})}
             </div>
             `;
         }
@@ -155,19 +104,21 @@ export class WorldSpaceNodeView extends OidUI {
     }
 
     template () {
-        const modalContent = this.generate_modal();
+        const modalContent = this.nodeInfo != null ? this.generate_modal() : "";
+        const title = this.nodeInfo != null ? this.nodeInfo.name : "";
+        const icon = this.nodeInfo != null ? this.nodeInfo.icon : "";
         const formID = uuid();
 
         return html`
-        <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
+        <div class="node w-20 h-20 border-2 border-black bg-green-600 rounded-md flex items-center justify-center" @dblclick={{this._onDoubleClick}} @dragstart={{this._onDragStart}} 
         @dragend={{this._onDragEnd}} draggable="true">
-            <img src="./{{this.iconpath}}"alt="{{this.name}}">
+            <img src="${icon}" alt="{{this.name}}" class="object-fill">
             <dialog data-modal class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">
                     </div>
-                    <h2 class="text-2xl">Lorem Ipsum</h2>
+                    <h2 class="text-2xl">${title}</h2>
                     <button @click={{this._onClose}} class="w-6 h-6 focus:ring-4">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
                     </button>
@@ -188,12 +139,13 @@ Oid.component(
         id:'wf:world-space-node',
         element:'world-space-node',
         properties: {
+            output: {},
+            input: {},
             id: {},
-            type: {},
             name: {},
-            compatibleInputNodes: {},
-            inputFields: {},
-            iconpath: {},
+            presentable: {},
+            icon: {},
+            fields: {}
         },
         implementation: WorldSpaceNodeView,
         stylesheet: ['../../../../../style.css'],
