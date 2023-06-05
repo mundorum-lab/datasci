@@ -13,7 +13,6 @@ export function createConfiguration(type, rawData, fields, options) {
       type: type,
       options: options
     }
-    fields = JSON.parse(fields)
     switch (type) {
       case 'area':
         config.type = 'line'
