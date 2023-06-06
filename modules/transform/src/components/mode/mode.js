@@ -35,9 +35,9 @@ export class ModeWeb extends TransformWeb {
 
     mode(){
         this.value = this.calcularModa(this.df.column(this.column).values)
-        let json = this.toSingleValue(this.value) // Fix return: Json or singleValue.
+        this.json_result = this.toSingleValue(this.value) // Fix return: Json or singleValue.
         this.status = true
-        this._notify('modeResult', json)
+        this._notify('modeResult', this.json_result)
     }
 
     handleMode (topic, message) {  //handle with notice
@@ -69,6 +69,7 @@ Oid.component(
   element: 'mode-data',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {mode: 'handleMode'},
   implementation: ModeWeb

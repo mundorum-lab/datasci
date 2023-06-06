@@ -10,12 +10,19 @@ export class WorldSpaceNodeTypes {
         } , ...
     }
     */
-  static NodeInfoLib = {};
+
+  
+    
+   static NodeInfoLib = {};
+
+    
+
+  
 
   static fetchNodes() {
     // fetch a JSON from the root of the project and parse it into the variable NodeInfoLib
     // this is a static method, so it can be called without creating an instance of the class
-
+    
     fetch("/availableCategories.json")
       .then((response) => {
         if (!response.ok) {

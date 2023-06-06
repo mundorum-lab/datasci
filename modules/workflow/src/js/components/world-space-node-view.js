@@ -12,16 +12,20 @@ import { generate as uuid } from "short-uuid";
 
 
 export class WorldSpaceNodeView extends OidUI {
-    /*
-    Representa os nodes que estarão localizados no espaço do workflow
-    
-    */
+    /**
+     * Represents the nodes located in the workflow space.
+     * @extends OidUI
+     */
 
     // Must be arrow function so object context is not lost
     handleUpdate = (topic, message) => {
         console.log("Received an update: ", message);
     }
-
+    
+    /**
+     * Event handler for the drag start event.
+     * @param {DragEvent} event - The dragstart event object.
+     */
     _onDragStart(event) {
         const dt = event.dataTransfer;
 
@@ -31,10 +35,18 @@ export class WorldSpaceNodeView extends OidUI {
         this.style.opacity = '0.4';
     }
 
+    /**
+     * Event handler for the drag end event.
+     * @param {DragEvent} event - The dragend event object.
+     */
     _onDragEnd(event) {
         this.style.opacity = '1';
     }
 
+    /**
+     * Event handler for the double click event.
+     * @param {MouseEvent} event - The double click event object.
+     */
     _onOpenConfig(event) {
         const modal = this.shadowRoot.querySelector("dialog");
 
@@ -93,8 +105,12 @@ export class WorldSpaceNodeView extends OidUI {
         }
         this.fields = this.nodeInfo.fields;
     }
-
-    generateModal() {
+      
+    /**
+     * Generates the content for the modal.
+     * @returns {string} The generated content.
+     */
+    generate_modal() {
         const requiredInputs = this.fields;
         let input, partial = "";
         this.formListID = [];
@@ -146,6 +162,10 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
+    /**
+     * Generates the visual template for the node view.
+     * @returns {string} The generated html template.
+     */
     template () {
         const modalContent = this.nodeInfo != null ? this.generateModal() : "";
         const outputPorts = this.nodeInfo != null ? this.generatePorts("output", this.nodeInfo.output) : "";

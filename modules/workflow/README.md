@@ -51,8 +51,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": []
+      "view": string, 
+      "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }],
 
@@ -65,8 +65,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": {} // depende do tipo de input (kind) Ex.: para Text, {"password":boolean, "maxDigits":string}
+      "view": string, 
+      "parameters": {}
     }]
   }],
   ...
@@ -84,8 +84,8 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
     "input": [{"type": [string], "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string, 
-      "parameters": [number or string]
+      "view": string, 
+      "parameters": {}
   }]
 }
 ~~~
@@ -96,6 +96,145 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 > One can use a second message type inside a given message type (illustrated as `<message type>`).
 
 > Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
+
+# Parâmetros dos Campos de uma View
+
+A seguir serão apresentados as “views” dos “fields” que podem ser utilizados durante o cadastro dos componentes. Para cada um deles, definimos os parâmetros que utilizaremos para a renderização do nó. Os parâmetros que definimos foram baseados na documentação HTML da [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types).
+
+*Obs.: Nem todos os parâmetros são obrigatórios. Usem aqueles que vocês considerarem importantes.*
+
+## TextInput
+
+Parâmetros permitidos: **maxLength**, **minLength**, **list**, **pattern**, **placeholder**.
+
+Descrição dos parâmetros:
+~~~
+- maxLength: <int> 
+    -> tamanho máximo permitido para o input
+
+- minLength: <int>  
+    -> tamanho mínimo permitido para o input
+
+- list: []  
+    -> lista de valores sugeridos (não restringe outras possíveis entradas)
+
+- pattern: <string> 
+    -> expressão regular para validação do input
+    -> use para filtrar caracteres/palavras que são proibidas
+
+- placeholder: <string>  
+    -> texto que aparece de fundo no textInput 
+~~~
+
+## NumberField
+
+Parâmetros permitidos: **max**, **min**, **placeholder**, **step**, **value**.
+
+Descrição dos parâmetros:
+~~~
+- max: <int> 
+    -> valor máximo permitido para o input
+
+- min: <int> 
+    -> valor mínimo permitido para o input
+
+- placeholder: <string>  
+    -> texto que aparece de fundo no textInput
+
+- step: <int> 
+    -> setinha do lado do campo que aumenta ou diminui o valor informado quando o usuário clica. 
+
+- value: <int> 
+    -> valor default escolhido para o campo
+~~~
+
+## RadioButton
+
+Parâmetro permitido: **values**.
+
+Descrição do parâmetro:
+~~~
+- values: [{"name": <string>, "value": <string>, "checked": <boolean>}]
+    -> lista de objetos com propriedades name, value, checked.
+    -> "name" refere-se ao label que será renderizado junto com a caixa de marcação
+    -> "value" refere-se ao valor que o item possui (não é exibido, apenas transmitido)
+    -> "checked" serve para a opção ja ir marcada por padrão na visualização
+~~~
+
+*Obs: Já que o RadioButton só permite a seleção de 1 dos itens listados, **apenas 1 objeto** da lista pode conter **checked = true**.*
+
+## CheckBox
+
+Parâmetro permitido: **values**.
+
+Descrição do parâmetro:
+~~~
+- values: [{“name”:<string> ; “value”:<string>; “checked”: <boolean>}]  
+    -> lista de objetos com propriedades name, value, checked.
+    -> "name" refere-se ao label que será renderizado junto com a caixa de marcação
+    -> "value" refere-se ao valor que o item possui (não é exibido, apenas transmitido)
+    -> "checked" serve para a opção ja ir marcada por padrão na visualização
+~~~
+
+*Obs: A ChechBox permite que **mais de 1 objeto** da lista contenha **checked = true**, isso serve para marcar múltiplos values.*
+
+
+## Toggle
+
+Não permite nenhum parâmetro, uma vez que apenas devolve o estado "true" (caso o switch for acionado) ou "false" (caso o switch não for acionado). 
+
+## RangeInput
+
+Parâmetros permitidos: **max**, **min**, **value**, **step**.
+
+Descrição dos parâmetros:
+~~~
+- max: <int> 
+    -> valor máximo do intervalo
+
+- min: <int> 
+    -> valor mínimo do intervalo
+
+- value: <int> 
+    -> valor default definido entre max e min
+
+- step: <int> 
+    -> passo de atualização do value a medida que o usuário arrasta o botão
+~~~
+
+## FileInput
+
+Parâmetros permitidos: **accept**, **multiple**.
+
+Descrição dos parâmetros:
+~~~
+- accept: [<string>]
+    -> lista de formatos aceitos pelo input
+
+- multiple: <boolean> 
+    -> define se aceita mais de um arquivo
+~~~
+
+## Dropdown
+
+Parâmetro permitido: **options**.
+
+Descrição do parâmetro:
+
+~~~
+- options: [{"name": <string>, "value": <string>}]	
+    -> lista de opções do menu DropDown
+    -> cada opção é um objeto contendo nome e valor
+~~~
+
+## Extras
+
+Abaixo seguem alguns exemplos de views que **não serão implementadas**, mas se os grupos precisarem, podem implementar.
+
+- **PasswordInput** (semelhante ao TextInput mas com os caracteres substituidos por *)
+- **TextBox** (semelhante ao TextInput com tamanho da caixa de texto maior)
+- **TextList**
+
 
 # JSONs
 
@@ -114,106 +253,100 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
     "input": [{"type": [string], "name": string, "range": [int, int]}, ...],
     "fields": [{
       "name": string,
-      "kind": string,
-      "parameters": {} // depende do tipo de input () Ex.: para Text, {"password":boolean, "maxDigits":string}
+      "view": string,
+      "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }
   ...
 ]
 ```
 
-* Exemplo:
+* Exemplos:
 
 **`nodeGraphScatter.json`**
 
 ```json
-  {
-    "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
-    "id": "visualize:scatter-plot",
-    "name": "Scatter Plot",
-    "presentable": true,
-    "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
-    "fields": [{
-        "name" : "Título do Gráfico",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
+  "id": "visualize:scatter-plot",
+  "name": "Scatter Plot",
+  "presentable": true,
+  "icon": "/assets/icon.ico",
+  "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+  "fields": [{
+      "name": "Título do Gráfico",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 20,
+          "minLength": 5,
+          "placeholder": "Insira o título aqui:"
+          }
+      }]
+}
 ```
  
 **`nodeGraphLine.json`**
 
 ```json
- {
-    "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
-    "id": "visualize:line-plot",
-    "name": "Line Plot",
-    "presentable": true,
-    "icon": "/assets/icon.ico",
-    "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
-    "fields": [{
-        "name" : "Título do Gráfico",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "length" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
+  "id": "visualize:line-plot",
+  "name": "Line Plot",
+  "presentable": true,
+  "icon": "/assets/icon.ico",
+  "input": [{"type": ["input"], "name": "Dados", "range": [1, 1]}],
+  "fields": [{
+      "name": "Título do Gráfico",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 20,
+          "minLength": 5,
+          "placeholder": "Insira o título aqui:"
+          }
+      }]
+}
 ```
 
 **`nodeInputCsv.json`**
 
 ```json
-  {
-    "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
-    "id": "data:csv-file",
-    "name": "Csv File",
-    "presentable": false,
-    "icon": "/assets/icon.ico",
-    "input": [],
-    "fields": [{
-        "name" : "Nome do Eixo Y",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
+  "id": "data:csv-file",
+  "name": "Csv File",
+  "presentable": false,
+  "icon": "/assets/icon.ico",
+  "input": [],
+  "fields": [{
+      "name": "Nome do Eixo Y",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 10,
+          "minLength": 1,
+          "placeholder": "Insira o nome aqui:"
+          }
+      }]
+}
 ```
  
 **`nodeInputDatabase.json`**
 
 ```json
-  {
-    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
-    "id": "data:database",
-    "name": "Database",
-    "presentable": false,
-    "icon": "/assets/icon.ico",
-    "input": [],
-    "fields": [{
-        "name" : "URL da Database",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
-            }
-
-        }]
-  }
+{
+  "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
+  "id": "data:database",
+  "name": "Database",
+  "presentable": false,
+  "icon": "/assets/icon.ico",
+  "input": [],
+  "fields": [{
+      "name": "URL da Database",
+      "view": "TextBox",
+      "parameters": {
+          "maxLength": 10
+          }
+      }]
+}
 ```
 
 # Components
