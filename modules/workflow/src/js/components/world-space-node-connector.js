@@ -1,3 +1,10 @@
+import { WorldSpaceNode } from "./world-space-node";
+
+/**
+ * Represents the connectors of a WorldSpaceNode where connections can be made.
+ * @property {WorldSpaceNode} parentWorldSpaceNode - The node that owns the connector.
+ * @property {Array.<worldSpaceNodeConnector>} connectedWorldSpaceConnectors - The list of connectors connected to this connector.
+ */
 export class worldSpaceNodeConnector {
 
     /*
@@ -12,11 +19,26 @@ export class worldSpaceNodeConnector {
 
     */
 
+
+     /**
+     * Creates a new worldSpaceNodeConnector instance.
+     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+     */
+
     constructor(parentWorldSpaceNode) {
+        /** @type {WorldSpaceNode} */
         this.parentWorldSpaceNode = parentWorldSpaceNode;
-        this.connectedWorldSpaceConnectors = []
+        /** @type {Array.<worldSpaceNodeConnector>} */
+        this.connectedWorldSpaceConnectors = [];
+
     }
 
+    /**
+     * Checks if a connection can be made between a source connector and a target connector.
+     * @param {worldSpaceNodeConnectorOut} sourceConnector - The source connector.
+     * @param {worldSpaceNodeConnectorIn} targetConnector - The target connector.
+     * @returns {boolean} - True if the connection can be made, false otherwise.
+     */
 
     static canConnectionHappen(/*worldSpaceNodeConnectorOut*/ sourceConnector, /*worldSpaceNodeConnectorIn*/ targetConnector) {
         //Verifies if the parentNode type can be connected to the targetInput
@@ -63,7 +85,11 @@ export class worldSpaceNodeConnector {
 
         }
     }
-
+    /**
+    * Removes a connection between the current connector and another connector.
+    * @param {worldSpaceNodeConnector} connector - The connector to remove the connection from.
+    * @returns {boolean} - True if the connection was removed successfully, false otherwise.
+    */
     removeConnection(/*worldSpaceNodeConnector*/ connector) {
 
         var indexSelf = connector.connectedWorldSpaceConnectors.indexOf(this);
@@ -78,19 +104,29 @@ export class worldSpaceNodeConnector {
         console.log("Problem removing connection")
         return false;
     }
-
-    isConnectedTo(/*worldSpaceNodeConnector*/ connected) {
-
+    /**
+     * Checks if the current connector is connected to another connector.
+     * @param {worldSpaceNodeConnector} connected - The connector to check the connection with.
+     * @returns {boolean} - True if the current connector is connected to the other connector, false otherwise.
+     */
+    isConnectedTo(connected) {
         var indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
         var indexOther = this.connectedWorldSpaceConnectors.indexOf(connected);
 
         return indexSelf >= 0 && indexOther >= 0;
     }
-
+    /**
+     * Returns the parent WorldSpaceNode of the connector.
+     * @returns {WorldSpaceNode} - The parent WorldSpaceNode.
+     */
     getParentNode() {
         return this.parentWorldSpaceNode;
     }
 
+    /**
+    * Returns the ID of the parent WorldSpaceNode.
+    * @returns {number} - The ID of the parent WorldSpaceNode.
+    */
     getParentNodeId() {
         return this.parentWorldSpaceNode.individualId;
     }
@@ -104,6 +140,12 @@ export class worldSpaceNodeConnector {
         });
 
     }
+    /**
+    * Checks if a restriction is respected based on the output type and input restriction.
+    * @param {string} outType - The output type.
+    * @param {string} inRestriction - The input restriction.
+    * @returns {boolean} - True if the restriction is respected, false otherwise.
+     */
     static isRestrictionRespected(outType, inRestriction) {
 
         const segmentosA = outType.split("/");
@@ -123,51 +165,76 @@ export class worldSpaceNodeConnector {
 
 
 }
-export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
-    /*
-    Input Connectors have type and ammount limitations.
 
-    compatipleNodes = Dict{typeIds:String}   
-    connectionsRange:[int,int]
-    */
-   
+/**
+ * Represents an input connector of a WorldSpaceNode where connections can be made.
+ * @extends worldSpaceNodeConnector
+ */
+export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
+    /**
+     * Creates a new worldSpaceNodeConnectorIn instance.
+     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+     * @param {Array.<string>} compatibleNodes - The dictionary of compatible node types.
+     * @param {[number, number]} connectionsRange - The range of connections allowed.
+     */
     constructor(parentWorldSpaceNode, compatibleNodes, connectionsRange) {
         super(parentWorldSpaceNode);
+        /** @type {Array.<string>} */
         this.compatibleNodes = compatibleNodes;
+        /** @type {[number, number]} */
         this.connectionsRange = connectionsRange;
     }
 
-    receiveConnectionFrom(/*worldSpaceNodeConnectorOut*/ sourceConnector) {
-        //add the connector to this input's registered connections
+    /**
+     * Receives a connection from a source connector and adds it to the list of connectedWorldSpaceConnectors.
+     * @param {worldSpaceNodeConnectorOut} sourceConnector - The source connector.
+     */
+    receiveConnectionFrom(sourceConnector) {
         this.connectedWorldSpaceConnectors.push(sourceConnector);
-
     }
 
+    /**
+     * Gets the accepted input types of the connector.
+     * @returns {Array.<string>} - The accepted types hierarchy.
+     */
     getAcceptedInputTypes() {
-        //Returns the accepted types hierarchy
         return this.compatibleNodes;
-
     }
-
 }
-export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
-    /*
-    Output Connectors have type and ammount limitations. (symmetrical to input connectors)
-    */
 
+
+/**
+ * Represents an output connector of a WorldSpaceNode where connections can be made.
+ * @extends worldSpaceNodeConnector
+ */
+export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
+    /**
+     * Creates a new worldSpaceNodeConnectorOut instance.
+     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+     * @param {string} outputType - The output type.
+     * @param {[number, number]} connectionsRange - The range of connections allowed.
+     */
     constructor(parentWorldSpaceNode, outputType, connectionsRange) {
         super(parentWorldSpaceNode);
+        /** @type {string} */
         this.outputType = outputType;
+        /** @type {[number, number]} */
         this.connectionsRange = connectionsRange;
     }
 
-    addConnectionTo(/*worldSpaceNodeConnector*/ targetConnector) {
-
+    /**
+     * Adds a connection to a target connector and updates the connectedWorldSpaceConnectors list.
+     * @param {worldSpaceNodeConnectorIn} targetConnector - The target connector.
+     */
+    addConnectionTo(targetConnector) {
         this.connectedWorldSpaceConnectors.push(targetConnector);
     }
 
+    /**
+     * Gets the provided output types of the connector.
+     * @returns {string} - The exported types hierarchy.
+     */
     getProvidedOutputTypes() {
-        //Returns the exported types hierarchy
         return this.outputType;
     }
 }

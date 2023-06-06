@@ -7,6 +7,7 @@ import { buildLineChartData } from "./line_chart_data_builder.js";
 import { buildPolarChartData } from "./polar_chart_data_builder.js";
 import { buildRadarChartData } from "./radar_chart_data_builder.js";
 import { buildScatterChartData } from "./scatter_chart_data_builder.js";
+import { buildLinearRegressionChartData } from "./linear_regression_chart_data_builder.js";
 
 export function createConfiguration(type, rawData, fields, options) {
     let config = {
@@ -69,6 +70,10 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'scatter':
         config.data = buildScatterChartData(rawData, fields);
         break;
+      case 'linear_regression':
+          config.type = 'scatter'
+          config.data = buildLinearRegressionChartData(rawData, fields);
+          break;
       default:
         break;
     }

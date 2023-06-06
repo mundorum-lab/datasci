@@ -13,13 +13,13 @@
   <script src="https://d3js.org/d3-color.v1.min.js"></script>
   <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-  <script src="./utils/color_generator.js"></script>
+  <script src="./utils/color_generator.js" type="module"></script>
 </head>
 <body>
   <h1>Playground</h1>
   <data-sender-oid publish="click~render/data"> </data-sender-oid>
   <export-button-oid publish="export~graph/export"></export-button-oid>
-  <graph-oid uid="graph-1" type="line" fields='{"x": 2, "y": 1}' subscribe="render/data~render;graph/export~export"></graph-oid>
+  <graph-oid uid="graph-1" type="linear_regression" fields='{"y1": 0, "y2": 1, "x": 2}' subscribe="render/data~render;graph/export~export"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>

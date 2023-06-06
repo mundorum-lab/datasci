@@ -1,9 +1,9 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
-import {mockedData} from './data_mock.js';
+import {mockedData,scatter_mockData} from './data_mock.js';
 
 export class DataSenderOid extends OidUI {
     _onClick() {
-        this._notify('click', {value: mockedData})
+        this._notify('click', {value: scatter_mockData})
     }
 }
 Oid.component(
