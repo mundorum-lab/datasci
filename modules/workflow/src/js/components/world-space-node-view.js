@@ -110,7 +110,7 @@ export class WorldSpaceNodeView extends OidUI {
      * Generates the content for the modal.
      * @returns {string} The generated content.
      */
-    generate_modal() {
+    generateModal() {
         const requiredInputs = this.fields;
         let input, partial = "";
         this.formListID = [];
