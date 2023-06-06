@@ -99,7 +99,6 @@ export class FileReaderOid extends OidUI {
             const newObjectStore = newDb.createObjectStore(objectStoreName, { keyPath: "id", autoIncrement: true });
           
             for (const key of Object.keys(dataArray[0])) {
-              console.log(key)
               newObjectStore.createIndex(key.replace(/[^a-zA-Z0-9-_]/g, ""), key.replace(/[^a-zA-Z0-9-_]/g, ""), { unique: false });
             }
           };
@@ -153,6 +152,7 @@ export class FileReaderOid extends OidUI {
       };
     }
     const content = {'database':dbName, 'table': objectStoreName, 'file_name': file.name, 'file_extension': file_extension};
+    console.log(content);
     this._notify('loaded', { value: JSON.stringify(content) });
   }
   
