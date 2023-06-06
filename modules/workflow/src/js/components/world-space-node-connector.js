@@ -1,4 +1,4 @@
-import { WorldSpaceNode } from "./world-space-node";
+import { WorldSpaceNode } from "./world-space-node.js";
 
 /**
  * Represents the connectors of a WorldSpaceNode where connections can be made.
@@ -20,10 +20,10 @@ export class worldSpaceNodeConnector {
     */
 
 
-     /**
-     * Creates a new worldSpaceNodeConnector instance.
-     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
-     */
+    /**
+    * Creates a new worldSpaceNodeConnector instance.
+    * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+    */
 
     constructor(parentWorldSpaceNode) {
         /** @type {WorldSpaceNode} */

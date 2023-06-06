@@ -76,19 +76,22 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         /** @type {Array.<NodeInputField>} */
         this.fields = [];
 
-        for (var i = 0; i < NodeInfo["output"].length; i++) {
-            var compatible = NodeInfo["output"][i];
-            var newOutput = new worldSpaceNodeConnectorOut(this, compatible["type"], compatible["range"]);
+
+        for (var i = 0; i < NodeInfoLib[id].output.length; i++) {
+            var compatible = NodeInfoLib[id].output[i]
+            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.id, compatible.range);
             this.output.push(newOutput);
         }
-        for (var i = 0; i < NodeInfo["input"].length; i++) {
-            var compatible = NodeInfo["input"][i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible["type"], compatible["range"]);
-            this.inputConnection.push(newInput);
+
+        for (var i = 0; i < NodeInfoLib[id].input.length; i++) {
+            var compatible = NodeInfoLib[id].input[i];
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible.id, compatible.range);
+            this.input.push(newInput);
         }
-        for (var i = 0; i < NodeInfo["fields"].length; i++) {
-            var fieldInfo = NodeInfo["fields"][i];
-            var newField = new NodeInputField(fieldInfo["name"], fieldInfo["view"], fieldInfo["parameters"]);
+
+        for (var i = 0; i < NodeInfoLib[id].fields.length; i++) {
+            var fieldInfo = NodeInfoLib[id].fields[i];
+            var newField = new NodeInputField(fieldInfo.name, fieldInfo.view, fieldInfo.parameters);
             this.fields.push(newField);
         }
 
@@ -115,7 +118,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      */
     getTargetVertices() {
         //RETURNS THE VERTICES THIS ONE IS MAKING CONNECTION **TO**
-        
+
         let vertices = [];
         this.output.forEach((targetInConnector) => {
 
