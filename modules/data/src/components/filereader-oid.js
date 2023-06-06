@@ -1,6 +1,10 @@
 import { css, html, Oid, OidUI } from '/lib/oidlib-dev.js';
 
 export class FileReaderOid extends OidUI {
+  handleSeparator(topic, message) {
+    this.sep = message.value;
+  }
+
   _onDragover(event) {
     if (this.pre)
       this._presentation.innerHTML = this.pre;
@@ -169,10 +173,14 @@ Oid.component(
     sep: { default: ''}
   },
   implementation: FileReaderOid,
+  receive: ['separator'],
+  stylesheet: ['/style.css'],
   styles: css`
-  #oid-prs {
-    border: 5px solid;
-  }`,
+  #oid-prs { /* */ }`,
   template: html`
-  <div id="oid-prs" @dragover @drop>{{this.label}}</div>`
+  <div id="oid-prs" class="h-10 w-full flex items-center justify-center border rounded-md border-border box-border" @dragover @drop>
+    <span class="text-center text-sm text-primary">
+      {{this.label}}
+    </span>
+  </div>`
 })
