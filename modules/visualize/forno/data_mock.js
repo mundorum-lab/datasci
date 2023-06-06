@@ -31,3 +31,19 @@ export const scatter_mockData = {
         [7,6,5]
     ]
 }
+
+export const cluster_mockData = {
+    "columns": [
+        {"name":"cluster", "type":"num"},
+        {"name":"x", "type": "num"},
+        {"name":"y" , "type": "num"}
+    ],
+    "data": [
+        [1,1,0],
+        [1,1,1],
+        [2,2,0],
+        [2,2,1],
+        [3,3,0],
+        [3,3,1]
+    ]
+}
