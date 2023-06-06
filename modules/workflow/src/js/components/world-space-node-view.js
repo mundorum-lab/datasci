@@ -4,11 +4,15 @@ import { InputFactory } from "../utils/input/input-factory.js";
 
 
 export class WorldSpaceNodeView extends OidUI {
-    /*
-    Representa os nodes que estarão localizados no espaço do workflow
-    
-    */
+    /**
+     * Represents the nodes located in the workflow space.
+     * @extends OidUI
+     */
 
+    /**
+     * Event handler for the drag start event.
+     * @param {DragEvent} event - The dragstart event object.
+     */
     _onDragStart(event) {
         const dt = event.dataTransfer;
 
@@ -18,10 +22,18 @@ export class WorldSpaceNodeView extends OidUI {
         this.style.opacity = '0.4';
     }
 
+    /**
+     * Event handler for the drag end event.
+     * @param {DragEvent} event - The dragend event object.
+     */
     _onDragEnd(event) {
         this.style.opacity = '1';
     }
 
+    /**
+     * Event handler for the double click event.
+     * @param {MouseEvent} event - The double click event object.
+     */
     _onDoubleClick(event) {
         const modal = this.shadowRoot.querySelector(".node dialog");
         modal.showModal();
@@ -32,6 +44,10 @@ export class WorldSpaceNodeView extends OidUI {
         this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
     }
 
+    /**
+     * Generates the content for the modal.
+     * @returns {string} The generated content.
+     */
     generate_modal() {
         let input, partial = "";
         
@@ -59,6 +75,10 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
+    /**
+     * Generates the visual template for the node view.
+     * @returns {string} The generated html template.
+     */
     template () {
         const modal_content = this.generate_modal();
 

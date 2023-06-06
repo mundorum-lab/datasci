@@ -1,7 +1,14 @@
 export class WorldSpace{
-    /*
-    Stores the WorldSpace information
-    */
+    /**
+     * Stores the WorldSpace information
+     * 
+     * Properties
+     * createdWSSubcomponentsAmmount : The number of WorldSpaceSubcomponents created
+     * onWorldSpaceComponents : List of components in the world space
+     * 
+     * @property {number} createdWSSubcomponentsAmmount
+     * @property {object} onWorldSpaceComponents
+     */
 
    /*
     allTimeCreatedBehaviours : static int
