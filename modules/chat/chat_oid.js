@@ -35,7 +35,11 @@ export class ChatOid extends OidWeb {
                   My dataset has the columns: ${this.columns} and the data are: ${this.inputData}
                   Explain it to me.`
   }
-
+  async getData(componentId,attributeName){
+    await this._connect("itf:oid",componentId,this)
+    let componentData=await this._invoke("itf:oid","get",{property:attributeName})
+    return componentData
+  }
   requestToOpenAI() {
   
     this.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
