@@ -2,7 +2,7 @@ import { NodeInputField } from "./node-input-field.js";
 import { worldSpaceNodeConnector, worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./world-space-node-connector.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
 import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
-
+import { WorldSpace } from "./world-space.js";
 
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     /**
@@ -120,9 +120,14 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         //RETURNS THE VERTICES THIS ONE IS MAKING CONNECTION **TO**
 
         let vertices = [];
-        this.output.forEach((targetInConnector) => {
 
-            vertices.push(targetInConnector.getParentNodeId());
+        this.output.forEach((port) => {
+
+
+            port.connectedWorldSpaceConnectors.forEach(inPort => {
+                vertices.push(inPort.getParentNodeId())
+            });
+
 
         });
 
@@ -134,9 +139,9 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      * @returns {boolean} - True if cyclic, false otherwise.
      */
     isGraphCyclic() {
-        const stack = [this];
-        const visited = new Set();
 
+        let stack = [this];
+        let visited = new Set();
         while (stack.length > 0) {
             const currentNode = stack.pop();
 
@@ -150,14 +155,11 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
             const targetVertices = currentNode.getTargetVertices();
 
             for (const targetId of targetVertices) {
-                const targetNode = getById(targetId);
+                const targetNode = WorldSpace.getById(targetId);
+                stack.push(targetNode);
 
-                if (!visited.has(targetNode)) {
-                    stack.push(targetNode);
-                }
             }
         }
-
         return false;
     }
 
