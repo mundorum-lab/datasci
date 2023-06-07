@@ -28,17 +28,27 @@ export class ChatOid extends OidWeb {
     this.workflowMap=message
   }
  
-  generatePrompt(){
+  generatePrompt(workflowMap, componentId){
+    let finalComponent = this.findComponent(this.workflowMap, this.Id)
+    // esse if depende do tipo do visualizador das apresentaçoes
+    if (finalComponent.type === 'table-oid-visualizer'){ 
+      let previousComponents = this.findPreviousComponents(this.workflowMap, this.Id)
+      finalComponent = previousComponents[0][0]
+    }
+    let path = this.findFullPathToComponent(workflowMap, Id)
     this.prompt = `You are a high specialized data science program called DataGPT.
-                  I want to understand the following experiment:
-                  The type of data I want to analyse is ${this.inputType}.
-                  My dataset has the columns: ${this.columns} and the data are: ${this.inputData}
-                  Explain it to me.`
+                  I want to understand the following experiment:`
+    
+    for component in path:
+      this.prompt += 'Then a {component.type} was added'
+      if component == finalComponent:
+          this.prompt +=  `The type of data I want to analyze is a ${component.type}.My dataset has the columns: ${component.columns} and the data are: ${component.data}
+            Explain it to me.`
   }
 
   requestToOpenAI() {
   
-    this.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
+    component.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
 
     Let's break down the data:
     
@@ -87,6 +97,23 @@ export class ChatOid extends OidWeb {
     return componentsFound
   }
 
+  findFullPathToComponent(workflowMap, Id){
+    let edgesArray=workflowMap.edges
+    componentsFound=[]
+    currentComponentId = Id
+    end_statement = False
+    while end_statement == False:
+      for component in edgesArray:
+        if component[1] == currentComponentId:
+          componentsFound.append(component[0])
+          currentComponentId = component[0]
+          break
+        if component == len(edgesArray):
+          end_statement = True
+
+    return componentsFound
+
+  }
   handlePrompt(op,message){
     let componentId=message.value
     console.log("component id = ", componentId)
