@@ -1,6 +1,6 @@
 import {calculateHipothesisArray, splitColumns, subtractArrays, sumArray, multiplyArrays} from '../../support/helpers.js';
 
-const my_data = [[-0.21,2.048,0.145],
+export const my_data = [[-0.21,2.048,0.145],
 [-0.305,1.999,0.103],
 [-0.368,1.968,0.149],
 [-0.37,1.902,0.11],
