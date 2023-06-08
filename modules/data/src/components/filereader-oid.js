@@ -50,8 +50,8 @@ export class FileReaderOid extends OidUI {
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(sep);
         const obj = {};
-        for (let j = 0; j < keys.length; j++) {
-          obj[keys[j]] = values[j];
+        for (let j = 0; j < keys. length; j++) {
+          obj[keys[j]] = values[j].replace(/['"]/g, '');
           if (!isNaN(values[j])) {
             obj[keys[j]] = parseFloat(values[j]);
           }
