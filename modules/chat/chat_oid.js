@@ -39,11 +39,16 @@ export class ChatOid extends OidWeb {
     this.prompt = `You are a high specialized data science program called DataGPT.
                   I want to understand the following experiment:`
     
-    for component in path:
-      this.prompt += 'Then a {component.type} was added'
-      if component == finalComponent:
-          this.prompt +=  `The type of data I want to analyze is a ${component.type}.My dataset has the columns: ${component.columns} and the data are: ${component.data}
-            Explain it to me.`
+    for (let component of path){
+      this.prompt += `Then a ${component.type} was added`
+      if (component == finalComponent){
+        this.prompt +=  `The type of data I want to analyze is a ${component.type}.My dataset has the columns: ${component.columns} and the data are: ${component.data}
+        Explain it to me.`
+      }
+         
+    }
+      
+    
   }
 
   requestToOpenAI() {
@@ -102,15 +107,17 @@ export class ChatOid extends OidWeb {
     componentsFound=[]
     currentComponentId = Id
     end_statement = False
-    while end_statement == False:
-      for component in edgesArray:
-        if component[1] == currentComponentId:
+    while (end_statement == False){
+      for (let component of edgesArray){
+        if (component[1] == currentComponentId){
           componentsFound.append(component[0])
           currentComponentId = component[0]
           break
-        if component == len(edgesArray):
+        }
+        if (component == len(edgesArray))
           end_statement = True
-
+      }
+    }
     return componentsFound
 
   }
