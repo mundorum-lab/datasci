@@ -140,27 +140,9 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      */
     isGraphCyclic() {
 
-        let stack = [this];
-        let visited = new Set();
-        while (stack.length > 0) {
-            const currentNode = stack.pop();
-
-            if (visited.has(currentNode)) {
-                // Se o nó já foi visitado, indica que há um ciclo
-                return true;
-            }
-
-            visited.add(currentNode);
-
-            const targetVertices = currentNode.getTargetVertices();
-
-            for (const targetId of targetVertices) {
-                const targetNode = WorldSpace.getById(targetId);
-                stack.push(targetNode);
-
-            }
-        }
         return false;
     }
+
+
 
 }

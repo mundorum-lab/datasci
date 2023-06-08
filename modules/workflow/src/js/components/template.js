@@ -37,11 +37,18 @@ let inputD = nodeD.input[0]
 let outputD = nodeD.output[0]
 
 console.log(nodeB)
-worldSpaceNodeConnector.makeConnection(outputA, inputB)
-worldSpaceNodeConnector.makeConnection(outputA, inputC)
-worldSpaceNodeConnector.makeConnection(outputA, inputB1) //Should connect (to be fixed)
+
+worldSpaceNodeConnector.makeConnection(outputA, inputA)
+
+//worldSpaceNodeConnector.makeConnection(outputA, inputC)
+//worldSpaceNodeConnector.makeConnection(outputB, inputD)
+//worldSpaceNodeConnector.makeConnection(outputC, inputD)
+//worldSpaceNodeConnector.makeConnection(outputA, inputB)
+//worldSpaceNodeConnector.makeConnection(outputA, inputB1) //Should connect (to be fixed)
 
 console.log(inputA.getParentNode().getTargetVertices())
+//console.log(inputB.getParentNode().getTargetVertices())
+//console.log(inputC.getParentNode().getTargetVertices())
 //inputB.removeConnection(outputA)
 
 
