@@ -1,5 +1,5 @@
 import { testFunction, my_data } from './temp_lr.js';
-import { generateTargetDataArrays, executeLinearRegression } from './linear-regression.js';
+import { generateTargetDataArrays, executeLinearRegression, calculateResultColumn } from './linear-regression.js';
 import { Oid, OidBase } from '/lib/oidlib-dev.js'
 
 export class LinearModel extends OidBase {
@@ -9,6 +9,7 @@ export class LinearModel extends OidBase {
     const {no_target_array, target_array} = generateTargetDataArrays(this.data, 1)
     const thetas = executeLinearRegression(no_target_array, target_array);
     console.log(thetas);
+    const result = calculateResultColumn(thetas, no_target_array);
     //[1.884, 0.643, 1.231]
   }
 }

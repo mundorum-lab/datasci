@@ -58,6 +58,9 @@ export function executeLinearRegression(data, target, nb_epochs = false, learnin
   return thetas;
 }
 
-export function calculateResultColumn(){}
+export function calculateResultColumn(thetas, data){
+  const result = calculateHipothesisArray(thetas, data, data[0].length);
+  return result.map(el => parseFloat(el.toFixed(3)))
+}
 
 
