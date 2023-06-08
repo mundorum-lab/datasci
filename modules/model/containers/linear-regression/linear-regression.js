@@ -5,7 +5,7 @@ const DEFAULT_LEARNING_RATE = 0.5;
 const DEFAULT_ERROR = 0.0001;
 
 
-const calculate_error = (target, data, theta_vector, m) => {
+const calculateError = (target, data, theta_vector, m) => {
   //Get the array without the target
   //Calculate the hipothesis array (theta_0 + theta_1*x0 + theta_2*x1 + ... theta_n*xn-1)
   let hipothesis_array = calculateHipothesisArray(theta_vector, data, m)
@@ -29,13 +29,13 @@ const gradient = (theta_vector, data, target, m) => {
 }
 
 
-const linear_regression = (target, data, nb_epochs, m, learning_rate, error) => {
+const linearRegression = (target, data, nb_epochs, m, learning_rate, error) => {
   let theta_vector = [0,1,1];
-  let mse = calculate_error(target, data, theta_vector, m);
+  let mse = calculateError(target, data, theta_vector, m);
   for (let i = 0; i < nb_epochs; i++){
     let temp_thetas = gradient(theta_vector, data, target, m);
     theta_vector = theta_vector.map((el, index) => (el - learning_rate*temp_thetas[index]));
-    let e = calculate_error(target, data, theta_vector, m);
+    let e = calculateError(target, data, theta_vector, m);
     if(Math.abs(mse - e) <= error){
       break;
     }  // Convergiu
@@ -54,7 +54,7 @@ export function executeLinearRegression(data, target, nb_epochs = false, learnin
   nb_epochs = nb_epochs ? nb_epochs : DEFAULT_NB_EPOCHS;
   learning_rate = learning_rate ? learning_rate : DEFAULT_LEARNING_RATE;
   error = error ? error : DEFAULT_ERROR;
-  const thetas = linear_regression(target[0], data, nb_epochs, target[0].length, learning_rate, error);
+  const thetas = linearRegression(target[0], data, nb_epochs, target[0].length, learning_rate, error);
   return thetas;
 }
 
