@@ -27,17 +27,15 @@ export class FileReaderOid extends OidUI {
   
     const file_extension = file.name.split('.').pop();
     const file_name = file.name.split('.')[0];
-    console.log("file extension", file_extension);
   
     const dbName = "DatabaseMundorum";
     const objectStoreName = `${file_name.replace(/[^a-zA-Z0-9-_]/g, "")}_MundorumDS`;
     const text = await file.text();
-    console.log(text)
+
     let dataArray = [];
   
     if (file_extension === 'json') {
       const jsonData = JSON.parse(text);
-      console.log(jsonData);
       dataArray = jsonData;
     } else if (file_extension === 'csv') {
       let sep = this.sep === '' ? ',' : this.sep;
@@ -50,13 +48,12 @@ export class FileReaderOid extends OidUI {
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(sep);
         const obj = {};
-        for (let j = 0; j < keys.length; j++) {
-          obj[keys[j]] = values[j];
+        for (let j = 0; j < keys. length; j++) {
+          obj[keys[j]] = values[j].replace(/['"]/g, '');
           if (!isNaN(values[j])) {
             obj[keys[j]] = parseFloat(values[j]);
           }
         }
-        console.log(obj)
   
         dataArray.push(obj);
       }
@@ -64,9 +61,6 @@ export class FileReaderOid extends OidUI {
       console.error("File Extension not found - Please use .json or .csv");
       return -1;
     }
-  
-    console.log("data:", dataArray);
-  
     // Verifica a compatibilidade do navegador com o IndexedDB
     if (!window.indexedDB) {
       console.log("Seu navegador não suporta o IndexedDB.");
@@ -103,7 +97,6 @@ export class FileReaderOid extends OidUI {
             const newObjectStore = newDb.createObjectStore(objectStoreName, { keyPath: "id", autoIncrement: true });
           
             for (const key of Object.keys(dataArray[0])) {
-              console.log(key)
               newObjectStore.createIndex(key.replace(/[^a-zA-Z0-9-_]/g, ""), key.replace(/[^a-zA-Z0-9-_]/g, ""), { unique: false });
             }
           };

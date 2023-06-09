@@ -1,4 +1,4 @@
-import { Bus, css, html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
+import { Bus, css, html, Oid, OidUI } from "/lib/oidlib-dev.js";
 import { WorldSpaceNodeTypes } from "../world-space-node-types.js";
 import { InputOid } from "../utils/input/input-field.js";
 import { NumberOid } from "../utils/input/number-field.js";
@@ -17,8 +17,13 @@ export class WorldSpaceNodeView extends OidUI {
      * @extends OidUI
      */
 
-    // Must be arrow function so object context is not lost
+    /**
+     * Handler for bus messages.
+     * @param {object} topic - The topic of the message.
+     * @param {object} message - The message.
+     */
     handleUpdate = (topic, message) => {
+        // Must be arrow function so object context is not lost
         console.log("Received an update: ", message);
     }
     
@@ -57,10 +62,18 @@ export class WorldSpaceNodeView extends OidUI {
 
     }
 
+    /**
+     * Event handler for the cancel event.
+     * @param {Event} event - The cancel event object.
+     */
     _onCancel(event) {
         this.isOpen = false;
     }
 
+    /**
+     * Event handler for the close button event.
+     * @param {Event} event - The click event object.
+     */
     _onClose(event) {
         const modal = this.shadowRoot.querySelector("dialog");
 
@@ -79,38 +92,27 @@ export class WorldSpaceNodeView extends OidUI {
         Bus.i.subscribe(`input/changed/${this.id}`, this.handleUpdate);
 
         // Gets Node Info from Library
-        // this.nodeInfo = WorldSpaceNodeTypes.NodeInfoLib[this.name];
-        // Stub for testing:
-        this.nodeInfo = {
-            "output": [
-                {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
-                {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
-            ],
-            "input": [
-                {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
-                {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
-            ],
-            "id": "data:database",
-            "name": "Database",
-            "presentable": false,
-            "icon": "modules/workflow/src/assets/templateselection.png",
-            "fields": [{
-                "name": "URL",
-                "label": "URL da Database",
-                "view": "InputField",
-                "parameters": {
-                    "maxLength": 10
-                    }
-                }]
+        const getNodeInfo = () => { return this._invoke("itf:component-provider", "getComponentInfo", {value: this.type}).then(success, fail) };
+        const success = (value) => {
+            
+            if (value != null) {
+                this.nodeInfo = value[0];
+                this.fields = this.nodeInfo.fields;
+            }
+            else {
+                setTimeout(getNodeInfo, 1200);
+            }
         }
-        this.fields = this.nodeInfo.fields;
+        const fail = (reason) => { console.log(reason); }
+
+        getNodeInfo();
     }
       
     /**
      * Generates the content for the modal.
      * @returns {string} The generated content.
      */
-    generate_modal() {
+    generateModal() {
         const requiredInputs = this.fields;
         let input, partial = "";
         this.formListID = [];
@@ -129,6 +131,10 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
+    /**
+     * Generates a node's input/output ports.
+     * @returns {string} The generated content.
+     */
     generatePorts(direction, requiredPorts) {
         const portElement = direction == "output" ? '<div class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative left-full"></div>' : '<div class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
         const breadcrumbPiece = (content, pos) => {
@@ -162,20 +168,40 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
-    /**
-     * Generates the visual template for the node view.
-     * @returns {string} The generated html template.
+     /**
+     * Generates a loading skeleton for the node
+     * @returns {string} The generated content.
      */
-    template () {
-        const modalContent = this.nodeInfo != null ? this.generateModal() : "";
-        const outputPorts = this.nodeInfo != null ? this.generatePorts("output", this.nodeInfo.output) : "";
-        const inputPorts = this.nodeInfo != null ? this.generatePorts("input", this.nodeInfo.input) : "";
-        const title = this.nodeInfo != null ? this.nodeInfo.name : "";
-        const icon = this.nodeInfo != null ? this.nodeInfo.icon : "";
+    renderLoading() {
+        return html`
+        <div class="w-72 h-72 border bg-primary-foreground rounded-md flex flex-col items-center" role="status">
+            <div class="flex items-center w-full h-8 p-2 border-b border-border">
+                <div class="h-2 bg-border rounded-full w-48"></div>
+            </div>
+            <div class="flex flex-col w-full h-full items-center justify-center">
+                <svg aria-hidden="true" class="w-8 h-8 mr-2 text-background animate-spin fill-border" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                </svg>
+            </div>
+        </div>
+        `;
+    }
+
+    /**
+     * Generates a the node
+     * @returns {string} The generated content.
+     */
+    renderNode() {
+        const modalContent = this.generateModal();
+        const outputPorts = this.generatePorts("output", this.nodeInfo.output);
+        const inputPorts = this.generatePorts("input", this.nodeInfo.input);
+        const title = this.nodeInfo.name;
+        const icon = this.nodeInfo.icon;
         const formID = uuid();
 
         return html`
-        <div class="node w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}} @dragstart={{this._onDragStart}} 
+        <div class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}} @dragstart={{this._onDragStart}} 
         @dragend={{this._onDragEnd}} draggable="true">
             <div class="flex justify-between px-2 py-1 content-center w-full border-b">
                 <div class="flex justify-center items-center w-fit h-full gap-2">
@@ -217,6 +243,18 @@ export class WorldSpaceNodeView extends OidUI {
         </div>
         `;
     }
+
+    /**
+     * Generates the visual template for the node view.
+     * @returns {string} The generated html template.
+     */
+    template () {
+
+        if (this.nodeInfo != null)
+            return this.renderNode();
+        return this.renderLoading();
+
+    }
 }
 
 Oid.component(
@@ -227,13 +265,14 @@ Oid.component(
             output: {},
             input: {},
             id: {},
+            type: {},
             name: {},
             presentable: {},
             icon: {},
             fields: {}
         },
         implementation: WorldSpaceNodeView,
-        stylesheet: ['../../../../../style.css'],
+        stylesheet: ['/style.css'],
         receive: ['update'],
     }
 )
