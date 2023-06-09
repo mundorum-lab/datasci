@@ -4,7 +4,7 @@ import {getPCA} from './PCA.js'
 
 export class PcaOid extends OidUI {
   async applyPCA (topic, message) {
-    let table = message.value
+    let table = JSON.parse(JSON.stringify(message.data));
     this.data = await getData(table)
     this.result = await getPCA(this.data)
     self._notify("output", {
@@ -13,7 +13,7 @@ export class PcaOid extends OidUI {
 
   }
   _onClick(){
-    this._notify('click', {data: this.data})
+    this._notify('transform', {data: this.data})
   }
 
   
@@ -21,8 +21,8 @@ export class PcaOid extends OidUI {
 
 Oid.component(
 {
-  id: 'model:pca',
-  element: 'model-pca',
+  id: 'ml:apply-pca',
+  element: 'ml-apply-pca',
   properties: {
     name: {default: 'PCA'},
     data: {default:  [[40,50,60],[50,70,60],[80,70,90],[50,60,80]]},
