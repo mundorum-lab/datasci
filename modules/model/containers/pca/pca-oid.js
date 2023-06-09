@@ -4,14 +4,19 @@ import {getPCA} from './PCA.js'
 
 export class PcaOid extends OidUI {
   async applyPCA (topic, message) {
-    //this.data = message.data
+    let table = message.value
+    this.data = await getData(table)
     this.result = await getPCA(this.data)
-    let inter = JSON.stringify(this.result, null, '\t')
-    this.result = inter
+    self._notify("output", {
+      value: JSON.stringify(this.result),
+    });
+
   }
   _onClick(){
     this._notify('click', {data: this.data})
   }
+
+  
 }
 
 Oid.component(
