@@ -20,7 +20,7 @@ export class ApplyCluster extends OidUI {
       //this.result += clusters[j-1].points
     }
 
-    message.columns.push({"category":"number"})
+    message.columns.push({"name": "category", "type": "num"})
 
     for (let i = 0; i < centroids.length; i++) {
       message.data.push([centroids[i][0], centroids[i][1], 0])
@@ -30,8 +30,8 @@ export class ApplyCluster extends OidUI {
       "columns" : message.columns,
       "data" : message.data
     }
-
     this.result = "Output: <br></br> " + JSON.stringify(final, false, "\t");
+    this._notify('transformed', {data: final.data, columns: final.columns});
   }
 }
 
