@@ -12,8 +12,7 @@
 <body>
     <h1>Cluster Algorithm:</h1>
     <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
-    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
-    <type-input subscribe="data/raw~type_input" publish="output_type~apply/cluster"></type-input>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~apply/cluster"></fileinput-oid>
     <ml-apply-cluster subscribe="apply/cluster~transform"></ml-apply-cluster>
 </body>
 </html>
