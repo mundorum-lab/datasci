@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Example Template</title>
-    <script src="src/components/fileinput-oid.js" type="module"></script>
+    <script src="../src/components/fileinput-oid.js" type="module"></script>
+    <script src="../src/components/table-view-oid.js" type="module"></script>
   </head>
   <body>
     <h1>File-input Component</h1>
@@ -13,10 +14,9 @@
                 
     <fileinput-oid
       subscribe="file/loaded~load_file"
-      publish="output~show/message"
+      publish="output_raw~show/message"
     ></fileinput-oid>
-
-    <console-oid subscribe="show/message~display"></console-oid>
+    <table-view-oid subscribe="show/message~display"></table-view-oid>
     <a href="example_workflow.html">Voltar</a>
   </body>
 </html>
