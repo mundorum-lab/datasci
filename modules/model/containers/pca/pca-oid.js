@@ -1,29 +1,31 @@
 import { html, Oid, OidUI  } from '/lib/oidlib-dev.js'
-import {getPCA} from './PCA.js'
+import {getPCA, getData} from './PCA.js'
 
 
 export class PcaOid extends OidUI {
   async applyPCA (topic, message) {
-    //this.data = message.data
+    let table = JSON.parse(JSON.stringify(message));
+    this.data = await getData(table)
     this.result = await getPCA(this.data)
-    let inter = JSON.stringify(this.result, null, '\t')
-    this.result = inter
+    console.log('this.result que sera publicado: ', this.result)
+    this._notify("transformed", {
+      value: JSON.stringify(this.result),
+    });
+
   }
-  _onClick(){
-    this._notify('click', {data: this.data})
-  }
+  
 }
 
 Oid.component(
 {
-  id: 'model:pca',
-  element: 'model-pca',
+  id: 'ml:apply-pca',
+  element: 'ml-apply-pca',
   properties: {
     name: {default: 'PCA'},
     data: {default:  [[40,50,60],[50,70,60],[80,70,90],[50,60,80]]},
     result: {default: 'resultadis'},
   },
   receive: {transform: 'applyPCA'},
-  template: html`<br>input: {columns: [{coluna1 : number}, {coluna2 : number}, {coluna3 : number}], data : [[40,50,60],[50,70,60],[80,70,90],[50,60,80]]} </br> <h1>data returned: {{this.result}} </h1>`,
+  template: html`<h1>data returned: {{this.result}} </h1>`,
   implementation: PcaOid,
 });
