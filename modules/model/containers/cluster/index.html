@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Playground</title>
+    <script src="mock-cluster-data.js" type="module"></script>
     <script src="cluster-oid.js" type="module"></script>
-    <script src="apply-cluster-oid.js" type="module"></script>
 </head>
 <body>
     <h1>Cluster Algorithm:</h1>
-    <ml-cluster-oid num_clusters=2 publish="click~apply/cluster"></ml-cluster-oid>
-    <ml-apply-cluster subscribe="apply/cluster~transform"></ml-apply-cluster>
+    <ml-cluster-mocker num_clusters=2 publish="click~apply/cluster"></ml-cluster-mocker>
+    <ml-cluster-oid subscribe="apply/cluster~transform"></ml-cluster-oid>
 </body>
 </html>
