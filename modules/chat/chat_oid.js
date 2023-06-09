@@ -29,24 +29,26 @@ export class ChatOid extends OidWeb {
   }
  
   generatePrompt(workflowMap, componentId){
-    let finalComponent = this.findComponent(this.workflowMap, this.Id)
+    let finalComponent = this.findComponent(this.workflowMap, componentId)
     // esse if depende do tipo do visualizador das apresentaçoes
     if (finalComponent.type === 'table-oid-visualizer'){ 
       let previousComponents = this.findPreviousComponents(this.workflowMap, this.Id)
       finalComponent = previousComponents[0][0]
     }
-    let path = this.findFullPathToComponent(workflowMap, Id)
+    let path = this.findFullPathToComponent(workflowMap, componentId)
     this.prompt = `You are a high specialized data science program called DataGPT.
                   I want to understand the following experiment:`
-    
+    let index = 0
     for (let component of path){
-      this.prompt += `Then a ${component.type} was added`
+      index += 1
+      this.prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
-        this.prompt +=  `The type of data I want to analyze is a ${component.type}.My dataset has the columns: ${component.columns} and the data are: ${component.data}
+        this.prompt +=  `The type of data I want to analyze is a ${component.nodeType}.My dataset has the columns: ${component.attributes.name} and the data are: ${component.attributes.table}
         Explain it to me.`
       }
-         
+      
     }
+    console.log(this.prompt)
       
     
   }
@@ -72,7 +74,8 @@ export class ChatOid extends OidWeb {
     let component=null
     
     for(let i in workflowMap.nodes){
-      if (workflowMap.nodes[i].nodeId==Id){
+      console.log("workflow node = ",workflowMap.nodes[i].nodeId, "///",Id)
+      if (workflowMap.nodes[i].nodeId===Id){
         component=workflowMap.nodes[i]
         break
       }
@@ -104,26 +107,34 @@ export class ChatOid extends OidWeb {
 
   findFullPathToComponent(workflowMap, Id){
     let edgesArray=workflowMap.edges
-    componentsFound=[]
-    currentComponentId = Id
-    end_statement = False
-    while (end_statement == False){
+    let componentsFound=[]
+    let currentComponentId = Id
+    componentsFound.push(this.findComponent(workflowMap,Id))
+    let end_statement = 'False'
+    // console.log(edgesArray.length)
+    while (end_statement === 'False'){
+      let index = 0
       for (let component of edgesArray){
-        if (component[1] == currentComponentId){
-          componentsFound.append(component[0])
+        index += 1
+        // console.log("component = ",component, "currentId = ", currentComponentId, "componentsFound = ", componentsFound)
+        if (component[1] === currentComponentId){
+          componentsFound.push(this.findComponent(workflowMap,component[0]))
+          // console.log("component was Found = ", componentsFound)
           currentComponentId = component[0]
           break
         }
-        if (component == len(edgesArray))
-          end_statement = True
+        // console.log("aa", component.index, edgesArray.length)
+        if (index === edgesArray.length)
+          end_statement = "True"
       }
     }
-    return componentsFound
+    return componentsFound.reverse()
 
   }
+
   handlePrompt(op,message){
     let componentId=message.value
-    console.log("component id = ", componentId)
+    this.generatePrompt(this.workflowMap,componentId)
     let mainComponent=this.findComponent(this.workflowMap,componentId)
     let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
     return {value:[mainComponent,previousComponents]}
@@ -147,7 +158,94 @@ Oid.component(
   id: 'chat',
   element: 'chat-oid',
   properties: {
-    workflowMap: {default:null},
+    workflowMap: {default: {
+      "nodes":
+      [
+      {
+          "nodeId":1,
+          "nodeType":"file-input",
+          "attributes":{}
+      },
+      {
+          "nodeId":2,
+          "nodeType":"file-typing",
+          "attributes":{}
+      },
+      {
+          "nodeId":3,
+          "nodeType":"filter",
+          "attributes":{   
+              "table" : {},
+              "status" : true,
+              "name" : "",
+              "type" : ""
+          }
+  
+      },
+      {
+          "nodeId":4,
+          "nodeType":"minimum",
+          "attributes":{   
+              "value" : 0,
+              "status" : true,
+              "name" : "",
+              "type" : ""
+          }
+      },
+      {
+          "nodeId":5,
+          "nodeType":"cluster",
+          "attributes":{}
+      },
+      {
+          "nodeId":6,
+          "nodeType":"graph",
+          "attributes":{   
+              "size" : {},
+              "id" : 0,
+              "options" : "",
+              "type" : ""
+          }
+      },
+      {
+          "nodeId":7,
+          "nodeType":"graph",
+          "attributes":{   
+              "size" : {},
+              "id" : 0,
+              "options" : "",
+              "type" : ""
+          }
+      },
+      {
+          "nodeId":8,
+          "nodeType":"chatGPT",
+          "attributes":{
+              "chat-id":0,
+              "prompt":""
+          }
+      },
+      {
+          "nodeId":9,
+          "nodeType":"chatGPT",
+          "attributes":{
+              "chat-id":0,
+              "prompt":""
+          }
+      },
+      {
+          "nodeId":10,
+          "nodeType":"chatGPT",
+          "attributes":{
+              "chat-id":0,
+              "prompt":""
+          }
+      }
+  
+  
+      ],
+      "edges":[[1,2],[2,3],[3,4],[3,5],[4,8],[5,6],[5,7],[6,9],[7,10]]
+  }},
     // 'columns' : {default: 'undefined'},
     // 'input-data':{default: 'undefined'},
     // 'input-type':{default: 'undefined'},
