@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Cluster Algorithm:</h1>
-    <ml-cluster-mocker num_clusters=2 publish="click~apply/cluster"></ml-cluster-mocker>
-    <ml-cluster-oid subscribe="apply/cluster~transform"></ml-cluster-oid>
+    <ml-cluster-mocker num_clusters=2 publish="click~model/cluster/transform"></ml-cluster-mocker>
+    <ml-cluster-oid subscribe="model/cluster/transform~transform"></ml-cluster-oid>
 </body>
 </html>
