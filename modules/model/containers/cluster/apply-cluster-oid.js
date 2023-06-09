@@ -8,7 +8,9 @@ export class ApplyCluster extends OidUI {
     this.result = "[Cluster Result]"
   }
   applyCluster (topic, message) {
-    let res = kmeans(message.data, message.num_clusters)
+    let columns = [...message.columns]
+    let data = JSON.parse(JSON.stringify(message.data));
+    let res = kmeans(data, message.num_clusters?message.num_clusters:this.num_clusters)
     let centroids = res.centroids
     let clusters = res.clusters
 
@@ -19,17 +21,16 @@ export class ApplyCluster extends OidUI {
       }
       //this.result += clusters[j-1].points
     }
-
-    message.columns.push({"name": "category", "type": "num"})
-
+    
+    columns.push({"name": "category", "type": "num"})
     for (let i = 0; i < centroids.length; i++) {
-      message.data.push([centroids[i][0], centroids[i][1], 0])
+      data.push([centroids[i][0], centroids[i][1], 0])
+    }
+    let final = {
+      "columns" : columns,
+      "data" : data
     }
 
-    let final = {
-      "columns" : message.columns,
-      "data" : message.data
-    }
     this.result = "Output: <br></br> " + JSON.stringify(final, false, "\t");
     this._notify('transformed', {data: final.data, columns: final.columns});
   }
