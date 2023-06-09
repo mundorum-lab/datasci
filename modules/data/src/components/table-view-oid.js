@@ -5,7 +5,6 @@ import { html, css, Oid, OidUI } from '/lib/oidlib-dev.js';
 
 export class TableViewOid extends OidUI {
   handleSend (topic, message) {
-    console.log("lalaa")
     // <TODO> replace by const table = message.value
     const table = message
     if (this._presentation && message) {
