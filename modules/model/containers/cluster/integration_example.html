@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Playground</title>
     <script src="cluster-oid.js" type="module"></script>
-    <script src="apply-cluster-oid.js" type="module"></script>
     <script src="../../../data/src/components/fileinput-oid.js" type="module"></script>
     <script src="../../../data/src/components/filereader-oid.js" type="module"></script>
     <script src="../../../data/src/components/typeinput-oid.js" type="module"></script>
@@ -12,7 +11,7 @@
 <body>
     <h1>Cluster Algorithm:</h1>
     <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
-    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~apply/cluster"></fileinput-oid>
-    <ml-apply-cluster subscribe="apply/cluster~transform"></ml-apply-cluster>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~model/cluster/transform"></fileinput-oid>
+    <ml-cluster-oid subscribe="model/cluster/transform~transform"></ml-cluster-oid>
 </body>
 </html>
