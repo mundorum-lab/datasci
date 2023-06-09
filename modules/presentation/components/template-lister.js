@@ -1,9 +1,9 @@
-import { Oid, OidUI } from "/lib/oidlib-dev.js";
+import { Oid } from "/lib/oidlib-dev.js";
 import templatesList from "../templates.json";
 
-export class TemplatesLister extends OidUI {
+export class TemplatesLister extends Oid {
   // Lida com o evento request. Envia uma mensagem de response com a lista de templates
-  handleRequestTemplatesList(topic, message) {
+  handleRequestTemplatesList() {
     this._notify("responseTemplatesList", { value: templatesList });
   }
 }
