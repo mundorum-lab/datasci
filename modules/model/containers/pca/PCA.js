@@ -3,12 +3,10 @@ import {PCA} from "./pca-lib.js"
 
 export async function getPCA(data){    
     let vectors = PCA.getEigenVectors(data);
-    console.log(vectors)
     let adData = PCA.computeAdjustedData(data,vectors[0])
     let compressed =  adData.formattedAdjustedData
-    console.log(compressed)
     let returnedTable = {
-        'columns':[{'PCA' : 'number'}],
+        'columns':[{'name' : 'PCA', 'type' : 'number'}],
         'data' : compressed} 
     return returnedTable
 }
@@ -17,6 +15,10 @@ export async function getPCA(data){
 export async function getData(table){
     let columns = table['columns']
     let data = table['data']
+    
+    /** 
+     formato dos dados que esta chegando vem diferente do esperado, deixando essa função para depois
+
     let index2remove = []
 
     //remove any columns that are not number
@@ -32,5 +34,6 @@ export async function getData(table){
         data.splice(index - aux,1)
         aux++
     }
+    **/
     return data
 }
