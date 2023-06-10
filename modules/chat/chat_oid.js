@@ -29,10 +29,12 @@ export class ChatOid extends OidWeb {
   }
  
   generatePrompt(workflowMap, componentId){
+    const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
+    const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
     // esse if depende do tipo do visualizador das apresentaçoes
     if (finalComponent.type === 'table-oid-visualizer'){ 
-      let previousComponents = this.findPreviousComponents(this.workflowMap, this.Id)
+      let previousComponents = this.findPreviousComponents(this.workflowMap, componentId)
       finalComponent = previousComponents[0][0]
     }
     let path = this.findFullPathToComponent(workflowMap, componentId)
@@ -43,12 +45,24 @@ export class ChatOid extends OidWeb {
       index += 1
       this.prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
-        this.prompt +=  `The type of data I want to analyze is a ${component.nodeType}.My dataset has the columns: ${component.attributes.name} and the data are: ${component.attributes.table}
+        if (this.arrayCheck(tableList+valueList,component.nodeType)){
+          let table=getData(componentId,"table")
+          let result=getData(componentId,"result")
+          this.prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
         Explain it to me.`
+        }
+        else if (component.nodeType==="graph-oid"){
+          let data=getData(componentId,"data")
+          let type=getData(componentId,"type")
+          this.prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
+        Explain it to me.`
+        }
+        
       }
       
     }
-    console.log(this.prompt)
+    console.log(prompt)
+    return prompt
       
     
   }
@@ -57,20 +71,29 @@ export class ChatOid extends OidWeb {
     let componentData=await this._invoke("itf:oid","get",{property:attributeName})
     return componentData
   }
-  requestToOpenAI() {
   
-    component.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
-
-    Let's break down the data:
-    
-        The first row [0, 1, 2] represents a point in the scatterplot with coordinates (0, 1, 2). The value 0 corresponds to the x-axis, 1 corresponds to the y-axis, and 2 corresponds to the z-axis.
-    
-        The second row [1, 2, 4] represents a point with coordinates (1, 2, 4). Here, 1 is the value along the x-axis, 2 is the value along the y-axis, and 4 is the value along the z-axis.
-    
-        The third row [9, 5, 8] represents a point with coordinates (9, 5, 8). The value 9 represents the x-coordinate, 5 represents the y-coordinate, and 8 represents the z-coordinate.
-    
-    In a scatterplot, each point is plotted as a single marker based on its coordinates in the three-dimensional space. The x-axis, y-axis, and z-axis represent different variables or dimensions that you are examining. The scatterplot allows you to visualize the relationships or patterns between these variables in a three-dimensional space.`
+  arrayCheck(array,obj){
+    let value=false
+    for(let element of array){
+      if (element===obj)
+        value=true
+    }
+    return
   }
+  // requestToOpenAI() {
+  
+  //   component.explanation = `The scatterplot you described has three columns: "eixo x," "eixo y," and "eixo z." Each row of the data represents a point in three-dimensional space.
+
+  //   Let's break down the data:
+    
+  //       The first row [0, 1, 2] represents a point in the scatterplot with coordinates (0, 1, 2). The value 0 corresponds to the x-axis, 1 corresponds to the y-axis, and 2 corresponds to the z-axis.
+    
+  //       The second row [1, 2, 4] represents a point with coordinates (1, 2, 4). Here, 1 is the value along the x-axis, 2 is the value along the y-axis, and 4 is the value along the z-axis.
+    
+  //       The third row [9, 5, 8] represents a point with coordinates (9, 5, 8). The value 9 represents the x-coordinate, 5 represents the y-coordinate, and 8 represents the z-coordinate.
+    
+  //   In a scatterplot, each point is plotted as a single marker based on its coordinates in the three-dimensional space. The x-axis, y-axis, and z-axis represent different variables or dimensions that you are examining. The scatterplot allows you to visualize the relationships or patterns between these variables in a three-dimensional space.`
+  // }
   
   
 
@@ -138,10 +161,10 @@ export class ChatOid extends OidWeb {
 
   handlePrompt(op,message){
     let componentId=message.value
-    this.generatePrompt(this.workflowMap,componentId)
-    let mainComponent=this.findComponent(this.workflowMap,componentId)
-    let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
-    return {value:[mainComponent,previousComponents]}
+    prompt=this.generatePrompt(this.workflowMap,componentId)
+    // let mainComponent=this.findComponent(this.workflowMap,componentId)
+    // let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
+    return {value:prompt}
 
   }
 
