@@ -9,34 +9,53 @@ class FilterWeb extends TransformWeb {
     }
     
     handleFilter (topic, message) {  //handle with notice
-
         //topic: filter
         if(Number(this.compared_value)){
             this.compared_value = Number(this.compared_value)
         }
-        this.table = message
-        this.toDataFrame()   
-        this.file_id = message.file_id
-        let validator = new ValidateFilter()
-        let result = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
-        if(result.isValid){
-            this.filter()
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
         } else {
-            //return error message
-            this.status = false
-            this._notify('filterError', result.result)
+            this.table = message
+        }
+        try{
+            this.toDataFrame()   
+            this.file_id = message.file_id
+            let validator = new ValidateFilter()
+            let result = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
+            if(result.isValid){
+                this.filter()
+            } else {
+                //return error message
+                this.status = false
+                this._notify('filterError', result.result)
+            }
+        }catch(error){
+            let filterError = {
+                transformationType: "filter",
+                errorType: "Conversion to DataFrame with Danfo",
+                message: error.message
+            }
+            this._notify('filterError', error)
         }
     }
 
     chooseOpAndFilter(){
-        this.df = this.df.query(this.df[this.target_column][this.operation](this.compared_value))
+        try{
+            this.df = this.df.query(this.df[this.target_column][this.operation](this.compared_value))
+            this.toJson(this.df, this.file_id, this.columns)
+            this.status = true
+            this.df.print()
+            this._notify('filtered', this.table)
+        } catch(error){
+            this.status = false
+            this._notify('filterError', result.result)
+            console.log("errinho:",error)
+        }
     }
 
     filter(){
         this.chooseOpAndFilter()
-        this.toJson(this.df, this.file_id, this.columns)
-        this.status = true
-        this._notify('filtered', this.table)
     }
 }
 
