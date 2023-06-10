@@ -18,6 +18,7 @@ export class LinearModel extends OidBase {
     this.data.forEach((el, index) => {
       el[this.target_index] = result[index]
     });
+    this.publishResponse('transformed', message.id, this.data, message.columns);
   }
 
   // This function is made with the objective to put an error message on the bus
@@ -25,6 +26,14 @@ export class LinearModel extends OidBase {
     console.log(message);
     this._notify("error", {
       error: message
+    });
+  }
+
+  publishResponse(topic, id, data, columns){
+    this._notify(topic, {
+      data,
+      id,
+      columns
     });
   }
 }

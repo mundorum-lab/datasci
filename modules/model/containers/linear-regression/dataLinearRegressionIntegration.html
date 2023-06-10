@@ -7,6 +7,7 @@
   <script src="../../../data/src/components/fileinput-oid.js" type="module"></script>
   <script src="../../../data/src/components/filereader-oid.js" type="module"></script>
   <script src="../../../data/src/components/typeinput-oid.js" type="module"></script>
+  <script src="../../../data/src/components/table-view-oid.js" type="module"></script>
 </head>
 <body>
   <h1>Linear Regression Algorithm:</h1>
@@ -14,6 +15,8 @@
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>    
   <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
 
-  <ml-lr-oid target_index="1" subscribe="data/processed~transform"></ml-lr-oid>
+  <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
+
+  <table-view-oid subscribe="data/transformed~display"></table-view-oid>
 </body>
 </html>
