@@ -20,9 +20,9 @@ export class NormalizeWeb extends TransformWeb {
     normalize(){
         
         this.zscore()
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
-        this._notify('normalizeResult', json)
+        this._notify('normalizeResult', this.result)
     }
 
     handleNormalize (topic, message) {  //handle with notice
@@ -34,14 +34,14 @@ export class NormalizeWeb extends TransformWeb {
         this.toDataFrame()  
         
         let validator = new ValidateZscoreNorm()
-        let result = validator.validate(this.columns, this.column)
+        let validation = validator.validate(this.columns, this.column)
         console.log(result)
-        if(result.isValid){
+        if(validation.isValid){
             this.normalize()
         } else {
             //return error message
             this.status = false
-            this._notify('normalizeError', result.result)
+            this._notify('normalizeError', validation.result)
         }
 
     }

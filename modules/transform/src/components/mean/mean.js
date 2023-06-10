@@ -10,9 +10,9 @@ export class MeanWeb extends TransformWeb {
 
     mean(){
         this.value = this.df.column(this.column).mean()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value)
         this.status = true
-        this._notify('meanResult', this.json_result)
+        this._notify('meanResult', this.result)
     }
 
     handleMean (topic, message) {  //handle with notice
@@ -26,13 +26,13 @@ export class MeanWeb extends TransformWeb {
 
         let validator = new ValidateMean()
 
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.mean()
         } else {
             //return error message
             this.status = false
-            this._notify('meanError', result.result)
+            this._notify('meanError', validation.result)
         }
 
     }
@@ -45,7 +45,6 @@ Oid.component(
   element: 'mean-data',
   properties: {
     column: {default: null},
-    json_result: {default: null},
   },
   receive: {mean: 'handleMean'},
   implementation: MeanWeb

@@ -18,13 +18,13 @@ class FilterWeb extends TransformWeb {
         this.toDataFrame()   
         this.file_id = message.file_id
         let validator = new ValidateFilter()
-        let result = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
+        if(validation.isValid){
             this.filter()
         } else {
             //return error message
             this.status = false
-            this._notify('filterError', result.result)
+            this._notify('filterError', validation.result)
         }
     }
 
@@ -34,9 +34,9 @@ class FilterWeb extends TransformWeb {
 
     filter(){
         this.chooseOpAndFilter()
-        this.toJson(this.df, this.file_id, this.columns)
+        this.toJson()
         this.status = true
-        this._notify('filtered', this.table)
+        this._notify('filtered', this.result)
     }
 }
 

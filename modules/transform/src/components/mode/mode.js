@@ -35,9 +35,9 @@ export class ModeWeb extends TransformWeb {
 
     mode(){
         this.value = this.calcularModa(this.df.column(this.column).values)
-        this.json_result = this.toSingleValue(this.value) // Fix return: Json or singleValue.
+        this.toSingleValue(this.value) // Fix return: Json or singleValue.
         this.status = true
-        this._notify('modeResult', this.json_result)
+        this._notify('modeResult', this.result)
     }
 
     handleMode (topic, message) {  //handle with notice
@@ -51,13 +51,13 @@ export class ModeWeb extends TransformWeb {
 
         let validator = new ValidateMode()
         
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.mode()
         } else {
             //return error message
             this.status = false
-            this._notify('modeError', result.result)
+            this._notify('modeError', validation.result)
         }
     }
     

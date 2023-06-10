@@ -10,9 +10,9 @@ export class StddevWeb extends TransformWeb {
 
     stddev(){
         this.value = this.df.column(this.column).std()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value)
         this.status = true
-        this._notify('stddevResult', this.json_result)
+        this._notify('stddevResult', this.result)
     }
 
     handleStddev (topic, message) {  //handle with notice
@@ -27,13 +27,13 @@ export class StddevWeb extends TransformWeb {
         
         let validator = new ValidateStddev()
 
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.stddev()
         } else {
             //return error message
             this.status = false
-            this._notify('stddevError', result.result)
+            this._notify('stddevError', validation.result)
         }
     }
 }

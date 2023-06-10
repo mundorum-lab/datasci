@@ -10,6 +10,7 @@ export class TransformWeb extends OidWeb {
         this.status = false 
         this.dfd = window.dfd
         this.table = {}
+        this.result = {}
     }
 
     /* Get values from json and convert to a more appropriate way to perform transformation */
@@ -42,11 +43,11 @@ export class TransformWeb extends OidWeb {
             })
         }
         new_json.data = this.df.values
-        this.table = new_json
+        this.result = new_json
     }
 
     toSingleValue(value) {
-        return {"value": value}
+        this.result = {"value": value}
     }
 
 }

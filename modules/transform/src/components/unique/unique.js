@@ -10,10 +10,10 @@ export class UniqueWeb extends TransformWeb {
 
     unique(){
         this.value = this.df.column(this.column).nUnique()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('uniqueResult', this.json_result)
+        this._notify('uniqueResult', this.result)
     }
     
     handleUnique (topic, message) {  //handle with notice
@@ -24,13 +24,13 @@ export class UniqueWeb extends TransformWeb {
         this.toDataFrame()
 
         let validator = new ValidateUnique()
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.unique()
         } else {
             //return error message
             this.status = false
-            this._notify('uniqueError', result.result)
+            this._notify('uniqueError', validation.result)
         }
 
     }
