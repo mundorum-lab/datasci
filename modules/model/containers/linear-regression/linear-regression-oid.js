@@ -3,7 +3,7 @@ import { Oid, OidBase } from '/lib/oidlib-dev.js'
 
 export class LinearModel extends OidBase {
   handleTransform (topic, message) {
-    const value = JSON.parse(message.value);
+    const value = message;
     if (value.columns){
       value.columns.forEach(el => {
         if(el.type === 'boolean' || el.type === 'string') this.reportError('All data must be numbers!'); 
@@ -12,6 +12,7 @@ export class LinearModel extends OidBase {
     this.data = value.data;
     if (!this.data) return this.reportError('No data was found');
     const {no_target_array, target_array} = generateTargetDataArrays(this.data, this.target_index)
+    no_target_array.splice(no_target_array.length-1); // Remove the index column from the array
     const thetas = executeLinearRegression(no_target_array, target_array);
     const result = calculateResultColumn(thetas, no_target_array);
     this.data.forEach((el, index) => {
