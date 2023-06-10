@@ -10,9 +10,9 @@ export class MedianWeb extends TransformWeb {
 
     median(){
         this.value = this.df.column(this.column).median()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value,"Mediana",this.column)
         this.status = true
-        this._notify('medianResult', this.json_result)
+        this._notify('medianResult', this.result)
     }
 
     handleMedian (topic, message) {  //handle with notice
@@ -20,20 +20,24 @@ export class MedianWeb extends TransformWeb {
         //topic: median
         //message: medianInput
  
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
         
         let validator = new ValidateMedian()
 
-        let result = validator.validate(this.columns, this.column)
+        let validation = validator.validate(this.columns, this.column)
 
-        if(result.isValid){
+        if(validation.isValid){
             this.median()
         } else {
             //return error message
             this.status = false
-            this._notify('medianError', result.result)
+            this._notify('medianError', validation.result)
         }
     }
 }

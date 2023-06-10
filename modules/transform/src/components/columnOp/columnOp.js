@@ -36,15 +36,15 @@ export class ColumnOpWeb extends TransformWeb {
     columnOp(){
         this.operation()
         console.log(this.df)
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
-        this._notify('columnOpResult', json)
+        this._notify('columnOpResult', this.result)
     }
 
     handleColumnOp(topic, message) {  //handle with notice
         this.table = message
  
-             
+
         this.file_id = this.table.file_id
         this.columns = this.table.columns
         console.log(this.columns[this.first])
@@ -52,14 +52,14 @@ export class ColumnOpWeb extends TransformWeb {
         
         let validator = new ValidateColumnOp()
 
-        let result = validator.validate(this.op, this.columns, this.first, this.second)
-        console.log("resultado da validação:",result)
-        if(result.isValid){
+        let validation = validator.validate(this.op, this.columns, this.first, this.second)
+        console.log("resultado da validação:",validation)
+        if(validation.isValid){
             this.columnOp()
         } else {
             //return error message
             this.status = false
-            this._notify('columnOpError', result.result)
+            this._notify('columnOpError', validation.result)
         }
 
     }

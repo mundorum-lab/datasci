@@ -58,33 +58,17 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 
 > Há dois componentes: um componente web voltado para as transformações e um componente para apresentar os resultados da transformação.
 
-## Component `PresentTransformation`
-
-> Componente oid responsável por receber as saídas das transformações, sejam tabelas ou números, e criar um html para mostrar ao usuário o resultado. Mostra o resultado na área dedicada a apresentação, esse resultado é o valor de saída do cmponente ao qual esse é conectado
-
-### Properties
-
-property | role
----------| --------
-`title` | `título da região dedicada a mostrar a saída desejada`
-`position` | `é a posição, entre as disponíveis, que a apresentação terá na tela`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`filter` | `valida os arguntos de uma filtragem que é requisitada por algum outro componente` | `filterInput`
-
 ## Component `Transform`
 
 property | role
 ---------| --------
-`table` | `tabela resultante da transformação em formato json`
+`table` | `tabela em formato jason com dados de entrada`
 `status` | `estado da operação relacional (se foi bem sucedida ou não)`
 `df` | `tabela em formato de DataFrame`
 `file_id` | `arquivo do qual a tabela foi proveniente inicialmente`
 `columns` | `objeto com o nome das coluna como chave e o seu tipo como valor`
 `dfd` | `objeto da biblioteca Danfo a partir do qual obtmos as funcionaidades`
+`result` | `resultado da transformação em formato json; valor que será publicado`
 
 > Esse componente apresenta funcionalidades e propriedades comuns a todos os componentes de transformação, por isso cada componente de transformação específico o herdará. 
 
@@ -407,33 +391,84 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `stddevResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
 
+## Component `alias`
+
+> Altera o nome de uma coluna da tabela
+
+### Properties
+
+property | role
+---------| --------
+`old` | `nome da coluna em que se deseja alterar o nome`
+`new` | `novo nome da coluna`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`alias` | `performa a operação de alias na coluna` | `table`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`aliasResult` | `é ativada quando a operação de alias termina e é bem-sucedida` | `table`
+
+## Component `zScoreNorm`
+
+> Performa uma normalização dos dados de uma coluna. A normalização é a seguinte: 
+novo_valor = (value - media)/(desvio padrão).
+
+### Properties
+
+property | role
+---------| --------
+`column` | `coluna na qual se deseja operar a normalização`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`normalize` | `performa a a normalização na coluna` | `table`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`normalizeResult` | `é ativada quando a operação de normalização termina e é bem-sucedida` | `table`
+
 # Components Narratives
 
 ## Setup
 
 ~~~html
-<validateFilter 
-        status=false
-        table = {}
-        subscribe="filter/filterInput:validate"
-        publish="validationSucceed:filterOperation/filterInput"
-        publish="validationFailed:filterResult/operationResult"
+<outro-compomente
+        publish="notice1~data/1"
         >
-</validateFilter>
+</outro-componente>
 
-<filter
-        status=false
-        subscribe="filterOperation/filterInput:filter"
-        publish="filtered:filterResult/operationResult">
-</filter>
+<filter-oid
+        subscribe="data/1~filter"
+        publish="filterResult~data/2:filterError~error"
+        target_column="numero_pacientes"
+        operation="ne"
+        compared_value="3000">
+</filter-oid>
+
+<outro-compomente
+        subscribe="data/2~notice2
+        >
+</outro-componente>
 ~~~
 
 ## Narrative
 
 * A instanciação acima simula o estado do workflow no qual há nós (que podem ser de outro grupo ou outro componente de Transformação) antes depois do filtro, assim o filtro recebe uma entrada da saída do nó anterior e gera uma saída que é entrada para o próximo.
-* Toda entrada e saída do formato `table` chega no barramento por meio do notice `data/id`, em que `data` indica que há uma tabela e `id` indica que o id do nó instanciado (valor criado pelo grupo de workflow para organizar os "vértices").
+* Toda entrada e saída do formato `table` chega no barramento por meio do notice `data/id`, em que `data` indica que há uma tabela e `id` indica o id do nó instanciado (valor criado pelo grupo de workflow para organizar os "vértices").
 ![alt text](./images/conexoes.png)
-* Todos os componentes de transformação recebem dados em forma de tabela. Ja a saída, pode ser tabela ou valor único.
+* Todos os componentes de transformação recebem dados em forma de tabela. Já a saída, pode ser tabela ou valor único.
 * O nó que faz o publish de uma tabela usa o notice `data/seu_id`, indicando que a mensagem é uma tabela e que a fonte dela é o nó cujo id foi especificado. O nó conectado a esse e que deseja receber mensagens dele, faz o subscribe com o notice `data/id_no_anterior`. Assim a tabela é passada pelos nós.
 * Os valores digitados pelo usuário para fazer a operação são passados por parâmetro ao componente de Transformação.
 * O componente `filter` é instanciado com o tópico `data/id` e com os devidos parâmetros. Internamente, irá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:

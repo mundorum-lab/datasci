@@ -22,13 +22,13 @@ class FilterWeb extends TransformWeb {
             this.toDataFrame()   
             this.file_id = message.file_id
             let validator = new ValidateFilter()
-            let result = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
-            if(result.isValid){
+            let validation = validator.validate(this.columns, this.target_column, this.compared_value, this.operation)
+            if(validation.isValid){
                 this.filter()
             } else {
                 //return error message
                 this.status = false
-                this._notify('filterError', result.result)
+                this._notify('filterError', validation.result)
             }
         }catch(error){
             let filterError = {
@@ -36,22 +36,15 @@ class FilterWeb extends TransformWeb {
                 errorType: "Conversion to DataFrame with Danfo",
                 message: error.message
             }
-            this._notify('filterError', error)
+            this._notify('filterError', filterError)
         }
     }
 
     chooseOpAndFilter(){
-        try{
-            this.df = this.df.query(this.df[this.target_column][this.operation](this.compared_value))
-            this.toJson(this.df, this.file_id, this.columns)
-            this.status = true
-            this.df.print()
-            this._notify('filtered', this.table)
-        } catch(error){
-            this.status = false
-            this._notify('filterError', result.result)
-            console.log("errinho:",error)
-        }
+        this.df = this.df.query(this.df[this.target_column][this.operation](this.compared_value))
+        this.toJson()
+        this._notify('filtered', this.result)
+        this.status = true 
     }
 
     filter(){

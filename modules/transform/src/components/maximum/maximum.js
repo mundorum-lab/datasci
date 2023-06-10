@@ -4,33 +4,33 @@ import { TransformWeb } from '../transform.js'
 
 export class MaximumWeb extends TransformWeb {
 
-    constructor() {
-        super()
-    }
-
     maximum(){
         this.value = this.df.column(this.column).max()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value, "Máximo", this.column)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('maximumResult', this.json_result)
+        this._notify('maximumResult', this.result)
     }
     
     handleMaximum (topic, message) {  //handle with notice
         
         //topic: maximum
         //message: maximumInput
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()
 
         let validator = new ValidateMaximum()
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.maximum()
         } else {
             //return error message
             this.status = false
-            this._notify('maximumError', result.result)
+            this._notify('maximumError', validation.result)
         }
 
     }
@@ -43,7 +43,6 @@ Oid.component(
   element: 'maximum-data',
   properties: {
     column: {default: null},
-    json_result: {default: null},
   },
   receive: {maximum: 'handleMaximum'},
   implementation: MaximumWeb
