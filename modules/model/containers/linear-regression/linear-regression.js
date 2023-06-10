@@ -1,61 +1,66 @@
-import {sumArrays, subtractArrays, sumArray, removeColumn, splitColumns} from '../../support/helpers'
+import {calculateHipothesisArray, splitColumns, subtractArrays, sumArray, multiplyArrays} from '../../support/helpers.js';
+
+const DEFAULT_NB_EPOCHS = 1000;
+const DEFAULT_LEARNING_RATE = 0.5;
+const DEFAULT_ERROR = 0.0001;
 
 
-const default_learningRate = 0.003;
-
-const getMse = (theta_vectors, data) => {
-  const correctedData = removeColumn([...data], 1); //Always removes the "y" role
-  let functionArray = sumArrays(theta_vectors, correctedData);
-  functionArray = subtractArrays(functionArray, )
-
+const calculateError = (target, data, theta_vector, m) => {
+  //Get the array without the target
+  //Calculate the hipothesis array (theta_0 + theta_1*x0 + theta_2*x1 + ... theta_n*xn-1)
+  let hipothesis_array = calculateHipothesisArray(theta_vector, data, m)
+  hipothesis_array = subtractArrays(hipothesis_array, target);
+  const valueSum = Math.pow(sumArray(hipothesis_array),2);
+  return ((1.0/(2.0 * m))*valueSum); //Error
 }
 
-const batchGradientDescent = (data, num_epochs, learning_rate) => {
-  const m = data.length;
-  const theta_vectors = data[0].map((el, index) => index ? 1 : 0);
-  //let mse = (1.0/(2.0*m)) * Math.pow(sumArray()
+const gradient = (theta_vector, data, target, m) => {
+  const new_theta = [];
+  const hipothesis = calculateHipothesisArray(theta_vector, data, m);
+  // h - y
+  let aux = hipothesis.map((el, index) => parseFloat((el - target[index]).toFixed(3)));
+  theta_vector.forEach((el, index) => {
+    let result = index ? multiplyArrays(aux, data[index-1]) : multiplyArrays(aux, new Array(m).fill(1));
+    let theta = (1.0/m) * sumArray(result);
+    new_theta.push(theta);
+  });
+  return new_theta;
+  
 }
 
-const hypothesis = (x, theta_vectors) => theta_vectors[0] + theta_vectors[1]*x
 
-//this only works for 2 dimension arrays (n,2)
-const find_thetas = (xses, yses, learning_rate) => {
-  const theta_sums = [0,0];
-  const theta_vectors = [0, 1];
-
-  for (let i=0; i < xses.length; i++){
-    theta_sums[0] += hypothesis(xses[i], theta_vectors) - yses[i];
-    theta_sums[1] += (hypothesis(xses[i], theta_vectors) - yses[i]) & xses[i];
+const linearRegression = (target, data, nb_epochs, m, learning_rate, error) => {
+  let theta_vector = [0,1,1];
+  let mse = calculateError(target, data, theta_vector, m);
+  for (let i = 0; i < nb_epochs; i++){
+    let temp_thetas = gradient(theta_vector, data, target, m);
+    theta_vector = theta_vector.map((el, index) => (el - learning_rate*temp_thetas[index]));
+    let e = calculateError(target, data, theta_vector, m);
+    if(Math.abs(mse - e) <= error){
+      break;
+    }  // Convergiu
+    mse = e
   }
-
-  theta_vectors[0] = theta_vectors[0] - (learning_rate/xses.length) * theta_sums[0];
-  theta_vectors[1] = theta_vectors[1] - (learning_rate/xses.length) * theta_sums[0];
-
-  return theta_vectors;
+  return theta_vector.map(el => parseFloat(el.toFixed(3)));
 }
 
-//y = theta0 + theta1*x
-const two_dimensional_regression(data, learning_rate) => {
-  const columns = splitColumns(data);
-  const thetas =  (columns[0],columns[1] , learning_rate);
-  const result = [];
-  for (let i=0; i < columns[0].length; i++){
-    x = columns[0][i];
-    result[i] = [x, hypothesis(x)];
-  }
-  return result;
+export function generateTargetDataArrays(data, target_index){
+  const no_target_array = splitColumns([...data]);
+  const target_array = no_target_array.splice(target_index,target_index);
+  return {no_target_array, target_array};
+}
+
+export function executeLinearRegression(data, target, nb_epochs = false, learning_rate = false, error = false){
+  nb_epochs = nb_epochs ? nb_epochs : DEFAULT_NB_EPOCHS;
+  learning_rate = learning_rate ? learning_rate : DEFAULT_LEARNING_RATE;
+  error = error ? error : DEFAULT_ERROR;
+  const thetas = linearRegression(target[0], data, nb_epochs, target[0].length, learning_rate, error);
+  return thetas;
+}
+
+export function calculateResultColumn(thetas, data){
+  const result = calculateHipothesisArray(thetas, data, data[0].length);
+  return result.map(el => parseFloat(el.toFixed(3)))
 }
 
 
-export const linearRegression = (data, num_epochs ,learning_rate = default_learningRate) => { 
-
-  //TODO: Implement other methods of gradient descent 
-  //TODO: Implement multidimension batch gradient descent
-  if(data.length <= 1000){
-    if(data[0].length == 2){
-      return two_dimensional_regression(data, learning_rate);
-    }
-  } else {
-    return ('Error! Dataset is too big!');
-  }
-}
