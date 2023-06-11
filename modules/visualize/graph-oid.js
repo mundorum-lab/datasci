@@ -20,8 +20,6 @@ export class GraphOid extends OidUI {
     }
     
     Chart.register(zoomPlugin);
-    
-    console.log(this.fields)
 
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, 
       {
