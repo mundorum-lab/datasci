@@ -47,7 +47,7 @@ export class CountWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transCount',
-  element: 'count-data',
+  element: 'count-oid',
   properties: {
     column: {default: null},
     count_value: {default: null},

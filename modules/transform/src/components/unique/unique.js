@@ -44,7 +44,7 @@ export class UniqueWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transUnique',
-  element: 'unique-data',
+  element: 'unique-oid',
   properties: {
     column: {default: null},
     json_result: {default: null},

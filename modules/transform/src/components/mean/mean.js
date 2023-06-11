@@ -46,7 +46,7 @@ export class MeanWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMean',
-  element: 'mean-data',
+  element: 'mean-oid',
   properties: {
     column: {default: null},
   },

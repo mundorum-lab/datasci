@@ -45,7 +45,7 @@ export class MedianWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMedian',
-  element: 'median-data',
+  element: 'median-oid',
   properties: {
     column: {default: null},
     json_result: {default: null},

@@ -22,7 +22,11 @@ export class ColumnDeleteWeb extends TransformWeb {
         
         //topic: deleteColumn
         //message: deleteColumnInput
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         console.log(this.table)
 
         this.columns = this.table.columns
@@ -47,7 +51,7 @@ export class ColumnDeleteWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transDeleteColumn',
-  element: 'delete-column',
+  element: 'delete-column-oid',
   properties: {
     column: {default: null},
   },

@@ -44,7 +44,7 @@ export class MinimumWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMinimum',
-  element: 'minimum-data',
+  element: 'minimum-oid',
   properties: {
     column: {default: null},
     json_result: {default: null},

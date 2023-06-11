@@ -40,7 +40,7 @@ export class MaximumWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transMaximum',
-  element: 'maximum-data',
+  element: 'maximum-oid',
   properties: {
     column: {default: null},
   },

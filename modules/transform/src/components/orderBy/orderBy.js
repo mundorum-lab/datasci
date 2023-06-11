@@ -51,7 +51,7 @@ export class OrderByWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:orderBy',
-  element: 'order-by',
+  element: 'order-by-oid',
   properties: {
     column: {default: null},
     ascending: {default: true},

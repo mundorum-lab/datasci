@@ -42,24 +42,24 @@
     subscribe="data/2~display"
     ></table-view-oid>
 
-    <column-op-constant
+    <column-op-constant-oid
         subscribe="data/1~columnOpConstant"
         publish="columnOpConstantResult~data/3"
         column="numero_pacientes"
         constant="5"
         op="+"
         result="soma 5"
-    ></column-op-constant>
+    ></column-op-constant-oid>
     <h2>Operação com constante em uma coluna</h2>
     <table-view-oid
     subscribe="data/3~display"
     ></table-view-oid>
 
-    <normalize-data
+    <normalize-oid
         subscribe="data/1~normalize"
         publish="normalizeResult~data/4"
         column="numero_pacientes"
-    ></normalize-data>
+    ></normalize-oid>
     <h2>Normalização de coluna</h2>
     <table-view-oid
     subscribe="data/4~display"
@@ -79,24 +79,24 @@
     ></table-view-oid>
     <label>Agrupamento das linhas com base na coluna "tipo de tipo_hospital". Realizada operação média com os valores acumulados nas linhas cuja coluna foi escolhida</label>
     
-    <column-op
+    <column-op-oid
         subscribe="data/1~columnOp"
         publish="columnOpResult~data/7"
         first="numero_pacientes"
         second="numero_encaminhamentos"
         op="-"
         result="pacientes não encaminhados"
-    ></column-op>
+    ></column-op-oid>
     <h2>Operação com duas colunas</h2>
     <table-view-oid
     subscribe="data/7~display"
     ></table-view-oid>
 
-    <order-by
+    <order-by-oid
         subscribe="data/1~OrderBy"
         publish="orderByResult~data/8"
         column="numero_pacientes"
-    ></order-by>
+    ></order-by-oid>
     <h2>Ordenar coluna ordem crescente</h2>
     <table-view-oid
     subscribe="data/8~display"

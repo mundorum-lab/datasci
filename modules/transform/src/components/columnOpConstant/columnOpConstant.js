@@ -88,7 +88,7 @@ export class ColumnOpConstantWeb extends TransformWeb {
 Oid.component(
 {
   id: 'ts:transColumnOpConstant',
-  element: 'column-op-constant',
+  element: 'column-op-constant-oid',
   properties: {
     column: {default: null},
     constant: {default: 0},
