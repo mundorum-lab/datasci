@@ -1,6 +1,6 @@
 import nodeExample from './workflow/nodeExample.json'
 
-export default function getAvailableNodes(){
+function getAvailableNodes(){
     return (
         {
             exampleCategory: [
@@ -10,3 +10,5 @@ export default function getAvailableNodes(){
     );
     
 }
+
+export { getAvailableNodes };
