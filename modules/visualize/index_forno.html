@@ -5,6 +5,7 @@
   <title>Forno</title>
   <script src="graph-oid.js" type="module"></script>
   <script src="./forno/data-sender-oid.js" type="module"></script>
+  <script src="./forno/options-sender-oid.js" type="module"></script>
   <script src="./prototype/export_button.js" type="module"></script>
   <!-- Import DataLabels plugin via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
@@ -17,9 +18,10 @@
 </head>
 <body>
   <h1>Playground</h1>
-  <data-sender-oid publish="click~render/data"> </data-sender-oid>
-  <export-button-oid publish="export~graph/export"></export-button-oid>
-  <graph-oid uid="graph-1" type="linear_regression" fields='{"y1": 0, "y2": 1, "x": 2}' subscribe="render/data~render;graph/export~export"></graph-oid>
+  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
+  <data-sender-oid publish="click~render/data"> </data-sender-oid><br />
+  <export-button-oid publish="export~graph/export"></export-button-oid><br />
+  <graph-oid uid="graph-1" type="line" subscribe="render/options~options;render/data~render;graph/export~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>
