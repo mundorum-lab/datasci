@@ -25,7 +25,11 @@ export class GroupByWeb extends TransformWeb {
 
         //topic: groupBy
         //message: table
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()
         this.df.print()
         this.file_id = message.file_id
@@ -34,7 +38,7 @@ export class GroupByWeb extends TransformWeb {
         if(validation.isValid){
             this.groupBy()
             this.toJson()
-            this._notify('groupby_result', this.result)
+            this._notify('groupbyResult', this.result)
             this.status = true
             this.df.print()
         } else {

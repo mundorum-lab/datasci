@@ -4,14 +4,32 @@
     <meta charset="utf-8">
     <title>Playground</title>
         <script src="../src/components/filter/filter.js" type="module"></script>
+        <script src="../src/components/columnOpConstant/columnOpConstant.js" type="module"></script>
+        <script src="../src/components/columnOp/columnOp.js" type="module"></script>
+        <script src="../src/components/orderBy/orderBy.js" type="module"></script>
+        <script src="../src/components/zScoreNorm/zScoreNorm.js" type="module"></script>
+        <script src="../src/components/groupBy/groupBy.js" type="module"></script>
         <script src="../../data/src/components/table-view-oid.js" type="module"></script>
         <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
     </head>
     <body>
-    <h1>Playground</h1>
+    <h1>Clique start e faça todas essas as operações</h1>
     <button-oid label="Start"
-                value='{"columns":[{"name": "hospital_id", "type": "number"},{"name": "numero_pacientes", "type": "number"}],"data": [[1, 300],[2, 200],[3, 100],[4, 100],[5, 500]]}'
-                publish="click~data/1"></button-oid>
+                value='{"columns":[{"name": "hospital_id", "type": "number"},{"name": "numero_pacientes", "type": "number"},{"name": "numero_encaminhamentos", "type": "number"}, {"name": "tipo_hospital", "type": "string"}],"data": [[1, 300, 137,"emergência"],[2, 200, 163,"emergência"],[3, 100, 10,"clínica"],[4, 100,2, "Maternidade"],[5, 500,7, "clínica"]]}'
+                publish="click~data/1">
+    </button-oid>
+    
+
+    <filter-oid
+        subscribe="data/1~filter"
+        publish="filtered~data/0"
+        target_column="numero_pacientes"
+        operation="lt"
+        compared_value="1000">
+    </filter-oid>
+    <h2>Tabela original</h2>
+    <table-view-oid subscribe="data/0~display"></table-view-oid>
+
     <filter-oid
         subscribe="data/1~filter"
         publish="filtered~data/2"
@@ -19,9 +37,71 @@
         operation="gt"
         compared_value="100"
     ></filter-oid>
+    <h2>Filtro</h2>
     <table-view-oid
     subscribe="data/2~display"
     ></table-view-oid>
+
+    <column-op-constant
+        subscribe="data/1~columnOpConstant"
+        publish="columnOpConstantResult~data/3"
+        column="numero_pacientes"
+        constant="5"
+        op="+"
+        result="soma 5"
+    ></column-op-constant>
+    <h2>Operação com constante em uma coluna</h2>
+    <table-view-oid
+    subscribe="data/3~display"
+    ></table-view-oid>
+
+    <normalize-data
+        subscribe="data/1~normalize"
+        publish="normalizeResult~data/4"
+        column="numero_pacientes"
+    ></normalize-data>
+    <h2>Normalização de coluna</h2>
+    <table-view-oid
+    subscribe="data/4~display"
+    ></table-view-oid>
+
+    <groupby-oid
+        subscribe="data/1~groupby"
+        publish="groupbyResult~data/5"
+        operation="mean"
+        group_by_target_column="tipo_hospital"
+        operation_target_column="numero_pacientes"
+        result_column="media de pacientes por tipo"
+    ></groupby-oid>
+    <h2>Agrupamento</h2>
+    <table-view-oid
+    subscribe="data/5~display"
+    ></table-view-oid>
+    <label>Agrupamento das linhas com base na coluna "tipo de tipo_hospital". Realizada operação média com os valores acumulados nas linhas cuja coluna foi escolhida</label>
     
+    <column-op
+        subscribe="data/1~columnOp"
+        publish="columnOpResult~data/7"
+        first="numero_pacientes"
+        second="numero_encaminhamentos"
+        op="-"
+        result="pacientes não encaminhados"
+    ></column-op>
+    <h2>Operação com duas colunas</h2>
+    <table-view-oid
+    subscribe="data/7~display"
+    ></table-view-oid>
+
+    <order-by
+        subscribe="data/1~OrderBy"
+        publish="orderByResult~data/8"
+        column="numero_pacientes"
+    ></order-by>
+    <h2>Ordenar coluna ordem crescente</h2>
+    <table-view-oid
+    subscribe="data/8~display"
+    ></table-view-oid>
+
+
 </body>
 </html>

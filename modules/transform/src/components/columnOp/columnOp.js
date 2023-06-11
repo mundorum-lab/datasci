@@ -42,8 +42,12 @@ export class ColumnOpWeb extends TransformWeb {
     }
 
     handleColumnOp(topic, message) {  //handle with notice
-        this.table = message
- 
+        
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
 
         this.file_id = this.table.file_id
         this.columns = this.table.columns

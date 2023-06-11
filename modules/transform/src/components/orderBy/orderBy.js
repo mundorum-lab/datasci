@@ -21,7 +21,11 @@ export class OrderByWeb extends TransformWeb {
     handleOrderBy (topic, message) {  //handle with notice
 
 
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         console.log(this.table)
 
         this.columns = this.table.columns
@@ -31,7 +35,7 @@ export class OrderByWeb extends TransformWeb {
 
         let validation = validator.validate(this.columns, this.column)
         console.log("resultado da validação:",validation)
-        if(result.isValid){
+        if(validation.isValid){
             this.orderBy()
         } else {
             //return error message
