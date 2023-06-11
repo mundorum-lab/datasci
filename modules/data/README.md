@@ -57,19 +57,6 @@
 	"file_extension": string
 }
 ~~~
-**`FileTypeRequest`**
-~~~json
-{
-	"data": TreatedDataContent,
-	"return_notice": string
-}
-~~~
-**`FileTypeInfo`**
-~~~json
-{
-	"types": [type, ...]
-}
-~~~
 **`ErrorDuringDataIngestion`**
 ~~~json
 {
