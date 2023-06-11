@@ -1,4 +1,4 @@
-import { WorldSpaceNode } from "./world-space-node";
+import { WorldSpaceNode } from "./world-space-node.js";
 
 /**
  * Represents the connectors of a WorldSpaceNode where connections can be made.
@@ -20,16 +20,16 @@ export class worldSpaceNodeConnector {
     */
 
 
-     /**
-     * Creates a new worldSpaceNodeConnector instance.
-     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
-     */
+    /**
+    * Creates a new worldSpaceNodeConnector instance.
+    * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+    */
 
     constructor(parentWorldSpaceNode) {
         /** @type {WorldSpaceNode} */
         this.parentWorldSpaceNode = parentWorldSpaceNode;
         /** @type {Array.<worldSpaceNodeConnector>} */
-        this.connectedWorldSpaceConnectors = [];
+        this.connectedWorldSpaceConnectors = []
 
     }
 
@@ -55,17 +55,26 @@ export class worldSpaceNodeConnector {
 
         for (let i = 0; i < inputRestrictions.length; i++) {
             const restriction = inputRestrictions[i];
-            const result = worldSpaceNodeConnector.isRestrictionRespected(outputType, restriction);
-            if (result) {
-                return true;
+            for (let j = 0; j < outputType.length; j++) {
+                const result = worldSpaceNodeConnector.isRestrictionRespected(outputType[j], restriction);
+                if (!result) {
+                    console.log("Restriction not respected")
+                    return false;
+                }
             }
         }
 
         //VERIFY IN GRAPH IF CONNECTION IS POSSIBLE (RESULT IS NOT CYCLIC)
-        worldSpaceNodeConnector.makeConnection(sourceConnector, targetConnector);
+        sourceConnector.addConnectionTo(targetConnector);
+        targetConnector.receiveConnectionFrom(sourceConnector);
         if (sourceConnector.getParentNode().isGraphCyclic()) {
-            this.removeConnection(sourceConnector, targetConnector);
+            sourceConnector.removeConnection(targetConnector);
+            console.log("Cyclic Graph")
             return false;
+        }
+        else {
+            sourceConnector.removeConnection(targetConnector);
+            console.log("Connection can happen!")
         }
 
         return true;
@@ -88,21 +97,29 @@ export class worldSpaceNodeConnector {
     /**
     * Removes a connection between the current connector and another connector.
     * @param {worldSpaceNodeConnector} connector - The connector to remove the connection from.
-    * @returns {boolean} - True if the connection was removed successfully, false otherwise.
+    * @returns {void} 
     */
     removeConnection(/*worldSpaceNodeConnector*/ connector) {
 
-        var indexSelf = connector.connectedWorldSpaceConnectors.indexOf(this);
-        var indexOther = this.connectedWorldSpaceConnectors.indexOf(connector);
+        if (!this.isConnectedTo(connector)) {
+            return;
+        }
+        for (let i = 0; i < connector.connectedWorldSpaceConnectors.length; i++) {
+            if (connector.connectedWorldSpaceConnectors[i] == this) {
+                connector.connectedWorldSpaceConnectors.splice(i, 1)
+            }
 
-        if (this.isConnectedTo(connector)) {
-            this.connectedWorldSpaceConnectors.splice(indexOther, 1);
-            connector.connectedWorldSpaceConnectors.splice(indexSelf, 1);
-            return true;
+        }
+        for (let i = 0; i < this.connectedWorldSpaceConnectors.length; i++) {
+            if (this.connectedWorldSpaceConnectors[i] == connector) {
+                this.connectedWorldSpaceConnectors.splice(i, 1)
+            }
+
         }
 
-        console.log("Problem removing connection")
-        return false;
+
+
+
     }
     /**
      * Checks if the current connector is connected to another connector.
@@ -110,10 +127,12 @@ export class worldSpaceNodeConnector {
      * @returns {boolean} - True if the current connector is connected to the other connector, false otherwise.
      */
     isConnectedTo(connected) {
-        var indexSelf = connected.connectedWorldSpaceConnectors.indexOf(this);
-        var indexOther = this.connectedWorldSpaceConnectors.indexOf(connected);
-
-        return indexSelf >= 0 && indexOther >= 0;
+        for (let i = 0; i < this.connectedWorldSpaceConnectors.length; i++) {
+            if (this.connectedWorldSpaceConnectors[i] == connected) {
+                return true;
+            }
+        }
+        return false;
     }
     /**
      * Returns the parent WorldSpaceNode of the connector.
@@ -130,7 +149,6 @@ export class worldSpaceNodeConnector {
     getParentNodeId() {
         return this.parentWorldSpaceNode.individualId;
     }
-
 
     Destroy() {
         //Destroy the connectorcleaning all the connections

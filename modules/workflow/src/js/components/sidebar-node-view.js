@@ -2,10 +2,15 @@ import { css, html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
 
 
 export class SidebarNodeView extends OidUI {
-    /*
-    Representa os nodes na sidebar que podem ser arrastados
-    */
+    /**
+     * Represents the nodes on the sidebar that can be dragged.
+     * @extends OidUI
+     */
 
+    /**
+     * Event handler for the drag start event.
+     * @param {DragEvent} event - The drag start event object.
+     */
     _onDragStart(event) {
         const dt = event.dataTransfer;
         
@@ -16,6 +21,10 @@ export class SidebarNodeView extends OidUI {
         this.style.opacity = '0.4';
     }
 
+    /**
+     * Event handler for the drag end event.
+     * @param {DragEvent} event - The drag end event object.
+     */
     _onDragEnd(event) {
         this.style.opacity = '1';
     }

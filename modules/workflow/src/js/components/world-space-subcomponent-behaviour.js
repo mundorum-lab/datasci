@@ -1,16 +1,16 @@
 import { Vector2 } from "./auxiliary-types.js";
 import { WorldSpace } from "./world-space.js";
-import { OidBase } from "../oidlib-dev.js";
+
 
 /**
  * Represents any component that can be in the workflow space. @extends OidBase
  */
-export class WorldSpaceSubcomponentBehaviour extends OidBase {
+export class WorldSpaceSubcomponentBehaviour {
     /**
      * @param {Vector2} position - The initial position of the component. Defaults to (0, 0).
      */
     constructor(position = new Vector2(0, 0)) {
-        super();
+
         /** @type {Vector2} - The position of the component. */
         this.position = position;
         /** @type {number} - The individual ID of the component. */

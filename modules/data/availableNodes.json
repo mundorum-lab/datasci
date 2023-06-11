@@ -1,0 +1,109 @@
+{
+  "data": [
+    {
+      "name": "File Reader",
+      "type": "data",
+      "compatibleInputNodes": {
+        "saida": "File Input"
+      },
+      "inputFields": [
+        {
+          "fieldName": "Separador",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "File Input",
+      "type": "data",
+      "compatibleInputNodes": {
+        "entrada": "File Reader",
+        "saida": "File Typing" 
+      },
+      "inputFields": [
+        {
+          "fieldName": "database",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "table",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "API input",
+      "type": "data",
+      "compatibleInputNodes": {
+        "saida": "File Typing" 
+      },
+      "inputFields": [ 
+        {
+          "fieldName": "api_url",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "method",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {"values":["POST","GET","PUT","PATCH","DELETE"]}
+          }
+        },
+        {
+          "fieldName": "headers",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        },
+        {
+          "fieldName": "body",
+          "fieldType": "string",
+          "inputType": {
+            "type": "string",
+            "parameters": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "File Typing",
+      "type": "data",
+      "compatibleInputNodes": {
+        "entrada0": "File Input",
+        "entrada1": "Api Input",
+        "saida0": "Transform",
+        "saida1": "Model",
+        "saida2": "Visualize"
+      },
+      "inputFields": [ 
+        {
+          "fieldName": "columns",
+          "fieldType": "list of strings",
+          "inputType": {
+            "type": "list of strings",
+            "parameters": {}
+          }
+        }
+      ]
+    }
+  ]
+}
