@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta charset="utf-8">
-    <title>Playground</title>
+    <title>Output Tabelas</title>
         <script src="../src/components/filter/filter.js" type="module"></script>
         <script src="../src/components/columnOpConstant/columnOpConstant.js" type="module"></script>
         <script src="../src/components/columnOp/columnOp.js" type="module"></script>
@@ -38,6 +38,7 @@
         compared_value="100"
     ></filter-oid>
     <h2>Filtro</h2>
+    <label>filtrar numero_pacientes > 100</label>
     <table-view-oid
     subscribe="data/2~display"
     ></table-view-oid>
@@ -51,6 +52,7 @@
         result="soma 5"
     ></column-op-constant-oid>
     <h2>Operação com constante em uma coluna</h2>
+    <label>criar nova coluna adicionando 5 a coluna numero_pacientes</label>
     <table-view-oid
     subscribe="data/3~display"
     ></table-view-oid>
@@ -61,6 +63,7 @@
         column="numero_pacientes"
     ></normalize-oid>
     <h2>Normalização de coluna</h2>
+    <label>Normalizar coluna numero_pacientes</label>
     <table-view-oid
     subscribe="data/4~display"
     ></table-view-oid>
@@ -74,10 +77,11 @@
         result_column="media de pacientes por tipo"
     ></groupby-oid>
     <h2>Agrupamento</h2>
+    <label>Agrupamento das linhas com base na coluna "tipo_hospital".</label>
+    <label>Realizada operação de média com os valores acumulados na coluna escolhida ("numero_pacientes")</label>
     <table-view-oid
     subscribe="data/5~display"
     ></table-view-oid>
-    <label>Agrupamento das linhas com base na coluna "tipo de tipo_hospital". Realizada operação média com os valores acumulados nas linhas cuja coluna foi escolhida</label>
     
     <column-op-oid
         subscribe="data/1~columnOp"
@@ -88,6 +92,7 @@
         result="pacientes não encaminhados"
     ></column-op-oid>
     <h2>Operação com duas colunas</h2>
+    <label>A nova coluna é numero_pacientes - paciente encaminhados</label>
     <table-view-oid
     subscribe="data/7~display"
     ></table-view-oid>
@@ -98,6 +103,7 @@
         column="numero_pacientes"
     ></orderby-oid>
     <h2>Ordenar coluna ordem crescente</h2>
+    <label>ordena dados com base na coluna numero_pacientes</label>
     <table-view-oid
     subscribe="data/8~display"
     ></table-view-oid>
