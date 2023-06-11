@@ -122,7 +122,7 @@ notice    | source | message type
 
 
 ### Examples
-* Você pode encontrar exemplos dos componentes funcionando na pasta ./examples/, ou através das urls:
+* Você pode encontrar exemplos dos componentes funcionando integrados na pasta ./examples/, ou através das urls: (precisa estar com o sistema rodando localmente)
 * `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
-* `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
-* `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
+* `http://localhost:5173/modules/model/examples/dataPCAIntegration.html`
+* `http://localhost:5173/modules/model/examples/dataClusterItegration.html`
