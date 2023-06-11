@@ -9,6 +9,29 @@ Fábio de Andrade Barboza - RA 168817 <br>
 Isabella Garcia Fagioli - RA 173174 <br>
 Jéssica da Silva Oliveira - RA 173931 <br>
 
+# Folder and Files Structure
+
+```
+├── availableNodes.json -> descrição dos nós que podem ser adicionados no workflow 
+│
+├── src
+│     ├── components -> todos os componentes do módulo
+│     │
+│     ├── transform.js -> componente de transformação que é herdado por todos os outros
+│     │
+│     ├── validate.js -> classe de validação usada por cada um dos componentes
+│
+├── integrations -> exemplo de integração dos componentes com outros grupos
+│
+├── examples  -> exemplos de funcionamento dos componentes do módulo
+│
+├── images  -> imagens usadas para documentação
+│
+├── icons  -> ícones que serão utilizados para representar os componentes no workflow
+|
+└── README.md -> documentação do módulo
+```
+
 # Message Types
 
 **`table`**
@@ -33,15 +56,7 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 
 ~~~
 
-**`singleValue`**
-
-~~~json
-{
-  "value": "<any>"
-}
-~~~
-
-> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações e a devolver no mesmo formato como saída. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Por isso, temos também um tipo para uma variável simples. 
+> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações e a devolver no mesmo formato como saída. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Nesse caso, é devolvido uma a `table` com uma linha em uma coluna, padronizando as entradas e saídas. Com isso, todas as saídas podem ser visíveis com o componente `table-view-oid`. 
 
 **`transformationError`**
 ~~~json
@@ -55,8 +70,6 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 > Caso haja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
 
 # Components
-
-> Há dois componentes: um componente web voltado para as transformações e um componente para apresentar os resultados da transformação.
 
 ## Component `Transform`
 
@@ -451,19 +464,19 @@ notice    | source | message type
 
 <filter-oid
         subscribe="data/1~filter"
-        publish="filterResult~data/2:filterError~error"
+        publish="filterResult~data/2:filterError~error/transform"
         target_column="numero_pacientes"
         operation="ne"
         compared_value="3000">
 </filter-oid>
 
 <outro-compomente
-        subscribe="data/2~notice2
+        subscribe="data/2~notice2"
         >
 </outro-componente>
 ~~~
 
-## Narrative
+## Integrations Examples
 
 * A instanciação acima simula o estado do workflow no qual há nós (que podem ser de outro grupo ou outro componente de Transformação) antes depois do filtro, assim o filtro recebe uma entrada da saída do nó anterior e gera uma saída que é entrada para o próximo.
 * Toda entrada e saída do formato `table` chega no barramento por meio do notice `data/id`, em que `data` indica que há uma tabela e `id` indica o id do nó instanciado (valor criado pelo grupo de workflow para organizar os "vértices").
@@ -474,3 +487,33 @@ notice    | source | message type
 * O componente `filter` é instanciado com o tópico `data/id` e com os devidos parâmetros. Internamente, irá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:
   * `error`: caso ocorra algum erro na validação ou na própria execução da operação. O notice depende do componente e foi especificado por cada um na documentação. A mensagem publicada são infrmações do erro.
   * `filterResult`: caso a operação seja bem sucedida. A mensagem publicada é a tabela e o tópico segue o formato `data/id`
+
+
+ ## Integrations Examples
+
+* Na pasta [integration](./integrations) há exemplos de integração com outros grupos. Nem todos funcionam perfeitamente, uma vez que há alguns erros internos nos componentes. Porém as mensagens enstão sendo devidamente recebidas no formato de dado acordado e os componentes se conectam. 
+
+Um dos [exemplos](./integrations/transform_data.html), é simulado abaixo:
+
+~~~html
+<filereader-oid sep=";" publish="loaded~data/loaded"></filereader-oid>
+
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+    
+    <type-input subscribe="data/raw~type_input" publish="output_type~data/1"></type-input>
+    <filter-oid
+        subscribe="data/1~filter"
+        target_column="numero_pacientes"
+        operation="ne"
+        compared_value="100"
+    ><filter-oid>
+~~~
+* O `filereader` é um componente que lê um arquivo 'csv' que é arrastado para a tela. O `type-input` recebe informações lidas e realiza o processamento dos dados e publica a  `table` no barramento no formato possível de ser lido por outros componentes. Inclusive pelo `filter`, que recebe e filtra sos dados. 
+
+ ## General Examples
+
+* Na pasta [examples](./examples) há exemplos de funcionamento dos componentes. Há um botão que publica o Json em formato de `string`, mockando a tabela. Os componentes recebem os dados, realizam operações e publicam a resposta. A resposta é recebida pelos componentes `table-view-oid`, que mostram o resultado na tela. 
+
+* Há dois arquivos html:
+  * simple_output: consistem em componentes que devolvem valores únicos ou uma lista de valores no formato `table`
+  * table_output: consistem em componentes cujo resultado é uma nova tabela, que é devolvida também no formato `table`.
