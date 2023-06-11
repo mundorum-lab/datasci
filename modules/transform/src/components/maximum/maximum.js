@@ -39,7 +39,7 @@ export class MaximumWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transMaximum',
+  id: 'ts:maximum',
   element: 'maximum-oid',
   properties: {
     column: {default: null},

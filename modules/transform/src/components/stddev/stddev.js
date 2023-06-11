@@ -44,7 +44,7 @@ export class StddevWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transStddev',
+  id: 'ts:stddev',
   element: 'stddev-oid',
   properties: {
     column: {default: null},

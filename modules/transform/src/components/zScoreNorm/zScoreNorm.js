@@ -54,7 +54,7 @@ export class NormalizeWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transNormalize',
+  id: 'ts:normalize',
   element: 'normalize-oid',
   properties: {
     column: {default: null},

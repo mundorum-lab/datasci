@@ -52,7 +52,7 @@ export class GroupByWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transGroupBy',
+  id: 'ts:groupby',
   element: 'groupby-oid',
   properties: {
     operation: {default: null},

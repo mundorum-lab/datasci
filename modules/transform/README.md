@@ -252,6 +252,29 @@ notice    | source | message type
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
 
+## Component `unique`
+
+> Conta quantos valores únicos estão presentes na coluna.
+
+### Properties
+
+property | role
+---------| --------
+`column` | `nome da coluna em que se deseja contar valores`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`unique` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `table`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`uniqueResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
+
 ## Component `orderBy`
 
 > Ordena as linhas com base no valor de uma coluna de forma crescente ou decrescente.
@@ -275,29 +298,6 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `table`
-
-## Component `uniqueValues`
-
-> Conta quantos valores únicos estão presentes na coluna.
-
-### Properties
-
-property | role
----------| --------
-`column` | `nome da coluna em que se deseja contar valores`
-
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`uniqueValues` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `table`
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`uniqueValuesResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
 
 ## Component `mean`
 
