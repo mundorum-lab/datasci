@@ -6,15 +6,14 @@ export class MaximumWeb extends TransformWeb {
 
     constructor() {
         super()
-        this.column = null
     }
 
     maximum(){
         this.value = this.df.column(this.column).max()
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('maximumResult', json)
+        this._notify('maximumResult', this.json_result)
     }
     
     handleMaximum (topic, message) {  //handle with notice
@@ -44,6 +43,7 @@ Oid.component(
   element: 'maximum-oid',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {maximum: 'handleMaximum'},
   implementation: MaximumWeb

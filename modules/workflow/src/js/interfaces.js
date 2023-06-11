@@ -21,3 +21,10 @@ Oid.cInterface ({
     'handleMakeConnectionTo' , 'handleReceiveConnectionFrom' , 'handleGetParentComponentType'
 
     */
+
+Oid.cInterface ({
+    id: 'itf:component-provider',
+    operations: ['getAllComponents', 'getComponentInfo'],
+    cardinality: '1:n',
+    response: true
+});

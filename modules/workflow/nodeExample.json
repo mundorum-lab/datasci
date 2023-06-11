@@ -1,18 +1,22 @@
 {
-    "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
-    "id": "data:database",
+    "output": [
+        {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
+        {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
+    ],
+    "input": [
+        {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
+        {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
+    ],
+    "type": "data:database",
     "name": "Database",
     "presentable": false,
-    "icon": "/assets/icon.ico",
-    "input": [],
+    "icon": "modules/workflow/src/assets/templateselection.png",
     "fields": [{
-        "name" : "URL da Database",
-        "kind" : "TextBox",
-        "parameters" : {
-            "password" : false,
-            "maxLength" : 10,
-            "forbidden" : "abcde"
+        "name": "URL",
+        "label": "URL da Database",
+        "view": "InputField",
+        "parameters": {
+            "maxLength": 10
             }
-
         }]
 }

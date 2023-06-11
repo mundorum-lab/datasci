@@ -10,9 +10,9 @@ export class MedianWeb extends TransformWeb {
 
     median(){
         this.value = this.df.column(this.column).median()
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
-        this._notify('medianResult', json)
+        this._notify('medianResult', this.json_result)
     }
 
     handleMedian (topic, message) {  //handle with notice
@@ -44,6 +44,7 @@ Oid.component(
   element: 'median-oid',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {median: 'handleMedian'},
   implementation: MedianWeb

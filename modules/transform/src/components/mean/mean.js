@@ -10,9 +10,9 @@ export class MeanWeb extends TransformWeb {
 
     mean(){
         this.value = this.df.column(this.column).mean()
-        let json = this.toSingleValue(this.value)
+        this.json_result = this.toSingleValue(this.value)
         this.status = true
-        this._notify('meanResult', json)
+        this._notify('meanResult', this.json_result)
     }
 
     handleMean (topic, message) {  //handle with notice
@@ -45,6 +45,7 @@ Oid.component(
   element: 'mean-oid',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {mean: 'handleMean'},
   implementation: MeanWeb
