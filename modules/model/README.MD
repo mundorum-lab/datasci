@@ -119,3 +119,10 @@ notice    | source | message type
   * Publica no barramento em statistics/output.
 * O componente fictício exibe-grafico, subscrito no statistics/output, recebe os dados transformados e exibe o gráfico correspondente.
 * No exemplo, utilizamos apenas o componente PCA, mas o setup e a narrativa são as mesmas para o componente `cluster` e `linear-regression`
+
+
+### Examples
+* Você pode encontrar exemplos dos componentes funcionando na pasta ./examples/, ou através das urls:
+* `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
+* `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
+* `http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html`
