@@ -1,12 +1,12 @@
 [
     {
         "output": [
-            {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
-            {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
+            {"type": ["input/database"], "name": "Saída dos dados", "range": [1, 5]},
+            {"type": ["input/sql"], "name": "Saída dos dados", "range": [1, 5]}
         ],
         "input": [
-            {"type": "input/database", "name": "Saída dos dados", "range": [1, 5]},
-            {"type": "input/sql", "name": "Saída dos dados", "range": [1, 5]}
+            {"type": ["input/database"], "name": "Saída dos dados", "range": [1, 5]},
+            {"type": ["input/sql"], "name": "Saída dos dados", "range": [1, 5]}
         ],
         "type": "data:database",
         "name": "Database",
@@ -23,10 +23,10 @@
     },
     {
         "output": [
-            {"type": "table/csv", "name": "Dados Filtrados", "range": [1, 5]}
+            {"type": ["table/csv"], "name": "Dados Filtrados", "range": [1, 5]}
         ],
         "input": [
-            {"type": "table/csv", "name": "Entrada de Dados", "range": [1, 5]}
+            {"type": ["table/csv"], "name": "Entrada de Dados", "range": [1, 5]}
         ],
         "type": "transform:filter",
         "name": "Filtrar Tabela",
@@ -62,10 +62,10 @@
     },
     {
         "output": [
-            {"type": "dolor/sit", "name": "Lorem", "range": [1, 5]}
+            {"type": ["dolor/sit"], "name": "Lorem", "range": [1, 5]}
         ],
         "input": [
-            {"type": "lorem/ipsum", "name": "Ipsum", "range": [1, 5]}
+            {"type": ["lorem/ipsum"], "name": "Ipsum", "range": [1, 5]}
         ],
         "type": "lorem:ipsum",
         "name": "Lorem Ipsum",

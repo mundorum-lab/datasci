@@ -157,16 +157,18 @@ export class WorldSpaceNodeView extends OidUI {
         let partial = "", crumbColector;
         for (let port of requiredPorts) {
             crumbColector = [];
-            port.type.split("/").forEach((item, pos) => {
-                crumbColector.push(breadcrumbPiece(item, pos));
-            });
-            partial += `
-            <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
-                ${portElement}
-                <ol class="h-4 inline-flex items-center space-x-0">
-                    ${crumbColector.join("")}
-                </ol>
-            </div>`;
+            for (let type of port.type) {
+                type.split("/").forEach((item, pos) => {
+                    crumbColector.push(breadcrumbPiece(item, pos));
+                });
+                partial += `
+                <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
+                    ${portElement}
+                    <ol class="h-4 inline-flex items-center space-x-0">
+                        ${crumbColector.join("")}
+                    </ol>
+                </div>`;
+            }
         }
 
         return partial;
