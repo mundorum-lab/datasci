@@ -101,7 +101,7 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `RawReaderContent` 
+`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `TreatedReaderContent` 
 
 ### Output Notices
 
