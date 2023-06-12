@@ -1,56 +1,43 @@
-import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
-import { WorldSpaceNode } from "../components/world-space-node.js"
-import { worldSpaceNodeConnector } from "./world-space-node-connector.js"
+import { Vector2, userInputFieldsInfoTemplate } from "./auxiliary-types.js";
+import { WorldSpace } from "./world-space.js";
+import { WorldSpaceNode } from "./world-space-node.js";
+import { NodeInputField } from "./node-input-field.js";
+
+/*
+Demonstração
+*/
+
+//Cria os conectores nos quais o nó irá receber informaçoes dos demais
+var compatibleInputNodes = [
+
+    {typesId: ["TABELA", "GRAFICO","LISTA"] , range: [0,1]},
+    {typesId: ["SQL", "GPT"] , range: [0,1]}
+
+];
+
+//Cria os campos nos quais o usuário irá escrever
+//Obs: Os identificadores e atributos utilizados são apenas exemplos
+var userFields = [
+    //Definição literal
+    {fieldName: "Gender", inputTypeIdentifier: "Radiobutton" , inputTypeAttributes: ["Male,Female,Other"]},
+    {fieldName: "Name", inputTypeIdentifier: "Textbox" , inputTypeAttributes: [20,"LETTERSONLY"]},
+    //Alternativa mais limpa e sem margem para erros de escrita ou "tipagem"
+    new userInputFieldsInfoTemplate("Age","Range",[12,100]) 
+    //Equivalente a {fieldName: "Age", inputTypeIdentifier: "Range" , inputTypeAttributes: [12,100]}
+];
+
+//Tenta criar um nó, mas vai gerar um erro, o tipo "TABELA" ainda não existe no contexto
+//var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
+
+//Registra as informações dos nós para serem usadas
+WorldSpaceNode.AddNodeInfoToLib("TABELA","/IMAGEM/TAB.JPG",compatibleInputNodes,userFields,10);
 
 
-console.log("Testing....")
+//Cria um nó
+var _testNode= new WorldSpaceNode("TABELA","Nome bem bonitinho");
 
-
-
-WorldSpaceNodeTypes.NodeInfoLib["TestNode"] =
-{
-    output: [{ id: ["Teste/Teste01/Teste02"], range: [1, 10] },
-    ],
-    icon: "NoIcon.jpg",
-    fields: [{ name: "FieldName", view: "ViewType", parameters: [1, 2, 3] }],
-    input: [{ id: ["Teste/Teste01/Teste02"], range: [1, 10] },
-    { id: ["Teste/Teste01/Teste02"], range: [1, 10] }]
-
-}
-
-let a = WorldSpaceNodeTypes.NodeInfoLib["TestNode"]
-console.log(a)
-
-
-let nodeA = new WorldSpaceNode("TestNode", "Nó de teste A");
-let nodeB = new WorldSpaceNode("TestNode", "Nó de teste B");
-let nodeC = new WorldSpaceNode("TestNode", "Nó de teste C");
-let nodeD = new WorldSpaceNode("TestNode", "Nó de teste D");
-let inputA = nodeA.input[0]
-let outputA = nodeA.output[0]
-let inputB = nodeB.input[0]
-let inputB1 = nodeB.input[1]
-let outputB = nodeB.output[0]
-let inputC = nodeC.input[0]
-let outputC = nodeC.output[0]
-let inputD = nodeD.input[0]
-let outputD = nodeD.output[0]
-
-console.log(nodeB)
-
-worldSpaceNodeConnector.makeConnection(outputA, inputA)
-
-//worldSpaceNodeConnector.makeConnection(outputA, inputC)
-//worldSpaceNodeConnector.makeConnection(outputB, inputD)
-//worldSpaceNodeConnector.makeConnection(outputC, inputD)
-//worldSpaceNodeConnector.makeConnection(outputA, inputB)
-//worldSpaceNodeConnector.makeConnection(outputA, inputB1) //Should connect (to be fixed)
-
-console.log(inputA.getParentNode().getTargetVertices())
-//console.log(inputB.getParentNode().getTargetVertices())
-//console.log(inputC.getParentNode().getTargetVertices())
-//inputB.removeConnection(outputA)
-
-
-
+//Está funcionando !
+console.log(WorldSpaceNode.NodeInfoLib);
+console.log(WorldSpace.onWorldSpaceComponents);
+console.log(_testNode);
 
