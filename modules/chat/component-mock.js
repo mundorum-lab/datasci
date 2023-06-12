@@ -5,7 +5,7 @@ Oid.component(
   id: 'component-mock',
   element: 'component-mock-oid',
   properties: {
-    table:{default:{calue:"my table"}},
+    table:{default:{value:"my table"}},
     result:{default:{value:"my result"}}
   }
 })

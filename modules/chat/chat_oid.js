@@ -14,6 +14,7 @@ export class ChatOid extends OidWeb {
   //   // this.setGraphInfo()
   //   // this.generatePrompt()
   //   // this.requestToOpenAI()
+    
   }
 
   setGraphInfo(topic, message){
@@ -28,7 +29,7 @@ export class ChatOid extends OidWeb {
     this.workflowMap=message
   }
  
-  generatePrompt(workflowMap, componentId){
+  async generatePrompt(workflowMap, componentId){
     const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
     const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
@@ -45,9 +46,9 @@ export class ChatOid extends OidWeb {
       index += 1
       this.prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
-        if (this.arrayCheck(tableList+valueList,component.nodeType)){
-          let table=getData(componentId,"table")
-          let result=getData(componentId,"result")
+        if (this.arrayCheck(tableList,"minimum") || this.arrayCheck(valueList,"minimum")){
+          let table=await this.getData(componentId,'table')
+          let result=await this.getData(componentId,'result')
           console.log("interface oid received")
           console.log(`table:${table}`)
           console.log(`result:${result}`)
@@ -55,8 +56,8 @@ export class ChatOid extends OidWeb {
         Explain it to me.`
         }
         else if (component.nodeType==="graph-oid"){
-          let data=getData(componentId,"data")
-          let type=getData(componentId,"type")
+          let data=await this.getData(componentId,'data')
+          let type=await this.getData(componentId,'type')
           this.prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
         Explain it to me.`
         }
@@ -64,24 +65,29 @@ export class ChatOid extends OidWeb {
       }
       
     }
-    console.log(prompt)
+    // console.log(path)
+    // console.log(`prompt:${this.prompt}`)
     return prompt
       
     
   }
   async getData(componentId,attributeName){
     await this._connect("itf:oid",componentId,this)
+    
     let componentData=await this._invoke("itf:oid","get",{property:attributeName})
+    console.log(`data:${componentData}`)
     return componentData
   }
   
   arrayCheck(array,obj){
+    console.log(array)
+    console.log(obj)
     let value=false
     for(let element of array){
-      if (element===obj)
+      if (element==obj)
         value=true
     }
-    return
+    return value
   }
   // requestToOpenAI() {
   
@@ -104,7 +110,7 @@ export class ChatOid extends OidWeb {
     let component=null
     
     for(let i in workflowMap.nodes){
-      console.log("workflow node = ",workflowMap.nodes[i].nodeId, "///",Id)
+      // console.log("workflow node = ",workflowMap.nodes[i].nodeId, "///",Id)
       if (workflowMap.nodes[i].nodeId===Id){
         component=workflowMap.nodes[i]
         break
@@ -162,9 +168,11 @@ export class ChatOid extends OidWeb {
 
   }
 
-  handlePrompt(op,message){
+  async handlePrompt(op,message){
+    
     let componentId=message.value
-    prompt=this.generatePrompt(this.workflowMap,componentId)
+    console.log(`id:${componentId}`)
+    prompt=await this.generatePrompt(this.workflowMap,componentId)
     // let mainComponent=this.findComponent(this.workflowMap,componentId)
     // let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
     return {value:prompt}
