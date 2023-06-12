@@ -1,1 +1,0 @@
-## este módulo contém os protótipos da implementação do PCA

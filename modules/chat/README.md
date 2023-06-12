@@ -47,48 +47,35 @@
 
 # Components
 
-## Component chat-button-oid
 
-> Button to request the explanation of a component
+## Component ChatGPT
+
+> Given some input data, provides a brief text explanation to the user about its content. The input data can be a graph, statistics, connections
 
 ### Properties
 
 property | role
 ---------| --------
 `id` | `unique identifier of the component,relative to the workflow, it let the component find itself in the workflow`
+`openAiApiKey` | `api key to access the openAI api`
+`relevantComponents` | `relevant components to generate the prompt`
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`receiveId` | stores the component Id to search the workflow to find relevant nodes | SingleValue
-
+`receiveData` | stores the data received | ValidTable
+`receiveType` | stores the type received | SingleValue
+`receiveWorkflow` | stores workflow and starts to find relevant nodes | WorkflowState
+`receiveValue` | stores single value received | SingleValue
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-copyAndOpenChatGPT | copy the generated prompt to the clipboard and opens a new window to openAI | ---
-
-## Component chat-oid
-
-> Generates the prompt to explain some workflow state
-
-### Properties
-
-property | role
----------| --------
-`workflowState` | stores the workflowState received from the workflow
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-`prompt` | provides the generated prompt customized by the current workflow state
-
-### Interface chat
- operation | description |cardinality 
- ----------| ------------|-----------
- `prompt`| provides the generated prompt customized by the current workflow state | 1:n
+`showExplanation` | received result from ChatGPT API | Explanation
+`getData` | after finding the node conected to this component 
+`getType` | after finding the node conected to this component, only if component found have this parameter 
+`getValue`| after finding the node conected to this component, only if component found have this parameter 
 
 # Components Narratives
 
@@ -96,27 +83,17 @@ notice    | source | message type
 ## Setup
 
 ~~~html
-<chat-button-oid componentId="<insert componentId here>" >
-</chat-button-oid>
-
-<chat-oid subscribe="exportWorkflow~graph" id="chat">
-</chat-oid>
+<chat-component openAiAPIkey="<insert API key here>",id="<insert id here>"
+                publish="showExplanation:show/explanation;getData:get/<targetComponentID>/data;getType:get/<targetComponentID>/type;get/<targetComponentID>/value"
+                subscribe="workflowMap:dataPublish;receive/<targetComponentID>/data:receiveData;receive/<targetComponentID>/type:receiveType;receive/<targetComponentID>/value:receiveValue">
+</chat-component>
 
 ~~~
 
 ## Narrative
 
-* The chat-oid component subscribes to the topic "workflowState", which has a map of all the connections made.
-* The chat-button-oid is placed in each presentation module
-* When a button is clicked, the chat button calls the chat-oid and provides the component id
-* Then, the component searches int he workflow for the full path until the node the user would like to explain.
+* The chat component subscribes to the topic "workflowState", which has a map of all the connections made.
+* Then, the component searches for the components which the chatGPT node is connected.
 * Then, it will send getters to the component to retrive their data.
-* After receiving all of them by the proper receive/<targetComponentID> bus,it will generate the prompt
-* Then, the response returns to the chat button with the interface prompt
-* Finally, the chat button copies the prompt to the clipboard, sending an alert and opens a new tab to chatGPT
-
-## Example
-
-* The index.html file can be used as an example
-* The integration with a mock of the workflow can be seen in this file, also the value received can be seen in console.
-* The integration with transform and graph components should be seen too, however it is not working properly yet.
+* After receiving all of them by the proper receive/<targetComponentID> bus,it will generate the prompt and will call the openAI Api with the customized prompt and its attribute openAiApiKey
+* Finally, the response is published with the topic show/explanation

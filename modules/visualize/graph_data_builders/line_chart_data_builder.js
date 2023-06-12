@@ -1,20 +1,16 @@
 export function buildLineChartData(rawData, fields){
     let data = {
         labels: [],
-        datasets: []
-    };
-    fields.forEach((fieldset) => {
-        const dataset = {
+        datasets: [{
             label: 'TODO',
             data: [],
             fill: false,
             tension: 0.1,
-        }
-        rawData['data'].forEach(row => {
-            data['labels'].push(row[fieldset['x']]);
-            dataset.data.push(row[fieldset['y']]);
-        });
-        data['datasets'].push(dataset);
-    })
+        }]
+    };
+    rawData['data'].forEach(row => {
+        data['labels'].push(row[fields['x']]);
+        data['datasets'][0]['data'].push(row[fields['y']]);
+    });
     return data;
 }
