@@ -127,9 +127,9 @@ O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no w
 
 * `Graph-oid`: Componente que renderiza o gráfico na tela do usuário.
 
-
 * Presentation decide exibir o novo gráfico em um tamanho `width` x `height` em sua interface:
-	* Instancia um componente `graph-oid` contendo informações de `type`, `size`, `options` e `fields`.
+	* Instancia um componente `graph-oid` contendo informações de `type`
+	* Envia por barramento os dados de `options` e `fields`.
 	* O compenente `graph-oid` exibe a mensage "Waiting for data." 
 	* Algum componente posta uma mensagem de tipo `data`  no tópico `data/#id` e,consequentemente, o componente `graph-oid` recebe o notice `render`
 	* O compenente `graph-oid` apresenta o gráfico
@@ -176,4 +176,9 @@ Graph type | Data | Options
 `Scatter: Linear Regression` | 3 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y1` (numeric) </ul> <ul> - `y2` (numeric) </ul> | 
 
 
-*Bubble radius in pixels (not scaled).
+*Bubble radius in pixels (not scaled). <br /><br />
+
+# Comments
+
+- With the change of receiving options and parameter fields in html to messages on the bus, we need to change the functions that configure the graphics. This is not finalized for now, and the only chart type that is working correctly is the line chart.
+- In order to simulate this behavior (sending data over the bus), the OptionsSender component was created, which is a button that sends mocked options and fields.
