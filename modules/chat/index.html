@@ -5,6 +5,7 @@
   <title>Chat Prototype</title>
   <script src="chat_oid.js" type="module"></script>
   <script src="graph-mock.js" type="module"></script>
+  <script src="chat-button-oid.js" type="module"></script>
 </head>
 <body>
   <h1>Chat Prototype</h1>
@@ -12,11 +13,14 @@
 
   
 
-  <button-oid label="Connect to Graph"
-              publish="click~connect/graph">
+ <button-oid label="Connect to Graph"
+              publish="click~connect/graph" id=1>
   </button-oid>
   
-  <graph-mock-oid subscribe="connect/graph~connect"publish="infos~info/graph" columns= 'eixo x, eixo y, eixo z'data="[[0,1,2],[1,2,4],[9,5,8]]" type="scatterplot"></graph-mock-oid>
-  <chat-oid subscribe= "info/graph~graph" chat-id='8'></chat-oid>
+  <graph-mock-oid subscribe="connect/graph~connect"publish="infos~exportWorkflow" ></graph-mock-oid>
+  <chat-oid id="chat" subscribe= "exportWorkflow~graph"></chat-oid>
+  <chat-button-oid subscribe="chat/explain~explain" componentid="4"></chat-button-oid>
+  <component-mock-oid id="4"></component-mock-oid>
 </body>
 </html>
+

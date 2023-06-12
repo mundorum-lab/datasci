@@ -77,22 +77,18 @@ copyAndOpenChatGPT | copy the generated prompt to the clipboard and opens a new 
 
 property | role
 ---------| --------
-`id` | `unique identifier of the component,relative to the workflow, it let the component find itself in the workflow`
-`relevantComponents` | `relevant components to generate the prompt`
+`workflowState` | stores the workflowState received from the workflow
 
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`receiveData` | stores the data received | ValidTable
-`receiveType` | stores the type received | SingleValue
-`receiveWorkflow` | stores workflow and starts to find relevant nodes | WorkflowState
-`receiveValue` | stores single value received | SingleValue
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
 `prompt` | provides the generated prompt customized by the current workflow state
+
+### Interface chat
+ operation | description |cardinality 
+ ----------| ------------|-----------
+ `prompt`| provides the generated prompt customized by the current workflow state | 1:n
 
 # Components Narratives
 
@@ -100,11 +96,10 @@ notice    | source | message type
 ## Setup
 
 ~~~html
-<chat-button-oid componentId="<insert componentId here>">
+<chat-button-oid componentId="<insert componentId here>" >
 </chat-button-oid>
 
-<chat-oid subscribe="workflowMap:dataPublish;receive/<targetComponentID>/data:receiveData;receive/<targetComponentID>/type:receiveType;receive/<targetComponentID>/value:receiveValue"
-          publish="itf:prompt">
+<chat-oid subscribe="exportWorkflow~graph" id="chat">
 </chat-oid>
 
 ~~~
@@ -119,3 +114,9 @@ notice    | source | message type
 * After receiving all of them by the proper receive/<targetComponentID> bus,it will generate the prompt
 * Then, the response returns to the chat button with the interface prompt
 * Finally, the chat button copies the prompt to the clipboard, sending an alert and opens a new tab to chatGPT
+
+## Example
+
+* The index.html file can be used as an example
+* The integration with a mock of the workflow can be seen in this file, also the value received can be seen in console.
+* The integration with transform and graph components should be seen too, however it is not working properly yet.
