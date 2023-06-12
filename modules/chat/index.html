@@ -14,12 +14,13 @@
   
 
  <button-oid label="Connect to Graph"
-              publish="click~connect/graph">
+              publish="click~connect/graph" id=1>
   </button-oid>
   
-  <graph-mock-oid subscribe="connect/graph~connect"publish="infos~info/graph" columns= 'eixo x, eixo y, eixo z'data="[[0,1,2],[1,2,4],[9,5,8]]" type="scatterplot"></graph-mock-oid>
-  <chat-oid id="chat" subscribe= "info/graph~graph"></chat-oid>
+  <graph-mock-oid subscribe="connect/graph~connect"publish="infos~exportWorkflow" ></graph-mock-oid>
+  <chat-oid id="chat" subscribe= "exportWorkflow~graph"></chat-oid>
   <chat-button-oid subscribe="chat/explain~explain" componentid="4"></chat-button-oid>
+  <component-mock-oid id="4"></component-mock-oid>
 </body>
 </html>
 

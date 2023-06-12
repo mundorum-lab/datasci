@@ -17,9 +17,9 @@ export class ChatOid extends OidWeb {
   }
 
   setGraphInfo(topic, message){
-    // console.log('=== topic/message')
-    // console.log(topic)
-    // console.log(message)
+    console.log('=== topic/message') //
+    console.log(topic)
+    console.log(message)
     // this.columns = message.columns
     // this.inputData = message.data
     // this.inputType = message.type
@@ -48,6 +48,9 @@ export class ChatOid extends OidWeb {
         if (this.arrayCheck(tableList+valueList,component.nodeType)){
           let table=getData(componentId,"table")
           let result=getData(componentId,"result")
+          console.log("interface oid received")
+          console.log(`table:${table}`)
+          console.log(`result:${result}`)
           this.prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
         Explain it to me.`
         }
