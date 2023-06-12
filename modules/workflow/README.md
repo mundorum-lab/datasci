@@ -21,20 +21,25 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 ~~~json
 {
   "nodes": [{
-    "id": int,
-    "type": string,
-    "attributes": {...}
+    "id": "<int>",
+    "type": "<string>",
+    "attributes": {"<name>": "<value>", ...}
   }],
 
-  "edges": [[int, int],[int, int], ...]
+  "edges": [["<int>", "<int>"],["<int>", "<int>"], ...]
 }
 ~~~
 
-**`LayoutSelection`**
+**`Templates`**
 ~~~json
 {
-  "layouts": [
-    ...
+  "template": "<string>",
+  "description": "<string>",
+  "regions": [
+    {
+      "id": "<string>",
+      "size": "<string>" // small, medium, large or xlarge
+    }
   ]
 }
 ~~~
@@ -43,29 +48,29 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 ~~~json
 {
   "nome_da_categoria1": [{
-    "output": [{"type": [string], "range": [int, int]}, ...],
-    "id": string,
-    "name": string,
-    "presentable": boolean,
-    "icon": string,
-    "input": [{"type": [string], "range": [int, int]}, ...],
+    "output": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
+    "type": "<string>",
+    "name": "<string>",
+    "presentable": "<boolean>",
+    "icon": "<string>",
+    "input": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
     "fields": [{
-      "name": string,
-      "view": string, 
+      "name": "<string>",
+      "view": "<string>", 
       "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }],
 
   "nome_da_categoria2": [{
-    "output": [{"type": [string], "range": [int, int]}, ...],
-    "id": string,
-    "name": string,
-    "presentable": boolean,
-    "icon": string,
-    "input": [{"type": [string], "range": [int, int]}, ...],
+    "output": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
+    "type": "<string>",
+    "name": "<string>",
+    "presentable": "<boolean>",
+    "icon": "<string>",
+    "input": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
     "fields": [{
-      "name": string,
-      "view": string, 
+      "name": "<string>",
+      "view": "<string>", 
       "parameters": {}
     }]
   }],
@@ -76,26 +81,19 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 **`SingleNode`**
 ~~~json
 {
-    "output": [{"type": [string], "range": [int, int]}, ...],
-    "id": string,
-    "name": string,
-    "presentable": boolean,
-    "icon": string,
-    "input": [{"type": [string], "range": [int, int]}, ...],
+    "output": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
+    "type": "<string>",
+    "name": "<string>",
+    "presentable": "<boolean>",
+    "icon": "<string>",
+    "input": [{"type": ["<string>"], "range": ["<int>", "<int>"]}, ...],
     "fields": [{
-      "name": string,
-      "view": string, 
+      "name": "<string>",
+      "view": "<string>", 
       "parameters": {}
   }]
 }
 ~~~
-
-
-> Types inspired in [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html): `boolean`, `number`, and `string`. Specify arrays with the element type under brackets, e.g., `[number]`.
-
-> One can use a second message type inside a given message type (illustrated as `<message type>`).
-
-> Use camel case to identify message types, starting with uppercase (same practice for class names in JavaScript).
 
 # Parâmetros dos Campos de uma View
 
@@ -208,11 +206,8 @@ Parâmetros permitidos: **accept**, **multiple**.
 
 Descrição dos parâmetros:
 ~~~
-- accept: [<string>]
-    -> lista de formatos aceitos pelo input
-
-- multiple: <boolean> 
-    -> define se aceita mais de um arquivo
+- sep: <char>
+    -> define o separador padrão
 ~~~
 
 ## Dropdown
@@ -222,10 +217,13 @@ Parâmetro permitido: **options**.
 Descrição do parâmetro:
 
 ~~~
-- options: [{"name": <string>, "value": <string>}]	
+- options: [{"name": <string>, "value": <string>, "selected": <boolean>}]	
     -> lista de opções do menu DropDown
     -> cada opção é um objeto contendo nome e valor
+    -> "selected" serve para a opção ja ir selecionada por padrão na visualização
 ~~~
+
+*Obs: Já que o Dropdown só permite a seleção de 1 dos itens listados, **apenas 1 objeto** da lista pode conter **selected = true**.*
 
 ## Extras
 
@@ -236,7 +234,7 @@ Abaixo seguem alguns exemplos de views que **não serão implementadas**, mas se
 - **TextList**
 
 
-# JSONs
+# Registro dos Components - JSONs
 
 Este é o formato padrão para a declaração dos Nodes possíveis.
 
@@ -245,15 +243,15 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 [
   {
-   "output": [{"type": [string], "name": string, "range": [int, int]}, ...],
-    "id": string,
-    "name": string,
-    "presentable": boolean,
-    "icon": string,
-    "input": [{"type": [string], "name": string, "range": [int, int]}, ...],
+   "output": [{"type": ["<string>"], "name": "<string>", "range": ["<int>", "<int>"]}, ...],
+    "type": "<string>",
+    "name": "<string>",
+    "presentable": "<boolean>",
+    "icon": "<string>",
+    "input": [{"type": ["<string>"], "name": "<string>", "range": ["<int>", "<int>"]}, ...],
     "fields": [{
-      "name": string,
-      "view": string,
+      "name": "<string>",
+      "view": "<string>",
       "parameters": {} // depende do tipo de view. Ex.: para NumberField, {"max": int, "min": int, "placeholder": string, "step": int, "value": int}
     }]
   }
@@ -268,7 +266,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 {
   "output": [{"type": ["graph/scatter"], "name": "Saída do gráfico", "range": [1, 1]}],
-  "id": "visualize:scatter-plot",
+  "type": "visualize:scatter-plot",
   "name": "Scatter Plot",
   "presentable": true,
   "icon": "/assets/icon.ico",
@@ -290,7 +288,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 {
   "output": [{"type": "graph/line", "name": "Saída do gráfico", "range": [1, 1]}],
-  "id": "visualize:line-plot",
+  "type": "visualize:line-plot",
   "name": "Line Plot",
   "presentable": true,
   "icon": "/assets/icon.ico",
@@ -312,7 +310,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 {
   "output": [{"type": "input/csv", "name": "Saída dos dados", "range": [1, 5]}],
-  "id": "data:csv-file",
+  "type": "data:csv-file",
   "name": "Csv File",
   "presentable": false,
   "icon": "/assets/icon.ico",
@@ -334,7 +332,7 @@ Este é o formato padrão para a declaração dos Nodes possíveis.
 ```json
 {
   "output": [{"type": "input/database", "name": "Saída dos dados", "range": [1, 5]}],
-  "id": "data:database",
+  "type": "data:database",
   "name": "Database",
   "presentable": false,
   "icon": "/assets/icon.ico",
@@ -429,6 +427,40 @@ notice    | source | message type
 ----------| -------| ------------
 `addNode` | `Adiciona um novo nó a lista` | `Tipo singleNode`
 
+## `component-provider-oid`
+
+Este componente é responsável por fornecer informações sobre o conjunto de nós disponíveis que podem ser utilizados na construção de um workflow.
+
+### Interface: `itf:component-provider`
+
+**Input**:
+notice    | action | message type
+----------| -------| ------------
+`getAllComponents` | Invocado por outro componente conectado | `{}`
+`getComponentInfo` | Invocado por outro componente conectado | `{value: type=<string>}`
+
+**Output**:
+notice    | action | message type
+----------| -------| ------------
+`getAllComponents` | Emitido quando invocado por outro componente conectado | `AvailableNodes`
+`getComponentInfo` | Emitido quando invocado por outro componente conectado | `AvailableNodes`
+
+# Exemplos
+
+Os exemplos podem ser encontrados no diretório `examples`. Cada exemplos é com a estrutura a seguir
+```
+.
+└── examples/
+    └── <exemple-name>/
+        ├── README.md
+        ├── index.html
+        └── other dependencies...
+```
+Para executar um exemplo basta utilizar o comando `npm run dev` e navegar para o caminho do exemplo desejado, como `localhost:5173/modules/workflow/examples/dynamic-rendering/index.html`.
+
+## Customização de Parâmetros:
+
+Cada nó pode ter uma gama de parâmetros de configuração dos tipos descritos na seção [Parâmetros dos Campos de uma View](#Parâmetros-dos-Campos-de-uma-View). Um exemplo dessa customização é apresentado
 # Components Narratives
 
 ## Sessão do workflow

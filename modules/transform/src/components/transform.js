@@ -10,6 +10,7 @@ export class TransformWeb extends OidWeb {
         this.status = false 
         this.dfd = window.dfd
         this.table = {}
+        this.result = {}
     }
 
     /* Get values from json and convert to a more appropriate way to perform transformation */
@@ -42,11 +43,19 @@ export class TransformWeb extends OidWeb {
             })
         }
         new_json.data = this.df.values
-        this.table = new_json
+        this.result = new_json
     }
 
-    toSingleValue(value) {
-        return {"value": value}
+    toSingleValue(value, transformation, column) {
+        let data = []
+        if(Array.isArray(value)){
+            for(let i = 0; i<value.length; i++){
+                data.push([value[i]])
+            }
+        } else {
+            data.push([value])
+        }
+        this.result = {data: data, file_id: this.file_id, columns: [{name: `${transformation} - ${column}`, type: this.columns[column]}]}
     }
 
 }

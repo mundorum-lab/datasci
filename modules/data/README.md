@@ -1,7 +1,7 @@
 # Module `Data`
 
 # Description
-> Our module's responsibility is to gather raw data from files and APIs and transform it into useful data for the other components to use. Essentially, we take raw data and convert it into a JSON format, which is then inserted into the data bus.
+> Our module is responsible for reading files (.json and .csv) and collecting raw data from APIs to transform them into a predefined format that is useful for other components to use. Essentially, we take the raw data and convert it into a JSON format, which is then inserted into the data bus.
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
@@ -57,19 +57,6 @@
 	"file_extension": string
 }
 ~~~
-**`FileTypeRequest`**
-~~~json
-{
-	"data": TreatedDataContent,
-	"return_notice": string
-}
-~~~
-**`FileTypeInfo`**
-~~~json
-{
-	"types": [type, ...]
-}
-~~~
 **`ErrorDuringDataIngestion`**
 ~~~json
 {
@@ -114,7 +101,7 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `RawReaderContent` 
+`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `TreatedReaderContent` 
 
 ### Output Notices
 
@@ -213,3 +200,11 @@ notice    | source | message type
 -	Based on the user's response, it types the data received.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the typed data in JSON format is published on the data bus.
+
+## Examples
+
+### File Input and File Reader
+![File Input](images/diagram_file_input.png)
+An example usage of file-input and file-reader with a component of group model can be found in the folder `data/examples-integration/data-model`.
+
+An example usage of file-input and file-reader can be found in the folder `data/examples/exampleGetDBTable.html`.

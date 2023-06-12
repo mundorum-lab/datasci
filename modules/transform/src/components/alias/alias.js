@@ -15,15 +15,19 @@ export class AliasWeb extends TransformWeb {
     alias(){
         
         this.rename()
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
-        this._notify('aliasResult', json)
+        this._notify('aliasResult', this.result)
     }
 
     handleAlias (topic, message) {  //handle with notice
         
         
-        this.table = message     
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }     
         this.file_id = this.table.file_id
         this.columns = this.table.columns
         this.toDataFrame()  
@@ -31,14 +35,14 @@ export class AliasWeb extends TransformWeb {
         
 
         let validator = new ValidateAlias()
-        let result = validator.validate(this.columns, this.old)
+        let validation = validator.validate(this.columns, this.old)
         console.log(result)
-        if(result.isValid){
+        if(validation.isValid){
             this.alias()
         } else {
             //return error message
             this.status = false
-            this._notify('aliasError', result.result)
+            this._notify('aliasError', validation.result)
         }
 
     }
