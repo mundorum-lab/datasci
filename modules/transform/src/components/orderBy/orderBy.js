@@ -12,16 +12,20 @@ export class OrderByWeb extends TransformWeb {
         this.ascending = this.ascending == true
         console.log(typeof(this.ascending))
         this.df = this.df.sortValues(this.column, { ascending: this.ascending });
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
         console.log(this.df)
-        this._notify('orderByResult', json)
+        this._notify('orderByResult', this.result)
     }
 
     handleOrderBy (topic, message) {  //handle with notice
 
 
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         console.log(this.table)
 
         this.columns = this.table.columns
@@ -29,14 +33,14 @@ export class OrderByWeb extends TransformWeb {
         this.toDataFrame()  
         let validator = new ValidateOrderBy()
 
-        let result = validator.validate(this.columns, this.column)
-        console.log("resultado da validação:",result)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        console.log("resultado da validação:",validation)
+        if(validation.isValid){
             this.orderBy()
         } else {
             //return error message
             this.status = false
-            this._notify('orderByError', result.result)
+            this._notify('orderByError', validation.result)
         }
 
     }
@@ -46,8 +50,8 @@ export class OrderByWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:orderBy',
-  element: 'order-by',
+  id: 'ts:orderby',
+  element: 'orderby-oid',
   properties: {
     column: {default: null},
     ascending: {default: true},

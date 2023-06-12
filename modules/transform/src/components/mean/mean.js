@@ -10,29 +10,33 @@ export class MeanWeb extends TransformWeb {
 
     mean(){
         this.value = this.df.column(this.column).mean()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value,"Média",this.column)
         this.status = true
-        this._notify('meanResult', this.json_result)
+        this._notify('meanResult', this.result)
     }
 
     handleMean (topic, message) {  //handle with notice
         
         //topic: mean
         //message: meanInput
- 
-        this.table = message
+        
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
 
         let validator = new ValidateMean()
 
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.mean()
         } else {
             //return error message
             this.status = false
-            this._notify('meanError', result.result)
+            this._notify('meanError', validation.result)
         }
 
     }
@@ -41,11 +45,10 @@ export class MeanWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transMean',
-  element: 'mean-data',
+  id: 'ts:mean',
+  element: 'mean-oid',
   properties: {
     column: {default: null},
-    json_result: {default: null},
   },
   receive: {mean: 'handleMean'},
   implementation: MeanWeb
