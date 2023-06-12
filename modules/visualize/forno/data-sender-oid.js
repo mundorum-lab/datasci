@@ -3,7 +3,7 @@ import {mockedData,scatter_mockData,cluster_mockData} from './data_mock.js';
 
 export class DataSenderOid extends OidUI {
     _onClick() {
-        this._notify('click', {value: cluster_mockData})
+        this._notify('click', {value: mockedData})
     }
 }
 Oid.component(

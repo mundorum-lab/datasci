@@ -60,6 +60,7 @@ export class GraphOid extends OidUI {
   handleOptions(topic, message) {
     const { fields, title, ...options } = message.value;
 
+    console.log(fields)
     this.fields = fields;
     this.title = title;
     this.options = options
