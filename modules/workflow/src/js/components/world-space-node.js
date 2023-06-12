@@ -80,13 +80,13 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
         for (var i = 0; i < nodeInfo.output.length; i++) {
             var compatible = nodeInfo.output[i]
-            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.id, compatible.range);
+            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.type, compatible.range);
             this.output.push(newOutput);
         }
 
         for (var i = 0; i < nodeInfo.input.length; i++) {
             var compatible = nodeInfo.input[i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible.id, compatible.range);
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible.type, compatible.range);
             this.input.push(newInput);
         }
 
