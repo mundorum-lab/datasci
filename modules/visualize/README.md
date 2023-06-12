@@ -40,7 +40,33 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 }
 ~~~
 
+**`Options`**
 
+~~~js
+{
+	fields: [{
+		x: <int>,
+		y: <int>,
+		title: <String>,
+		z?: <int>,
+	},
+	? {
+		x: <int>,
+		y: <int>,
+		title: <String>,
+		z?: <int>
+	}],
+	title: <String>,
+	scales: {
+		x-title: <String>,
+		y-title: <String>,
+		type: <String(linear/category)>
+		?min: <int>,
+		?max: <int>,
+		?log-scale: <boolean>
+	}
+}
+~~~
 
 **`ExportGraph`**
 
@@ -88,12 +114,11 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 
 ~~~html
 <graph-oid 	type = "bar-chart",
-			size = '{width: "100", height: "200"}',
-			options = '{}',
-			fields = '{"x":0, "y":1}',
-        	subscribe = "data/<id>:render",
+        	subscribe = "data/<id>:render, graph/options:options",
 			publish = "export:export/graph">
 </graph-oid>
+
+<export-button-oid publish="export~graph/export"></export-button-oid>
 ~~~
 
 O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no workflow) que irá providenciar os dados que o gráfico utilizará.
@@ -112,3 +137,43 @@ O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no w
 * O usuário deseja exportar a imagem do gráfico:
 	* Produz a notice "`export`"
 	* Uma mensagem com o tópico `export/graph` e com o valor da imagem é publicado.
+
+
+# Required informations for each graph type
+
+## Obrigatory for all types: 
+- `Data`: 
+	- `labels`: x axis labels
+	- `datasets`:  list of datasets
+		- `label` (title of dataset)
+		- `data`
+- `Options`: 
+	- `title` 
+	- `scales`: 
+		- axes titles 
+		- type (`linear` or `category` or `time`)
+
+## Optional for all types:
+- `Options`:
+	- `scales`: 
+		- min/max
+		- log scale 
+
+<br />
+
+Graph type | Data | Options
+--- | --- | ---
+`Line` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> `datasets`: unset `fill` | 
+`Area` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> `datasets`: set `fill` | 
+`Scatter` | 2 axes: <br /> <ul> - `x` (numeric) </ul> <ul> - `y` (numeric) </ul> |
+`Bubble` | 3 axes: `x`, `y`, `r`*, all numeric | 
+`Bar` | 2 axes: <br /> <ul> - `x` (numeric) </ul> <ul> - `y` (numerical or categorical) </ul> | 
+`Column` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> |
+`Pie` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> | 
+`Doughnut` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> | 
+`Polar Area` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> | 
+`Radar Area` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> | 
+`Scatter: Linear Regression` | 3 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y1` (numeric) </ul> <ul> - `y2` (numeric) </ul> | 
+
+
+*Bubble radius in pixels (not scaled).

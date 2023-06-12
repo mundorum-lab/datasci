@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Prototype</title>
+  <script src="pca-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <button-oid label="test pca" 
+              value="The dinosaur jumped into the mud."
+              publish="click~statistics/pca">
+  </button-oid>
+  <ml-apply-pca subscribe="statistics/pca~transform"></ml-apply-pca>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Playground</title>
+        <script src="../../src/components/fileinput-oid.js" type="module"></script>
+        <script src="../../src/components/filereader-oid.js" type="module"></script>
+        <script src="../../src/components/typeinput-oid.js" type="module"></script>
+        <script src="../../../model/containers/linear-regression/lr-component.js" type="module"></script>
+    </head>
+    <body>
+    <h1>Playground</h1>
+
+    <filereader-oid sep=";" publish="loaded~data/loaded"></filereader-oid>
+
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+    
+    <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
+    
+    <ml-lr-oid subscribe="data/processed~transform"></lr-oid>
+</body>
+</html>
