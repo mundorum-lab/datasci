@@ -24,7 +24,7 @@ export class SidebarNodeView extends OidUI {
         <div
             draggable="true"
             href="#"
-            class="bg-background flex w-48 h-8 justify-between items-center border rounded-md py-1.5 px-1.5 text-sm leading-6 text-primary"
+            class="bg-background flex w-full h-8 justify-between items-center border rounded-md py-1.5 px-1.5 text-sm leading-6 text-primary"
         >
             <div class="flex gap-1 w-28 h-fill">
                 <img src={{this.iconpath}} alt={{this.name}} class="w-6 h-6">
