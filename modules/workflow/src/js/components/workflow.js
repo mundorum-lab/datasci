@@ -1,9 +1,10 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
-import ("/modules/workflow/src/js/components/template-selector.js");
+import("/modules/workflow/src/js/components/template-selector.js");
+import("/modules/workflow/src/js/widgets/buttonPopover.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {
-    let me = event.composedPath().find((x) => x.tagName == "BUTTON")
+    let me = event.composedPath().find((x) => x.tagName == "BUTTON");
     if (me.children["chevron"].classList.contains("rotate-90")) {
       me.children["chevron"].classList.remove("rotate-90");
       me.nextElementSibling.classList.add("hidden");
@@ -25,7 +26,7 @@ export class WorkflowOid extends OidUI {
               <div>
                 <button
                   type="button"
-                  @click="{{this._onClick}}"
+                  @click
                   class="hover:bg-background flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-primary"
                   aria-controls="sub-menu-1"
                   aria-expanded="false"
@@ -107,23 +108,20 @@ export class WorkflowOid extends OidUI {
           </ul>
           <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
           <!-- fazendo uma requisição da lista de templates. -->
-          <button-oid
-            label="Request templates"
-            publish="click~apresentacao/templates/requisicao"
-          ></button-oid>
+          <button-popover
+            label="Select Template"
+            publish="click~apresentacao/templates/requisicao; saved~workflow/saved"
+          ></button-popover>
           <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
           <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
           <template-lister-oid
+            class="hidden"
             subscribe="apresentacao/templates/requisicao~requestTemplatesList"
             publish="responseTemplatesList~apresentacao/templates/listagem"
           >
           </template-lister-oid>
           <!-- O componente de seleção de templates recebe a lista de templates do barramento e -->
           <!-- apresenta os templates disponível para o usuario escolher. -->
-          <template-selector-oid 
-            subscribe="apresentacao/templates/listagem~selector"
-          >
-          </template-selector-oid>
         </div>
         <div class="w-full h-full bg-background">dsa</div>
       </div>
