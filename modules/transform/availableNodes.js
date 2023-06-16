@@ -1,18 +1,20 @@
-export const availableNodes = {
-    filter: [{
+[
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saída",
                 range: [1,2]
             }
         ],
-        id: "ts:filter",
+        type: "ts:filter",
         name: "Filtro",
         presentable: true,
         icon: "datasci/modules/transform/icons/filter.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -38,22 +40,24 @@ export const availableNodes = {
                 ]}]
             }
         ]
-    }],
+    },
 
-    groupby: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ], 
-        id: "ts:groupby",
+        type: "ts:groupby",
         name: "Agrupar linhas",
         presentable: true,
         icon: "datasci/modules/transform/icons/groupby.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -92,22 +96,24 @@ export const availableNodes = {
                 parameters: []
             }
         ]
-    }],
+    },
 
-    mean: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:mean",
+        type: "ts:mean",
         name: "Média",
         presentable: true,
         icon: "datasci/modules/transform/icons/average.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -121,22 +127,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    median: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:median",
+        type: "ts:median",
         name: "Mediana",
         presentable: true,
         icon: "datasci/modules/transform/icons/median.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -150,22 +158,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    mode: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:mode",
+        type: "ts:mode",
         name: "Moda",
         presentable: true,
         icon: "datasci/modules/transform/icons/mode.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -179,22 +189,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    stddev: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:stddev",
+        type: "ts:stddev",
         name: "Desvio padrão",
         presentable: true,
         icon: "datasci/modules/transform/icons/stddev.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -208,23 +220,25 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
 
-    minimum: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:minimum",
+        type: "ts:minimum",
         name: "Mínimo",
         presentable: true,
         icon: "datasci/modules/transform/icons/minimum.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -238,22 +252,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    maximum: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:maximum",
+        type: "ts:maximum",
         name: "Máximo",
         presentable: true,
         icon: "datasci/modules/transform/icons/maximum.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -267,22 +283,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    count: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:count",
+        type: "ts:count",
         name: "Contar",
         presentable: true,
         icon: "datasci/modules/transform/icons/count.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -304,22 +322,24 @@ export const availableNodes = {
                 }]
             },
         ]
-    }],
+    },
 
-    unique: [{
+    {
         output: [
             {
                 type: ["json/singleValue"], 
+                name: "saida",
                 range: [1,1]
             }
         ],
-        id: "ts:unique",
+        type: "ts:unique",
         name: "Valores únicos",
         presentable: true,
         icon: "datasci/modules/transform/icons/unique.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -333,22 +353,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    columnOperation: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:columnOp',
+        type: 'ts:columnOp',
         name: "Operação entre colunas",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnOp.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -389,22 +411,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    columnOperationConstant: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:columnOpConstant',
+        type: 'ts:columnOpConstant',
         name: "Operação entre coluna e constante",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnOpConstant.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -443,22 +467,24 @@ export const availableNodes = {
                 parameters: []  
             },
         ]
-    }],
+    },
 
-    deleteColumn: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:deleteColumn',
+        type: 'ts:deleteColumn',
         name: "Deletar coluna",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnDelete.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -472,22 +498,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    orderBy: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:orderby',
+        type: 'ts:orderby',
         name: "Ordenar",
         presentable: true,
         icon: "datasci/modules/transform/icons/columnDelete.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -510,22 +538,24 @@ export const availableNodes = {
             },
 
         ]
-    }],
+    },
 
-    zScoreNorm: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:normalize',
+        type: 'ts:normalize',
         name: "Normalizar",
         presentable: true,
         icon: "datasci/modules/transform/icons/zscoreNorm.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -539,22 +569,24 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-    alias: [{
+    {
         output: [
             {
                 type: ["json/table"], 
+                name: "saida",
                 range: [1,2]
             }
         ],
-        id: 'ts:transAlias',
+        type: 'ts:transAlias',
         name: "Renomear coluna",
         presentable: true,
         icon: "datasci/modules/transform/icons/alias.png",
         input: [
             {
                 type: ["json/table"], 
+                name: "entrada",
                 range: [1, 1]
             }
         ],
@@ -576,6 +608,6 @@ export const availableNodes = {
                 }]  
             },
         ]
-    }],
+    },
 
-}
+]
