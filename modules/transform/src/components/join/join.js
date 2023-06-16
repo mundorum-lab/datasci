@@ -1,5 +1,5 @@
 import { Oid } from '/lib/oidlib-dev.js'
-import { ValidateJoin } from './validateJoin'
+import { ValidateJoin } from './validateJoin.js'
 import { TransformWeb } from '../transform.js'
 
 
@@ -29,14 +29,14 @@ export class JoinWeb extends TransformWeb {
             columns[this.second_table.columns[i].name] = this.second_table.columns[i].type
             columns_arr.push(this.second_table.columns[i].name)
         }
-        this.df_2 = new this.dfd.DataFrame(table.data, {columns: columns_arr})
+        this.df_2 = new this.dfd.DataFrame(this.second_table.data, {columns: columns_arr})
         this.columns_2 = columns
     }
 
     handleJoin (topic, message) {  //handle with notice
         
         
-        if(this.table == null){ //if no table has called join
+        if(!this.table.hasOwnProperty("data") || !this.table.hasOwnProperty("columns")){ //if no table has called join
             this.table = message 
             this.file_id = this.table.file_id
             this.columns = this.table.columns
@@ -47,17 +47,14 @@ export class JoinWeb extends TransformWeb {
             this.file_id_2 = this.second_table.file_id
             this.columns_2 = this.second_table.columns
             this.second_df()  
-
         }
+        console.log(this.on)
         
-        
-        
-        
-
         let validator = new ValidateJoin()
         let result = validator.validate(this.columns, this.columns_2, this.on, this.table,this.second_table)
         console.log(result)
         if(result.isValid){
+            console.log("chega aaqui")
             this.join()
         } else {
             //return error message
@@ -77,7 +74,7 @@ Oid.component(
     on: {default: null},
     how: {default: 'inner'},
   },
-  receive: {alias: 'handleJoin'},
+  receive: {join: 'handleJoin'},
   /*template: html``,*/
   implementation: JoinWeb
 })

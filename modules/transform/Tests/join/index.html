@@ -10,16 +10,19 @@
 </head>
 <body>
   <h1>Teste</h1>
+
   <join-button publish="click~data/2">
-  </join-button >
+  </join-button>
+
   <join-other-button publish="click~data/2">
-    </join-other-button >
+</join-other-button>
+  
 
   <join-oid 
-    new="second"
+    on="second"
     how="inner"
     subscribe="data/2~join" 
-    publish="join~data/3">
+    publish="joinResult~data/3">
   </join-oid>
 
 

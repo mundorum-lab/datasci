@@ -11,6 +11,7 @@ export class ValidateJoin extends Validate{
                 errorType: "Column not found",
                 message: `Column ${column} does not exist in the left table."`,
             }
+            
             return {result, isValid: false}
         }
 
