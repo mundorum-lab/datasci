@@ -56,7 +56,7 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 
 ~~~
 
-> Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações e a devolver no mesmo formato como saída. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Nesse caso, é devolvido uma a `table` com uma linha em uma coluna, padronizando as entradas e saídas. Com isso, todas as saídas podem ser visíveis com o componente `table-view-oid`. 
+Esse foi o formato da tabela acordado entre os grupos. Cada componente de `transform` estará apto a receber essa tabela como entrada para suas transformações e a devolver no mesmo formato como saída. As saídas de alguns componentes podem ser valores inteiros simples (como média, mínimo, etc). Nesse caso, é devolvido uma a `table` com uma linha em uma coluna, padronizando as entradas e saídas. Com isso, todas as saídas podem ser visíveis com o componente `table-view-oid`. 
 
 **`transformationError`**
 ~~~json
@@ -67,7 +67,7 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 }
 ~~~
 
-> Caso haja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
+Caso haja erro durante as transformações, cada componente terá seus tipos de erro, com as respectivas mensagens. 
 
 # Components
 
@@ -75,432 +75,432 @@ Jéssica da Silva Oliveira - RA 173931 <br>
 
 property | role
 ---------| --------
-`table` | `tabela em formato jason com dados de entrada`
-`status` | `estado da operação relacional (se foi bem sucedida ou não)`
-`df` | `tabela em formato de DataFrame`
-`file_id` | `arquivo do qual a tabela foi proveniente inicialmente`
-`columns` | `objeto com o nome das coluna como chave e o seu tipo como valor`
-`dfd` | `objeto da biblioteca Danfo a partir do qual obtmos as funcionaidades`
-`result` | `resultado da transformação em formato json; valor que será publicado`
+table | tabela em formato jason com dados de entrada
+status | estado da operação relacional (se foi bem sucedida ou não)
+df | tabela em formato de DataFrame
+file_id | arquivo do qual a tabela foi proveniente inicialmente
+columns | objeto com o nome das coluna como chave e o seu tipo como valor
+dfd | objeto da biblioteca Danfo a partir do qual obtmos as funcionaidades
+result | resultado da transformação em formato json; valor que será publicado
 
-> Esse componente apresenta funcionalidades e propriedades comuns a todos os componentes de transformação, por isso cada componente de transformação específico o herdará. 
+Esse componente apresenta funcionalidades e propriedades comuns a todos os componentes de transformação, por isso cada componente de transformação específico o herdará. 
 
 ### Class `Validate`
 
-> Antes que as transformações ocorram, é necessário verificar a validade dos parâmetros passados para o componente que realizará a transformação. Sendo assim, cada componente de transformação é composto por uma classe que de validação, cujas funções o componente usa antes de realizar as operaões.
+Antes que as transformações ocorram, é necessário verificar a validade dos parâmetros passados para o componente que realizará a transformação. Sendo assim, cada componente de transformação é composto por uma classe que de validação, cujas funções o componente usa antes de realizar as operaões.
 
-> Como cada classe dessa tem métodos e atributos comuns, uma super classe foi construída. Todas as classes de validação são herdeiras dela.
+Como cada classe dessa tem métodos e atributos comuns, uma super classe foi construída. Todas as classes de validação são herdeiras dela.
 
-> A imagem abaixo mostra a arquitetura geral integrando esse componente essas classes para o exemplo do componente de transformação `filter`.
+A imagem abaixo mostra a arquitetura geral integrando esse componente essas classes para o exemplo do componente de transformação `filter`.
 
 ![alt text](./images/arquitetura_geral.png)
 
 ## Component `filter`
 
-> Filtra as linhas de uma tabela com base na coluna, operação e valor de comparação passados por mensagem.
+Filtra as linhas de uma tabela com base na coluna, operação e valor de comparação passados por mensagem.
 
 ### Properties
 
 property | role
 ---------| --------
-`target_column` | `coluna com base na qual as linhas serão filtradas`
-`operation` | `operação de comparação que será usada na coluna alvo`
-`compared_value` | `valor que será comparado na operação com cada valor da coluna alvo`
+target_column | coluna com base na qual as linhas serão filtradas
+operation | operação de comparação que será usada na coluna alvo
+compared_value | valor que será comparado na operação com cada valor da coluna alvo
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`filterOperation` | `filtra uma tabela de dados, gerando outra` | `filterInput`
+filterOperation | filtra uma tabela de dados, gerando outra | filterInput
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`filterError` | `é ativado quando a operação de filtrar termina e há erros` | `transformationError`
-`filterResult` | `é ativado quando a operação de filtrar termina` | `table`
+filterError | é ativado quando a operação de filtrar termina e há erros | transformationError
+filterResult | é ativado quando a operação de filtrar termina | table
 
 ## Component `groupBy`
 
-> Agrupa as linhas cuja coluna especificada apresenta elementos em comum. Realiza operações sobre as linhas agrupadas em uma coluna específica, passada pelo usuário. Salva o resultado dessa operação em uma nova coluna, com o nome especificado pelo usuário. Retorna a nova coluna e a coluna que foi agrupada. 
+Agrupa as linhas cuja coluna especificada apresenta elementos em comum. Realiza operações sobre as linhas agrupadas em uma coluna específica, passada pelo usuário. Salva o resultado dessa operação em uma nova coluna, com o nome especificado pelo usuário. Retorna a nova coluna e a coluna que foi agrupada. 
 
 ### Properties
 
 property | role
 ---------| --------
-`group_by_target_column` | `coluna com base na qual os valores serão agrupados`
-`operation_target_column` | `coluna na qual será realizada uma operação a lista de dados agrupadas resultante`
-`operation` | `operação realizada na coluna de operação`
-`result_column` | `nome da coluna resultante após a operação`
+group_by_target_column | coluna com base na qual os valores serão agrupados
+operation_target_column | coluna na qual será realizada uma operação a lista de dados agrupadas resultante
+operation | operação realizada na coluna de operação
+result_column | nome da coluna resultante após a operação
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`groupby` | `agrupa as linhas da tabela fornecida` | `table`
+groupby | agrupa as linhas da tabela fornecida | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`groupbyError` | `é ativado quando a operação de agrupar termina e há erros` | `transformationError`
-`groupByResult` | `é ativado quando a operação de agrupar termina` | `table`
+groupbyError | é ativado quando a operação de agrupar termina e há erros | transformationError
+groupByResult | é ativado quando a operação de agrupar termina | table
 
 ## Component `columnOperation`
 
-> Cria uma nova coluna a partir de dados de duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
+Cria uma nova coluna a partir de dados de duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
 
 ### Properties
 
 property | role
 ---------| --------
-`fisrt` | `coluna 1 da operação` 
-`second` | `coluna 2 da operação`
-`op` | `operação realizada entre as colunas`
-`result` | `coluna resultante`
+fisrt | coluna 1 da operação 
+second | coluna 2 da operação
+op | operação realizada entre as colunas
+result | coluna resultante
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`columnOp` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `table`
+columnOp | faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`columnOpResult` | `é ativado quando a operação termina bem sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+columnOpResult | é ativado quando a operação termina bem sucedida | table
 
 ## Component `columnOperationConstant`
 
-> Cria uma nova coluna a partir de dados de uma coluna com uma constante, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
+Cria uma nova coluna a partir de dados de uma coluna com uma constante, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
 
 ### Properties
 
 property | role
 ---------| --------
-`fisrt` | `coluna 1 da operação` 
-`constant` | `constante`
-`op` | `operação realizada com a coluna`
-`result` | `coluna resultante`
+fisrt | coluna 1 da operação 
+constant | constante
+op | operação realizada com a coluna
+result | coluna resultante
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`columnOpConstant` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `table`
+columnOpConstant | faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`columnOpConstantResult` | `é ativado quando a operação termina bem sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+columnOpConstantResult | é ativado quando a operação termina bem sucedida | table
 
 ## Component `deleteColumn`
 
-> Exclui uma coluna.
+Exclui uma coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `string com nome da coluna que será deletada`
+column | string com nome da coluna que será deletada
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`columnDel` | `apaga uma coluna` | `table`
+columnDel | apaga uma coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`columnDeleteResult` | `é ativado quando a operação termina bem sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+columnDeleteResult | é ativado quando a operação termina bem sucedida | table
 
 ## Component `minimum`
 
-> Encontra e retorna o valor mínimo da coluna.
+Encontra e retorna o valor mínimo da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna sobre a qual será buscado o valor mínimo`
+column | nome da coluna sobre a qual será buscado o valor mínimo
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`minimum` | `percorre a coluna indicada e encontra o valor mínimo` | `table`
+minimum | percorre a coluna indicada e encontra o valor mínimo | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`minimumResult` | `é ativado quando a operação de encontrar o mínimo termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+minimumResult | é ativado quando a operação de encontrar o mínimo termina | singleValue
 
 ## Component `maximum`
 
-> Encontra e retorna o valor máximo da coluna.
+Encontra e retorna o valor máximo da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna sobre a qual será buscado o valor máximo`
+column | nome da coluna sobre a qual será buscado o valor máximo
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`maximum` | `percorre a coluna indicada e encontra o valor máximo` | `table`
+maximum | percorre a coluna indicada e encontra o valor máximo | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`maximumResult` | `é ativado quando a operação de encontrar o máximo termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+maximumResult | é ativado quando a operação de encontrar o máximo termina | singleValue
 
 ## Component `count`
 
-> Conta quantas vezes o elemento aparece na coluna.
+Conta quantas vezes o elemento aparece na coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna sobre a qual os valores iguais serão contados`
-`count_value` | `valor que se deseja contar na coluna`
+column | nome da coluna sobre a qual os valores iguais serão contados
+count_value | valor que se deseja contar na coluna
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`count` | `percorre a coluna indicada e conta quantas vezes o elemento aparece na mesma` | `table`
+count | percorre a coluna indicada e conta quantas vezes o elemento aparece na mesma | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`countResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+countResult | é ativado quando a operação de contar as aparições do elemento termina | singleValue
 
 ## Component `unique`
 
-> Conta quantos valores únicos estão presentes na coluna.
+Conta quantos valores únicos estão presentes na coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna em que se deseja contar valores`
+column | nome da coluna em que se deseja contar valores
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`unique` | `percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma` | `table`
+unique | percorre a coluna indicada e conta quantos valores únicos estão presentes na mesma | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`uniqueResult` | `é ativado quando a operação de contar os valores  termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+uniqueResult | é ativado quando a operação de contar os valores  termina | singleValue
 
 ## Component `orderBy`
 
-> Ordena as linhas com base no valor de uma coluna de forma crescente ou decrescente.
+Ordena as linhas com base no valor de uma coluna de forma crescente ou decrescente.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna com base na qual se deseja ordenar`
-`ascending` | `valor booleano que indica ordenação crescente ou decrescente`
+column | nome da coluna com base na qual se deseja ordenar
+ascending | valor booleano que indica ordenação crescente ou decrescente
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`orderBy` | `ordena a coluna` | `table`
+orderBy | ordena a coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`orderByResult` | `é ativado quando a operação de contar as aparições do elemento termina` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+orderByResult | é ativado quando a operação de contar as aparições do elemento termina | table
 
 ## Component `mean`
 
-> Encontra e retorna o valor médio da coluna.
+Encontra e retorna o valor médio da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna cujos valores serão usados para calcular a média`
+column | nome da coluna cujos valores serão usados para calcular a média
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`mean` | `percorre a coluna indicada e encontra o valor médio dessa coluna` | `table`
+mean | percorre a coluna indicada e encontra o valor médio dessa coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`meanResult` | `é ativado quando a operação de encontrar o valor médio da coluna termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+meanResult | é ativado quando a operação de encontrar o valor médio da coluna termina | singleValue
 
 ## Component `median`
 
-> Encontra e retorna o valor correspondente a mediana da coluna.
+Encontra e retorna o valor correspondente a mediana da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna cujos valores serão usados para calcular mediana`
+column | nome da coluna cujos valores serão usados para calcular mediana
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`median` | `percorre a coluna indicada e encontra o valor correspondente a mediana dessa coluna` | `table`
+median | percorre a coluna indicada e encontra o valor correspondente a mediana dessa coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`medianResult` | `é ativado quando a operação de encontrar o valor correspondente a mediana da coluna termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+medianResult | é ativado quando a operação de encontrar o valor correspondente a mediana da coluna termina | singleValue
 
 ## Component `mode`
 
-> Encontra e retorna o valor correspondente a moda da coluna.
+Encontra e retorna o valor correspondente a moda da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna cujos valores serão usados para calcular a moda`
+column | nome da coluna cujos valores serão usados para calcular a moda
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`mode` | `percorre a coluna indicada e encontra o valor correspondente a moda dessa coluna` | `table`
+mode | percorre a coluna indicada e encontra o valor correspondente a moda dessa coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`modeResult` | `é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+modeResult | é ativado quando a operação de encontrar o valor correspodente a moda da coluna termina | table
 
 ## Component `standarddeviation`
 
-> Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
+Encontra e retorna o valor correspondente ao desvio padrão populacional da coluna.
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `nome da coluna cujos valores serão usados para calcular o desvio padrão`
+column | nome da coluna cujos valores serão usados para calcular o desvio padrão
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`stddev` | `percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna` | `table`
+stddev | percorre a coluna indicada e encontra o valor correspondente ao desvio padrão populacional dessa coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`stddevResult` | `é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina` | `singleValue`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+stddevResult | é ativado quando a operação de encontrar o valor correspondente ao desvio padrão populacional da coluna termina | singleValue
 
 ## Component `alias`
 
-> Altera o nome de uma coluna da tabela
+Altera o nome de uma coluna da tabela
 
 ### Properties
 
 property | role
 ---------| --------
-`old` | `nome da coluna em que se deseja alterar o nome`
-`new` | `novo nome da coluna`
+old | nome da coluna em que se deseja alterar o nome
+new | novo nome da coluna
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`alias` | `performa a operação de alias na coluna` | `table`
+alias | performa a operação de alias na coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`aliasResult` | `é ativada quando a operação de alias termina e é bem-sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+aliasResult | é ativada quando a operação de alias termina e é bem-sucedida | table
 
 ## Component `zScoreNorm`
 
-> Performa uma normalização dos dados de uma coluna. A normalização é a seguinte: 
+Performa uma normalização dos dados de uma coluna. A normalização é a seguinte: 
 novo_valor = (value - media)/(desvio padrão).
 
 ### Properties
 
 property | role
 ---------| --------
-`column` | `coluna na qual se deseja operar a normalização`
+column | coluna na qual se deseja operar a normalização
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`normalize` | `performa a a normalização na coluna` | `table`
+normalize | performa a a normalização na coluna | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`normalizeResult` | `é ativada quando a operação de normalização termina e é bem-sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+normalizeResult | é ativada quando a operação de normalização termina e é bem-sucedida | table
 
 ## Component `join`
 
-> Mescla duas tabelas com base em uma coluna
+Mescla duas tabelas com base em uma coluna
 
 ### Properties
 
 property | role
 ---------| --------
-`on` | `coluna base`
-`how` | `tipo do join, podendo ser inner, left, right`
+on | coluna base
+how | tipo do join, podendo ser inner, left, right
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`join` | `performa o join nas tabelas` | `table`
+join | performa o join nas tabelas | table
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
-`joinResult` | `é ativada quando a operação de join termina e é bem-sucedida` | `table`
+transformationError | é ativado quando a operação termina e há um erro | transformationError
+joinResult | é ativada quando a operação de join termina e é bem-sucedida | table
 
 # Components Narratives
 
