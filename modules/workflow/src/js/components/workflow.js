@@ -18,8 +18,9 @@ export class WorkflowOid extends OidUI {
     return html`
       <div class="w-full h-full flex">
         <div
-          class="w-80 h-full flex flex-col gap-4 bg-muted p-6 z-50 opacity-100 shadow-lg border-r"
+          class="w-80 h-full flex flex-col justify-between gap-4 bg-muted p-6 z-50 opacity-100 shadow-lg border-r"
         >
+          <div class="flex flex-col gap-4">
           <span class="text-xl font-semibold mb-4">Nodes</span>
           <ul role="list" class="-mx-2 space-y-1">
             <li>
@@ -106,6 +107,7 @@ export class WorkflowOid extends OidUI {
               </div>
             </li>
           </ul>
+          </div>
           <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
           <!-- fazendo uma requisição da lista de templates. -->
           <button-popover

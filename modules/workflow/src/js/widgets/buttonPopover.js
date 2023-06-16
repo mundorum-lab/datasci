@@ -24,22 +24,22 @@ template(){
   return html` <button
   type="button"
   @click={{this._onClick}}
-  class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
+  class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
 >
   {{this.label}}
   
 </button>
 <dialog id="dialog" class="w-1/3 rounded-xl bg-background text-foreground border">
-            <div class="flex flex-col gap-y-4 justify-center">
-                <div class="flex items-center justify-between">
-                    <div class="w-6">
-                    </div>
-                    <h2 class="text-2xl">Select Template</h2>
-                    <button @click={{this._onClose}} class="w-6 h-6 focus:ring-2 focus:ring-ring">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
-                    </button>
-                </div>
-                <template-selector-oid 
+<div class="flex flex-col gap-y-4 justify-center">
+    <div class="flex items-center justify-between">
+        <div class="w-6">
+        </div>
+        <h2 class="text-2xl">Select Template</h2>
+        <button @click={{this._onClose}} class="w-6 h-6 focus:ring-2 focus:ring-ring">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
+        </button>
+    </div>
+    <template-selector-oid 
 
 subscribe="apresentacao/templates/listagem~selector; workflow/saved~saved"
 >
