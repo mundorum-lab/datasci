@@ -7,14 +7,14 @@ export class TypeInputOid extends OidUI {
     const jsonData = JSON.parse(message.value);
     let columnType = Array(jsonData.columns.length).fill(null)
 
-    let column = [jsonData.columns];
+    let columns = [jsonData.columns];
     for (let line in jsonData.data) {
       for (let index in jsonData.data[line]) {
         if (jsonData.data[line][index]) {
           if (this.isNullable.includes(jsonData.data[line][index])) {
             jsonData.data[line][index] = '?';
           }
-          if ((columnType[index] === null || columnType[index] === 'int') &&
+          if ((columnType[index] === null || columnType[index] === 'number') &&
               !isNaN(parseFloat(jsonData.data[line][index])) && jsonData.data[line][index] !== '?') {
             columnType[index] = 'number';
           } else if ((columnType[index] === null || columnType[index] === 'boolean') && (
@@ -22,16 +22,16 @@ export class TypeInputOid extends OidUI {
                       jsonData.data[line][index] === 'false' ? true : false) &&
               jsonData.data[line][index] !== '?') {
             columnType[index] = 'boolean';
-          } else {
+          } else if (jsonData.data[line][index] !== '?') {
             columnType[index] = 'string';
           }
         }
       }
     }
-    for (let index in column) {
-      column[index] ={name:column[index], type:columnType[index]}
+    for (let index in columns) {
+        columns[index] ={name:columns[index], type:columnType[index]}
     }
-    this._notify('output', {value: JSON.stringify({columns: columns, data: data})})
+    this._notify('output', {value: JSON.stringify({columns: columns, data: jsonData.data})})
     console.log(columnType)
   }
 }
