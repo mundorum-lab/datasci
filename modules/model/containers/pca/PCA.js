@@ -12,7 +12,7 @@ export async function getPCA(data){
     }
     compressed = compressed[0]
     let returnedTable = {
-        'columns':[{'name' : 'PCA', 'type' : 'number'}],
+        'columns':[{'name' : 'PCA', 'type' : 'num'}],
         'data' : compressed} 
     return returnedTable
 }
@@ -27,10 +27,10 @@ export async function getData(table){
 
     let index2remove = []
 
-    //remove any columns that are not number
+    //remove any columns that are not num
     for(let i = 0; i < Object.keys(columns).length; i++){
         let value = Object.values(columns[i])[0]
-        if (value != 'number'){
+        if (value != 'num'){
             index2remove.push(i)
         }
     }

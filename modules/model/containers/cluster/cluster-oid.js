@@ -34,8 +34,7 @@ Oid.component(
   element: 'ml-cluster-oid',
   properties: {
     num_clusters: {default: 2},
-    max_iterations: {default: 50},
-    result: {}
+    max_iterations: {default: 50}
   },
   receive: {transform: 'applyCluster'},
   implementation: ApplyCluster

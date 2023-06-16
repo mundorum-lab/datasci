@@ -12,6 +12,24 @@
 
 # Message Types
 
+
+**`ClusterOutput`**
+~~~json
+{
+  "columns": [{"name":"x", "type":"num"}, {"name":"y", "type":"num"}, {"name":"category", "type":"num"}],
+  "data": [
+    ["xLinha0", "yLinha0", "categorylinha0"],
+    ["xLinha1", "yLinha1", "categorylinha1"],
+    "...",
+    ["xLinhaN", "yLinhaN", "categorylinhaN"],
+  ]
+}
+~~~
+> A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
+> A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
+> O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
+> Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0" <br>
+
 **`TypedDataContent`**
 ~~~json
 {
@@ -42,13 +60,13 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `TypedDataContent`
+`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `ClusterOutput`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformed` | `O componente envia os dados transformados para o barramento` | `TypedDataContent`
+`transformed` | `O componente envia os dados transformados para o barramento` | `ClusterOutput`
 
 ## Component `PCA`
 
