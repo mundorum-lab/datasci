@@ -1,16 +1,41 @@
-export function isCategorical(value) {
-    return typeof value === 'string';
+import {DataTypeMissmatchError} from '../exceptions/visualize_exceptions';
+
+export class GraphFieldsVerifier {
+    constructor(typeOfGraph){
+        this.typeOfGraph = typeOfGraph;
+    }
+
+    isCategorical(value, axis) {
+        if(typeof value === 'string'){
+            return true;
+        } else {
+            throw new DataTypeMissmatchError(this.typeOfGraph, axis, categoricalType, typeof value);
+        }
+    }
+    
+    isNumeric(value, axis) {
+        if(checkIfIsNumeric(value)){
+            return true;
+        } else {
+            console.log("entrei no false")
+            throw new DataTypeMissmatchError(this.typeOfGraph, axis, numericType, typeof value);
+        }
+    }
+    
+    isNumericOrCategorical(value, axis) {
+        if(checkIfIsNumeric(value) || typeof value == 'string'){
+            return true;
+        } else {
+            throw new DataTypeMissmatchError(this.typeOfGraph, axis, numericOfCategoricalType, typeof value);
+        }
+    }
+    
 }
 
-export function isNumeric(value) {
-    return typeof value === 'number';
+function checkIfIsNumeric(value) {
+    let num = Number(value)
+    return !Number.isNaN(num);
 }
-
-export function isNumericOrCategorical(value) {
-    return isCategorical(value) || isNumeric(value);
-}
-
-export const numericOfCategoricalType = "numeric or categorical";
-
-export const numericType = "numeric"
-export const categoricalType = "categorical"
+const numericOfCategoricalType = "numeric or categorical";
+const numericType = "numeric"
+const categoricalType = "categorical"

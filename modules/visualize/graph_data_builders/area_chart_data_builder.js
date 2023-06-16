@@ -1,6 +1,7 @@
-import {isCategorical, isNumeric, isNumericOrCategorical, numericOfCategoricalType, numericType, categoricalType,} from '../utils/type_verifier'
-import {DataTypeMissmatchError} from '../exceptions/visualize_exceptions';
+import {GraphFieldsVerifier} from '../utils/type_verifier'
+
 export function buildAreaChartData(rawData, fields){
+    let fieldsVerifier = new GraphFieldsVerifier("Area")
     let data = {
         labels: [],
         datasets: []
@@ -13,8 +14,16 @@ export function buildAreaChartData(rawData, fields){
             tension: 0.1,
         }
         rawData['data'].forEach(row => {
-            data['labels'].push(row[fieldset['x']]);
-            dataset.data.push(row[fieldset['y']]);
+            let xItem = row[fieldset['x']];
+            let yItem = row[fieldset['y']];
+
+            if(fieldsVerifier.isNumericOrCategorical(xItem, 'x')){
+                data['labels'].push(xItem);
+            }
+            if(fieldsVerifier.isNumeric(yItem, 'y')){
+                dataset.data.push(yItem);
+            }
+            
         });
         data['datasets'].push(dataset);
     })

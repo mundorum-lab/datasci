@@ -8,7 +8,7 @@ const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
 
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
-    this.wroteMessage = ""
+    this.feedbackMessage = ""
     this.canvas = this.shadowRoot.getElementById('canvas')
     this.canvas.style.display = 'initial';
     this.placeholder = this.shadowRoot.getElementById('placeholder')
@@ -20,29 +20,34 @@ export class GraphOid extends OidUI {
     }
     
     Chart.register(zoomPlugin);
-    
-    this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
-      {
-        ...this.options,
-        plugins: {
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'xy',
-           },
+    try {
+      this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
+        {
+          ...this.options,
+          plugins: {
             zoom: {
-              wheel: {
+              pan: {
                 enabled: true,
-              },
-              
-              pinch: {
-                enabled: true
-              },
-              mode: 'xy',
+                mode: 'xy',
+             },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                
+                pinch: {
+                  enabled: true
+                },
+                mode: 'xy',
+              }
             }
           }
-        }
-      }));
+        }));
+    } catch(e) {
+      console.log(e)
+      this.feedbackMessage = e.message
+    }
+    
   }
 
   handleExport(topic, message){
@@ -69,7 +74,7 @@ export class GraphOid extends OidUI {
 Oid.component({
   id: 'graph:graph',
   element: 'graph-oid',
-  template: html`<div><canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas><p id="placeholder">{{this.wroteMessage}}</p></div>`,
+  template: html`<div><p id="placeholder">{{this.feedbackMessage}}</p><canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas></div>`,
   properties: {
     uid: {}, // Unique ID
     data: { default: null }, // Internal
@@ -77,7 +82,7 @@ Oid.component({
     options: { default: null },
     title: { default: null},
     fields: { default: null},
-    wroteMessage: {default: 'Waiting for data'}
+    feedbackMessage: {default: 'Waiting for data'}
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,
