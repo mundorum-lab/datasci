@@ -35,8 +35,7 @@
 ### Properties
 property | role
 -------| ------
-`num_clusters` | `Definir o número de clusters que deverão ser gerados`
-`result` | `Armazena o resultado da clusterização. Esse parâmetro não deve ser utilizado, pois ao realizar a operação, ele será sobrescrito.` 
+`num_clusters` | `Definir o número de clusters que deverão ser gerados` 
 
 ### Input Notices
 
