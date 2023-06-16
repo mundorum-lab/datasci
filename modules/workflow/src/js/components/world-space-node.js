@@ -174,6 +174,13 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         return false;
     }
 
+    /**
+     * Helper function for checking cycles using DFS   
+     * @param {*} node - The current node being processed.
+     * @param {*} visited - A set to keep track of visited nodes.
+     * @param {*} recStack - A set to keep track of nodes in the recursion stack.
+     * @returns {boolean} - True if the current cycle is cyclic, false otherwise
+     */
     isGraphCyclicHelper(node, visited, recStack) {
         if (recStack.has(node)) {
             return true;
