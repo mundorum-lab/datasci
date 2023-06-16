@@ -1,4 +1,5 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
+import ("/modules/workflow/src/js/components/template-selector.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {
@@ -104,6 +105,25 @@ export class WorkflowOid extends OidUI {
               </div>
             </li>
           </ul>
+          <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
+          <!-- fazendo uma requisição da lista de templates. -->
+          <button-oid
+            label="Request templates"
+            publish="click~apresentacao/templates/requisicao"
+          ></button-oid>
+          <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
+          <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
+          <template-lister-oid
+            subscribe="apresentacao/templates/requisicao~requestTemplatesList"
+            publish="responseTemplatesList~apresentacao/templates/listagem"
+          >
+          </template-lister-oid>
+          <!-- O componente de seleção de templates recebe a lista de templates do barramento e -->
+          <!-- apresenta os templates disponível para o usuario escolher. -->
+          <template-selector-oid 
+            subscribe="apresentacao/templates/listagem~selector"
+          >
+          </template-selector-oid>
         </div>
         <div class="w-full h-full bg-background">dsa</div>
       </div>

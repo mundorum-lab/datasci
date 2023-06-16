@@ -55,18 +55,6 @@ export class TemplateSelector extends OidUI {
       }
     
       return html`
-      <label for="username">Username</label>
-      <input id="username" name="username" aria-describedby="username-desc" />
-      <button
-        aria-expanded="false"
-        aria-controls="username-desc"
-        aria-label="Help about username"
-        type="button">
-        <span aria-hidden="true">Botão</span>
-      </button>
-      <p id="username-desc" hidden>
-        Your username is the name that you use to log in to this service.
-      </p>
       <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="${uniqueID}">Template Selector</label>
       <div role="radiogroup" aria-required="false" dir="ltr" class="grid gap-2" tabindex="0" style="outline: none;">
           ${partial}
