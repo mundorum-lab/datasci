@@ -23,7 +23,15 @@ export class FileInputOid extends OidUI {
       const requestGetAll = objectStore.getAll();
 
       requestGetAll.onsuccess = function(event) {
-        const data = event.target.result;
+        let data = event.target.result;
+        
+        data = data.map(item => {
+          const { id, ...rest } = item;
+          return rest;
+        });
+
+        console.log("esse é o data", data);
+        
 
         list_data = [];
         data.forEach(function(item) {
