@@ -1,5 +1,5 @@
 import { NodeInputField } from "./node-input-field.js";
-import { worldSpaceNodeConnector, worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./world-space-node-connector.js";
+import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./connectors/index.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
 import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 import { WorldSpace } from "./world-space.js";
@@ -19,7 +19,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      * fields: List of fields where the user inputs information to modify the positioning
      *
      * @property {Array.<worldSpaceNodeConnectorOut>} output
-     * @property {number} id
+     * @property {string} id
      * @property {string} name
      * @property {boolean} presentable
      * @property {string} icon
@@ -79,13 +79,13 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
         for (var i = 0; i < NodeInfoLib[id].output.length; i++) {
             var compatible = NodeInfoLib[id].output[i]
-            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.id, compatible.range);
+            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.id, compatible.range, i);
             this.output.push(newOutput);
         }
 
         for (var i = 0; i < NodeInfoLib[id].input.length; i++) {
             var compatible = NodeInfoLib[id].input[i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible.id, compatible.range);
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible.id, compatible.range, i);
             this.input.push(newInput);
         }
 
@@ -98,9 +98,15 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     }
     //fields: [ {name: string, view: string , parameters: [number or string]}]
     /*List<fields>*/ handleGetUserFields() {
-        return WorldSpaceNodeTypes.NodeInfoLib[this.type]["fields"]
+        return this.fields
     }
 
+    getInPort(id) {
+        return this.input[id];
+    }
+    getOutPort(id) {
+        return this.output[id];
+    }
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this

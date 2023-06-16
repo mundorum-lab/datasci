@@ -1,36 +1,36 @@
 /**
  * @typedef {Object.<string, any>} attributes
  */
-export class GraphOutMessage{
+export class GraphOutMessage {
 
 
-    constructor(nodeGraph){
-        
+    constructor(nodeGraph) {
+
         this.nodeGraph = nodeGraph
 
     }
 
-    outputToBus(graphRepresentation){
+    outputToBus(graphRepresentation) {
 
     }
 
-    /*private*/getAttributesRepresentation(fields){
+    /*private*/getAttributesRepresentation(fields) {
         /*
         Get the fields from the node and returns the output representation of it containing the fieldname and its value
         E.G:
 
         */
-       
+
 
 
         let attributes = {}
-            for(let j = 0; j < fields.length;j++){
-                curField = fields[i]
-                attributes[curField.getName()] = curField.handleGetInputValue();
-            }
+        for (let j = 0; j < fields.length; j++) {
+            curField = fields[i]
+            attributes[curField.getName()] = curField.handleGetInputValue();
+        }
         return attributes
     }
-    getGraphRepresentation(){
+    getGraphRepresentation() {
         /*
         "nodes": [{
             "id": int,
@@ -54,58 +54,60 @@ export class GraphOutMessage{
          * ]}
          */
 
-        let nodes = []
+        let nodes = ["a"]
 
 
         /**
          * Stores edges.
          * @type {Array.<Array.<number,number>>}
         */
-        let edges = []
-        
+        let edges = ["b"]
+
         /**
         * Stores edges.
         * @type {Object.<Number, Number>}
         */
         let newIds = {}
 
-        for(let i = 0 ; i < this.nodeGraph.length; i++){
-            
+        for (let i = 0; i < Object.keys(this.nodeGraph).length; i++) {
             //Register the newIds and add the nodes
 
             let currentNode = this.nodeGraph[i]
 
-            currentId = currentNode.getId()
+
+            let currentId = currentNode.getId()
+
             newIds[currentId] = i
 
-            const getNewId = (_old)=>{return newIds[_old]};
+            const getNewId = (_old) => { return newIds[_old] };
 
             let fields = currentNode.handleGetUserFields()
+            console.log("FIELDS:")
+            console.log(fields)
             let attributes = currentNode.handleGetUserFields(fields)
             nodes.append(
                 {
-                    id:getNewId(currentId), 
+                    id: getNewId(currentId),
                     type: currentNode.getNodeType(),
                     attributes: attributes
 
                 }
             )
         }
-
-        for(let i = 0 ; i < this.nodeGraph.length; i++){
+        for (let i = 0; i < this.nodeGraph.length; i++) {
             //Use the registered ids and add the edges
             let targetNodes = currentNode.getTargetVertices()
             targetNodes.forEach(target => {
-                edges.append([i,getNewId(target)])
+                edges.append([i, getNewId(target)])
             });
-            
+
 
         }
 
 
         return {
-            nodes:nodes,
-            edges:edges
+            nodes: nodes,
+            edges: edges
         }
 
     }

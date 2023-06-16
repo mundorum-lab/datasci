@@ -1,4 +1,4 @@
-import { WorldSpaceNode } from "./world-space-node.js";
+import { WorldSpaceNode } from "../world-space-node.js";
 
 /**
  * Represents the connectors of a WorldSpaceNode where connections can be made.
@@ -8,29 +8,43 @@ import { WorldSpaceNode } from "./world-space-node.js";
 export class worldSpaceNodeConnector {
 
     /*
-    Representa as portas do WorldSpaceNode nos quais as conexões serão feitas.
-    Possui:
-        parentWorldSpaceNode: nó que possui a porta de conexão.
-        connectedWorldSpaceConnectors: lista de quais portas estão conectadas nela.
-    
-    Tipos: 
+    Represents the ports of the WorldSpaceNode where connections will be made.
+    It has:
+        parentWorldSpaceNode: node that has the connection port.
+        connectedWorldSpaceConnectors: list of ports connected to it.
+        id: Identifies the port number in the node
+
+    Types:
         parentWorldSpaceNode: worldSpaceNode
         connectedWorldSpaceConnectors: [worldSpaceNodeConnector]
-
     */
+
 
 
     /**
     * Creates a new worldSpaceNodeConnector instance.
     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
+    * @param {number} id - The port id on the node.
     */
 
-    constructor(parentWorldSpaceNode) {
+    constructor(parentWorldSpaceNode, id) {
         /** @type {WorldSpaceNode} */
         this.parentWorldSpaceNode = parentWorldSpaceNode;
         /** @type {Array.<worldSpaceNodeConnector>} */
         this.connectedWorldSpaceConnectors = []
+        /** @type {number} */
+        this.id = id;
 
+    }
+
+
+    /**
+     * Get the id.
+     * @returns {number} - Return the id.
+     */
+
+    getId() {
+        return this.id;
     }
 
     /**
@@ -182,77 +196,4 @@ export class worldSpaceNodeConnector {
     }
 
 
-}
-
-/**
- * Represents an input connector of a WorldSpaceNode where connections can be made.
- * @extends worldSpaceNodeConnector
- */
-export class worldSpaceNodeConnectorIn extends worldSpaceNodeConnector {
-    /**
-     * Creates a new worldSpaceNodeConnectorIn instance.
-     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
-     * @param {Array.<string>} compatibleNodes - The dictionary of compatible node types.
-     * @param {[number, number]} connectionsRange - The range of connections allowed.
-     */
-    constructor(parentWorldSpaceNode, compatibleNodes, connectionsRange) {
-        super(parentWorldSpaceNode);
-        /** @type {Array.<string>} */
-        this.compatibleNodes = compatibleNodes;
-        /** @type {[number, number]} */
-        this.connectionsRange = connectionsRange;
-    }
-
-    /**
-     * Receives a connection from a source connector and adds it to the list of connectedWorldSpaceConnectors.
-     * @param {worldSpaceNodeConnectorOut} sourceConnector - The source connector.
-     */
-    receiveConnectionFrom(sourceConnector) {
-        this.connectedWorldSpaceConnectors.push(sourceConnector);
-    }
-
-    /**
-     * Gets the accepted input types of the connector.
-     * @returns {Array.<string>} - The accepted types hierarchy.
-     */
-    getAcceptedInputTypes() {
-        return this.compatibleNodes;
-    }
-}
-
-
-/**
- * Represents an output connector of a WorldSpaceNode where connections can be made.
- * @extends worldSpaceNodeConnector
- */
-export class worldSpaceNodeConnectorOut extends worldSpaceNodeConnector {
-    /**
-     * Creates a new worldSpaceNodeConnectorOut instance.
-     * @param {WorldSpaceNode} parentWorldSpaceNode - The parent WorldSpaceNode.
-     * @param {string} outputType - The output type.
-     * @param {[number, number]} connectionsRange - The range of connections allowed.
-     */
-    constructor(parentWorldSpaceNode, outputType, connectionsRange) {
-        super(parentWorldSpaceNode);
-        /** @type {string} */
-        this.outputType = outputType;
-        /** @type {[number, number]} */
-        this.connectionsRange = connectionsRange;
-    }
-
-    /**
-     * Adds a connection to a target connector and updates the connectedWorldSpaceConnectors list.
-     * @param {worldSpaceNodeConnectorIn} targetConnector - The target connector.
-     */
-    addConnectionTo(targetConnector) {
-        this.connectedWorldSpaceConnectors.push(targetConnector);
-    }
-
-    /**
-     * Gets the provided output types of the connector.
-     * @returns {string} - The exported types hierarchy.
-     */
-    getProvidedOutputTypes() {
-        return this.outputType;
-    }
 }
