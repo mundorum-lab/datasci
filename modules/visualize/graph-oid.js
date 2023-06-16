@@ -21,6 +21,8 @@ export class GraphOid extends OidUI {
     
     Chart.register(zoomPlugin);
     
+    // TODO: Get transformed data
+    this.data = message
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
       {
         ...this.options,

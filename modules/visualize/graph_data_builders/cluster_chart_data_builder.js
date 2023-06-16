@@ -8,7 +8,7 @@ export function buildClusterChartData(rawData, fields){
   console.log(fields)
   fields.forEach((fieldset) => {
     const dataset = {
-      label: 'TODO',
+      label: fieldset['title'],
       data: [],
       pointBackgroundColor: []
     }

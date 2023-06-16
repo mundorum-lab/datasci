@@ -5,7 +5,7 @@ export function buildAreaChartData(rawData, fields){
     };
     fields.forEach((fieldset) => {
         const dataset = {
-            label: 'TODO',
+            label: fieldset['title'],
             data: [],
             fill: true,
             tension: 0.1,
