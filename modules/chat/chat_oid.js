@@ -3,24 +3,32 @@ import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 export class ChatOid extends OidWeb {
   async connectedCallback(){
     super.connectedCallback()
+    // // console.log("connected callback")
     // let workflowMap= await fetch("./workflowMapExample.json");
     // workflowMap=await workflowMap.json(0);
     
     // let myComponent=this.findComponent(workflowMap,4);
-    // console.log([4,myComponent])
+    // // console.log([4,myComponent])
     // let previousComponents=this.findPreviousComponents(workflowMap,4)
-    // console.log(previousComponents)
+    // // console.log(previousComponents)
    
   //   // this.setGraphInfo()
   //   // this.generatePrompt()
   //   // this.requestToOpenAI()
     
   }
+  connectionReady(cInterface,id,component){
+    super.connectionReady(cInterface,id,component)
+    // console.log(`itf = ${cInterface} id = ${id} component = ${component.id}`)
 
+    if(cInterface.includes('itf:oid')){
+      // console.log(`connected with ${id}`)
+    }
+  }
   setGraphInfo(topic, message){
-    console.log('=== topic/message') //
-    console.log(topic)
-    console.log(message)
+    // console.log('=== topic/message') //
+    // console.log(topic)
+    // console.log(message)
     // this.columns = message.columns
     // this.inputData = message.data
     // this.inputType = message.type
@@ -31,7 +39,7 @@ export class ChatOid extends OidWeb {
  
   async generatePrompt(workflowMap, componentId){
     const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
-    const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation"]
+    const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation", "zScoreNorm", "alias"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
     // esse if depende do tipo do visualizador das apresentaçoes
     if (finalComponent.type === 'table-oid-visualizer'){ 
@@ -39,49 +47,54 @@ export class ChatOid extends OidWeb {
       finalComponent = previousComponents[0][0]
     }
     let path = this.findFullPathToComponent(workflowMap, componentId)
-    this.prompt = `You are a high specialized data science program called DataGPT.
+    let prompt = `You are a high specialized data science program called DataGPT.
                   I want to understand the following experiment:`
     let index = 0
     for (let component of path){
       index += 1
-      this.prompt += `${index} - ${component.nodeType} was added. `
+      prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
-        if (this.arrayCheck(tableList,"minimum") || this.arrayCheck(valueList,"minimum")){
+        if (this.arrayCheck(tableList,component.nodeType) || this.arrayCheck(valueList,component.nodeType)){
           let table=await this.getData(componentId,'table')
           let result=await this.getData(componentId,'result')
-          console.log("interface oid received")
-          console.log(`table:${table}`)
-          console.log(`result:${result}`)
-          this.prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
+          // console.log("interface oid received")
+          // console.log(`table:${table}`)
+          // console.log(`result:${result}`)
+          prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
         Explain it to me.`
         }
         else if (component.nodeType==="graph-oid"){
           let data=await this.getData(componentId,'data')
           let type=await this.getData(componentId,'type')
-          this.prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
+          prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
         Explain it to me.`
         }
+        
         
       }
       
     }
-    // console.log(path)
-    // console.log(`prompt:${this.prompt}`)
+    // // console.log(path)
+    // // console.log(`prompt:${prompt}`)
     return prompt
-      
+    
     
   }
   async getData(componentId,attributeName){
-    await this._connect("itf:oid",componentId,this)
+    // await this._connect(`itf:oid`,componentId,this)
+    // // console.log(`type = ${typeof(componentId)}`)
     
-    let componentData=await this._invoke("itf:oid","get",{property:attributeName})
-    console.log(`data:${componentData}`)
+    // console.log(`attributeName: ${attributeName}`)
+    let componentData=await this._bus.invoke (`itf:oid`, componentId, 'get', {property:attributeName})
+    // this._invoke(`itf:oid`,componentId,"get",{property:attributeName})
+    
+    // console.log(`data:${componentData}`)
     return componentData
   }
   
   arrayCheck(array,obj){
-    console.log(array)
-    console.log(obj)
+    // console.log(array)
+    // console.log(obj)
     let value=false
     for(let element of array){
       if (element==obj)
@@ -110,7 +123,7 @@ export class ChatOid extends OidWeb {
     let component=null
     
     for(let i in workflowMap.nodes){
-      // console.log("workflow node = ",workflowMap.nodes[i].nodeId, "///",Id)
+      // // console.log("workflow node = ",workflowMap.nodes[i].nodeId, "///",Id)
       if (workflowMap.nodes[i].nodeId===Id){
         component=workflowMap.nodes[i]
         break
@@ -147,19 +160,19 @@ export class ChatOid extends OidWeb {
     let currentComponentId = Id
     componentsFound.push(this.findComponent(workflowMap,Id))
     let end_statement = 'False'
-    // console.log(edgesArray.length)
+    // // console.log(edgesArray.length)
     while (end_statement === 'False'){
       let index = 0
       for (let component of edgesArray){
         index += 1
-        // console.log("component = ",component, "currentId = ", currentComponentId, "componentsFound = ", componentsFound)
+        // // console.log("component = ",component, "currentId = ", currentComponentId, "componentsFound = ", componentsFound)
         if (component[1] === currentComponentId){
           componentsFound.push(this.findComponent(workflowMap,component[0]))
-          // console.log("component was Found = ", componentsFound)
+          // // console.log("component was Found = ", componentsFound)
           currentComponentId = component[0]
           break
         }
-        // console.log("aa", component.index, edgesArray.length)
+        // // console.log("aa", component.index, edgesArray.length)
         if (index === edgesArray.length)
           end_statement = "True"
       }
@@ -169,14 +182,21 @@ export class ChatOid extends OidWeb {
   }
 
   async handlePrompt(op,message){
-    
     let componentId=message.value
-    console.log(`id:${componentId}`)
-    prompt=await this.generatePrompt(this.workflowMap,componentId)
+    // console.log(`id:${componentId}`)
+    let myPrompt=await this.generatePrompt(this.workflowMap,componentId)
+    // console.log(`prompt:${myPrompt}`)
     // let mainComponent=this.findComponent(this.workflowMap,componentId)
     // let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
-    return {value:prompt}
+    return {value:myPrompt}
 
+  }
+
+  handleConnect(op,message){
+    // console.log(`entered on connect`)
+    let componentId=message.value
+    this._connect(`itf:oid`,componentId,this)
+   
   }
 
 }
@@ -186,6 +206,10 @@ Oid.cInterface ({
   operations: {
     'prompt': {
       response: true
+    
+    },
+    'connect':{
+      response: false
     }
   },
   cardinality: '1:n'
