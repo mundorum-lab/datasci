@@ -5,6 +5,12 @@ export async function getPCA(data){
     let vectors = PCA.getEigenVectors(data);
     let adData = PCA.computeAdjustedData(data,vectors[0])
     let compressed =  adData.formattedAdjustedData
+    for (let i = 0; i < compressed.length; i++) {
+        for (let j = 0; j < compressed[i].length; j++) {
+            compressed[i][j] = [compressed[i][j]]
+        }
+    }
+    compressed = compressed[0]
     let returnedTable = {
         'columns':[{'name' : 'PCA', 'type' : 'number'}],
         'data' : compressed} 
