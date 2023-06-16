@@ -60,14 +60,14 @@ export class ChatOid extends OidWeb {
           // console.log("interface oid received")
           // console.log(`table:${table}`)
           // console.log(`result:${result}`)
-          prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
+          prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${JSON.stringify(table)} and the output is ${JSON.stringify(result)}
         Explain it to me.`
         }
         else if (component.nodeType==="graph-oid"){
           let data=await this.getData(componentId,'data')
           let type=await this.getData(componentId,'type')
-          prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
-        Explain it to me.`
+          prompt+=`The last component which I want to analyse is a ${type} graph, based on ${JSON.stringify(data)}
+        Explain it to me. Please explain the data provided as well.`
         }
         
         
