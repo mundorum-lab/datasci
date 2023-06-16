@@ -9,7 +9,7 @@
 * `Gustavo Araújo Morais`
 	* `Responsible for architecting and developing the api-input, this processes JSON data and send to data bus.`
 * `João Guilherme Alves Santos`
-	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
+	* `Responsible for architecting and developing the clear-data, file-input and file-reader components to transform into JSON.`
 * `Raniery Rodrigues da SIlva`
 	* `Responsible for architecting and developing the file typing component to transform into JSON.`
 * `Leonardo Livrare Martins`
@@ -40,12 +40,12 @@
 ~~~json
 {
 	{
-	"columns": [{name, type}, ...],
-	"data": [
-		[column0, column1, ...],
-		... // Other rows
-	]
-}
+		"columns": [{name: string, type: string}, ...],
+		"data": [
+			[column0, column1, ...],
+			... // Other rows
+		]
+	}
 }
 ~~~
 **`TreatedReaderContent`**
