@@ -5,7 +5,7 @@ export class ApplyCluster extends OidBase {
   applyCluster (topic, message) {
     let columns = [...message.columns]
     let data = JSON.parse(JSON.stringify(message.data));
-    let res = kmeans(data, message.num_clusters?message.num_clusters:this.num_clusters)
+    let res = kmeans(data, this.num_clusters, this.max_iterations)
     let centroids = res.centroids
     let clusters = res.clusters
 
@@ -33,7 +33,9 @@ Oid.component(
   id: 'ml:cluster-oid',
   element: 'ml-cluster-oid',
   properties: {
-    num_clusters: {default: 2}
+    num_clusters: {default: 2},
+    max_iterations: {default: 50},
+    result: {}
   },
   receive: {transform: 'applyCluster'},
   implementation: ApplyCluster
