@@ -7,10 +7,11 @@
   </head>
   <body>
     <h1>File-input Component</h1>
-    <file-input id=1></file-input>
+    <button-oid label="Start1"
+            value='{"file_id":"1","file_format":"csv","file_content":"John,Doe,120 jefferson st.,Riverside,NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila,PA,09119\nJohn Da Man,Repici,120 Jefferson St.,Riverside,NJ,08075\nStephen,Tyler,7452 Terrace At the Plaza road,SomeTown,SD,91234\nSilva,Blankman,12,SomeTown,SD,00298\nJoan the bone,Anne,Jet,9th, at Terrace plc,Desert City,CO,00123"}'
+            publish="click~load_file/load">
+    </button-oid>
+    <file-input subscribe="load_file/load~load_file" publish="output~show/message"></fileinput-oid>
+    <console-oid subscribe="show/message~display"></console-oid>
   </body>
 </html>
-
-
-<file-input id="1" subscribe="input_file/[id]:load" publish="data:loadFile/arrives"></fileinput-oid>
-<typeinput-oid columns_types="[]"></hello-oid>
