@@ -13,10 +13,12 @@ Oid.component(
       properties: {
       },
       template: html`
+      <div>
         <select id='select'>
             <option value='png'> png</option>
             <option value='jpeg'> jpeg</option>
         </select>
-        <button @click>Export</button>`,
+        <button @click>Export</button>
+      </div>`,
       implementation: ExportButtonOid
     })

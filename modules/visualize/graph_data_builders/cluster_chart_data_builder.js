@@ -1,34 +1,37 @@
 import { interpolateColors } from "../utils/color_generator.js";
 
 export function buildClusterChartData(rawData, fields){
-    let data = {
-      labels: [],
-      datasets: [{
-        label: 'TODO',
-        data: [],
-        ponitBackgroundColor: []
-      }]
-    };
-    
-    data['datasets'][0]['data'] = rawData['data'].map(row => { return {
-      x: row[fields['x']],
-      y: row[fields['y']],
-    }});
-    let clusters = []
-    for(let i=0; i<rawData['data'].length; i++){
-        const cluster = rawData['data'][i][fields['z']]
-        if(!(cluster in clusters)){
-            clusters.push(cluster);
-        }
+  let data = {
+    labels: [],
+    datasets: []
+  };
+
+  fields.forEach((fieldset) => {
+    const dataset = {
+      label: 'TODO',
+      data: [],
+      pointBackgroundColor: []
     }
-
+    
+    dataset.data = rawData['data'].map(row => { return {
+      x: row[fieldset['x']],
+      y: row[fieldset['y']],
+    }});
+    
+    let clusters = []
+    for(let i = 0; i < rawData['data'].length; i++) {
+      const cluster = rawData['data'][i][fieldset['z']]
+      if(!(cluster in clusters)){
+        clusters.push(cluster);
+      }
+    }
     const colors = interpolateColors(clusters.length);
-    
-    data['datasets'][0]['pointBackgroundColor'] = rawData['data'].map(row => { 
-        const c_index = clusters.indexOf(row[fields['z']]); 
-        return colors[c_index]
-     });
 
-    
-    return data;
+    dataset.pointBackgroundColor = rawData['data'].map(row => { 
+      const c_index = clusters.indexOf(row[fieldset['z']]); 
+      return colors[c_index]
+    });
+  })
+  
+  return data;
 }

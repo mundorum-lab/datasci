@@ -21,7 +21,7 @@ export class GraphOid extends OidUI {
     
     Chart.register(zoomPlugin);
     
-    this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, 
+    this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
       {
         ...this.options,
         plugins: {
@@ -58,8 +58,8 @@ export class GraphOid extends OidUI {
   }
 
   handleOptions(topic, message) {
-    const { fields, title, ...options } = message.value;
-
+    const { fields, title, type, ...options } = message;
+    this.type = type;
     this.fields = fields;
     this.title = title;
     this.options = options

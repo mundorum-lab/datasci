@@ -1,15 +1,20 @@
 export function buildAreaChartData(rawData, fields){
     let data = {
         labels: [],
-        datasets: [{
+        datasets: []
+    };
+    fields.forEach((fieldset) => {
+        const dataset = {
             label: 'TODO',
             data: [],
-            fill: true
-        }]
-    };
-    rawData['data'].forEach(row => {
-        data['labels'].push(row[fields['x']]);
-        data['datasets'][0]['data'].push(row[fields['y']]);
-    });
+            fill: true,
+            tension: 0.1,
+        }
+        rawData['data'].forEach(row => {
+            data['labels'].push(row[fieldset['x']]);
+            dataset.data.push(row[fieldset['y']]);
+        });
+        data['datasets'].push(dataset);
+    })
     return data;
 }
