@@ -2,14 +2,23 @@ import { Validate } from "../validate.js"
 
 export class ValidateJoin extends Validate{
    
-    validate(columns, column, table_1, table_2) {
+    validate(columns, columns_2, column, table_1, table_2) {
         
         //checks if column exists
         if(!this.columnExist(columns, column)){
             let result = {
                 transformationType: "join",
                 errorType: "Column not found",
-                message: `Column ${column} does not exist in data base."`,
+                message: `Column ${column} does not exist in the left table."`,
+            }
+            return {result, isValid: false}
+        }
+
+        if(!this.columnExist(columns_2, column)){
+            let result = {
+                transformationType: "join",
+                errorType: "Column not found",
+                message: `Column ${column} does not exist in the right table."`,
             }
             return {result, isValid: false}
         }
