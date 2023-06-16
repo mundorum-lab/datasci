@@ -1,5 +1,5 @@
 import { NodeInputField } from "./node-input-field.js";
-import { worldSpaceNodeConnector, worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./world-space-node-connector.js";
+import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./connectors/index.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
 import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 import { WorldSpace } from "./world-space.js";
@@ -19,7 +19,7 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      * fields: List of fields where the user inputs information to modify the positioning
      *
      * @property {Array.<worldSpaceNodeConnectorOut>} output
-     * @property {number} id
+     * @property {string} id
      * @property {string} name
      * @property {boolean} presentable
      * @property {string} icon
@@ -77,7 +77,6 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         /** @type {Array.<NodeInputField>} */
         this.fields = [];
 
-
         for (var i = 0; i < nodeInfo.output.length; i++) {
             var compatible = nodeInfo.output[i]
             var newOutput = new worldSpaceNodeConnectorOut(this, compatible.type, compatible.range);
@@ -120,9 +119,16 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
     //fields: [ {name: string, view: string , parameters: [number or string]}]
     /*List<fields>*/ handleGetUserFields() {
+
         return this.fields;
     }
 
+    getInPort(id) {
+        return this.input[id];
+    }
+    getOutPort(id) {
+        return this.output[id];
+    }
     Destroy() {
         /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         //TODO ->Remove reference from the nodes receiving and giving connections to this

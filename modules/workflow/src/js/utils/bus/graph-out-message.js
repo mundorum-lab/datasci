@@ -34,6 +34,7 @@ class GraphOutMessageParser {
          * Stores edges.
          * @type {Array.<Array.<number,number>>}
         */
+
         let edges = [];
 
         /**
@@ -51,7 +52,6 @@ class GraphOutMessageParser {
             currentNode = graph[graphList[i]];
             currentId = currentNode.getId();
             newIds[currentId] = i;
-
             fields = currentNode.handleGetUserFields();
             attributes = this.parseAtributes(fields);
 
