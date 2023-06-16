@@ -1,39 +1,35 @@
-import { Oid } from "/lib/oidlib-dev.js";
+import { Oid, OidUI } from "/lib/oidlib-dev.js";
 
-export class BuilderOid extends Oid {
-  handleGetJsonHTML(topic, message) {
-    const json = JSON.parse(message.value);
+export class BuilderOid extends OidUI {
+  handleGetJSONHTML(_, message) {
+    const template = message.value.nodes.find(
+      (node) => node.region === "template"
+    );
 
-    // generates the JsonHTMLDescription structure
-    let jsonHTMLDescription = [];
-    for (let node of json.nodes) {
-      // TODO: fix component ordering, it's not working on Graph 2 scenario
-      const jsonHTMLDescriptionNode = {
-        component_path: node.nodePath,
-        tag: node.nodeType,
-        region: node.nodeRegion,
-        params: [],
-      };
+    const elements = Object.fromEntries(
+      message.value.nodes
+        .filter((node) => node.region !== "template")
+        .map((node) => {
+          return [
+            node.region,
+            {
+              type: node.type,
+              attributes: node.attributes,
+              id: node.id,
+            },
+          ];
+        })
+    );
 
-      for (let param in node.attributes) {
-        jsonHTMLDescriptionNode.params.push({
-          name: param,
-          value: node.attributes[param],
-        });
-      }
-      jsonHTMLDescription.push(jsonHTMLDescriptionNode);
-    }
-
-    // sends the JsonHTMLDescription structure
-    this._notify("returnJsonHTMLDescription", {
-      value: JSON.stringify(jsonHTMLDescription),
+    this._notify("returnJSONHTMLDescription", {
+      value: { template, elements },
     });
   }
 }
 
 Oid.component({
-  id: "presentation:construtor",
-  element: "construtor-oid",
-  receive: ["getJsonHTML"],
+  id: "presentation:builder",
+  element: "builder-oid",
+  receive: ["getJSONHTML"],
   implementation: BuilderOid,
 });

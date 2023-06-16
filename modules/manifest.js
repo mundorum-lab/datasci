@@ -4,7 +4,7 @@ function getAvailableNodes(){
     return (
         {
             exampleCategory: [
-                nodeExample
+                ...nodeExample
             ]
         }
     );

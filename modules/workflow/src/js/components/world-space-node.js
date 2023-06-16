@@ -55,50 +55,68 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
         nodeValues[key] = value;
     }
 
-    constructor(id, name) {
+    constructor(type, name, nodeInfo) {
         super();
-        var NodeInfoLib = WorldSpaceNodeTypes.NodeInfoLib;
-        if (!(id in NodeInfoLib)) {
-            throw `Error: ${id} is not a known node`;
+        
+        if (type == null) {
+            throw `Error: ${type} is not a known node`;
         }
+
         /** @type {Array.<worldSpaceNodeConnectorOut>} */
         this.output = [];
         /** @type {number} */
-        this.id = id;
+        this.type = type;
         /** @type {string} */
         this.name = name;
         /** @type {boolean} */
-        this.presentable = false;
+        this.presentable = nodeInfo.presentable;
         /** @type {string} */
-        this.icon = "";
+        this.icon = nodeInfo.icon;
         /** @type {Array.<worldSpaceNodeConnectorIn>} */
         this.input = [];
         /** @type {Array.<NodeInputField>} */
         this.fields = [];
 
 
-        for (var i = 0; i < NodeInfoLib[id].output.length; i++) {
-            var compatible = NodeInfoLib[id].output[i]
-            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.id, compatible.range);
+        for (var i = 0; i < nodeInfo.output.length; i++) {
+            var compatible = nodeInfo.output[i]
+            var newOutput = new worldSpaceNodeConnectorOut(this, compatible.type, compatible.range);
             this.output.push(newOutput);
         }
 
-        for (var i = 0; i < NodeInfoLib[id].input.length; i++) {
-            var compatible = NodeInfoLib[id].input[i];
-            var newInput = new worldSpaceNodeConnectorIn(this, compatible.id, compatible.range);
+        for (var i = 0; i < nodeInfo.input.length; i++) {
+            var compatible = nodeInfo.input[i];
+            var newInput = new worldSpaceNodeConnectorIn(this, compatible.type, compatible.range);
             this.input.push(newInput);
         }
 
-        for (var i = 0; i < NodeInfoLib[id].fields.length; i++) {
-            var fieldInfo = NodeInfoLib[id].fields[i];
+        for (var i = 0; i < nodeInfo.fields.length; i++) {
+            var fieldInfo = nodeInfo.fields[i];
             var newField = new NodeInputField(fieldInfo.name, fieldInfo.view, fieldInfo.parameters);
             this.fields.push(newField);
         }
 
     }
+
+    /**
+     * Sets the value of the named input field
+     * @param {string} name - The field name.
+     * @param {object} value - The field value.
+     */
+    setInputField(name, value) {
+
+        for (var field of this.fields) {
+            if (field.getName() == name) {
+                field.handleSetInputValue(value);
+                break;
+            }
+        }
+
+    }
+
     //fields: [ {name: string, view: string , parameters: [number or string]}]
     /*List<fields>*/ handleGetUserFields() {
-        return WorldSpaceNodeTypes.NodeInfoLib[this.type]["fields"]
+        return this.nodeInfo["fields"];
     }
 
     Destroy() {

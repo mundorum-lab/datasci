@@ -8,6 +8,7 @@ import { CheckOid } from "../utils/input/check-box.js";
 import { SwitchOid } from "../utils/input/switch-input.js";
 import { DropDownOid } from "../utils/input/dropdown-input.js";
 import { OidInputFactory } from "../utils/input/oid-input-factory.js";
+import { WorldSpaceNode } from "./world-space-node.js";
 import { generate as uuid } from "short-uuid";
 
 
@@ -22,9 +23,11 @@ export class WorldSpaceNodeView extends OidUI {
      * @param {object} topic - The topic of the message.
      * @param {object} message - The message.
      */
-    handleUpdate = (topic, message) => {
-        // Must be arrow function so object context is not lost
-        console.log("Received an update: ", message);
+    handleUpdate(topic, message) {
+        const name = message.name;
+        const value = message.value;
+
+        this.model.setInputField(name, value);
     }
     
     /**
@@ -89,7 +92,7 @@ export class WorldSpaceNodeView extends OidUI {
         // Simulates subscribe="input/changed~${this.id}"
         // We can assume that the inputs inside dialog will
         // always publish in the correct category
-        Bus.i.subscribe(`input/changed/${this.id}`, this.handleUpdate);
+        Bus.i.subscribe(`input/changed/${this.id}`, this.handleUpdate.bind(this));
 
         // Gets Node Info from Library
         const getNodeInfo = () => { return this._invoke("itf:component-provider", "getComponentInfo", {value: this.type}).then(success, fail) };
@@ -98,6 +101,7 @@ export class WorldSpaceNodeView extends OidUI {
             if (value != null) {
                 this.nodeInfo = value[0];
                 this.fields = this.nodeInfo.fields;
+                this.model = new WorldSpaceNode(this.type, this.name, this.nodeInfo);
             }
             else {
                 setTimeout(getNodeInfo, 1200);
@@ -153,16 +157,18 @@ export class WorldSpaceNodeView extends OidUI {
         let partial = "", crumbColector;
         for (let port of requiredPorts) {
             crumbColector = [];
-            port.type.split("/").forEach((item, pos) => {
-                crumbColector.push(breadcrumbPiece(item, pos));
-            });
-            partial += `
-            <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
-                ${portElement}
-                <ol class="h-4 inline-flex items-center space-x-0">
-                    ${crumbColector.join("")}
-                </ol>
-            </div>`;
+            for (let type of port.type) {
+                type.split("/").forEach((item, pos) => {
+                    crumbColector.push(breadcrumbPiece(item, pos));
+                });
+                partial += `
+                <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
+                    ${portElement}
+                    <ol class="h-4 inline-flex items-center space-x-0">
+                        ${crumbColector.join("")}
+                    </ol>
+                </div>`;
+            }
         }
 
         return partial;

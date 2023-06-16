@@ -86,7 +86,7 @@
     },
     {
       "name": "File Typing",
-      "type": "data",
+      "type": "data/typed",
       "compatibleInputNodes": {
         "entrada0": "File Input",
         "entrada1": "Api Input",
