@@ -5,14 +5,13 @@ export function buildClusterChartData(rawData, fields){
     labels: [],
     datasets: []
   };
-
+  console.log(fields)
   fields.forEach((fieldset) => {
     const dataset = {
       label: 'TODO',
       data: [],
       pointBackgroundColor: []
     }
-    
     dataset.data = rawData['data'].map(row => { return {
       x: row[fieldset['x']],
       y: row[fieldset['y']],
@@ -21,7 +20,7 @@ export function buildClusterChartData(rawData, fields){
     let clusters = []
     for(let i = 0; i < rawData['data'].length; i++) {
       const cluster = rawData['data'][i][fieldset['z']]
-      if(!(cluster in clusters)){
+      if(!(clusters.includes(cluster))){
         clusters.push(cluster);
       }
     }
@@ -31,7 +30,9 @@ export function buildClusterChartData(rawData, fields){
       const c_index = clusters.indexOf(row[fieldset['z']]); 
       return colors[c_index]
     });
+    data.datasets.push(dataset)
   })
+  console.log(data)
   
   return data;
 }
