@@ -4,7 +4,9 @@ import { generate as uuid } from "short-uuid";
 class SwitchOid extends OidUI {
 
     _onInput(event) {
-        this._notify('update', {name: this.name, value: event.target.checked});
+        const box = event.composedPath()[0];
+        
+        this._notify('update', {name: this.name, value: box.checked});
     }
 
     template() {

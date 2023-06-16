@@ -114,9 +114,13 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
 
     }
 
+    getNodeType() {
+        return this.type;
+    }
+
     //fields: [ {name: string, view: string , parameters: [number or string]}]
     /*List<fields>*/ handleGetUserFields() {
-        return this.nodeInfo["fields"];
+        return this.fields;
     }
 
     Destroy() {

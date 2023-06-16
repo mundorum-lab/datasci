@@ -126,9 +126,7 @@
                 "label": "Clique para alterar o estado",
                 "name": "Lorem Ipsum",
                 "view": "Switch",
-                "parameters": {
-                    "name": "SwitchTest"
-                }
+                "parameters": {}
             },
             {
                 "name": "Dolor Sit",
