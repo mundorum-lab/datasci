@@ -13,7 +13,8 @@ export function buildBarChartData(rawData, fields){
             tension: 0.1,
         }
         rawData['data'].forEach(row => {
-            data['labels'].push(row[fieldset['x']]);
+            if (!data['labels'].includes(row[fieldset['x']]))
+                data['labels'].push(row[fieldset['x']]);
             dataset.data.push(row[fieldset['y']]);
         });
         data['datasets'].push(dataset);
