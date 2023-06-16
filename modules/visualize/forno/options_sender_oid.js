@@ -4,7 +4,7 @@ import { mockedOptions } from './options_mock.js';
 export class OptionsSenderOid extends OidUI {
     _onClick() {
       const type = this.shadowRoot.getElementById('type').value;
-      const fields = JSON.parse(this.shadowRoot.getElementById('fields').innerHTML);
+      const fields = JSON.parse(this.shadowRoot.getElementById('fields').value);
       this._notify('click', { ...mockedOptions, fields, type })
     }
 }
