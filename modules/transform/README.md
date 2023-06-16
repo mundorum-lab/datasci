@@ -148,7 +148,7 @@ notice    | source | message type
 
 ## Component `columnOperation`
 
-> Cria uma nova coluna a partir de dados de, no máximo duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
+> Cria uma nova coluna a partir de dados de duas colunas, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
 
 ### Properties
 
@@ -171,6 +171,32 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `columnOpResult` | `é ativado quando a operação termina bem sucedida` | `table`
+
+## Component `columnOperationConstant`
+
+> Cria uma nova coluna a partir de dados de uma coluna com uma constante, e retorna o valor dessa coluna em uma nova coluna, com nome especificado.
+
+### Properties
+
+property | role
+---------| --------
+`fisrt` | `coluna 1 da operação` 
+`constant` | `constante`
+`op` | `operação realizada com a coluna`
+`result` | `coluna resultante`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`columnOpConstant` | `faz uma operação entre colunas e gera uma tabela com a atabela anterior mais a coluna resultante` | `table`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`columnOpConstantResult` | `é ativado quando a operação termina bem sucedida` | `table`
 
 ## Component `deleteColumn`
 
@@ -451,6 +477,30 @@ notice    | source | message type
 ----------| -------| ------------
 `transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
 `normalizeResult` | `é ativada quando a operação de normalização termina e é bem-sucedida` | `table`
+
+## Component `join`
+
+> Mescla duas tabelas com base em uma coluna
+
+### Properties
+
+property | role
+---------| --------
+`on` | `coluna base`
+`how` | `tipo do join, podendo ser inner, left, right`
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`join` | `performa o join nas tabelas` | `table`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`transformationError` | `é ativado quando a operação termina e há um erro` | `transformationError`
+`joinResult` | `é ativada quando a operação de join termina e é bem-sucedida` | `table`
 
 # Components Narratives
 
