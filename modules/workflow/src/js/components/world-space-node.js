@@ -161,10 +161,38 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      * @returns {boolean} - True if cyclic, false otherwise.
      */
     isGraphCyclic() {
+        const visited = new Set();
+        const recStack = new Set();
+
+        for (let nodeId in WorldSpace.onWorldSpaceComponents) {
+            let node = WorldSpace.onWorldSpaceComponents[nodeId];
+            if (this.isGraphCyclicHelper(node, visited, recStack)) {
+                return true;
+            }
+        }
 
         return false;
     }
 
+    isGraphCyclicHelper(node, visited, recStack) {
+        if (recStack.has(node)) {
+            return true;
+        }
+        if (!visited.has(node)) {
+            visited.add(node);
+            recStack.add(node);
 
+            const neighborsId = node.getTargetVertices();
 
+            for (let i = 0; i < neighborsId.length; i++) {
+                if (this.isGraphCyclicHelper(WorldSpace.getById(neighborsId[i]), visited, recStack)) {
+                    return true;
+                }
+            }
+
+            recStack.delete(node);
+        }
+    
+        return false;
+    }
 }

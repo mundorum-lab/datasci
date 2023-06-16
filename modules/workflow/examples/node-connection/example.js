@@ -53,3 +53,39 @@ console.log("========== Criando Conexões Inválidas ==========");
 
 console.log("Conectando A e C:");
 Connector.makeConnection(nodeA.output[0], nodeC.input[0]);
+
+// Testa se faz conexoes ciclicas
+console.log("========== Criando Conexões Cíclicas ==========");
+const nodeD = new WorldSpaceNode(infoB.type, "D", infoB);
+const nodeValid3 = new WorldSpaceNode(infoB.type, "Valid3", infoB);
+console.log("Tentando conectar D e Valid3");
+Connector.makeConnection(nodeD.output[0], nodeValid3.input[0]);
+console.log("Tentando conectar Valid3 e D");
+Connector.makeConnection(nodeValid3.output[0], nodeD.input[0]);
+
+// Testa se faz conexoes nao ciclicas com bifurcacao
+console.log("========== Criando Conexões Não Cíclicas ==========");
+const nodeB2 = new WorldSpaceNode(infoB.type, "B2", infoB);
+const nodeValid4 = new WorldSpaceNode(infoB.type, "Valid4", infoB);
+const nodeValid5 = new WorldSpaceNode(infoB.type, "Valid5", infoB);
+const nodeC2 = new WorldSpaceNode(infoB.type, "C2", infoB);
+console.log("Tentando conectar B2 e Valid4");
+Connector.makeConnection(nodeB2.output[0], nodeValid4.input[0]);
+console.log("Tentando conectar B2 e Valid5");
+Connector.makeConnection(nodeB2.output[0], nodeValid5.input[0]);
+console.log("Tentando conectar Valid4 e C2");
+Connector.makeConnection(nodeValid4.output[0], nodeC2.input[0]);
+console.log("Tentando conectar Valid5 e C2");
+Connector.makeConnection(nodeValid5.output[0], nodeC2.input[0]);
+// Continuando o teste mas agora tentando criar um ciclo
+console.log("Continuando o teste anterior criando um ciclo");
+console.log("Tentando conectar C2 com B2");
+Connector.makeConnection(nodeC2.output[0], nodeB2.input[0]);
+
+console.log("========== Criando Autoconexão ==========");
+const nodeE = new WorldSpaceNode(infoB.type, "E", infoB);
+console.log("Tentando conectar E e E");
+Connector.makeConnection(nodeE.output[0], nodeE.input[0]);
+const nodeValid6 = new WorldSpaceNode(infoB.type, "Valid6", infoB);
+console.log("Tentando conectar Valid6 e Valid6");
+Connector.makeConnection(nodeValid6.output[0], nodeValid6.input[0]);
