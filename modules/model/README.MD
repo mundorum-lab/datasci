@@ -36,6 +36,7 @@
 property | role
 -------| ------
 `num_clusters` | `Definir o número de clusters que deverão ser gerados` 
+`max_iterations` | `Definir o número máximo de iterações do algoritmo` 
 
 ### Input Notices
 
