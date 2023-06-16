@@ -1,3 +1,5 @@
+import {isCategorical, isNumeric, isNumericOrCategorical, numericOfCategoricalType, numericType, categoricalType,} from '../utils/type_verifier'
+import {DataTypeMissmatchError} from '../exceptions/visualize_exceptions';
 export function buildAreaChartData(rawData, fields){
     let data = {
         labels: [],

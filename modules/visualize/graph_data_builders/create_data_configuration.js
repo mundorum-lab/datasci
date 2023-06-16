@@ -15,6 +15,7 @@ export function createConfiguration(type, rawData, fields, options) {
       type: type,
       options: options
     }
+    console.log(fields)
     switch (type) {
       case 'area':
         config.type = 'line'
