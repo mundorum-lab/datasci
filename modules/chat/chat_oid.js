@@ -31,7 +31,7 @@ export class ChatOid extends OidWeb {
  
   async generatePrompt(workflowMap, componentId){
     const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
-    const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation"]
+    const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation", "zScoreNorm", "alias"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
     // esse if depende do tipo do visualizador das apresentaçoes
     if (finalComponent.type === 'table-oid-visualizer'){ 
@@ -46,7 +46,7 @@ export class ChatOid extends OidWeb {
       index += 1
       this.prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
-        if (this.arrayCheck(tableList,"minimum") || this.arrayCheck(valueList,"minimum")){
+        if (this.arrayCheck(tableList,component.nodeType) || this.arrayCheck(valueList,component.nodeType)){
           let table=await this.getData(componentId,'table')
           let result=await this.getData(componentId,'result')
           console.log("interface oid received")
@@ -61,6 +61,7 @@ export class ChatOid extends OidWeb {
           this.prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
         Explain it to me.`
         }
+        
         
       }
       
