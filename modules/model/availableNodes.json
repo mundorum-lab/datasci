@@ -36,7 +36,14 @@
         {
           "name": "num_cluster",
           "label": "Number of clusters",
-          "view": "NumberField"
+          "view": "NumberField",
+          "value": 2
+        },
+        {
+          "name": "max_iterations",
+          "label": "Maximum number of iterations",
+          "view": "NumberField",
+          "value": 50
         }
       ]
     },
