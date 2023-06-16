@@ -1,114 +1,80 @@
-/**
- * @typedef {Object.<string, any>} attributes
- */
-export class GraphOutMessage {
-
-
-    constructor(nodeGraph) {
-
-        this.nodeGraph = nodeGraph
-
-    }
-
-    outputToBus(graphRepresentation) {
-
-    }
-
-    /*private*/getAttributesRepresentation(fields) {
-        /*
-        Get the fields from the node and returns the output representation of it containing the fieldname and its value
-        E.G:
-
-        */
-
-
-
+class GraphOutMessageParser {
+    static parseAtributes(fields) {
         let attributes = {}
-        for (let j = 0; j < fields.length; j++) {
-            curField = fields[i]
+
+        for(let i = 0; i < fields.length; i++) {
+            let curField = fields[i];
             attributes[curField.getName()] = curField.handleGetInputValue();
         }
-        return attributes
-    }
-    getGraphRepresentation() {
-        /*
-        "nodes": [{
-            "id": int,
-            "type": string,
-            "attributes": {...}
-          }]
 
+        return attributes;
+    }
+
+    static parseGraph(graph) {
+        /*
         The id is not the same as the NodeId, it's easier to work with the new values E.G:
           Workflow Nodes Ids:                   Output ids:
           [33,22,43,543,657,123,123]            [0,1,2,3,4,5,6]
         */
+        const getNewId = (old) => { return newIds[old]; };
 
         /**
          * Stores attributes.
          * @type {[
-         *      {     
-         * id:Number,
-         * type:String,   
-         * attributes : attributes
-         * }
-         * ]}
-         */
-
-        let nodes = ["a"]
-
+        *      {     
+        * id:Number,
+        * type:String,   
+        * attributes : attributes
+        * }
+        * ]}
+        */
+        let nodes = [];
 
         /**
          * Stores edges.
          * @type {Array.<Array.<number,number>>}
         */
-        let edges = ["b"]
+
+        let edges = [];
 
         /**
         * Stores edges.
         * @type {Object.<Number, Number>}
         */
-        let newIds = {}
+        let newIds = {};
+        
+        let graphList = Object.keys(graph);
+        for (let i = 0; i < graphList.length; i++) {
+            let currentNode, currentId;
+            let fields, attributes;
 
-        for (let i = 0; i < Object.keys(this.nodeGraph).length; i++) {
             //Register the newIds and add the nodes
+            currentNode = graph[graphList[i]];
+            currentId = currentNode.getId();
+            newIds[currentId] = i;
+            fields = currentNode.handleGetUserFields();
+            attributes = this.parseAtributes(fields);
 
-            let currentNode = this.nodeGraph[i]
-
-
-            let currentId = currentNode.getId()
-
-            newIds[currentId] = i
-
-            const getNewId = (_old) => { return newIds[_old] };
-
-            let fields = currentNode.handleGetUserFields()
-            console.log("FIELDS:")
-            console.log(fields)
-            let attributes = currentNode.handleGetUserFields(fields)
-            nodes.append(
+            nodes.push(
                 {
                     id: getNewId(currentId),
                     type: currentNode.getNodeType(),
                     attributes: attributes
-
                 }
-            )
+            );
         }
-        for (let i = 0; i < this.nodeGraph.length; i++) {
+
+        for (let i = 0; i < graphList.length; i++){
             //Use the registered ids and add the edges
+            let currentNode = graph[graphList[i]];
             let targetNodes = currentNode.getTargetVertices()
             targetNodes.forEach(target => {
-                edges.append([i, getNewId(target)])
+                edges.push([i, getNewId(target)])
             });
-
-
         }
 
-
-        return {
-            nodes: nodes,
-            edges: edges
-        }
-
+        return {nodes: nodes, edges: edges};
     }
 }
+
+export { GraphOutMessageParser };

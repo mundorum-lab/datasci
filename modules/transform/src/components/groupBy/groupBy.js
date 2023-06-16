@@ -25,21 +25,25 @@ export class GroupByWeb extends TransformWeb {
 
         //topic: groupBy
         //message: table
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()
         this.df.print()
         this.file_id = message.file_id
         let validator = new ValidateGroupBy()
-        let result = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.group_by_target_column, this.operation_target_column, this.operation)
+        if(validation.isValid){
             this.groupBy()
             this.toJson()
-            this._notify('groupby_result', this.table)
+            this._notify('groupbyResult', this.result)
             this.status = true
             this.df.print()
         } else {
             this.status = false
-            this._notify('groupByError', result.result)
+            this._notify('groupByError', validation.result)
         }
 
     }
@@ -48,7 +52,7 @@ export class GroupByWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transGroupBy',
+  id: 'ts:groupby',
   element: 'groupby-oid',
   properties: {
     operation: {default: null},

@@ -11,10 +11,10 @@ export class ColumnDeleteWeb extends TransformWeb {
     deleteCol(){
         this.df = this.df.drop({columns: [this.column]});
         delete this.columns[this.column];
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
         console.log(this.df)
-        this._notify('deleteColumnResult', json)
+        this._notify('deleteColumnResult', this.result)
         
     }
 
@@ -22,7 +22,11 @@ export class ColumnDeleteWeb extends TransformWeb {
         
         //topic: deleteColumn
         //message: deleteColumnInput
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         console.log(this.table)
 
         this.columns = this.table.columns
@@ -30,14 +34,14 @@ export class ColumnDeleteWeb extends TransformWeb {
         this.toDataFrame()  
         let validator = new ValidateColumnDelete()
 
-        let result = validator.validate(this.columns, this.column)
-        console.log("resultado da validação:",result)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        console.log("resultado da validação:",validation)
+        if(validation.isValid){
             this.deleteCol()
         } else {
             //return error message
             this.status = false
-            this._notify('deleteColumnError', result.result)
+            this._notify('deleteColumnError', validation.result)
         }
 
     }
@@ -46,8 +50,8 @@ export class ColumnDeleteWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transDeleteColumn',
-  element: 'delete-column',
+  id: 'ts:deleteColumn',
+  element: 'deleteColumn-oid',
   properties: {
     column: {default: null},
   },

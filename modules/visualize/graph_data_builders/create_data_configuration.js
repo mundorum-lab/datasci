@@ -8,13 +8,13 @@ import { buildPolarChartData } from "./polar_chart_data_builder.js";
 import { buildRadarChartData } from "./radar_chart_data_builder.js";
 import { buildScatterChartData } from "./scatter_chart_data_builder.js";
 import { buildLinearRegressionChartData } from "./linear_regression_chart_data_builder.js";
+import { buildClusterChartData } from "./cluster_chart_data_builder.js";
 
 export function createConfiguration(type, rawData, fields, options) {
     let config = {
       type: type,
       options: options
     }
-    fields = JSON.parse(fields)
     switch (type) {
       case 'area':
         config.type = 'line'
@@ -73,6 +73,10 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'linear_regression':
           config.type = 'scatter'
           config.data = buildLinearRegressionChartData(rawData, fields);
+          break;
+      case 'cluster':
+          config.type = 'scatter'
+          config.data = buildClusterChartData(rawData, fields)
           break;
       default:
         break;
