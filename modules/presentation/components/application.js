@@ -1,4 +1,5 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
+import("/modules/workflow/src/js/components/workflow.js");
 
 export class ApplicationOid extends OidUI {
   // presenting = false -> workflow
@@ -55,7 +56,9 @@ export class ApplicationOid extends OidUI {
           <theme-switcher-oid><theme-switcher-oid />
         </div>
       </div>
-      <div id="workflow-container">workflow</div>
+      <div id="workflow-container" class="w-full h-full">
+      <workflow-main-page class="w-full h-full"></workflow-main-page>
+      </div>
       <div id="presentation-container" style="display: none">presentation</div>
     `;
   }
