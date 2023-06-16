@@ -8,10 +8,7 @@ export class PcaOid extends OidUI {
     this.data = await getData(table)
     this.result = await getPCA(this.data)
     console.log('this.result que sera publicado: ', this.result)
-    this._notify("transformed", {
-      value: JSON.stringify(this.result),
-    });
-
+    this._notify("transformed", this.result);
   }
   
 }
