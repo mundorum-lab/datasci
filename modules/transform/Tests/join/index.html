@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+  <script src="../../src/components/join/join.js" type="module"></script>
+  <script src="./join-button.js" type="module"></script>
+  <script src="./join-button-other.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+</head>
+<body>
+  <h1>Teste</h1>
+
+  <join-button publish="click~data/2">
+  </join-button>
+
+  <join-other-button publish="click~data/2">
+</join-other-button>
+  
+
+  <join-oid 
+    on="second"
+    how="inner"
+    subscribe="data/2~join" 
+    publish="joinResult~data/3">
+  </join-oid>
+
+
+</body>
+</html>
