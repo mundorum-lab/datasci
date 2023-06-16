@@ -1,21 +1,40 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
+async function makeHttpRequest(method, body, headers, url) {
+  try {
+    const headersObj = headers ? JSON.parse(headers) : {};
+    const requestOptions = {
+      method: method,
+      headers: headersObj
+    };
+
+    if (body) {
+      const bodyObj = JSON.parse(body);
+      requestOptions.body = JSON.stringify(bodyObj);
+    }
+
+    const response = await fetch(url, requestOptions);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const jsonResult = await response.json();
+    return jsonResult;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+
 export class ApiInputOid extends OidUI {
-  handleInput_api (topic, message) {
-    console.log("Entered function")
-
-    const jsonData = JSON.parse(message.value)
-    const Http = new XMLHttpRequest();
-    const url=jsonData.url_content;
-    Http.open(jsonData.api_type, url);
-    Http.send();
-    Http.onreadystatechange = (e) => {
-      console.log("State change")
-
-      let rawData = JSON.parse(Http.responseText)
-
-      console.log(rawData)
-
+  async handleInput_api (topic, message) {
+    const jsonData = message
+    
+    try {
+      let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
+    
+      console.log(`Success`)
       let columns = Object.keys(rawData[0])
       let data = []
 
@@ -30,7 +49,9 @@ export class ApiInputOid extends OidUI {
       console.log(columns)
       console.log(data)
 
-      this._notify('output', {value: JSON.stringify({columns: columns, data: data})}) // Processed file goes here
+      this._notify('output', {"id": jsonData.identifier, columns: columns, data: data}) // Processed file goes here
+    } catch (e) {
+      this._notify('output', {error: e.message})
     }
   }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Rendering</title>
+
+    <script src="/modules/workflow/src/js/interfaces.js" type="module"></script>
+    <script src="/modules/workflow/src/js/components/world-space-node-view.js" type="module"></script>
+    <script src="/modules/workflow/src/js/components/component-provider-oid.js" type="module"></script>
+    <script src="/modules/workflow/src/js/utils/input/label-oid.js" type="module"></script>
+    <script src="/modules/data/src/components/filereader-oid.js" type="module"></script>
+
+</head>
+<body>
+    <application-oid></application-oid>
+    <script type="module" src="/main.js"></script>
+    <component-provider-oid id="provider"></component-provider-oid>
+    <div class="flex items-center justify-center w-full gap-4">
+        <world-space-node type="data:database" id="a" name="Lorem Ipsum" connect="itf:component-provider#provider"></world-space-node>
+        <world-space-node type="transform:filter" id="b" name="Ipsum Lorem" connect="itf:component-provider#provider"></world-space-node>
+        <world-space-node type="lorem:ipsum" id="b" name="Dolor Sit" connect="itf:component-provider#provider"></world-space-node>
+    </div>
+</body>
+</html>

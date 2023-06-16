@@ -1,5 +1,5 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
-import {mockedData} from './data_mock.js';
+import {mockedData,scatter_mockData,cluster_mockData} from './data_mock.js';
 
 export class DataSenderOid extends OidUI {
     _onClick() {

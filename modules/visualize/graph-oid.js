@@ -4,9 +4,10 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import './libs/chart.js'
 
+const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
+
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
-    //createOptions(this.type, message, this.options)
     this.wroteMessage = ""
     this.canvas = this.shadowRoot.getElementById('canvas')
     this.canvas.style.display = 'initial';
@@ -14,21 +15,26 @@ export class GraphOid extends OidUI {
     this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
 
-    if(this.type != "pie" && this.type != "doughnut"){
+    if(!graphsWithoutDataLabel.includes(this.type)){
       Chart.register(ChartDataLabels);
     }
     
     Chart.register(zoomPlugin);
-    
+
     this.chart = new Chart(this.canvas, createConfiguration(this.type, message.value, this.fields, 
       {
         ...this.options,
         plugins: {
           zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+           },
             zoom: {
               wheel: {
                 enabled: true,
               },
+              
               pinch: {
                 enabled: true
               },
@@ -50,6 +56,15 @@ export class GraphOid extends OidUI {
     download.click();
     download.remove();
   }
+
+  handleOptions(topic, message) {
+    const { fields, title, ...options } = message.value;
+
+    console.log(fields)
+    this.fields = fields;
+    this.title = title;
+    this.options = options
+  }
 }
 
 Oid.component({
@@ -61,9 +76,10 @@ Oid.component({
     data: { default: null }, // Internal
     type: { default: null },
     options: { default: null },
-    fields: {default: null},
+    title: { default: null},
+    fields: { default: null},
     wroteMessage: {default: 'Waiting for data'}
   },
-  receive: ['render', 'export'],
+  receive: ['render', 'export', 'options'],
   implementation: GraphOid,
 })

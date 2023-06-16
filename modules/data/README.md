@@ -1,7 +1,7 @@
 # Module `Data`
 
 # Description
-> Our module's responsibility is to gather raw data from files and APIs and transform it into useful data for the other components to use. Essentially, we take raw data and convert it into a JSON format, which is then inserted into the data bus.
+> Our module is responsible for reading files (.json and .csv) and collecting raw data from APIs to transform them into a predefined format that is useful for other components to use. Essentially, we take the raw data and convert it into a JSON format, which is then inserted into the data bus.
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
@@ -29,11 +29,23 @@
 **`TreatedDataContent`**
 ~~~json
 {
+	"columns": [name, ...],
+	"data": [
+		[column0, column1, ...],
+		... // Other rows
+	]
+}
+~~~
+**`TypedDataContent`**
+~~~json
+{
+	{
 	"columns": [{name, type}, ...],
 	"data": [
 		[column0, column1, ...],
 		... // Other rows
 	]
+}
 }
 ~~~
 **`TreatedReaderContent`**
@@ -45,17 +57,10 @@
 	"file_extension": string
 }
 ~~~
-**`FileTypeRequest`**
+**`ErrorDuringDataIngestion`**
 ~~~json
 {
-	"data": TreatedDataContent,
-	"return_notice": string
-}
-~~~
-**`FileTypeInfo`**
-~~~json
-{
-	"types": [type, ...]
+	"error": string
 }
 ~~~
 **`ErrorDuringDataProcessing`**
@@ -68,8 +73,10 @@
 **`RawAPIContent`**
 ~~~json
 {
-	"api_type": string,
-	"url_content": string
+	"api_url": string,
+	"method": string,
+	"headers": string,
+	"body": string
 }
 ~~~
 
@@ -94,13 +101,13 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `RawReaderContent` 
+`load` | `The component collects data from the received message with informations about the database and the table with data that needs to be get and initiates the process of catch data from the Local Storage into the JSON format.` | `RawFileContent` or `TreatedReaderContent` 
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes to get the content in JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes ingesting the JSON content, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `api-input`
@@ -117,7 +124,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataProcessing`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `file-typing`
@@ -128,15 +135,13 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`receive_data` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
-`receive_types` | `Receives user input on data types and modifies the TreatedFileContent based on it` | `FileTypeInfo`
+`type-input` | `Receives a JSON file and asks the user for input on the types of the data provided` | `TreatedFileContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`ask_types` | `Once the component receives a JSON file, it publishes a request for a user interface to ask for typing info` | `FileTypeRequest`
-`output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TreatedFileContent` or `ErrorDuringDataProcessing`
+`output` | `As the component finishes transforming the data based on user input, publishes the result on the data bus` | `TypedDataContent` or `ErrorDuringDataProcessing`
 
 # Components Narratives
 
@@ -195,3 +200,11 @@ notice    | source | message type
 -	Based on the user's response, it types the data received.
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the typed data in JSON format is published on the data bus.
+
+## Examples
+
+### File Input and File Reader
+![File Input](images/diagram_file_input.png)
+An example usage of file-input and file-reader with a component of group model can be found in the folder `data/examples-integration/data-model`.
+
+An example usage of file-input and file-reader can be found in the folder `data/examples/exampleGetDBTable.html`.

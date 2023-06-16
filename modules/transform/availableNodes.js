@@ -1,329 +1,581 @@
 export const availableNodes = {
-    filter: [{                     
-        type: "table/json",
-        name: "Filtrar Tabela",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+    filter: [{
+        output: [
             {
-                fieldName: "Operação",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {values:[">=",">","<","<=","="]}, //this parameters will change
-                }
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: "ts:filter",
+        name: "Filtro",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/filter.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
-                fieldName: "Nome da Coluna filtrada",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
-            },
-            {
-                fieldName: "Valor a ser comparado",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "any",
-                    parameters: {},
-                }
-            },
-        ]
-    }],
-
-    mean: [{                     
-        type: "singleValue",
-        name: "Encontra o valor médio de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
-            {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                name: "Operação",
+                view: "DropDown",
+                parameters: [ { options: [
+                    {name: "maior que", value: "gt"},
+                    {name: "maior ou igual que", value: "ge"},
+                    {name: "menor que", value: "lt"},
+                    {name: "menor ou igual que", value: "le"},
+                    {name: "igual a", value: "eq"},
+                    {name: "diferente de", value: "ne"},
+                ]}]
             }
         ]
     }],
 
-    median: [{                     
-        type: "singleValue",
-        name: "Encontra o valor da mediana de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    groupby: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ], 
+        id: "ts:groupby",
+        name: "Agrupar linhas",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/groupby.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Operação",
+                view: "DropDown", 
+                parameters: [ { options: [
+                    {name: "produto acumulativo", value: "cumProd"},
+                    {name: "soma acumulativa" , value: "cumSum"},
+                    {name: "media", value:"mean"},
+                    {name: "desvio padrao", value: "std"},
+                    {name: "soma", value: "sum"},
+                    {name: "variância", value: "var"},
+                    {name: "máximo acumulativo", value: "cumMax"},
+                    {name: "mínimo acumulativo", value: "cumMin"},
+                    {name: "máximo", value: "max"},
+                    {name: "minimo", value: "min"},
+                    {name: "contar", value: "count"}
+        
+                ]}] 
+            },
+            {
+                name: "Coluna agrupada",
+                kind: "TextInput", 
+                parameters: []
+            },
+            {
+                name: "Coluna Analisada",
+                kind: "TextInput", 
+                parameters: []
+            },
+            {
+                name: "Nome da Coluna Analisada Resultante",
+                kind: "TextInput", 
+                parameters: []
             }
         ]
     }],
 
-    mode: [{                     
-        type: "singleValue",
-        name: "Encontra o valor da moda de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+    mean: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {}, 
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
-        ]
-    }],
-
-    stddev: [{                     
-        type: "singleValue",
-        name: "Encontra o valor do desvio padrão de uma certa coluna",
-        compatibleInputNodes: { 
-        },
-        inputFields: [
+        ],
+        id: "ts:mean",
+        name: "Média",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/average.png",
+        input: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
             }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
-    minimum: [{                     
-        type: "singleValue",
-        name: "Encontrar o valor mínimo da coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+    median: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
-        ]
-    }],
-
-    maximum: [{                     
-        type: "singleValue",
-        name: "Encontrar o valor máximo da coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+        ],
+        id: "ts:median",
+        name: "Mediana",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/median.png",
+        input: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
             }
-        ]
-    }],
-
-    count: [{                     
-        type: "singleValue",
-        name: "Conta quantas vezes o elemento aparece na coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+        ],
+        fields: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
-            },
-            {
-                fieldName: "Valor a ser contado",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "any",
-                    parameters: {},
-                }
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
 
-    uniqueValues: [{                     
-        type: "singleValue",
-        name: "Conta quantos elementos únicos existem na coluna",
-        compatibleInputNodes: {},
-        inputFields: [
+    mode: [{
+        output: [
             {
-                fieldName: "Nome da coluna",
-                fieldType: "Textbox",
-                inputType:
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/singleValue"], 
+                range: [1,1]
             }
+        ],
+        id: "ts:mode",
+        name: "Moda",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/mode.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
         ]
     }],
 
-    columnOperation: [{                     
-        type: "table/json",
-        name: "Fazer operações entre colunas",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+    stddev: [{
+        output: [
             {
-                fieldName: "Operação",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {values:["+", "-", "*", "/", "^"]}, //this parameters will change
-                }
-            },
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:stddev",
+        name: "Desvio padrão",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/stddev.png",
+        input: [
             {
-                fieldName: "Coluna 1",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
-            },
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
             {
-                fieldName: "Coluna 2",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string", 
-                    parameters: {},
-                }
-            },
-            {
-                fieldName: "Nova coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string", 
-                    parameters: {},
-                }
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
-    
-    columnOperation: [{                     
-        type: "table/json",
-        name: "Fazer operações com uma colunas",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+
+
+    minimum: [{
+        output: [
             {
-                fieldName: "Operação",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {values:["+", "-", "*", "/", "^", "log"]}, //this parameters will change
-                }
-            },
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:minimum",
+        name: "Mínimo",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/minimum.png",
+        input: [
             {
-                fieldName: "Coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
-            },
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
             {
-                fieldName: "Constante",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "number", 
-                    parameters: {},
-                }
-            },
-            {
-                fieldName: "Nova coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string", 
-                    parameters: {},
-                }
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
-    deleteColumn: [{                     
-        type: "table/json",
+
+    maximum: [{
+        output: [
+            {
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:maximum",
+        name: "Máximo",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/maximum.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+        ]
+    }],
+
+    count: [{
+        output: [
+            {
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:count",
+        name: "Contar",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/count.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+            {
+                name: "Valor",
+                view: "TextInput",
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Valor a ser comparado"
+                }]
+            },
+        ]
+    }],
+
+    unique: [{
+        output: [
+            {
+                type: ["json/singleValue"], 
+                range: [1,1]
+            }
+        ],
+        id: "ts:unique",
+        name: "Valores únicos",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/unique.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+        ]
+    }],
+
+    columnOperation: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:columnOp',
+        name: "Operação entre colunas",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnOp.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Nova coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna resultante",
+                }]  
+            },
+            {
+                name: "Coluna 1",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da primeira coluna",
+                }]  
+            },
+            {
+                name: "Operação",
+                view: "DropDown",
+                parameters: [{ options: [
+                    {name: "Soma", value: "+"},
+                    {name: "Subtração", value: "-"},
+                    {name: "Multiplicação", value: "*"},
+                    {name: "Divisão", value: "/"},
+                    {name: "Potência", value: "^"},
+                ]}]
+            },
+            {
+                name: "Coluna 2",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da segunda coluna",
+                }]  
+            },
+        ]
+    }],
+
+    columnOperationConstant: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:columnOpConstant',
+        name: "Operação entre coluna e constante",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnOpConstant.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Nova coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna resultante",
+                }]  
+            },
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+            {
+                name: "Operação",
+                view: "DropDown",
+                parameters: [{ options: [
+                    {name: "Soma", value: "+"},
+                    {name: "Subtração", value: "-"},
+                    {name: "Multiplicação", value: "*"},
+                    {name: "Divisão", value: "/"},
+                    {name: "Potência", value: "^"},
+                    {name: "Log", value: "log"},
+                ]}]
+            },
+            {
+                name: "Constante",
+                view: "NumberField", 
+                parameters: []  
+            },
+        ]
+    }],
+
+    deleteColumn: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:deleteColumn',
         name: "Deletar coluna",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnDelete.png",
+        input: [
             {
-                fieldName: "Coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
-    orderBy: [{                     
-        type: "table/json",
+
+    orderBy: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:orderby',
         name: "Ordenar",
-        compatibleInputNodes: {
-            /*entrada0: {typeIds<[string]>, listRange<(int, int)>}, //need to check with all groups the available IDs, this can change
-            entrada1: {typeIds<[string]>, listRange<(int, int)>},*/  
-        },
-        inputFields: [
+        presentable: true,
+        icon: "datasci/modules/transform/icons/columnDelete.png",
+        input: [
             {
-                fieldName: "Coluna",
-                fieldType: "Textbox", 
-                inputType: 
-                {
-                    type: "string",
-                    parameters: {},
-                }
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
             {
-                fieldName: "Ordem",
-                fieldType: "Dropdown", 
-                inputType: 
-                {
-                    type: "boolean",
-                    parameters: {values:["Crescente", "Decrescente"]},
-                }
+                name: "Order",
+                view: "DropDown",
+                parameters: [{ options: [
+                    {name: "Crescente", value: "true"},
+                    {name: "Decrescente", value: "false"},
+                ]}]
+            },
+
+        ]
+    }],
+
+    zScoreNorm: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:normalize',
+        name: "Normalizar",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/zscoreNorm.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
             },
         ]
     }],
+
+    alias: [{
+        output: [
+            {
+                type: ["json/table"], 
+                range: [1,2]
+            }
+        ],
+        id: 'ts:transAlias',
+        name: "Renomear coluna",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/alias.png",
+        input: [
+            {
+                type: ["json/table"], 
+                range: [1, 1]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+            {
+                name: "Novo nome",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Novo nome da coluna",
+                }]  
+            },
+        ]
+    }],
+
 }

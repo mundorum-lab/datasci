@@ -18,53 +18,11 @@ previamente pelo usuário, de maneira a prover uma experiência dinâmica.
 
 ## Team
 
-Todos os membros do time participaram de duas reuniões para definição da
-estrutura das mensagens e dos componentes de nosso módulo, o que inlcui
-interfaces de I/O e a narrativa de operação do sistema.
-
-- `Daniel Credico Coimbra`
-  - Elaboração dos message types;
-  - Redação do componente Fornecedor_de_Templates;
-  - Participação na elaboração da narrativa;
-  - Elaboração da formatação inicial do markdown;
-  - Elaboração conjunta do message type JSON2HTML;
-  - Elaboração do message type Request;
-  - Elaboração do componente Construtor, com alteração correspondente no componente Apresentador;
-  - Especificação do input notice que receberemos do grupo Workflow, e a subsequente atualização de narrativa.
-
-- `Fernanda Garcia Da Lavra`
-  - Responsável pela organização de tarefas, intercomunicação com os demais
-    grupos e codificação;
-  - Responsável pela estilização dos componentes;
-  - Participação na elaboração inicial da narrativa;
-  - Elaboração conjunta do message type JSON2HTML;
-  - Reescrita da narrativa refletindo novos componentes.
-
-- `Leandro Hélio Ferreira da Silva`
-  - Desenvolvimento da interface de apresentação gŕafica;
-  - Auxílio na elaboração das referências em JavaScript;
-  - Participação na elaboração inicial dos demais elementos;
-  - Elaboração do código do componente Painel_Workflow;
-  - Versão inicial dos códigos JS dos componentes Fornecedor, Construtor, e Apresentador.
-  - Adicionou message type para os componentes Importador e Apresentador
-
-- `Matheus Otávio Rodrigues`
-  - Colaboração com a documentação dos componentes incluindo sua definição,
-    forma de comunicação, Narrativas e especificação;
-  - Responsável pela programação dos componentes de Apresentação,
-    desenvolvimento da interface visual destes componentes e intercomunicação dos
-    componentes recebidos por outras equipes;
-  - Refatoração das versões iniciais dos códigos JS dos componentes;
-  - Elaboração conjunta do message type JSON2HTML.
-
-
-- `Miguel Teixeira Buzato`
-  - Referência em HTML, CSS e JavaScript;
-  - Responsável pela estilização dos componentes;
-  - Codificação dos templates;
-  - Criação do branch e upload de arquivos;
-  - Criação do primeiro ambiente de teste ("HTML playground");
-  - Versão inicial do código JS do componente Fornecedor.
+- `Daniel Credico Coimbra` (RA: 155077)
+- `Fernanda Garcia Da Lavra` (RA: 171345)
+- `Leandro Hélio Ferreira da Silva` (RA: 121092)
+- `Matheus Otávio Rodrigues` (RA: 222318)
+- `Miguel Teixeira Buzato` (RA: 185598)
 
 ## Message Types
 
@@ -81,33 +39,29 @@ interfaces de I/O e a narrativa de operação do sistema.
 ```json
 {
   "template": "<string>",
-  "regions": [{
-    "id": "<string>",
-    "size": "<string>" // small, medium or large
-  }]
+  "description": "<string>",
+  "regions": [
+    {
+      "id": "<string>",
+      "size": "<string>" // small, medium, large or xlarge
+    }
+  ]
 }
 ```
 
-**`JsonHTMLDescription`**
+**`JSONHTMLDescription`**
 
 ```json
 {
   [
     {
-      "component_path": "<string>",
       "tag": "<string>",
       "region": "<string>", // region id of the template
       "params": [{
         "param": "<string>",
         "value": "<string>"
       }],
-      "children": [{
-        "tag": "<string>",
-        "params": [{
-          "param": "<string>",
-          "value": "<string>"
-        }]
-      }]
+      "children": <self>[]
     }
   ]
 }
@@ -115,7 +69,7 @@ interfaces de I/O e a narrativa de operação do sistema.
 
 ## Components
 
-### Component `Fornecedor`
+### Component `template-lister`
 
 Retornará quando solicitado a lista com os templates disponíveis na aplicação para a criação do Workflow.
 
@@ -131,9 +85,15 @@ Retornará quando solicitado a lista com os templates disponíveis na aplicaçã
 | ----------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | `responseTemplatesList` | Irá retornar os templates disponíveis uma vez que receber a notice "request templates" | JSON array com cada elemento sendo do tipo `Template` |
 
-### Component `Construtor`
+### Component `application`
 
-O componente receberá as informações do tópico `workflow/grafo` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template. Então, construirá um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
+O componente controla vários aspectos importantes, como alternar o tema entre `dark` e `light` utilizando o theme-switcher, e as abas para alternar entre os fluxos de workflow e apresentação.
+Este componente não recebe e nem envia informações no barramento.
+
+### Component `builder`
+
+O componente receberá as informações do tópico `workflow/grafo` no barramento de mensagens acerca do template escolhido pelo usuário e dos componentes que serão instanciados em tal template.
+Então, construirá um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes.
 
 #### Input Notices
 
@@ -145,65 +105,27 @@ O componente receberá as informações do tópico `workflow/grafo` no barrament
 
 | notice         | action                                                               | message type          |
 | -------------- | -------------------------------------------------------------------- | --------------------- |
-| `sendJsonHTML` | Emitido assim que o JSON de tags e parâmetros de HTML estiver pronto | `JsonHTMLDescription` |
+| `sendJSONHTML` | Emitido assim que o JSON de tags e parâmetros de HTML estiver pronto | `JSONHTMLDescription` |
 
+### Component `presenter`
 
-### Component `Importador`
-
-O componente receberá um JSON especificando o HTML, com o qual importará os componentes necessários na página HTML.
-
-#### Input Notices
-
-| notice            | action                                                                               | message type    |
-| ----------------- | ------------------------------------------------------------------------------------ | --------------- |
-| `getJsonWorkflow` | Emitido pelo componente de Workflow, contendo a lista de componentes e suas conexões | `WorkflowState` |
-
-
-### Component `Apresentador`
-
-O componente receberá um JSON especificando o HTML, com o qual instanciará todos os componentes necessários para representar a visualização desejada pelo usuário, os inserirá na tela no local e tamanho desejados e, por fim, fará as devidas conexões e configurações conforme especificado previamente no Workflow.
+O componente receberá um JSON especificando o HTML, com o qual instanciará todos os componentes necessários para representar a visualização desejada pelo usuário,
+os inserirá na tela no local e tamanho desejados e, por fim, fará as devidas conexões e configurações conforme especificado previamente no Workflow.
 
 #### Input Notices
 
 | notice        | action                                                                         | message type          |
 | ------------- | ------------------------------------------------------------------------------ | --------------------- |
-| `getJsonHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização | `JsonHTMLDescription` |
+| `getJSONHTML` | Emitido uma vez que a visualização estiver construída e pronta para utilização | `JSONHTMLDescription` |
 
+## Narratives
 
-## Components Narratives
-
-### Setup
-
-```html
-<fornecedor-oid
-subscribe="apresentacao/templates/requisicao~requestTemplatesList"
-publish="responseTemplatesList~apresentacao/templates/listagem"
->
-</fornecedor-oid>
-
-<construtor-oid
-subscribe="workflow/grafo~getWorkflowGraph"
-publish="sendJsonHTML~apresentacao/html/representacaoJson"
->
-</construtor-oid>
-
-<importador-oid
-subscribe="apresentacao/html/representacaoJson~getJsonHTML"
->
-</importador-oid>
-
-<apresentador-oid
-subscribe="apresentacao/html/apresentacaoJson~getJsonHTML"
->
-</apresentador-oid>
-```
-
-### Narrative
-
-- O componente **Fornecedor** recebe via barramento no tópico `apresentacao/templates/requisicao` uma requisição dos templates disponíveis por parte dos componentes de Workflow.
-  - Ao receber esta mensagem, será respondida uma outra mensagem em `apresentacao/templates/listagem` com um objeto JSON contendo informações sobre todos os templates. Os templates estarão definidos em um arquivo específico para este fim, estático, com uma quantidade finita e definida de templates possíveis.
+- O componente **template-lister** recebe via barramento no tópico `presentation/templates/requisicao` uma requisição dos templates disponíveis por parte dos componentes de Workflow.
+  - Ao receber esta mensagem, será respondida uma outra mensagem em `presentation/templates/listagem` com um objeto JSON contendo informações sobre todos os templates. Os templates estarão definidos em um arquivo específico para este fim, estático, com uma quantidade finita e definida de templates possíveis.
 - Os componentes do time de Workflow montam a estrutura de interconexão entre os componentes definidos pelo usuário, enviando uma mensagem no tópico `workflow/grafo` com um JSON informando as relações entre os componentes escolhidos e os seus parâmetros.
-- O componente **Construtor** então recebe os dados (incluindo o layout) pelo tópico `workflow/grafo`, com um message type chamado `WorkflowState` (a ser definido pelo grupo de Workflow) contendo a lista de componentes (nós) e suas relações (arestas), e a partir disso constroi um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes. Após a construção deste JSON (do tipo `JsonHTMLDescription`), o mesmo será enviado para o tópico `apresentacao/html/representacaoJson`
-- O componente **Importador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a importação dos componentes na página HTML (inserção dos scripts type=module na página HTML).
-- O componente **Apresentador** recebe o JSON do componente **Construtor** pelo tópico `apresentacao/html/representacaoJson` e faz a instanciação dos componentes recebidos com os devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
-  - Caso algum componente exija dados adicionais que não são necessários no processo de Workflow (não é esperado), assinaremos tópicos específicos no BUS, definidos pelas equipes de cada componente, para obtenção dessas informações. Os tópicos podem seguir o padrão `<componente\>/\<subcomponente\>/apresentacao` como sugestão.
+- O componente **builder** então recebe os dados (incluindo o layout) pelo tópico `workflow/grafo`, com um message type chamado `WorkflowState` (a ser definido pelo grupo de Workflow) contendo a lista de componentes (nós) e suas relações (arestas), e a partir disso constroi um JSON articulando as tags e os parâmetros que serão utilizadas na apresentação HTML dos componentes. Após a construção deste JSON (do tipo `JSONHTMLDescription`), o mesmo será enviado para o tópico `presentation/html/representacaoJSON`
+- O componente **presenter** recebe o JSON do componente **Builder** pelo tópico `presentation/html/representacaoJSON` e faz a instanciação dos componentes recebidos com os devidos parâmetros, fazendo as devidas conexões previamente estabelecidas, e faz a inserção do layout para a visualização do usuário na tela.
+  - Caso algum componente exija dados adicionais que não são necessários no processo de Workflow (não é esperado), assinaremos tópicos específicos no BUS, definidos pelas equipes de cada componente, para obtenção dessas informações. Os tópicos podem seguir o padrão `<componente\>/\<subcomponente\>/presentation` como sugestão.
+- Os Componentes **templates** recebem regions, estas regions são então apresentadas na tela de acordo com a posição na qual foram instanciadas.
+  Eles não se utilizam do barramneto e recebem os Htmls dos componentes criados pelos outros grupos. Hoje, enquanto os componentes dos outros grupos ainda não foram implementados, foram criados stubs, estes tem cores e podem ou náo ter conexões entre outros, caso exista tal conexão, as cores de um componente clicado e os conectados a ele mudam.
+- O componente **application** é a casca de toda a aplicação. Ele controla o tema entre `dark` e `light` utilizando o **theme-switcher**, e também o controle de abas para alternar entre os fluxos de workflow e apresentação.

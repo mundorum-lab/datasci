@@ -1,19 +1,50 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import {html, Oid, OidUI} from '/lib/oidlib-dev.js'
+import kmeans from './kmeans.js'
 
-export class ClusterOid extends OidUI {
-  _onClick () {
-    this._notify('click', {data: this.data, num_cluster: this.num_cluster})
+export class ApplyCluster extends OidUI {
+
+  connectedCallback () {
+    super.connectedCallback()
+    this.result = "[Cluster Result]"
+  }
+  applyCluster (topic, message) {
+    let columns = [...message.columns]
+    let data = JSON.parse(JSON.stringify(message.data));
+    let res = kmeans(data, message.num_clusters?message.num_clusters:this.num_clusters)
+    let centroids = res.centroids
+    let clusters = res.clusters
+
+    for (let j = 1; j <= clusters.length; j++) {
+      //this.result += "<br></br>Cluster " + j + ":     "
+      for (let i = 0; i < clusters[j-1].points.length; i++) {
+        clusters[j-1].points[i].push(j);
+      }
+      //this.result += clusters[j-1].points
+    }
+    
+    columns.push({"name": "category", "type": "num"})
+    for (let i = 0; i < centroids.length; i++) {
+      data.push([centroids[i][0], centroids[i][1], 0])
+    }
+    let final = {
+      "columns" : columns,
+      "data" : data
+    }
+
+    this.result = "Output: <br></br> " + JSON.stringify(final, false, "\t");
+    this._notify('transformed', {data: final.data, columns: final.columns});
   }
 }
 
 Oid.component(
-    {
-      id: 'ml:cluster',
-      element: 'ml-cluster-oid',
-      properties: {
-        data: {default:[[4, 21], [5, 19], [10, 24], [4, 17], [3, 16], [11, 25], [14, 24], [6, 22], [10, 21], [12, 21]]},
-        num_cluster: {default: 2}
-      },
-      template: html`<h1 @click>Apply Cluster with {{this.num_cluster}} clusters</h1>`,
-      implementation: ClusterOid
-    })
+{
+  id: 'ml:cluster-oid',
+  element: 'ml-cluster-oid',
+  properties: {
+    num_clusters: {default: 2},
+    result: {}
+  },
+  receive: {transform: 'applyCluster'},
+  template: html`<h1>{{this.result}}</h1>`,
+  implementation: ApplyCluster
+})

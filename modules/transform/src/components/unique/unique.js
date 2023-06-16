@@ -6,32 +6,35 @@ export class UniqueWeb extends TransformWeb {
 
     constructor() {
         super()
-        this.column = null
     }
 
     unique(){
         this.value = this.df.column(this.column).nUnique()
-        let json = this.toSingleValue(this.value)
+        this.toSingleValue(this.value, "Valores Únicos", this.column)
         this.status = true
         console.log(this.value, this.status)
-        this._notify('uniqueResult', json)
+        this._notify('uniqueResult', this.result)
     }
     
     handleUnique (topic, message) {  //handle with notice
         
         //topic: unique
         //message: uniqueInput
-        this.table = message
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()
 
         let validator = new ValidateUnique()
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.unique()
         } else {
             //return error message
             this.status = false
-            this._notify('uniqueError', result.result)
+            this._notify('uniqueError', validation.result)
         }
 
     }
@@ -40,10 +43,11 @@ export class UniqueWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transUnique',
-  element: 'unique-data',
+  id: 'ts:unique',
+  element: 'unique-oid',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {unique: 'handleUnique'},
   implementation: UniqueWeb
