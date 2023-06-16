@@ -1,12 +1,7 @@
-import {html, Oid, OidUI} from '/lib/oidlib-dev.js'
+import {Oid, OidBase} from '/lib/oidlib-dev.js'
 import kmeans from './kmeans.js'
 
-export class ApplyCluster extends OidUI {
-
-  connectedCallback () {
-    super.connectedCallback()
-    this.result = "[Cluster Result]"
-  }
+export class ApplyCluster extends OidBase {
   applyCluster (topic, message) {
     let columns = [...message.columns]
     let data = JSON.parse(JSON.stringify(message.data));
@@ -15,11 +10,9 @@ export class ApplyCluster extends OidUI {
     let clusters = res.clusters
 
     for (let j = 1; j <= clusters.length; j++) {
-      //this.result += "<br></br>Cluster " + j + ":     "
       for (let i = 0; i < clusters[j-1].points.length; i++) {
         clusters[j-1].points[i].push(j);
       }
-      //this.result += clusters[j-1].points
     }
     
     columns.push({"name": "category", "type": "num"})
@@ -31,7 +24,6 @@ export class ApplyCluster extends OidUI {
       "data" : data
     }
 
-    this.result = "Output: <br></br> " + JSON.stringify(final, false, "\t");
     this._notify('transformed', {data: final.data, columns: final.columns});
   }
 }
@@ -41,10 +33,8 @@ Oid.component(
   id: 'ml:cluster-oid',
   element: 'ml-cluster-oid',
   properties: {
-    num_clusters: {default: 2},
-    result: {}
+    num_clusters: {default: 2}
   },
   receive: {transform: 'applyCluster'},
-  template: html`<h1>{{this.result}}</h1>`,
   implementation: ApplyCluster
 })
