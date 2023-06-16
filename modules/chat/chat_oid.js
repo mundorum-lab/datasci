@@ -3,6 +3,7 @@ import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 export class ChatOid extends OidWeb {
   async connectedCallback(){
     super.connectedCallback()
+    // console.log("connected callback")
     // let workflowMap= await fetch("./workflowMapExample.json");
     // workflowMap=await workflowMap.json(0);
     
@@ -16,7 +17,14 @@ export class ChatOid extends OidWeb {
   //   // this.requestToOpenAI()
     
   }
+  connectionReady(cInterface,id,component){
+    super.connectionReady(cInterface,id,component)
+    console.log(`itf = ${cInterface} id = ${id} component = ${component.id}`)
 
+    if(cInterface.includes('itf:oid')){
+      console.log(`connected with ${id}`)
+    }
+  }
   setGraphInfo(topic, message){
     console.log('=== topic/message') //
     console.log(topic)
@@ -39,12 +47,12 @@ export class ChatOid extends OidWeb {
       finalComponent = previousComponents[0][0]
     }
     let path = this.findFullPathToComponent(workflowMap, componentId)
-    this.prompt = `You are a high specialized data science program called DataGPT.
+    let prompt = `You are a high specialized data science program called DataGPT.
                   I want to understand the following experiment:`
     let index = 0
     for (let component of path){
       index += 1
-      this.prompt += `${index} - ${component.nodeType} was added. `
+      prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
         if (this.arrayCheck(tableList,component.nodeType) || this.arrayCheck(valueList,component.nodeType)){
           let table=await this.getData(componentId,'table')
@@ -52,13 +60,13 @@ export class ChatOid extends OidWeb {
           console.log("interface oid received")
           console.log(`table:${table}`)
           console.log(`result:${result}`)
-          this.prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
+          prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${table} and the output is ${result}
         Explain it to me.`
         }
         else if (component.nodeType==="graph-oid"){
           let data=await this.getData(componentId,'data')
           let type=await this.getData(componentId,'type')
-          this.prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
+          prompt+=`The last component which I want to analyse is a ${type} graph, based on ${data}
         Explain it to me.`
         }
         
@@ -67,15 +75,19 @@ export class ChatOid extends OidWeb {
       
     }
     // console.log(path)
-    // console.log(`prompt:${this.prompt}`)
+    // console.log(`prompt:${prompt}`)
     return prompt
-      
+    
     
   }
   async getData(componentId,attributeName){
-    await this._connect("itf:oid",componentId,this)
+    // await this._connect(`itf:oid`,componentId,this)
+    // console.log(`type = ${typeof(componentId)}`)
     
-    let componentData=await this._invoke("itf:oid","get",{property:attributeName})
+    console.log(`attributeName: ${attributeName}`)
+    let componentData=await this._bus.invoke (`itf:oid`, componentId, 'get', {property:attributeName})
+    // this._invoke(`itf:oid`,componentId,"get",{property:attributeName})
+    
     console.log(`data:${componentData}`)
     return componentData
   }
@@ -170,14 +182,21 @@ export class ChatOid extends OidWeb {
   }
 
   async handlePrompt(op,message){
-    
     let componentId=message.value
     console.log(`id:${componentId}`)
-    prompt=await this.generatePrompt(this.workflowMap,componentId)
+    let myPrompt=await this.generatePrompt(this.workflowMap,componentId)
+    console.log(`prompt:${myPrompt}`)
     // let mainComponent=this.findComponent(this.workflowMap,componentId)
     // let previousComponents=this.findPreviousComponents(this.workflowMap,componentId)
-    return {value:prompt}
+    return {value:myPrompt}
 
+  }
+
+  handleConnect(op,message){
+    console.log(`entered on connect`)
+    let componentId=message.value
+    this._connect(`itf:oid`,componentId,this)
+   
   }
 
 }
@@ -187,6 +206,10 @@ Oid.cInterface ({
   operations: {
     'prompt': {
       response: true
+    
+    },
+    'connect':{
+      response: false
     }
   },
   cardinality: '1:n'
