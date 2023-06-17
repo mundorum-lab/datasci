@@ -1,5 +1,4 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
-import 'flowbite';
 
 export class ButtonPopoverOid extends OidUI {
   _onClick() {
