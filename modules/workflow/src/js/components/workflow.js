@@ -14,6 +14,34 @@ export class WorkflowOid extends OidUI {
     }
   }
 
+  connectedCallback(){
+    super.connectedCallback();
+    
+      this.nodes = this.shadowRoot.querySelectorAll(".node");
+      this.offsetX = 0;
+      this.offsetY = 0;
+      this.isMoving = false;
+    }
+    
+      _onMouseDown(event){
+        this.isMoving = true;
+        this.offsetX = event.clientX - event.target.getBoundingClientRect().left;
+    this.offsetY = event.clientY - event.target.getBoundingClientRect().top;
+        }
+    
+      _onMouseMove(event){
+        if (!this.isMoving) return;
+
+    event.target.style.left = event.clientX - this.offsetX + 'px';
+    event.target.style.top = event.clientY - this.offsetY + 'px';
+    event.target.style.position = 'absolute';
+      }
+    
+      _onMouseUp(){
+        this.isMoving = false;
+      }
+  
+
   template() {
     return html`
       <div class="w-full h-full flex">
@@ -125,11 +153,17 @@ export class WorkflowOid extends OidUI {
           <!-- O componente de seleção de templates recebe a lista de templates do barramento e -->
           <!-- apresenta os templates disponível para o usuario escolher. -->
         </div>
-        <div class="w-full h-full bg-background">dsa</div>
+        <div class="w-full h-full ">
+        <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
+  <div id="node1" class="node w-32 h-32 bg-blue-500 absolute"></div>
+  <div id="node2" class="node w-32 h-32 bg-red-500 absolute"></div>
+</div></div>
       </div>
     `;
   }
 }
+
+
 
 Oid.component({
   id: "workflow:mainPage",
