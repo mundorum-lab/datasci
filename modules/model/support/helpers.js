@@ -26,7 +26,7 @@ export function removeColumn(array, columnIndex){
 }
 
 // Given 2 arrays with n lines and 1 column, return an array1 - array2
-export function subtractArrays(array1, array2){
+export function subtractArrays(array1, array2){  
   const result =  array1.map((elem, index) => parseFloat((elem - array2[index]).toFixed(3)));
   return result;
 }
@@ -49,3 +49,12 @@ export function splitColumns(data){
   return columns;
 }
 
+export function normalizeColumn(column){
+  const minX = Math.min(...column);
+  const maxX = Math.max(...column);
+  const normalizedColumn = [];
+  column.forEach((el, idx) => {
+    normalizedColumn[idx] = (el - minX)/(maxX-minX);
+  });
+  return normalizedColumn;
+}
