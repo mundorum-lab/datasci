@@ -26,10 +26,17 @@ export async function getPCA2dReduction(data){
     //        compressed[i][j] = [compressed[i][j]]
     //    }
     //}
-    compressed = compressed[0]
+    console.log('compressed antes: ', compressed)
+    let returnData = []
+
+    for(let i = 0; i < compressed[0].length; i++) {
+        returnData.push([compressed[0][i], compressed[1][i]])
+    }
+    console.log('olha o return data:', returnData)
+    console.log('compressed[0].lenght: ', compressed[0].length)
     let returnedTable = {
-        'columns':[{'name' : 'PCA', 'type' : 'num'}],
-        'data' : compressed} 
+        'columns':[{'name' : 'PCA1', 'type' : 'num'}, {'name' : 'PCA2', 'type' : 'num'}],
+        'data' : returnData} 
     return returnedTable
 }
 
