@@ -1,7 +1,7 @@
 
 import {PCA} from "./pca-lib.js"
 
-export async function getPCA(data){    
+export async function getPCA1dReduction(data){    
     let vectors = PCA.getEigenVectors(data);
     let adData = PCA.computeAdjustedData(data,vectors[0])
     let compressed =  adData.formattedAdjustedData
@@ -17,6 +17,28 @@ export async function getPCA(data){
     return returnedTable
 }
 
+export async function getPCA2dReduction(data){
+    let vectors = PCA.getEigenVectors(data);
+    let adData = PCA.computeAdjustedData(data,vectors[0], vectors[1])
+    let compressed =  adData.formattedAdjustedData
+    //for (let i = 0; i < compressed.length; i++) {
+    //    for (let j = 0; j < compressed[i].length; j++) {
+    //        compressed[i][j] = [compressed[i][j]]
+    //    }
+    //}
+    console.log('compressed antes: ', compressed)
+    let returnData = []
+
+    for(let i = 0; i < compressed[0].length; i++) {
+        returnData.push([compressed[0][i], compressed[1][i]])
+    }
+    console.log('olha o return data:', returnData)
+    console.log('compressed[0].lenght: ', compressed[0].length)
+    let returnedTable = {
+        'columns':[{'name' : 'PCA1', 'type' : 'num'}, {'name' : 'PCA2', 'type' : 'num'}],
+        'data' : returnData} 
+    return returnedTable
+}
 
 export async function getData(table){
     let columns = table['columns']
