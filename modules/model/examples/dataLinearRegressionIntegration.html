@@ -12,9 +12,7 @@
 <body>
   <h1>Linear Regression Algorithm:</h1>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
-  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>    
-  <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
-
+  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/processed"></fileinput-oid>
   <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
 
   <table-view-oid subscribe="data/transformed~display"></table-view-oid>

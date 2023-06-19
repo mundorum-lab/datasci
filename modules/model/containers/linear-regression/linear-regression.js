@@ -30,7 +30,8 @@ const gradient = (theta_vector, data, target, m) => {
 
 
 const linearRegression = (target, data, nb_epochs, m, learning_rate, error) => {
-  let theta_vector = [0,1,1];
+  let theta_vector = data.map(() => 1);
+  theta_vector.unshift(0);
   let mse = calculateError(target, data, theta_vector, m);
   for (let i = 0; i < nb_epochs; i++){
     let temp_thetas = gradient(theta_vector, data, target, m);
