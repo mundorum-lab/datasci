@@ -1,12 +1,12 @@
 import { html, Oid, OidUI  } from '/lib/oidlib-dev.js'
-import {getPCA, getData} from './PCA.js'
+import {getPCA1dReduction, getPCA2dReduction, getData} from './PCA.js'
 
 
 export class PcaOid extends OidUI {
   async applyPCA (topic, message) {
     let table = JSON.parse(JSON.stringify(message));
     this.data = await getData(table)
-    this.result = await getPCA(this.data)
+    this.result = await getPCA1dReduction(this.data)
     console.log('this.result que sera publicado: ', this.result)
     this._notify("transformed", this.result);
   }
