@@ -1,8 +1,8 @@
-import { html, Oid, OidUI  } from '/lib/oidlib-dev.js'
+import { html, Oid, OidBase  } from '/lib/oidlib-dev.js'
 import {getPCA1dReduction, getPCA2dReduction, getData} from './PCA.js'
 
 
-export class PcaOid extends OidUI {
+export class PcaOid extends OidBase {
   async applyPCA (topic, message) {
     let table = JSON.parse(JSON.stringify(message));
     this.data = await getData(table)
@@ -27,6 +27,5 @@ Oid.component(
     target_dimension: {default: 1}
   },
   receive: {transform: 'applyPCA'},
-  template: html`<h1>data returned: {{this.result}} </h1>`,
   implementation: PcaOid,
 });
