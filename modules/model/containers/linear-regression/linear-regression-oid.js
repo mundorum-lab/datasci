@@ -13,7 +13,6 @@ export class LinearModel extends OidBase {
     this.data = value.data;
     if (!this.data) return this.reportError('No data was found');
     const {no_target_array, target_array} = generateTargetDataArrays(this.data, this.target_index);
-    no_target_array.splice(no_target_array.length-1); // Remove the index column from the array
     const normalized_array = no_target_array.map(column => normalizeColumn(column));
     const thetas = executeLinearRegression(normalized_array, target_array);
     const result = calculateResultColumn(thetas, normalized_array);
