@@ -50,11 +50,11 @@ export function splitColumns(data){
 }
 
 export function normalizeColumn(column){
-  const minX = Math.min(...column);
-  const maxX = Math.max(...column);
-  const normalizedColumn = [];
+  const min_x = Math.min(...column);
+  const max_x = Math.max(...column);
+  const normalized_column = [];
   column.forEach((el, idx) => {
-    normalizedColumn[idx] = (el - minX)/(maxX-minX);
+    normalized_column[idx] = (el - min_x)/(max_x-min_x);
   });
-  return normalizedColumn;
+  return normalized_column;
 }
