@@ -1,4 +1,4 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+kimport { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 async function makeHttpRequest(method, body, headers, url) {
   try {
