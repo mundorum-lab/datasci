@@ -1,7 +1,7 @@
 # Module `Data`
 
 # Description
-> Our module is responsible for reading files (.json and .csv) and collecting raw data from APIs to transform them into a predefined format that is useful for other components to use. Essentially, we take the raw data and convert it into a JSON format, which is then inserted into the data bus.
+Our module is responsible for reading files (.json and .csv) and collecting raw data from APIs to transform them into a predefined format that is useful for other components to use. Essentially, we take the raw data and convert it into a JSON format, which is then inserted into the data bus.
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
@@ -10,7 +10,7 @@
 	* `Responsible for architecting and developing the api-input, this processes JSON data and send to data bus.`
 * `João Guilherme Alves Santos`
 	* `Responsible for architecting and developing the clear-data, file-input and file-reader components to transform into JSON.`
-* `Raniery Rodrigues da SIlva`
+* `Raniery Rodrigues da Silva`
 	* `Responsible for architecting and developing the file typing component to transform into JSON.`
 * `Leonardo Livrare Martins`
 	* `Responsible for architecting and developing the api-input component to transform into JSON.`
@@ -90,7 +90,7 @@
 
 ## Component `file-reader`
 
-> The responsibility of this component is to collect a file (CSV or JSON) from the user, process it doing some fell steps of pre-processing data steps and stores it in the browser's Local Storage.
+The responsibility of this component is to collect a file (CSV or JSON) from the user, process it doing some fell steps of pre-processing data steps and stores it in the browser's Local Storage.
 
 ### Output Notices
 
@@ -99,7 +99,7 @@ notice    | source | message type
 `loaded` | `As soon as the component finishes to store the content in Local Storage, it publishes the information about the database and stored data on the data bus.` | `TreatedReaderContent`
 ## Component `file-input`
 
-> The responsibility of this component is to collect data from Local Storage and transform it into a useful format for other components. Specifically, this component catch data from the Browser Local Storage, which is then inserted into the data bus.
+The responsibility of this component is to collect data from Local Storage and transform it into a useful format for other components. Specifically, this component catch data from the Browser Local Storage, which is then inserted into the data bus.
 
 ### Input Notices
 
@@ -116,7 +116,7 @@ notice    | source | message type
 ---
 ## Component `api-input`
 
->For this component, the responsibility is to collect raw data from an API specified by us. Initially we are thinking about the implementation for the google sheet API that will take data from online spreadsheets and transform it into a useful format for other components. Similar to file-input, we convert the raw data into a JSON format, which is then inserted into the data bus.
+For this component, the responsibility is to collect raw data from an API specified by us. Initially we are thinking about the implementation for the google sheet API that will take data from online spreadsheets and transform it into a useful format for other components. Similar to file-input, we convert the raw data into a JSON format, which is then inserted into the data bus.
 
 ### Input Notices
 
@@ -150,7 +150,7 @@ notice    | source | message type
 ---
 ## Component `file-typing`
 
-> This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. It separates by 'sep' input the information column and data. After this process is finished, it inserts the typed data into the data bus.
+This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. It separates by 'sep' input the information column and data. After this process is finished, it inserts the typed data into the data bus.
 
 ### Input Notices
 
@@ -169,28 +169,28 @@ notice    | source | message type
 ![Components Narratives](images/DataWorkflow.png)
 
 ## Setup
-> `file-reader` component
+`file-reader` component
 ~~~html
 <filereader-oid 
 	sep="," 
 	publish="loaded~file/loaded/[id]">
 </filereader-oid>
 ~~~
-> `file-input` component
+`file-input` component
 ~~~html
 <fileinput-oid
 	subscribe="file/loaded/[id]~load_file"
 	publish="output~show/message">
 </fileinput-oid>
 ~~~
-> `api-input` component
+`api-input` component
 ~~~html
 <api-input 
 	subscribe="input_api/[id]~load"
     publish="output~receive_data/[id]">
 </api-input>
 ~~~
-> `file-typing` component
+`file-typing` component
 ~~~html
 <file-typing
 	subscribe="load_file/load/[id]~load_file"
