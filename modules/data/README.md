@@ -70,7 +70,7 @@
 	"line": number
 }
 ~~~
-**`RawAPIContent`**
+**`RawAPIRequest`**
 ~~~json
 {
 	"api_url": string,
@@ -78,6 +78,10 @@
 	"headers": string,
 	"body": string
 }
+~~~
+**`RawAPIContent`**
+~~~js
+[{object}, ...]
 ~~~
 
 # Components
@@ -118,13 +122,30 @@ notice    | source | message type
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects the url received and starts the process of obtaining and transforming the raw data into JSON format.` | `RawAPIContent`
+`load` | `The component collects the url received and starts the process of obtaining and transforming the raw data into JSON format.` | `RawAPIRequest`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
+`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `RawAPIContent` or `ErrorDuringDataIngestion`
+
+---
+## Component `api-parser`
+
+This component receives raw api content as a list of objects and transforms it into TreatedDataContent
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`input_raw` | `Collects the results of an API request and starts the process of transforming it into TreatedDataContent` | `RawAPIContent`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`output_processed` | `As the component finishes transforming the data received, publishes it as TreatedDataContent` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `file-typing`
