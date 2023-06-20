@@ -33,8 +33,10 @@ export class ApiInputOid extends OidUI {
     
     try {
       let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
+      console.log(rawData)
 
-      this._notify('output', {"id": jsonData.identifier, columns: columns, data: data}) // Processed file goes here
+      
+      this._notify('output', rawData) // Processed file goes here
     } catch (e) {
       this._notify('output', {error: e.message})
     }
