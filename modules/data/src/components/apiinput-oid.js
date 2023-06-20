@@ -1,4 +1,4 @@
-kimport { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
 async function makeHttpRequest(method, body, headers, url) {
   try {
@@ -33,21 +33,6 @@ export class ApiInputOid extends OidUI {
     
     try {
       let rawData = await makeHttpRequest(jsonData.method, jsonData.body, jsonData.headers, jsonData.api_url)
-    
-      console.log(`Success`)
-      let columns = Object.keys(rawData[0])
-      let data = []
-
-      for (let i in rawData) {
-        data.push([])
-
-        for (let key of Object.keys(rawData[i])) {
-          data[i].push(rawData[i][key]) 
-        } 
-      }
-
-      console.log(columns)
-      console.log(data)
 
       this._notify('output', {"id": jsonData.identifier, columns: columns, data: data}) // Processed file goes here
     } catch (e) {
