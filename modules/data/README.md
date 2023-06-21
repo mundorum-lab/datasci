@@ -1,32 +1,31 @@
-# Module `Data`
+# `Data` module
 
-# Description
-Our module is responsible for reading files (.json and .csv) and collecting raw data from APIs to transform them into a predefined format that is useful for other components to use. Essentially, we take the raw data and convert it into a JSON format, which is then inserted into the data bus.
+<p align="center">
+  <img src="images/DataModule.png"/>
+</p>
+
+The data module is the very beggining of this application's workflow, allowing the ingestion of data from multiple sources and formatting it such that the others modules can operate on it seamlessly. It operates on two fronts: raw data from _.csv_ or _JSON_ files, and _JSON_ results of API calls, both of which are formatted into a standardized format through a shared workflow. As such, this module sets the basis upon which all other modules can operate.
+
+This is an explanation of the components contained in this module and their relationship to each other and other modules.
 
 # Team `QR2.0`
 * `Giovana Kerche Bonás`
-	* `Responsible for architecting and developing the file-input and file-reader components to transform into JSON.`
+	* Responsible for architecture and development of the _File Input_ and _File Reader_ components, part of the _data from file_ pipeline.
 * `Gustavo Araújo Morais`
-	* `Responsible for architecting and developing the api-input, this processes JSON data and send to data bus.`
+	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
 * `João Guilherme Alves Santos`
-	* `Responsible for architecting and developing the clear-data, file-input and file-reader components to transform into JSON.`
+	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
 * `Raniery Rodrigues da Silva`
-	* `Responsible for architecting and developing the file typing component to transform into JSON.`
+	* Responsible for architecture and development of the _Type Input_ component, which is part of the process of standardization of data ingested.
 * `Leonardo Livrare Martins`
-	* `Responsible for architecting and developing the api-input component to transform into JSON.`
+	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
 
 # Message Types
+These are the message types exchanged between components of this module and from this module to others.
 
-**`RawFileContent`**
-~~~json
-{
-	"database": string, 
-	"table": string, 
-	"file_name": string, 
-	"file_extension": string
-}
-~~~
 **`TreatedDataContent`**
+
+Data collected. Still needs to be typed by the _Type Input_ component
 ~~~json
 {
 	"columns": [name, ...],
@@ -37,6 +36,8 @@ Our module is responsible for reading files (.json and .csv) and collecting raw 
 }
 ~~~
 **`TypedDataContent`**
+
+The standard for data storage throghout the application. Contains the name and type for each column, as well as the data that's being stored.
 ~~~json
 {
 	{
@@ -49,6 +50,8 @@ Our module is responsible for reading files (.json and .csv) and collecting raw 
 }
 ~~~
 **`TreatedReaderContent`**
+
+Used to request a file stored in _IndexedDB_ to be read.
 ~~~json
 {
 	"database": string, 
@@ -57,20 +60,9 @@ Our module is responsible for reading files (.json and .csv) and collecting raw 
 	"file_extension": string
 }
 ~~~
-**`ErrorDuringDataIngestion`**
-~~~json
-{
-	"error": string
-}
-~~~
-**`ErrorDuringDataProcessing`**
-~~~json
-{
-	"error": string,
-	"line": number
-}
-~~~
 **`RawAPIRequest`**
+
+Holds the info to an API request.
 ~~~json
 {
 	"api_url": string,
@@ -80,13 +72,34 @@ Our module is responsible for reading files (.json and .csv) and collecting raw 
 }
 ~~~
 **`RawAPIContent`**
+
+Holds the contents returned by an API.
 ~~~js
 [{object}, ...]
+~~~
+**`ErrorDuringDataIngestion`**
+
+Signifies an error that occurs during a process of data ingestion, such as reading from a file or API.
+~~~json
+{
+	"error": string
+}
+~~~
+**`ErrorDuringDataProcessing`**
+
+Signifies an error that occurs during a process of data processing, such as in the _Input Type_ component.
+~~~json
+{
+	"error": string,
+	"line": number
+}
 ~~~
 
 # Components
 
-![Component specification](images/Data.png)
+<p align="center">
+  <img src="images/Data.png"/>
+</p>
 
 ## Component `file-reader`
 
@@ -116,24 +129,26 @@ notice    | source | message type
 ---
 ## Component `api-input`
 
-For this component, the responsibility is to collect raw data from an API specified by us. Initially we are thinking about the implementation for the google sheet API that will take data from online spreadsheets and transform it into a useful format for other components. Similar to file-input, we convert the raw data into a JSON format, which is then inserted into the data bus.
+This component is used to ingest from an API specified by the user. It receives an API request comprised of URL, method, headers and body, and executes it.
+
+It is important to note that the data this component publishes on the bus is the raw data it receives from the API if the request was successful, or an error message otherwise. The standardization of this data is a responsibility of the `api-parser` component.
 
 ### Input Notices
 
 notice | action | message type
 -------| ------ | ------------
-`load` | `The component collects the url received and starts the process of obtaining and transforming the raw data into JSON format.` | `RawAPIRequest`
+`load` | `The component collects the request and starts the process of ingesting the API.` | `RawAPIRequest`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`output` | `As soon as the component finishes transforming the raw data into JSON, it publishes the result on the data bus.` | `RawAPIContent` or `ErrorDuringDataIngestion`
+`output` | `When the request is finished, publishes the raw API content if the request was successful, or an error otherwise.` | `RawAPIContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `api-parser`
 
-This component receives raw api content as a list of objects and transforms it into TreatedDataContent
+This component is responsible for standardizing the raw data obtained from APIs through the `api-input` component. It receives the raw data and transforms it into the untyped standard format. From here, it should be typed by a `type-input` component before it is used by other modules. 
 
 ### Input Notices
 
@@ -145,7 +160,7 @@ notice | action | message type
 
 notice    | source | message type
 ----------| -------| ------------
-`output_processed` | `As the component finishes transforming the data received, publishes it as TreatedDataContent` | `TreatedDataContent` or `ErrorDuringDataIngestion`
+`output_processed` | `When the component finishes transforming the data received, publishes the treated data if the transformation was successful, or an error message otherwise.` | `TreatedDataContent` or `ErrorDuringDataIngestion`
 
 ---
 ## Component `file-typing`
