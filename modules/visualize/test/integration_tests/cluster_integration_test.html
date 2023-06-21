@@ -26,7 +26,7 @@
     <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
     
     <h1>Grafico</h1><br/>
-  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
+  <options-sender-oid publish="click~render/options" options='[{ "x": 0, "y": 1, "z":2}]'> </options-sender-oid><br />
   <export-button-oid publish="export~graph/export"></export-button-oid><br />
   <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
