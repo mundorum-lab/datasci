@@ -1,16 +1,24 @@
 export function buildScatterChartData(rawData, fields){
   let data = {
     labels: [],
-    datasets: [{
-      label: 'TODO',
-      data: []
-    }]
+    datasets: []
   };
   
-  data['datasets'][0]['data'] = rawData['data'].map(row => { return {
-    x: row[fields['x']],
-    y: row[fields['y']],
-  }});  
+  fields.forEach((fieldset) => {
+    const dataset = {
+        label: 'TODO',
+        data: [],
+        fill: false,
+        tension: 0.1,
+    }
+    dataset.data = rawData['data'].map(row => {
+      return {
+        x: row[fieldset['x']],
+        y: row[fieldset['y']],
+      };
+    });
+    data['datasets'].push(dataset);
+  })
   
   return data;
 }

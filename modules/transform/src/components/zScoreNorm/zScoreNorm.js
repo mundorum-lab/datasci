@@ -20,28 +20,32 @@ export class NormalizeWeb extends TransformWeb {
     normalize(){
         
         this.zscore()
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
-        this._notify('normalizeResult', json)
+        this._notify('normalizeResult', this.result)
     }
 
     handleNormalize (topic, message) {  //handle with notice
         
         
-        this.table = message     
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }     
         this.file_id = this.table.file_id
         this.columns = this.table.columns
         this.toDataFrame()  
         
         let validator = new ValidateZscoreNorm()
-        let result = validator.validate(this.columns, this.column)
-        console.log(result)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        console.log(validation)
+        if(validation.isValid){
             this.normalize()
         } else {
             //return error message
             this.status = false
-            this._notify('normalizeError', result.result)
+            this._notify('normalizeError', validation.result)
         }
 
     }
@@ -50,8 +54,8 @@ export class NormalizeWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transNormalize',
-  element: 'normalize-data',
+  id: 'ts:normalize',
+  element: 'normalize-oid',
   properties: {
     column: {default: null},
   },

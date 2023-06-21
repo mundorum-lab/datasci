@@ -35,9 +35,9 @@ export class ModeWeb extends TransformWeb {
 
     mode(){
         this.value = this.calcularModa(this.df.column(this.column).values)
-        let json = this.toSingleValue(this.value) // Fix return: Json or singleValue.
+        this.toSingleValue(this.value,"Moda",this.column) // Fix return: Json or singleValue.
         this.status = true
-        this._notify('modeResult', json)
+        this._notify('modeResult', this.result)
     }
 
     handleMode (topic, message) {  //handle with notice
@@ -45,19 +45,23 @@ export class ModeWeb extends TransformWeb {
         //topic: mode
         //message: modeInput
  
-        this.table = message
-        this.toDataFrame()        //TODO add this as non-oid attributes
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
+        this.toDataFrame()        
         this.file_id = message.file_id
 
         let validator = new ValidateMode()
         
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.mode()
         } else {
             //return error message
             this.status = false
-            this._notify('modeError', result.result)
+            this._notify('modeError', validation.result)
         }
     }
     
@@ -65,10 +69,11 @@ export class ModeWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transMode',
-  element: 'mode-data',
+  id: 'ts:mode',
+  element: 'mode-oid',
   properties: {
     column: {default: null},
+    json_result: {default: null},
   },
   receive: {mode: 'handleMode'},
   implementation: ModeWeb

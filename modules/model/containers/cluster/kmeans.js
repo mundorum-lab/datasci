@@ -1,8 +1,6 @@
 // K-means implementation taken from the following link:
 // https://medium.com/geekculture/implementing-k-means-clustering-from-scratch-in-javascript-13d71fbcb31e
 
-const MAX_ITERATIONS = 50;
-
 function randomBetween(min, max) {
   return Math.floor(
     Math.random() * (max - min) + min
@@ -71,8 +69,8 @@ function compareCentroids(a, b) {
   return true;
 }
 
-function shouldStop(oldCentroids, centroids, iterations) {
-  if (iterations > MAX_ITERATIONS) {
+function shouldStop(oldCentroids, centroids, iterations, max_iterations) {
+  if (iterations > max_iterations) {
     return true;
   }
   if (!oldCentroids || !oldCentroids.length) {
@@ -169,7 +167,7 @@ function recalculateCentroids(dataSet, labels, k) {
   return newCentroidList;
 }
 
-function kmeans(dataset, k, useNaiveSharding = true) {
+function kmeans(dataset, k, max_iterations, useNaiveSharding = true) {
   if (dataset.length && dataset[0].length && dataset.length > k) {
     // Initialize book keeping variables
     let iterations = 0;
@@ -183,7 +181,7 @@ function kmeans(dataset, k, useNaiveSharding = true) {
     }
 
     // Run the main k-means algorithm
-    while (!shouldStop(oldCentroids, centroids, iterations)) {
+    while (!shouldStop(oldCentroids, centroids, iterations, max_iterations)) {
       // Save old centroids for convergence test.
       oldCentroids = [...centroids];
       iterations++;
@@ -201,7 +199,7 @@ function kmeans(dataset, k, useNaiveSharding = true) {
       clusters: clusters,
       centroids: centroids,
       iterations: iterations,
-      converged: iterations <= MAX_ITERATIONS,
+      converged: iterations <= max_iterations,
     };
     return results;
   } else {

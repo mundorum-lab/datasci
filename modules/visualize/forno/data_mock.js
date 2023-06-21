@@ -15,3 +15,35 @@ export const mockedData = {
         ["Shorts", 49.90, 70, 35]
       ]
 }
+
+export const scatter_mockData = {
+    "columns": [
+        {"name":"y1", "type": "num"},
+        {"name":"y2", "type": "num"},
+        {"name":"x" , "type": "num"}
+    ],
+    "data": [
+        [2,1,0],
+        [3,2,1],
+        [4,3,2],
+        [5,4,3],
+        [6,5,4],
+        [7,6,5]
+    ]
+}
+
+export const cluster_mockData = {
+    "columns": [
+        {"name":"cluster", "type":"num"},
+        {"name":"x", "type": "num"},
+        {"name":"y" , "type": "num"}
+    ],
+    "data": [
+        [1,1,0],
+        [1,1,1],
+        [2,2,0],
+        [2,2,1],
+        [3,3,0],
+        [3,3,1]
+    ]
+}

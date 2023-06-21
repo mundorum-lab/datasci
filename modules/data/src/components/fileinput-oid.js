@@ -2,6 +2,7 @@ import { html, Oid, OidUI } from "/lib/oidlib-dev.js";
 
 export class FileInputOid extends OidUI {
   handleLoad_file(topic, message) {
+    console.log(message)
     const jsonData = JSON.parse(message.value);
     const dbName = jsonData.database;
     const objectStoreName = jsonData.table;
@@ -12,7 +13,7 @@ export class FileInputOid extends OidUI {
     const request = window.indexedDB.open(dbName);
 
     request.onerror = function (event) {
-      console.log("Erro ao abrir o banco de dados:", event.target.errorCode);
+      self._notify('output_raw', {error: event.target.errorCode});
     };
 
     request.onsuccess = function(event) {
@@ -22,21 +23,26 @@ export class FileInputOid extends OidUI {
       const requestGetAll = objectStore.getAll();
 
       requestGetAll.onsuccess = function(event) {
-        const data = event.target.result;
+        let data = event.target.result;
+        
+        data = data.map(item => {
+          const { id, ...rest } = item;
+          return rest;
+        });
+
+        console.log("esse é o data", data);
+        
 
         list_data = [];
         data.forEach(function(item) {
           list_data.push(Object.values(item))
         });
         columns = Object.keys(data[0])
-
-        self._notify("output", {
-          value: JSON.stringify({ columns: columns, data: list_data }),
-        });
+        self._notify('output_raw', {"id": jsonData.identifier, columns: columns, data: list_data})
       };
 
       requestGetAll.onerror = function(event) {
-        console.log("Erro ao acessar o banco:", event.target.error);
+        self._notify('output_raw', {error: event.target.error});
       };
 
       transaction.oncomplete = function() {
@@ -50,8 +56,7 @@ Oid.component({
   id: "ex:fileinput",
   element: "fileinput-oid",
   properties: {
-    id: { default: "1" },
-    sep: { default: ";" },
+    id: { default: "1" }
   },
   receive: ["load_file"],
   implementation: FileInputOid,

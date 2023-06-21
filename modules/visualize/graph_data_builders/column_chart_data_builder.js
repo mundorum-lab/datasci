@@ -3,16 +3,22 @@ import { interpolateColors } from "../utils/color_generator.js";
 export function buildColumnChartData(rawData, fields){
     let data = {
         labels: [],
-        datasets: [{
-            label: 'TODO',
-            data: [],
-        }]
+        datasets: []
     };
 
-    rawData['data'].forEach(row => {
-        data['labels'].push(row[fields['x']]);
-        data['datasets'][0]['data'].push(row[fields['y']]);
-    });
+    fields.forEach((fieldset) => {
+        const dataset = {
+            label: 'TODO',
+            data: [],
+            fill: false,
+            tension: 0.1,
+        }
+        rawData['data'].forEach(row => {
+            data['labels'].push(row[fieldset['x']]);
+            dataset.data.push(row[fieldset['y']]);
+        });
+        data['datasets'].push(dataset);
+    })
 
     const dataLength = rawData['data'].length;
     data.datasets[0].backgroundColor = interpolateColors(dataLength); 
