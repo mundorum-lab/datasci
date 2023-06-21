@@ -1,7 +1,7 @@
 # Module `Visualize`
 
 # Description
-O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam exibidos de forma gráfica para o usuário.
+The objective of the module is to allow the data, storaged in tables, to be shown in a graphically way to user. 
 
 # Team
 * Iago Caran Aquino - RA: 198921
@@ -12,15 +12,31 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 # Folder and Files Structure
 
 ```
-├── availableNodes.json <- descrição dos modulos que podem ser inseridos no workflow 
+├── availableNodes.json         -> module descriptions that can be placed in workflow
 │
-├── graph.js            <- template do componente
-│
-├── libs                <- bibliotecas utilizadas
-│
-├── prototype           <- arquivos utilizados para teste/desenvolvimento do modulo
 |
-└── README.md           <- especificação do modulo
+├── mocks                        -> folder with mock data and components for testing components
+│     │
+|     ├── data_mock.js           -> mock tables for testing
+│     │
+|     ├── options_mock.js        -> mock options maps for testing
+│     │
+|     ├── data_sender_oid.js     -> button that simulates sending data to the graph component
+│     │
+|     ├── options_sender_oid.js  -> button that simulates sending options to the graph component
+│
+|
+├── test                         -> files for unit and integration testing between components
+│     │
+|     ├── graphs_tests.html      -> graphics unit tests page
+│     │
+|     ├── integration_tests.html -> graphics integration tests page
+│
+|
+├── graph_oid.js                 -> component that creates the chart
+|
+|
+└── README.md                    -> module specification
 ```
 
 # Message Types
@@ -29,16 +45,25 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 
 ~~~json
 {
-  columns: [
-	{name, type},
-	...
+  "columns": [
+    {
+      "name": "<string>",
+      "type": "<string>"
+    },
+    {
+      "name": "<string>",
+      "type": "<string>"
+    }
   ],
-  data: [
-	[column0, column1, ...],
-	... other rows ...
+  "data": [
+    ["column1","column2","column_n"],
+    ["column1","column2","column_n"],
   ]
 }
 ~~~
+This was the format of the table agreed between the groups. The `GraphOid` component will be able to receive this table as input to generate the graph.
+
+<br />
 
 **`Options`**
 
@@ -67,46 +92,115 @@ O módulo tem como objetivo permitir que os dados, armazenados em tabelas, sejam
 	}
 }
 ~~~
+This is the JSON format that is received by the `GraphOid` component that defines the graph options (better explained in the section "Information required for each type of graph").
+The "?" in description is for optional fields.
+
+<br />
 
 **`ExportGraph`**
 
 ~~~json
 {
-  image: Base64,
+  "type": "png" OR "jpeg,
 }
 ~~~
+This is the JSON format that is sent by the `export_button` component and received by the `GraphOid` component, to export the graph as a image, of type `type`.
+<br />
+<br />
 
 # Components
 
-
 ## Component Graph-oid
 
-Componente visual do gráfico a ser apresentado.
-Cada tipo de gráfico será um método dentro deste componente.
-Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de área, de "pizza", de "donut", de "bolha", de radar e de dispersão.
+Visual component of the chart to be displayed.
+Each chart type will be a method within this component.
+The types of graphs we will make are: bar, column, line, area, pie, donut, bubble, radar and scatter.
 
 ### Properties
 
-| property     | role                                                      |
-| ------------ | :-------------------------------------------------------- |
-| `type` | String com o tipo do gráfico |
-| `size`    | Mapa com os tamanhos do gráfico (width e height)        |
-| `options` | Objeto com os opções adicionais do gráfico (eixos, etc) |
-| `data`    | Objeto com os dados que serão exibidos pelo gráfico     |
-| `fields`  | Objeto que mapeia o indice das colunas da tabela para os eixos do grafico     |
+| property     | role     | data type | receive by    |
+| ------------ | :--------|-----------|-------------- |
+| `uid` | Unique Graph ID | *TBD* | HTML
+| `type` | Chart type  | String | HTML
+| `options` | Object with chart options | `Options` | Bus
+| `data`    | Object with the data that will be displayed by the chart | `Data`  | Bus
+
+The properties `title` and `fields` are embedded in the options message received by the bus.
+<br />
 
 ### Input Notices
 
 | notice   | source                                                  | message type |
 | -------- | ------------------------------------------------------- | ------------ |
-| `render` | Recebe os dados e desenha o grafico no espaço designado | `Data`       |
+| `data` | Receives the data and draws the graph in the designated space | `Data` |
+| `options` | Receives the options of the graph | `Options` |
+| `export` | Receives the export type and exports the chart to a file | `ExportGraph` |
+
+<br />
+
+## Component Export-oid
+
+Component that exports the graph to a file.
 
 ### Output Notices
 
-| notice   | source                          | message type  |
-| -------- | ------------------------------- | ------------- |
-| `export` | Possibilidade de salvar gráfico | `ExportGraph` |
+| notice   | source                                                  | message type |
+| -------- | ------------------------------------------------------- | ------------ |
+| `export` | Sends the export type and exports the chart to a file | `ExportGraph` |
 
+<br />
+
+# Mocked components
+
+## Component DataSenderOid
+
+Component (button) that simulates sending data to the GraphOid component. 
+
+### Properties
+
+| property     | role     | data type | send by    |
+| ------------ | :--------|-----------|-------------- |
+| `data`    | Object with the data that will be displayed by the chart | `Data`  | Bus
+
+<br />
+
+### Output Notices
+
+| notice   | source                                                  | message type |
+| -------- | ------------------------------------------------------- | ------------ |
+| `data` | Receives the data and draws the graph in the designated space | `Data` |
+| `options` | Receives the options of the graph | `Options` |
+| `export` | Receives the export type and exports the chart to a file | `ExportGraph` |
+
+<br />
+
+## Component OptionsSenderOid
+
+Visual component of the chart to be displayed.
+Each chart type will be a method within this component.
+The types of graphs we will make are: bar, column, line, area, pie, donut, bubble, radar and scatter.
+
+### Properties
+
+| property     | role     | data type | receive by    |
+| ------------ | :--------|-----------|-------------- |
+| `uid` | Unique Graph ID | *TBD* | HTML
+| `type` | Chart type  | String | HTML
+| `options` | Object with chart options | `Options` | Bus
+| `data`    | Object with the data that will be displayed by the chart | `Data`  | Bus
+
+The properties `title` and `fields` are embedded in the options message received by the bus.
+<br />
+
+### Input Notices
+
+| notice   | source                                                  | message type |
+| -------- | ------------------------------------------------------- | ------------ |
+| `data` | Receives the data and draws the graph in the designated space | `Data` |
+| `options` | Receives the options of the graph | `Options` |
+| `export` | Receives the export type and exports the chart to a file | `ExportGraph` |
+
+<br />
 
 # Components Narratives
 
@@ -114,7 +208,7 @@ Os tipos de gráficos que faremos são: de barras, de colunas, de linha, de áre
 
 ~~~html
 <graph-oid 	type = "bar-chart",
-        	subscribe = "data/<id>:render, graph/options:options",
+        	subscribe = "data/<id>:data, graph/options:options",
 			publish = "export:export/graph">
 </graph-oid>
 
@@ -151,7 +245,6 @@ O `id` referenciado no subscribe é o id do nó (valor atribuido a todo nó no w
 	- `title` 
 	- `scales`: 
 		- axes titles 
-		- type (`linear` or `category` or `time`)
 
 ## Optional for all types:
 - `Options`:
@@ -166,7 +259,7 @@ Graph type | Data | Options
 `Line` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> `datasets`: unset `fill` | 
 `Area` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> `datasets`: set `fill` | 
 `Scatter` | 2 axes: <br /> <ul> - `x` (numeric) </ul> <ul> - `y` (numeric) </ul> |
-`Bubble` | 3 axes: `x`, `y`, `r`*, all numeric | 
+`Bubble` | 3 axes: `x`, `y`, `z`*, all numeric | 
 `Bar` | 2 axes: <br /> <ul> - `x` (numeric) </ul> <ul> - `y` (numerical or categorical) </ul> | 
 `Column` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> |
 `Pie` | 2 axes: <br /> <ul> - `x` (numerical or categorical) </ul> <ul> - `y` (numeric) </ul> | 
