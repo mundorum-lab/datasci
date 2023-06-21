@@ -18,10 +18,10 @@
 </head>
 <body>
   <h1>Playground</h1>
-  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
-  <data-sender-oid publish="click~render/data"> </data-sender-oid><br />
-  <export-button-oid publish="export~graph/export"></export-button-oid><br />
-  <graph-oid uid="graph-1" type="line" subscribe="render/options~options;render/data~render;graph/export~export;"></graph-oid>
+  <options-sender-oid publish="click~graph/options/5"> </options-sender-oid><br />
+  <data-sender-oid publish="click~data/1"> </data-sender-oid><br />
+  <export-button-oid publish="export~graph/export/5"></export-button-oid><br />
+  <graph-oid uid="5" type="line" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>
