@@ -22,6 +22,15 @@
   <data-sender-oid publish="click~data/1"> </data-sender-oid><br />
   <export-button-oid publish="export~graph/export/5"></export-button-oid><br />
   <graph-oid uid="5" type="line" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
-  <canvas id="forcing-canvas"></canvas>
+  <h3>Valid Examples</h3>
+  <p>-<b>Type:</b> Line; <b>Fields:</b> [{ "x": 2, "y": 1 },{ "x": 2, "y": 3 }]; <b>Mock:</b> General</p>
+  <p>-<b>Type:</b> Doughnut; <b>Fields:</b>[{ "x": 0, "y": 1 }]; <b>Mock:</b> General</p>
+  <p>-<b>Type:</b> Scatter; <b>Fields:</b>[{ "x": 2, "y": 1 }]; <b>Mock:</b> General</p>
+  <p>-<b>Type:</b> Cluster; <b>Fields:</b>[{ "x": 1, "y": 2, "z": 0}]; <b>Mock:</b> General</p>
+  <p>-<b>Type:</b> Cluster; <b>Fields:</b>[{ "x": 1, "y": 2, "z": 0}]; <b>Mock:</b> Cluster</p>
+  <h3>Mocks Cheat sheet</h3>
+  <p>- General  |  Columns {"name": "Nome do produto", "type": "string"}, {"name": "Preço Médio (R$)", "type": "num"}, {"name": "Quantidade em Estoque", "type": "num"}, {"name": "Vendas Mensais", "type": "num"}</p>
+  <p>- Scatter  |  Columns {"name":"y1", "type": "num"}, {"name":"y2", "type": "num"}, {"name":"x" , "type": "num"}</p>
+  <p>- Cluster  |  Columns {"name":"cluster", "type":"num"}, {"name":"x", "type": "num"}, {"name":"y" , "type": "num"}</p>
 </body>
 </html>
