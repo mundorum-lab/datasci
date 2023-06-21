@@ -1,0 +1,65 @@
+{
+  "statistics": [
+    {
+      "name": "Linear Regression",
+      "type": "data/typed",
+      "id": "ml:linear-regression",
+      "presentable": false,
+      "icon": "#TODO",
+      "input": [
+        {"type":"data/typed"}
+      ],
+      "output":[
+        {"type":"data/typed"}
+      ],
+      "fields":[
+        {
+          "name": "target_index",
+          "label": "Target column index",
+          "view": "NumberField"
+        }
+      ]
+    },
+    {
+      "name": "Cluster",
+      "type": "data/typed",
+      "id": "ml:cluster-oid",
+      "presentable": false,
+      "icon": "#TODO",
+      "input": [
+        {"type":"data/typed"}
+      ],
+      "output":[
+        {"type":"data/typed"}
+      ],
+      "fields":[
+        {
+          "name": "num_cluster",
+          "label": "Number of clusters",
+          "view": "NumberField",
+          "value": 2
+        },
+        {
+          "name": "max_iterations",
+          "label": "Maximum number of iterations",
+          "view": "NumberField",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "name": "PCA",
+      "type": "data/typed",
+      "id": "ml:apply-pca",
+      "presentable": false,
+      "icon": "#TODO",
+      "input": [
+        {"type":"data/typed"}
+      ],
+      "output":[
+        {"type":"data/typed"}
+      ],
+      "fields":[]
+    }
+  ]
+}

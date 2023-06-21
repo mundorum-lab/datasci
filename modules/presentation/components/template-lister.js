@@ -3,7 +3,7 @@ import templatesList from "../templates.json";
 
 export class TemplatesLister extends OidUI {
   // Lida com o evento request. Envia uma mensagem de response com a lista de templates
-  handleRequestTemplatesList(topic, message) {
+  handleRequestTemplatesList() {
     this._notify("responseTemplatesList", { value: templatesList });
   }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Forno</title>
+  <script src="graph-oid.js" type="module"></script>
+  <script src="./forno/data_sender_oid.js" type="module"></script>
+  <script src="./forno/options_sender_oid.js" type="module"></script>
+  <script src="./prototype/export_button.js" type="module"></script>
+  <!-- Import DataLabels plugin via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <!-- Import D3 Scale Chromatic via CDN -->
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="./utils/color_generator.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+  <options-sender-oid publish="click~graph/options/5"> </options-sender-oid><br />
+  <data-sender-oid publish="click~data/1"> </data-sender-oid><br />
+  <export-button-oid publish="export~graph/export/5"></export-button-oid><br />
+  <graph-oid uid="5" type="line" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
+  <canvas id="forcing-canvas"></canvas>
+</body>
+</html>

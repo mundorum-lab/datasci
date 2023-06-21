@@ -6,13 +6,13 @@ import { html, css, Oid, OidUI } from '/lib/oidlib-dev.js';
 export class TableViewOid extends OidUI {
   handleSend (topic, message) {
     // <TODO> replace by const table = message.value
-    const table = JSON.parse(message.value)
-    if (this._presentation && message.value) {
+    const table = message
+    if (this._presentation && message) {
       let htmlTable = '<table>'
       if (table.columns) {
         htmlTable += '<tr>'
         for (const c of table.columns)
-          htmlTable += '<th>' + c + '</th>'
+          htmlTable += '<th>' + c["name"] + '</th>'
         htmlTable += '</tr>'
       }
       for (const l of table.data) {

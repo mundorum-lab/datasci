@@ -1,8 +1,10 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
+import("/modules/workflow/src/js/components/template-selector.js");
+import("/modules/workflow/src/js/widgets/buttonPopover.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {
-    let me = event.composedPath().find((x) => x.tagName == "BUTTON")
+    let me = event.composedPath().find((x) => x.tagName == "BUTTON");
     if (me.children["chevron"].classList.contains("rotate-90")) {
       me.children["chevron"].classList.remove("rotate-90");
       me.nextElementSibling.classList.add("hidden");
@@ -12,19 +14,48 @@ export class WorkflowOid extends OidUI {
     }
   }
 
+
+  connectedCallback(){
+    super.connectedCallback();
+    
+      this.nodes = this.shadowRoot.querySelectorAll(".node");
+      this.offsetX = 0;
+      this.offsetY = 0;
+      this.isMoving = false;
+    }
+    
+      _onMouseDown(event){
+        this.isMoving = true;
+        this.offsetX = event.clientX - event.target.getBoundingClientRect().left;
+    this.offsetY = event.clientY - event.target.getBoundingClientRect().top;
+        }
+    
+      _onMouseMove(event){
+        if (!this.isMoving) return;
+
+    event.target.style.left = event.clientX - this.offsetX + 'px';
+    event.target.style.top = event.clientY - this.offsetY + 'px';
+    event.target.style.position = 'absolute';
+      }
+    
+      _onMouseUp(){
+        this.isMoving = false;
+      }
+  
   template() {
     return html`
       <div class="w-full h-full flex">
         <div
-          class="w-80 h-full flex flex-col gap-4 bg-muted p-6 z-50 opacity-100 shadow-lg border-r"
+          class="w-80 h-full flex flex-col justify-between gap-4 bg-muted p-6 z-50 opacity-100 shadow-lg border-r"
         >
+          <div class="flex flex-col gap-4">
           <span class="text-xl font-semibold mb-4">Nodes</span>
           <ul role="list" class="-mx-2 space-y-1">
             <li>
               <div>
                 <button
                   type="button"
-                  @click="{{this._onClick}}"
+                  @click
                   class="hover:bg-background flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-primary"
                   aria-controls="sub-menu-1"
                   aria-expanded="false"
@@ -104,12 +135,34 @@ export class WorkflowOid extends OidUI {
               </div>
             </li>
           </ul>
+          </div>
+          <!-- O botão abaixo deve disparar um evento para o módulo de apresentação -->
+          <!-- fazendo uma requisição da lista de templates. -->
+          <button-popover
+            label="Select Template"
+            publish="click~apresentacao/templates/requisicao; saved~workflow/saved"
+          ></button-popover>
+          <!-- O componente de lista de templates recebe o evento da requisição, carrega o arquivo -->
+          <!-- que contém a lista de templates e dispara um evento com a lista de templates. -->
+          <template-lister-oid
+            class="hidden"
+            subscribe="apresentacao/templates/requisicao~requestTemplatesList"
+            publish="responseTemplatesList~apresentacao/templates/listagem"
+          >
+          </template-lister-oid>
+          <!-- O componente de seleção de templates recebe a lista de templates do barramento e -->
+          <!-- apresenta os templates disponível para o usuario escolher. -->
         </div>
-        <div class="w-full h-full bg-background">dsa</div>
+        <div class="w-full h-full ">
+        <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
+  <div id="node1" class="node w-32 h-32 bg-blue-500 absolute"></div>
+  <div id="node2" class="node w-32 h-32 bg-red-500 absolute"></div>
+</div></div>
       </div>
     `;
   }
 }
+
 
 Oid.component({
   id: "workflow:mainPage",

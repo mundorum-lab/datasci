@@ -10,38 +10,42 @@ export class StddevWeb extends TransformWeb {
 
     stddev(){
         this.value = this.df.column(this.column).std()
-        this.json_result = this.toSingleValue(this.value)
+        this.toSingleValue(this.value,"Desvio Padrão",this.column)
         this.status = true
-        this._notify('stddevResult', this.json_result)
+        this._notify('stddevResult', this.result)
     }
 
     handleStddev (topic, message) {  //handle with notice
         
         //topic: stddev
         //message: stddevInput
- 
-        this.table = message
+        
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }
         this.toDataFrame()        //TODO add this as non-oid attributes
         this.file_id = message.file_id
 
         
         let validator = new ValidateStddev()
 
-        let result = validator.validate(this.columns, this.column)
-        if(result.isValid){
+        let validation = validator.validate(this.columns, this.column)
+        if(validation.isValid){
             this.stddev()
         } else {
             //return error message
             this.status = false
-            this._notify('stddevError', result.result)
+            this._notify('stddevError', validation.result)
         }
     }
 }
 
 Oid.component(
 {
-  id: 'ts:transStddev',
-  element: 'stddev-data',
+  id: 'ts:stddev',
+  element: 'stddev-oid',
   properties: {
     column: {default: null},
     json_result: {default: null},

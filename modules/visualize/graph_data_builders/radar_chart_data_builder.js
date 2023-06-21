@@ -3,17 +3,22 @@ import { interpolateColors } from "../utils/color_generator.js";
 export function buildRadarChartData(rawData, fields){
   let data = {
     labels: [],
-    datasets: [{
-      label: 'TODO',
-      data: []
-    }]
+    datasets: []
   };
   
-  // TODO: Figure out how to deal with multiple datasets
-  rawData['data'].forEach(row => {
-    data['labels'].push(row[fields['x']]);
-    data['datasets'][0]['data'].push(row[fields['y']]);
-  });
+  fields.forEach((fieldset) => {
+    const dataset = {
+        label: 'TODO',
+        data: [],
+        fill: false,
+        tension: 0.1,
+    }
+    rawData['data'].forEach(row => {
+        data['labels'].push(row[fieldset['x']]);
+        dataset.data.push(row[fieldset['y']]);
+    });
+    data['datasets'].push(dataset);
+})
 
   const dataLength = rawData['data'].length;
   // TODO: Add transparency

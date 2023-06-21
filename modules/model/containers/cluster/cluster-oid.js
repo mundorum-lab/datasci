@@ -1,20 +1,41 @@
-import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
+import {Oid, OidBase} from '/lib/oidlib-dev.js'
+import kmeans from './kmeans.js'
 
-export class ClusterOid extends OidUI {
-  _onClick () {
-    this._notify('click', {data: this.data, num_clusters: this.num_clusters, columns: this.columns})
+export class ApplyCluster extends OidBase {
+  applyCluster (topic, message) {
+    let columns = [...message.columns]
+    let data = JSON.parse(JSON.stringify(message.data));
+    let res = kmeans(data, this.num_clusters, this.max_iterations)
+    let centroids = res.centroids
+    let clusters = res.clusters
+
+    for (let j = 1; j <= clusters.length; j++) {
+      for (let i = 0; i < clusters[j-1].points.length; i++) {
+        clusters[j-1].points[i].push(j);
+      }
+    }
+    
+    columns.push({"name": "category", "type": "num"})
+    for (let i = 0; i < centroids.length; i++) {
+      data.push([centroids[i][0], centroids[i][1], 0])
+    }
+    let final = {
+      "columns" : columns,
+      "data" : data
+    }
+
+    this._notify('transformed', {data: final.data, columns: final.columns});
   }
 }
 
 Oid.component(
-    {
-      id: 'ml:cluster',
-      element: 'ml-cluster-oid',
-      properties: {
-        columns: {default: [{"x":"number"}, {"y": "number"}]},
-        data: {default:[[4, 21], [5, 19], [10, 24], [4, 17], [3, 16], [11, 25], [14, 24], [6, 22], [10, 21], [12, 21]]},
-        num_clusters: {default: 2}
-      },
-      template: html`Input:<br></br> { "columns": [ { "x" : "number" }, { "y" : "number"} ], "data" : [ [ 4, 21 ], [ 5, 19 ], [ 10, 24 ], [ 4, 17 ], [ 3, 16 ], [ 11, 25 ], [ 14, 24 ], [ 6, 22 ], [ 10, 21 ], [ 12, 21 ] ], "num_clusters" : {{this.num_clusters}} } <br></br><h1 @click>Apply Cluster with {{this.num_clusters}} clusters<br></br></h1>`,
-      implementation: ClusterOid
-    })
+{
+  id: 'ml:cluster-oid',
+  element: 'ml-cluster-oid',
+  properties: {
+    num_clusters: {default: 2},
+    max_iterations: {default: 50}
+  },
+  receive: {transform: 'applyCluster'},
+  implementation: ApplyCluster
+})

@@ -12,18 +12,20 @@ export function buildLinearRegressionChartData(rawData, fields){
             order: 1
         }]
       };
-      console.log(rawData);
       
-      data['datasets'][0]['data'] = rawData['data'].map(row => { return {
-        x: row[fields['x']],
-        y: row[fields['y1']],
-      }});
-
-      data['datasets'][1]['data'] = rawData['data'].map(row => { return {
-        x: row[fields['x']],
-        y: row[fields['y2']],
-      }});
-
+      fields.forEach((fieldset) => {
+        const dataset = {
+            label: 'TODO',
+            data: [],
+            fill: false,
+            tension: 0.1,
+        }
+        rawData['data'].forEach(row => {
+            data['labels'].push(row[fieldset['x']]);
+            dataset.data.push(row[fieldset['y']]);
+        });
+        data['datasets'].push(dataset);
+    })
       
       return data;
 }

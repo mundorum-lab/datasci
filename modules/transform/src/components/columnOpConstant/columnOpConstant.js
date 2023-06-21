@@ -50,15 +50,19 @@ export class ColumnOpConstantWeb extends TransformWeb {
     columnOpConstant(){
         
         this.operation()
-        let json = this.toJson(this.df, this.file_id)
+        this.toJson()
         this.status = true
-        this._notify('columnOpConstantResult', json)
+        this._notify('columnOpConstantResult', this.result)
     }
 
     handleColumnOpConstant (topic, message) {  //handle with notice
         
         
-        this.table = message     
+        if(message.hasOwnProperty("value")){
+            this.table = JSON.parse(message.value)
+        } else {
+            this.table = message
+        }    
         this.file_id = this.table.file_id
         this.columns = this.table.columns
         this.constant = parseInt(this.constant)
@@ -67,14 +71,14 @@ export class ColumnOpConstantWeb extends TransformWeb {
         
 
         let validator = new ValidateColumnOpConstant()
-        let result = validator.validate(this.op, this.columns, this.column)
-        console.log(result)
-        if(result.isValid){
+        let validation = validator.validate(this.op, this.columns, this.column)
+        console.log(validation)
+        if(validation.isValid){
             this.columnOpConstant()
         } else {
             //return error message
             this.status = false
-            this._notify('columnOpConstantError', result.result)
+            this._notify('columnOpConstantError', validation.result)
         }
 
     }
@@ -83,8 +87,8 @@ export class ColumnOpConstantWeb extends TransformWeb {
 
 Oid.component(
 {
-  id: 'ts:transColumnOpConstant',
-  element: 'column-op-constant',
+  id: 'ts:columnOpConstant',
+  element: 'column-op-constant-oid',
   properties: {
     column: {default: null},
     constant: {default: 0},
