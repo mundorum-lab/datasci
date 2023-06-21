@@ -14,6 +14,7 @@ export class WorkflowOid extends OidUI {
     }
   }
 
+
   connectedCallback(){
     super.connectedCallback();
     
@@ -41,7 +42,6 @@ export class WorkflowOid extends OidUI {
         this.isMoving = false;
       }
   
-
   template() {
     return html`
       <div class="w-full h-full flex">
@@ -162,7 +162,6 @@ export class WorkflowOid extends OidUI {
     `;
   }
 }
-
 
 
 Oid.component({
