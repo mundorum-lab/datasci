@@ -14,7 +14,7 @@ const mockGraph = {
       region: "region1",
       input: [{ topic: "change" }],
       output: [{ topic: "change" }],
-      attributes: {},
+      attributes: { id: "1" },
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ const mockGraph = {
       region: "region2",
       input: [{ topic: "change" }],
       output: [{ topic: "change" }],
-      attributes: {},
+      attributes: { id: "2" },
     },
     {
       id: 3,
@@ -30,7 +30,7 @@ const mockGraph = {
       region: "region3",
       input: [{ topic: "change" }],
       output: [{ topic: "change" }],
-      attributes: {},
+      attributes: { id: "3" },
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ const mockGraph = {
       region: "region4",
       input: [{ topic: "change" }],
       output: [{ topic: "change" }],
-      attributes: {},
+      attributes: { id: "4" },
     },
   ],
   edges: [

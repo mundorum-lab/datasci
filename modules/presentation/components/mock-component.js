@@ -17,10 +17,12 @@ Oid.component({
   receive: ["change"],
   properties: {
     bg: { default: "bg-background" },
+    id: { default: "none" },
   },
   implementation: MockComponent,
   template: `
-    <div class="flex items-center justify-center h-full {{this.bg}}">
+    <div class="flex flex-col items-center justify-center gap-4 h-full {{this.bg}}">
+      <p class="text-2xl font-bold">{{this.id}}</p>
       <button @click class="border bg-background rounded-sm hover:bg-muted transition px-3 py-1.5">Mock Component</button>
     </div>
   `,
