@@ -1,6 +1,6 @@
 import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 
-export class JSONParserOid extends OidUI {
+export class ApiParserOid extends OidUI {
   handleInput_raw (topic, message) {
     let rawData = message
     let columns = Object.keys(rawData[0])
@@ -23,11 +23,11 @@ export class JSONParserOid extends OidUI {
 
 Oid.component(
 {
-  id: 'ex:jsonparser',
-  element: 'json-parser',
+  id: 'ex:apiparser',
+  element: 'api-parser',
   properties: {
     id: {default: '1'}
   },
   receive: ['input_raw'],
-  implementation: JSONParserOid
+  implementation: ApiParserOid
 })
