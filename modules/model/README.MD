@@ -25,10 +25,10 @@
   ]
 }
 ~~~
-> A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
-> A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
-> O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
-> Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0" <br>
+A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
+A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
+O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
+Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0" <br>
 
 **`TypedDataContent`**
 ~~~json
@@ -42,7 +42,7 @@
 }
 ~~~
 
-> O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos.
+O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos.
 
 # Components
 
