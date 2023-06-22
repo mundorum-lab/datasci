@@ -74,7 +74,7 @@ Os `id` são os identificadores dos nós. O `id` é um valor atribuido a todo n�
 │     │
 |     ├── graphs_tests.html      -> graphics unit tests page
 │     │
-|     ├── integration_tests.html -> graphics integration tests page
+|     ├── integration_tests      -> graphics integration tests pages
 │
 |
 ├── graph_oid.js                 -> component that creates the chart

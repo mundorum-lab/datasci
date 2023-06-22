@@ -4,7 +4,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Chart from 'chart.js/auto';
 
-const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
+const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
