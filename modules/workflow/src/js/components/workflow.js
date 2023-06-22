@@ -22,25 +22,58 @@ export class WorkflowOid extends OidUI {
     super.connectedCallback();
     
       this.nodes = this.shadowRoot.querySelectorAll(".node");
-      this.offsetX = 0;
-      this.offsetY = 0;
+      //MAGIC NUMBER
+      this.offsetX = 260;
+      this.offsetY = 75;
       this.isMoving = false;
+
+      this.scale = 1;
+      console.log(nodes)
+
     }
     
       _onMouseDown(event){
         this.isMoving = true;
-        this.offsetX = event.clientX - event.target.getBoundingClientRect().left;
-    this.offsetY = event.clientY - event.target.getBoundingClientRect().top;
-        }
-    
-      _onMouseMove(event){
-        if (!this.isMoving) return;
 
-    event.target.style.left = event.clientX - this.offsetX + 'px';
-    event.target.style.top = event.clientY - this.offsetY + 'px';
-    event.target.style.position = 'absolute';
+        //Mouse
+        this._startPosX = event.clientX;
+        this._startPosY = event.clientY;
+
+
+
       }
     
+      _onMouseMove(event) {
+        this.mouseX = event.clientX-this.offsetX;
+        this.mouseY = event.clientY-this.offsetY;
+        if (!this.isMoving) return;
+        
+        
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+
+
+        const dx = mouseX-this._startPosX;
+        const dy = mouseY-this._startPosY;
+        this.nodes.forEach(node => {
+    
+          node.style.left = parseFloat(node.style.left)+ dx + 'px';
+          node.style.top = parseFloat(node.style.top) +dy + 'px';
+          
+
+
+        });
+        this._startPosX = this._startPosX +dx;
+        this._startPosY = this._startPosY +dy;
+
+      }
+      _onWheel(event) {
+      
+        }
+      
+      
+        
       _onMouseUp(){
         this.isMoving = false;
       }
@@ -51,13 +84,13 @@ export class WorkflowOid extends OidUI {
       <div class="w-full h-full flex">
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
         <div class="w-full">
-          <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
-            <div id="node1" class="node w-32 h-32 bg-blue-500 absolute"></div>
-            <div id="node2" class="node w-32 h-32 bg-red-500 absolute"></div>
+        <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
+            <div id="node1" class="node w-32 h-32 bg-blue-500 absolute" style="left: 200px; top: 200px;"></div>
+            <div id="node2" class="node w-32 h-32 bg-red-500 absolute" style="left: 400px; top: 400px;"></div>
           </div>
         </div>
       </div>
-    `;
+    `; 
   }
 }
 
