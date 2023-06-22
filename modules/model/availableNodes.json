@@ -5,7 +5,7 @@
       "type": "data/typed",
       "id": "ml:linear-regression",
       "presentable": false,
-      "icon": "#TODO",
+      "icon": "/modules/model/img/icon_lr.png",
       "input": [
         {"type":"data/typed"}
       ],
@@ -25,7 +25,7 @@
       "type": "data/typed",
       "id": "ml:cluster-oid",
       "presentable": false,
-      "icon": "#TODO",
+      "icon": "/modules/model/img/icon_cluster.png",
       "input": [
         {"type":"data/typed"}
       ],
@@ -52,14 +52,20 @@
       "type": "data/typed",
       "id": "ml:apply-pca",
       "presentable": false,
-      "icon": "#TODO",
+      "icon": "/modules/model/img/icon_pca.png",
       "input": [
         {"type":"data/typed"}
       ],
       "output":[
         {"type":"data/typed"}
       ],
-      "fields":[]
+      "fields":[
+        {
+          "name": "target_dimension",
+          "label": "Target dimension reduction",
+          "view": "NumberField"
+        }
+      ]
     }
   ]
 }
