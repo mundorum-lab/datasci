@@ -1,8 +1,4 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
-import("/modules/workflow/src/js/components/workflow.js");
-import("/modules/workflow/src/js/components/component-provider-oid.js");
-import("/modules/workflow/src/js/interfaces.js");
-
 
 export class ApplicationOid extends OidUI {
   // presenting = false -> workflow
@@ -100,5 +96,4 @@ Oid.component({
   id: "presentation:application",
   element: "application-oid",
   implementation: ApplicationOid,
-  stylesheet: ['/style.css']
 });
