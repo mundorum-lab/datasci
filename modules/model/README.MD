@@ -46,7 +46,7 @@ O objeto contém o array de objetos columns, que representa o nome e o tipo de c
 
 # Components
 
-![Component specification](images/Data.png)
+![Component specification](images/components.png)
 
 ## Component `Cluster`
 
