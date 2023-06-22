@@ -1,5 +1,4 @@
 import { Bus, css, html, Oid, OidUI } from "/lib/oidlib-dev.js";
-import { WorldSpaceNodeTypes } from "../world-space-node-types.js";
 import { InputOid } from "../utils/input/input-field.js";
 import { NumberOid } from "../utils/input/number-field.js";
 import { RangeOid } from "../utils/input/range-input.js";

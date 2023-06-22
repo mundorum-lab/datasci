@@ -1,7 +1,6 @@
 import { NodeInputField } from "./node-input-field.js";
 import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./connectors/index.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
-import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 import { WorldSpace } from "./world-space.js";
 
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
