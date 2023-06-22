@@ -97,7 +97,6 @@ notice    | source | message type
 property | role
 -------| ------
 `target_index` | `Define qual coluna da tabela é a coluna "resultado". O valor dessa coluna deve ser entre 0 até a quantidade de colunas - 1.`
-`data` | `Armazena o resultado da regressão. Esse parâmetro não deve ser utilizado, pois ao realizar a operação, ele será sobrescrito.` 
 
 ### Input Notices
 
