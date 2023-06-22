@@ -15,7 +15,8 @@ export class ListTablesOid extends OidUI {
       const objectStoreNames = db.objectStoreNames;    
       const tableNames = Array.from(objectStoreNames);
       console.log(tableNames);
-      self._notify('output_tables', {value: tableNames});
+      const info_tables = tableNames.map((tableName) => ({ database: dbName, table: tableName }));
+      self._notify('output_tables', {tables: JSON.stringify(info_tables)});
     };
     
 
