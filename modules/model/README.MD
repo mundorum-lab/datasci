@@ -46,6 +46,8 @@ O objeto contém o array de objetos columns, que representa o nome e o tipo de c
 
 # Components
 
+![Component specification](images/Data.png)
+
 ## Component `Cluster`
 
 Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
