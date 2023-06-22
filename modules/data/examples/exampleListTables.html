@@ -3,22 +3,17 @@
     <head>
     <meta charset="utf-8">
     <title>Playground</title>
-        <script src="../src/components/fileinput-oid.js" type="module"></script>
-        <script src="../src/components/filereader-oid.js" type="module"></script>
-        <script src="../src/components/cleardata-oid.js" type="module"></script>        
+        <script src="../src/components/listtables-oid.js" type="module"></script>        
     </head>
     <body>
         <h1>Playground</h1>
-
-        <filereader-oid sep="," publish="loaded~file/loaded"></filereader-oid>
-
-        <fileinput-oid subscribe="file/loaded~load_file" publish="output_raw~show/message"></fileinput-oid>
-
-        <button-oid label="Clear DB"
-                    value="Clear Database Example"
-                    publish="click~data/clear">
+        
+        <button-oid label="List Tables"
+                    value="List Tables Example"
+                    publish="click~data/list">
         </button-oid>
 
-        <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
+        <listtables-oid subscribe="data/list~list" publish="tables_output~data/tables"></listtables-oid>
+
     </body>
 </html>
