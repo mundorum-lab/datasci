@@ -48,7 +48,7 @@
 
 ## Component `Cluster`
 
-> Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
+Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
 
 ### Properties
 property | role
@@ -91,7 +91,7 @@ notice    | source | message type
 
 ## Component `LinearRegression`
 
-> Recebe o TypedDataContent, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index`, que indica em qual coluna deve ser feita a regressão linear.
+Recebe o TypedDataContent, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index`, que indica em qual coluna deve ser feita a regressão linear.
 
 ### Properties
 property | role
