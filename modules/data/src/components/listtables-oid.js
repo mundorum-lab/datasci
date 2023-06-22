@@ -4,30 +4,20 @@ export class ListTablesOid extends OidUI {
   handleList(topic, message) {
     const dbName = 'DatabaseMundorum';
     const request = indexedDB.open(dbName);
-
+    const self = this;
+    
+    request.onerror = function(event) {
+      self._notify('output_tables', {error: event.target.error});
+    };
+    
     request.onsuccess = function(event) {
       const db = event.target.result;
       const objectStoreNames = db.objectStoreNames;    
       const tableNames = Array.from(objectStoreNames);
-      const transaction = db.transaction(tableNames, 'readwrite');
-    
-      transaction.onerror = function(event) {
-        console.error('Erro ao limpar as tabelas:', event.target.error);
-      };
-    
-      tableNames.forEach(function(tableName) {
-        const objectStore = transaction.objectStore(tableName);
-        objectStore.clear();
-      });
-    
-      transaction.oncomplete = function(event) {
-        console.log('Todas as tabelas foram limpas com sucesso!');
-      };
+      console.log(tableNames);
+      self._notify('output_tables', {value: tableNames});
     };
     
-    request.onerror = function(event) {
-      console.error('Erro ao abrir a base de dados:', event.target.error);
-    };
 
   }
 }
