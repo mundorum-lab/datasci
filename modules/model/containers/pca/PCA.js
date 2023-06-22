@@ -26,16 +26,13 @@ export async function getPCA2dReduction(data){
     //        compressed[i][j] = [compressed[i][j]]
     //    }
     //}
-    console.log('compressed antes: ', compressed)
     let returnData = []
 
     for(let i = 0; i < compressed[0].length; i++) {
         returnData.push([compressed[0][i], compressed[1][i]])
     }
-    console.log('olha o return data:', returnData)
-    console.log('compressed[0].lenght: ', compressed[0].length)
     let returnedTable = {
-        'columns':[{'name' : 'PCA1', 'type' : 'num'}, {'name' : 'PCA2', 'type' : 'num'}],
+        'columns':[{'name' : 'PCA1', 'type' : 'number'}, {'name' : 'PCA2', 'type' : 'number'}],
         'data' : returnData} 
     return returnedTable
 }
@@ -52,7 +49,7 @@ export async function getData(table){
     //remove any columns that are not num
     for(let i = 0; i < Object.keys(columns).length; i++){
         let value = Object.values(columns[i])[0]
-        if (value != 'num'){
+        if (value != 'number'){
             index2remove.push(i)
         }
     }
