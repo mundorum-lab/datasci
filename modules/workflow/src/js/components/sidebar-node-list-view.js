@@ -46,7 +46,7 @@ export class SidebarNodeListView extends OidUI {
         }
 
         return html`
-        <div class="w-full h-8">
+        <div class="w-full">
             <button
                 type="button"
                 @click="{{this._onClick}}"
