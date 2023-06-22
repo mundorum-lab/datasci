@@ -5,6 +5,9 @@ function getAvailableNodes(){
         {
             exampleCategory: [
                 ...nodeExample
+            ],
+            exampleCategory2: [
+                ...nodeExample
             ]
         }
     );

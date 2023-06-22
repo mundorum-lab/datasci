@@ -1,5 +1,8 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
 import("/modules/workflow/src/js/components/workflow.js");
+import("/modules/workflow/src/js/components/component-provider-oid.js");
+import("/modules/workflow/src/js/interfaces.js");
+
 
 export class ApplicationOid extends OidUI {
   // presenting = false -> workflow
@@ -25,7 +28,7 @@ export class ApplicationOid extends OidUI {
         "flex";
     } else {
       this.shadowRoot.getElementById("workflow-container").style.display =
-        "block";
+        "flex";
       this.shadowRoot.getElementById("presentation-container").style.display =
         "none";
     }
@@ -61,25 +64,24 @@ export class ApplicationOid extends OidUI {
             <theme-switcher-oid><theme-switcher-oid />
           </div>
         </div>
-        <div id="presentation-container" class="flex-grow flex flex-col" style="display: none">
-          <presenter-oid
-            class="flex-grow flex flex-col"
-            subscribe="presentation/html~getJSONHTMLDescription;presentation/template~templateReady;presentation/tabs~tabChanged"
-          ></presenter-oid>
-          <builder-oid
-            subscribe="workflow/graph~getJSONHTML"
-            publish="returnJSONHTMLDescription~presentation/html"
-          ></builder-oid>
-          <mock-workflow-oid
-            publish="returnJSONHTML~workflow/graph"
-            subscribe="presentation/tabs~tabChanged"
-          ></mock-workflow-oid>
-        </div>
+          <div id="presentation-container" class="flex-grow flex flex-col" style="display: none">
+            <presenter-oid
+              class="flex-grow flex flex-col"
+              subscribe="presentation/html~getJSONHTMLDescription;presentation/template~templateReady;presentation/tabs~tabChanged"
+            ></presenter-oid>
+            <builder-oid
+              subscribe="workflow/graph~getJSONHTML"
+              publish="returnJSONHTMLDescription~presentation/html"
+            ></builder-oid>
+            <mock-workflow-oid
+              publish="returnJSONHTML~workflow/graph"
+              subscribe="presentation/tabs~tabChanged"
+            ></mock-workflow-oid>
+          </div>
+          <div id="workflow-container" class="w-full h-full flex items-stretch flex-grow">
+            <workflow-main-page class="w-full flex-grow"></workflow-main-page>
+          </div>
       </div>
-      <div id="workflow-container" class="w-full h-full">
-        <workflow-main-page class="w-full h-full"></workflow-main-page>
-      </div>
-      <div id="presentation-container" style="display: none">presentation</div>
     `;
   }
 
@@ -98,4 +100,5 @@ Oid.component({
   id: "presentation:application",
   element: "application-oid",
   implementation: ApplicationOid,
+  stylesheet: ['/style.css']
 });

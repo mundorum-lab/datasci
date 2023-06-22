@@ -1,5 +1,4 @@
-import { parse } from "postcss";
-import { html, Oid, OidUI } from "../../../../../lib/oidlib-dev.js";
+import { html, Oid, OidUI } from "/lib/oidlib-dev.js";
 
 export class SidebarNodeListView extends OidUI {
     /** Represents the lists of nodes that will be in the sidebar
@@ -22,8 +21,10 @@ export class SidebarNodeListView extends OidUI {
      * @returns {Array.<Object>} - An array of objects with the type, name and icon fields
      */
     parseNodes() {
+        if (this.nodes == null) return [];
+
         const items = this.nodes.split(';');
-        const parsedItems = items.map(item => {
+        const parsedItems = items.filter(item => item != ' ').map(item => {
             const [type, name, icon] = item.trim().split(',');
             return {
                 type: type.trim(),
@@ -31,6 +32,7 @@ export class SidebarNodeListView extends OidUI {
                 icon: icon.trim(),
             };
         });
+
         return parsedItems;
     }
       
@@ -41,7 +43,6 @@ export class SidebarNodeListView extends OidUI {
 
         for (let node of parsedNodes) {
             template += `<li> <sidebar-node type="${node.type}" name="${node.name}" iconpath="${node.icon}" > </li>`;
-            console.log(node);
         }
 
         return html`
@@ -60,7 +61,7 @@ export class SidebarNodeListView extends OidUI {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    class="w-6 h-6 stroke-primary"
                 >
                     <path
                         stroke-linecap="round"
@@ -85,7 +86,8 @@ export class SidebarNodeListView extends OidUI {
                 </svg>
             </button>
             <ul class="hidden mt-1 px-2 space-y-1">
-            ${template}</ul>
+                ${template}
+            </ul>
         </div>`;
     }
 }
@@ -95,8 +97,8 @@ Oid.component(
         id:'wf:sidebar-node-list',
         element:'sidebar-node-list',
         properties: {
-            name: {},
-            nodes: {}, //type1, name1, icon1 ; type2, name2, icon2 ...
+            name: {default: null},
+            nodes: {default: null}, //type1, name1, icon1 ; type2, name2, icon2 ...
         },
         implementation: SidebarNodeListView,
         stylesheet: ["/style.css"],
