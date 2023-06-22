@@ -70,7 +70,12 @@ notice    | source | message type
 
 ## Component `PCA`
 
-> Recebe o TypedDataContent, reduz a dimensionalidade para uma dimensão através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento.
+Recebe o TypedDataContent, reduz a dimensionalidade para uma ou duas dimensões através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento.
+
+### Properties
+property | role
+-------| ------
+`target_dimension` | `Define se a tabela retornada terá uma ou duas dimensões` 
 
 ### Input Notices
 
