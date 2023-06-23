@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Cluster integration</title>
-  <script src="../../graph-oid.js" type="module"></script>
-  <script src="../../mocks/data_sender_oid.js" type="module"></script>
-  <script src="../../mocks/options_sender_oid.js" type="module"></script>
-  <script src="../../export_button.js" type="module"></script>
+  <!-- Visualize Components -->
+  <script src="../graph-oid.js" type="module"></script>
+  <script src="../mocks/data_sender_oid.js" type="module"></script>
+  <script src="../mocks/options_sender_oid.js" type="module"></script>
+  <script src="../export_button.js" type="module"></script>
   <!-- Import DataLabels plugin via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -14,10 +15,12 @@
   <script src="https://d3js.org/d3-color.v1.min.js"></script>
   <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-  <script src="../../utils/color_generator.js" type="module"></script>
-
-  <script src="../../../model/containers/cluster/mock-cluster-data.js" type="module"></script>
-    <script src="../../../model/containers/cluster/cluster-oid.js" type="module"></script>
+  <script src="../utils/color_generator.js" type="module"></script>
+  <!-- Model Components -->
+  <script src="../../model/containers/cluster/mock-cluster-data.js" type="module"></script>
+  <script src="../../model/containers/cluster/cluster-oid.js" type="module"></script>
+  <!-- Data Components -->
+  <script src="../../data/src/components/table-view-oid.js" type="module"></script>
 </head>
 <body>
   <h1>Model + Visualize</h1>
@@ -26,8 +29,10 @@
   <h2>Cluster Algorithm:</h2>
   <ml-cluster-mocker num_clusters=2 publish="click~model/cluster/transform"></ml-cluster-mocker>
   <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~data/1"></ml-cluster-oid>
+  <h2>Data table</h2>
+  Will be shown after you click to apply cluster.
+  <table-view-oid subscribe="data/1~display"></table-view-oid>
   <h2>Graph</h2>
-  
   <options-sender-oid publish="click~graph/options/5" options='[{"x": 0, "y": 1, "z":2}]'> </options-sender-oid><br />
   <graph-oid uid="5" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
 </body>
