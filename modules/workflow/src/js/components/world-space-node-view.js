@@ -111,7 +111,7 @@ export class WorldSpaceNodeView extends OidUI {
      * @returns {string} The generated content.
      */
     generatePorts(direction, requiredPorts) {
-        const portElement = direction == "output" ? '<div class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative left-full"></div>' : '<div class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
+        const portElement = direction == "output" ? '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative left-full"></div>' : '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
         const breadcrumbPiece = (content, pos) => {
             const separator = pos == 0 ? '' : '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.10876 14L9.46582 1H10.8178L5.46074 14H4.10876Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>';
             
@@ -150,13 +150,18 @@ export class WorldSpaceNodeView extends OidUI {
         this.node.setAttribute('moving', 'true');
       }
 
+    _onMouseDownHandle(event){
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('dontMove', 'true');
+      }
+
      /**
      * Generates a loading skeleton for the node
      * @returns {string} The generated content.
      */
     renderLoading() {
         return html`
-        <div @mousedown={{this._onMouseDown}} @mouseup={{this._onMouseUp}} class="w-72 h-72 border bg-primary-foreground rounded-md flex flex-col items-center" role="status">
+        <div class="w-72 h-72 border bg-primary-foreground rounded-md flex flex-col items-center" role="status">
             <div class="flex items-center w-full h-8 p-2 border-b border-border">
                 <div class="h-2 bg-border rounded-full w-48"></div>
             </div>
@@ -205,7 +210,7 @@ export class WorldSpaceNodeView extends OidUI {
                 ${outputPorts}
             </div>
             
-            <dialog data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
+            <dialog @mousedown={{this._onMouseDownHandle}} data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">
