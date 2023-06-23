@@ -121,7 +121,7 @@ export class WorkflowOid extends OidUI {
       <div class="w-full h-full flex">
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
         <div id="container" class="w-full h-screen overflow-hidden relative">
-        <div id="pane" style="left: 0px; top: 0px;" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="absolute cursor-move w-[5000px] h-[5000px] bg-dotted-spacing-7 bg-dotted-radius-px bg-dotted-gray-400">
+        <div id="pane" style="left: -2000px; top: -2000px;" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="absolute cursor-move w-[5000px] h-[5000px] bg-dotted-spacing-7 bg-dotted-radius-px bg-dotted-gray-400">
         </div>
         </div>
       </div>
