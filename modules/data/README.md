@@ -103,6 +103,12 @@ Holds the contents returned by an API.
 ~~~js
 [{object}, ...]
 ~~~
+**_TablesInDatabase_**
+
+Returns the list of tables present in the database;
+~~~js
+[{"database": string,"table0": string},{"database": string,"table1": string},...]
+~~~
 **_ErrorDuringDataIngestion_**
 
 Signifies an error that occurs during a process of data ingestion, such as reading from a file or API.
@@ -121,12 +127,14 @@ Signifies an error that occurs during a process of data processing, such as in t
 }
 ~~~
 
+
 # Components
 
 <p align="center">
   <img src="images/Data.png"/>
 </p>
 
+---
 ## Component *file-reader*
 
 The responsibility of this component is to read data from .csv and .json files and save it in a database. To accomplish this, a visual area has been developed that functions as a drag-and-drop feature, allowing users to drag their files onto it.
@@ -134,9 +142,11 @@ In addition, the component makes use of a well-known tool called IndexedDB, whic
 
 ### Properties
 
-property | role
----------| --------
-separator | character that makes the separation of csv files (by default chooses the comma)
+| property     | role     | receive by    
+| ------------ | -------- | ------------- 
+separator | character that makes the separation of csv files (by default chooses the comma) | HTML
+file |   file is dragged into the area bounded by the component | HTML
+
 
 ### Input Notices
 
@@ -151,12 +161,15 @@ notice    | source | message type
 ----------| -------| ------------
 loaded | As soon as the component finishes to store the content in Local Storage, it publishes the information about the database name and stored data name on the data bus. | TreatedReaderContent
 
+---
 ## Component *file-input*
 
 By using the database name and collection name provided, the component transforms raw data (which it retrieves from the Browser Local Storage) into a useful format for other components. If it fails to open the database or collection for processing, it emits an error message with a description of what occurred.
 
 ### Properties
-Don't have
+| property     | role     | receive by    
+| ------------ | -------- | ------------- 
+TreatedReaderContent | The name of the database and table to read |  Bus
 
 ### Input Notices
 
@@ -175,6 +188,7 @@ output_raw | As soon as the component finishes ingesting the JSON content, it pu
 notice    | source | message type
 ----------| -------| ------------
 output_raw | Error during the reading of the database or collection | ErrorDuringDataIngestion
+
 ---
 ## Component *api-input*
 
@@ -184,15 +198,23 @@ It is important to note that the data this component publishes on the bus is the
 
 ### Input Notices
 
-notice | action | message type
+notice | action | message type 
 -------| ------ | ------------
 load | The component collects the request and starts the process of ingesting the API. | RawAPIRequest
 
-### Output Notices
+
+### Successful Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-output | When the request is finished, publishes the raw API content if the request was successful, or an error otherwise. | RawAPIContent or ErrorDuringDataIngestion
+output | When the request is finished, publishes the raw API content if the request was successful. | RawAPIContent 
+
+### Error Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+output | Error during the reading of the API content | ErrorDuringDataIngestion
+
 
 ---
 ## Component *api-parser*
@@ -216,6 +238,11 @@ output_processed | When the component finishes transforming the data received, p
 
 This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. It separates by 'sep' input the information column and data. After this process is finished, it inserts the typed data into the data bus.
 
+### Properties
+| property     | role     | receive by    
+| ------------ | -------- | ------------- 
+TreatedDataContent | Receives the raw file |  Bus
+
 ### Input Notices
 
 notice | action | message type
@@ -227,6 +254,48 @@ type-input | Receives a JSON file and asks the user for input on the types of th
 notice    | source | message type
 ----------| -------| ------------
 output | As the component finishes transforming the data based on user input, publishes the result on the data bus | TypedDataContent or ErrorDuringDataProcessing
+
+---
+## Component *clear-data*
+
+Component used to clean the bank. Bearing in mind that, mainly in the test phase, it is necessary to upload the same file several times.
+
+### Properties
+
+Don't have
+
+### Input Notices
+
+notice | action |
+-------| ------ | 
+click | Fires the event to do a complete cleaning of the database | 
+
+### Output Notices
+Don't have
+
+
+---
+## Component *list-tables*
+
+This component lists all the tables that are saved in our database. Necessary for the help of other teams in the control of the read files.
+
+
+### Properties
+
+Don't have
+### Input Notices
+
+
+notice | action |
+-------| ------ | 
+click | Fires the event for checking the database| 
+
+### Output Notices
+
+
+notice    | source | message type
+----------| -------| ------------
+output_tables | Returns the list of tables present in the database | TablesInDatabase
 
 # Components Narratives
 
@@ -261,10 +330,20 @@ output | As the component finishes transforming the data based on user input, pu
 	publish="output~[show/message]">
 </file-typing>
 ~~~
+`clear-data` component
+~~~html
+<cleardata-oid subscribe="data/clear~clear"><cleardata-oid>
+~~~
+`list-tables` component
+~~~html
+<listtables-oid subscribe="data/list~list" publish="output_tables~data/tables"></listtables-oid>
+~~~
 
 ## Narrative
-- The `file-component` component recieves a file (csv or json), process the data and stores the data into the Browser Local Storage. 
--   The `file-input` component recieves the information about the database and consults the Local Storage to give the data in a Json Format.
+- The `file-reader` component recieves a file (csv or json), process the data and stores the data into the Browser Local Storage through a tool called IndexedDB. 
+-  The `file-input` component recieves the information about the database and consults the Local Storage to give the data in a Json Format.
+- The `listtables` component informs which tables are present in the database.
+-  The `cleardata` component clean the database.
 -   When workflow sends a new file message on the data bus being watched, the component starts the process.
 -   It identifies the file format, which can be either CSV or JSON, and calls the appropriate JS function to transform the data.
 -   It loops through all the rows of the file, transforming each one into a JSON format.
@@ -288,8 +367,34 @@ output | As the component finishes transforming the data based on user input, pu
 
 ## Examples
 
-### File Input and File Reader
-![File Input](images/diagram_file_input.png)
-An example usage of file-input and file-reader with a component of group model can be found in the folder `data/examples-integration/data-model`.
+### File Module Integration
+Operating diagram:
+[File Input](images/diagram_file_input.png)
 
-An example usage of file-input and file-reader can be found in the folder `data/examples/exampleGetDBTable.html`.
+Examples of use with integration between the data and transform groups:
+
+*[Filter](examples-integration/file-transform/filter.html)
+
+*[Mode](examples-integration/file-transform/mode.html)
+
+*[File to test](examples-integration/file-transform/cursos.csv)
+
+Examples of use with integration between the data and model groups:
+
+*[Cluster](examples-integration/file-model/cluster.html)
+
+*[PCA](examples-integration/file-model/pca.html)
+
+*[Arquivo para teste](examples-integration/file-model/entrada.csv)
+
+
+### File Module 
+Examples of use components:
+
+*[Integration between file reader, file input and file typing](examples/exampleTypeInputTemplate.html)
+
+*[List Tables](examples/exampleListTables.html)
+
+*[Clear Data](examples/exampleClearData.html)
+
+*[File to test](examples/zombie-diet.csv)
