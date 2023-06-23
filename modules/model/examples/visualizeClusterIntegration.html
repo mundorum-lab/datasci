@@ -23,12 +23,19 @@
   <script src="../../data/src/components/filereader-oid.js" type="module"></script>
   <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
   <script src="../../data/src/components/table-view-oid.js" type="module"></script>
+  <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
 </head>
 <body>
   <h1>Cluster Algorithm:</h1>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~model/cluster/transform"></fileinput-oid>
   <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
+
+  <button-oid label="Clear DB"
+                value="Clear Database Example"
+                publish="click~data/clear">
+  </button-oid>
+  <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
   
   <h1>Grafico</h1><br/>
   <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
