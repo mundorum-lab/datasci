@@ -23,6 +23,7 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'bar':
         config.data = buildBarChartData(rawData, fields);
         config.options = {
+            ...options,
             scales: {
                 y: {
                     beginAtZero: true
@@ -36,9 +37,10 @@ export function createConfiguration(type, rawData, fields, options) {
         config.data = buildColumnChartData(rawData, fields);
         config.options = {
           scales: {
-              x: {
-                  beginAtZero: true
-              }
+            ...options,
+            x: {
+                beginAtZero: true
+            }
           },
           indexAxis: 'x',
         }
@@ -52,9 +54,6 @@ export function createConfiguration(type, rawData, fields, options) {
       case 'doughnut':
         config.type = 'pie';
         config.data = buildPieChartData(rawData, fields);
-        if(config.options == null){
-          config.options = {};
-        }
         config.options.cutout = '50%';
         break;
       case 'line':

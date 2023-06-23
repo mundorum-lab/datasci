@@ -1,7 +1,6 @@
 import { NodeInputField } from "./node-input-field.js";
 import { worldSpaceNodeConnectorIn, worldSpaceNodeConnectorOut } from "./connectors/index.js";
 import { WorldSpaceSubcomponentBehaviour } from "./world-space-subcomponent-behaviour.js"
-import { WorldSpaceNodeTypes } from "../world-space-node-types.js"
 import { WorldSpace } from "./world-space.js";
 
 export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
@@ -167,10 +166,45 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
      * @returns {boolean} - True if cyclic, false otherwise.
      */
     isGraphCyclic() {
+        const visited = new Set();
+        const recStack = new Set();
+
+        for (let nodeId in WorldSpace.onWorldSpaceComponents) {
+            let node = WorldSpace.onWorldSpaceComponents[nodeId];
+            if (this.isGraphCyclicHelper(node, visited, recStack)) {
+                return true;
+            }
+        }
 
         return false;
     }
 
+    /**
+     * Helper function for checking cycles using DFS   
+     * @param {*} node - The current node being processed.
+     * @param {*} visited - A set to keep track of visited nodes.
+     * @param {*} recStack - A set to keep track of nodes in the recursion stack.
+     * @returns {boolean} - True if the current cycle is cyclic, false otherwise
+     */
+    isGraphCyclicHelper(node, visited, recStack) {
+        if (recStack.has(node)) {
+            return true;
+        }
+        if (!visited.has(node)) {
+            visited.add(node);
+            recStack.add(node);
 
+            const neighborsId = node.getTargetVertices();
 
+            for (let i = 0; i < neighborsId.length; i++) {
+                if (this.isGraphCyclicHelper(WorldSpace.getById(neighborsId[i]), visited, recStack)) {
+                    return true;
+                }
+            }
+
+            recStack.delete(node);
+        }
+    
+        return false;
+    }
 }

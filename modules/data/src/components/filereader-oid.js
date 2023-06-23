@@ -65,6 +65,7 @@ export class FileReaderOid extends OidUI {
     if (!window.indexedDB) {
       console.log("Seu navegador não suporta o IndexedDB.");
     } else {
+      console.log("Arquivo lido, iniciando requisição.")
       const request = window.indexedDB.open(dbName);
 
       request.onerror = function (event) {
@@ -149,7 +150,7 @@ export class FileReaderOid extends OidUI {
         }
       };
     }
-    const content = {'database':dbName, 'table': objectStoreName, 'file_name': file.name, 'file_extension': file_extension};
+    const content = {'database':dbName, 'table': objectStoreName};
     this._notify('loaded', { value: JSON.stringify(content) });
   }
   

@@ -1,29 +1,36 @@
 export function buildLinearRegressionChartData(rawData, fields){
     let data = {
         labels: [],
-        datasets: [{
-          label: 'TODO',
-          data: [],
-          order: 2
-        },{
-            label: 'TODO2',
-            data: [],
-            type: 'line',
-            order: 1
-        }]
+        datasets: []
       };
-      console.log(rawData);
       
-      data['datasets'][0]['data'] = rawData['data'].map(row => { return {
-        x: row[fields['x']],
-        y: row[fields['y1']],
-      }});
+      fields.forEach((fieldset) => {
+        const point_dataset = {
+            label: fieldset['title']+' points',
+            data: [],
+            fill: false,
+            tension: 0.1,
+            order: 2
+        }
+       
+        const line_dataset = {
+          label: fieldset['title']+' line',
+          data: [],
+          fill: false,
+          tension: 0.1,
+          type: 'line',
+          order: 1
+      }
 
-      data['datasets'][1]['data'] = rawData['data'].map(row => { return {
-        x: row[fields['x']],
-        y: row[fields['y2']],
-      }});
+        rawData['data'].forEach(row => {
+            //data['labels'].push(row[fieldset['x']]);
+            point_dataset.data.push({x:row[fieldset['x']] , y:row[fieldset['y']]});
+            line_dataset.data.push({x:row[fieldset['x']] , y:row[fieldset['z']]});
+        });
 
+        data['datasets'].push(point_dataset);
+        data['datasets'].push(line_dataset);
+    })
       
       return data;
 }

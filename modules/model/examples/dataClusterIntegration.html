@@ -8,12 +8,20 @@
     <script src="../../data/src/components/filereader-oid.js" type="module"></script>
     <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
     <script src="../../data/src/components/table-view-oid.js" type="module"></script>
+    <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
 </head>
 <body>
     <h1>Cluster Algorithm:</h1>
     <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
-    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~model/cluster/transform"></fileinput-oid>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+    <type-input subscribe="data/raw~type_input" publish="output_type~model/cluster/transform"></type-input>
     <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~data/transformed"></ml-cluster-oid>
     <table-view-oid subscribe="data/transformed~display"></table-view-oid>
+    <button-oid label="Clear DB"
+                value="Clear Database Example"
+                publish="click~data/clear">
+    </button-oid>
+
+    <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
 </body>
 </html>
