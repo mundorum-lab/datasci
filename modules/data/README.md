@@ -1,12 +1,12 @@
 # Data module
 
-<p align="center">
-  <img src="images/DataModule.png"/>
-</p>
-
 The data module is the very beggining of this application's workflow, allowing the ingestion of data from multiple sources and formatting it such that the others modules can operate on it seamlessly. It operates on two fronts: raw data from _.csv_ or _JSON_ files, and _JSON_ results of API calls, both of which are formatted into a standardized format through a shared workflow. As such, this module sets the basis upon which all other modules can operate.
 
 This is an explanation of the components contained in this module and their relationship to each other and other modules.
+
+<p align="center">
+  <img src="images/DataModule.png"/>
+</p>
 
 # Team QR2.0
 * Giovana Kerche Bonás
@@ -19,6 +19,22 @@ This is an explanation of the components contained in this module and their rela
 	* Responsible for architecture and development of the _Type Input_ component, which is part of the process of standardization of data ingested.
 * Leonardo Livrare Martins
 	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
+
+# Components
+File Collection
+- [File Reader](src/components/filereader-oid.js)
+- [File Input](src/components/fileinput-oid.js)
+- [List Tables](src/components/listtables-oid.js)
+- [Clear Data](src/components/cleardata-oid.js)
+
+Api Collection
+- [Api Input](src/components/apiinput-oid.js)
+- [Api Parser](src/components/apiparser-oid.js)
+
+Typing
+- [Type Input](src/components/typeinput-oid.js)
+
+
 
 # Folder and Files Structure
 
