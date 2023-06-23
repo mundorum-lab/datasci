@@ -20,17 +20,17 @@ export class GraphOid extends OidUI {
                 enabled: true,
                 mode: 'xy',
               },
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
 
-                  pinch: {
-                    enabled: true
-                  },
-                  mode: 'xy',
-                }
-              
+                pinch: {
+                  enabled: true
+                },
+                mode: 'xy',
+              }
+
             }
           }
         });
@@ -41,6 +41,8 @@ export class GraphOid extends OidUI {
 
       if (!graphsWithoutDataLabel.includes(this.type)) {
         Chart.register(ChartDataLabels);
+      } else {
+        Chart.unregister(ChartDataLabels);
       }
 
       Chart.register(zoomPlugin);
