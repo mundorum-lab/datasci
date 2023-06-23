@@ -1,7 +1,7 @@
 # Module Model
 
 # Description
-> Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
+Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
 
 # Team - `Time Extra`
 * `Otávio Silveira Munhoz - 204280`
