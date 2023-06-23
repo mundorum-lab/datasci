@@ -28,7 +28,8 @@
 <body>
   <h1>Cluster Algorithm:</h1>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
-  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~model/cluster/transform"></fileinput-oid>
+  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+  <type-input subscribe="data/raw~type_input" publish="output_type~model/cluster/transform"></type-input>
   <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
 
   <button-oid label="Clear DB"
