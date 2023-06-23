@@ -8,6 +8,21 @@ import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_sta
 const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
+  setStatus(rawData){
+    this.status = `I am a ${this.type} chart  with columns `
+    let prefix = ""
+    this.fields.forEach(field => {
+      let columns = [
+        rawData.columns[field['x']],
+        rawData.columns[field['y']]
+      ]
+      if(field['z']){console.log('yay')}
+      this.status += prefix+`${JSON.stringify(columns)}`
+      prefix = " and "
+    });
+    this.status += `and data ${JSON.stringify(this.data)}`
+  }
+
   handleRender(topic, message) {
     try {
       this.feedbackMessage = ``
@@ -34,7 +49,9 @@ export class GraphOid extends OidUI {
             }
           }
         });
-      this.data = config.data
+        this.data = config.data
+      this.setStatus(message);
+      
       this.canvas = this.shadowRoot.getElementById('canvas')
       this.canvas.style.display = 'initial';
       if (this.chart) this.chart.destroy();
@@ -47,6 +64,7 @@ export class GraphOid extends OidUI {
 
       Chart.register(zoomPlugin);
       this.chart = new Chart(this.canvas, config);
+      
     }
     catch (e) {
       if (e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE') {
@@ -79,6 +97,7 @@ export class GraphOid extends OidUI {
     this.title = title;
     this.options = options
   }
+
 }
 
 Oid.component({
@@ -92,7 +111,8 @@ Oid.component({
     options: { default: null },
     title: { default: null },
     fields: { default: null },
-    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') }
+    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') },
+    status: {default: ""}
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,
