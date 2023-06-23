@@ -6,6 +6,11 @@ Oid.setDefault({
   stylable: true,
 });
 
+// Componentes de Workflow
+import("/modules/workflow/src/js/components/workflow.js");
+import("/modules/workflow/src/js/components/component-provider-oid.js");
+import("/modules/workflow/src/js/interfaces.js");
+
 // Componentes de Presentation
 import("./modules/presentation/components/application.js");
 import("./modules/presentation/components/theme-switcher.js");

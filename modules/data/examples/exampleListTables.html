@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Playground</title>
+        <script src="../src/components/listtables-oid.js" type="module"></script>        
+    </head>
+    <body>
+        <h1>Playground</h1>
+        
+        <button-oid label="List Tables"
+                    value="List Tables Example"
+                    publish="click~data/list">
+        </button-oid>
+
+        <listtables-oid subscribe="data/list~list" publish="output_tables~data/tables"></listtables-oid>
+
+    </body>
+</html>

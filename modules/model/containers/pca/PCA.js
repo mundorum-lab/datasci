@@ -26,16 +26,13 @@ export async function getPCA2dReduction(data){
     //        compressed[i][j] = [compressed[i][j]]
     //    }
     //}
-    console.log('compressed antes: ', compressed)
     let returnData = []
 
     for(let i = 0; i < compressed[0].length; i++) {
         returnData.push([compressed[0][i], compressed[1][i]])
     }
-    console.log('olha o return data:', returnData)
-    console.log('compressed[0].lenght: ', compressed[0].length)
     let returnedTable = {
-        'columns':[{'name' : 'PCA1', 'type' : 'num'}, {'name' : 'PCA2', 'type' : 'num'}],
+        'columns':[{'name' : 'PCA1', 'type' : 'number'}, {'name' : 'PCA2', 'type' : 'number'}],
         'data' : returnData} 
     return returnedTable
 }
@@ -44,24 +41,21 @@ export async function getData(table){
     let columns = table['columns']
     let data = table['data']
     
-    /** 
-     formato dos dados que esta chegando vem diferente do esperado, deixando essa função para depois
-
     let index2remove = []
 
     //remove any columns that are not num
     for(let i = 0; i < Object.keys(columns).length; i++){
         let value = Object.values(columns[i])[0]
-        if (value != 'num'){
+        if (value != 'number'){
             index2remove.push(i)
         }
     }
     
     let aux = 0
-    for(index in index2remove){
+    for(let index in index2remove){
         data.splice(index - aux,1)
         aux++
     }
-    **/
+    
     return data
 }
