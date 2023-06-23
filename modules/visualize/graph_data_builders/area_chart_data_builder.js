@@ -16,13 +16,12 @@ export function buildAreaChartData(rawData, fields){
       rawData['data'].forEach(row => {
         let xItem = row[fieldset['x']];
         let yItem = row[fieldset['y']];
-      if (!data['labels'].includes(row[fieldset['x']])){
-        if(fieldsVerifier.isNumericOrCategorical(xItem, 'x')){
+        if(fieldsVerifier.isNumericOrCategorical(xItem, 'x') && 
+        !data['labels'].includes(row[fieldset['x']])){
           data['labels'].push(row[fieldset['x']]);
         }
         if(fieldsVerifier.isNumeric(yItem, 'y')){
           dataset.data.push(row[fieldset['y']]);
-        }
       }
       
     });

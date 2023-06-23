@@ -21,9 +21,9 @@ export function buildBubbleChartData(rawData, fields){
       fieldsVerifier.isNumeric(rItem, 'r')
 
       return {
-        x: row[fieldset['x']],
-        y: row[fieldset['y']],
-        r: row[fieldset['z']],
+        x: xItem,
+        y: yItem,
+        r: rItem,
     }})
     data['datasets'].push(dataset);
   });

@@ -17,7 +17,6 @@ export class GraphFieldsVerifier {
         if(checkIfIsNumeric(value)){
             return true;
         } else {
-            console.log("entrei no false")
             throw new DataTypeMissmatchError(this.typeOfGraph, axis, numericType, typeof value);
         }
     }
