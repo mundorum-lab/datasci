@@ -20,11 +20,6 @@ export class GraphOid extends OidUI {
                 enabled: true,
                 mode: 'xy',
               },
-              zoom: {
-                pan: {
-                  enabled: true,
-                  mode: 'xy',
-                },
                 zoom: {
                   wheel: {
                     enabled: true,
@@ -35,7 +30,7 @@ export class GraphOid extends OidUI {
                   },
                   mode: 'xy',
                 }
-              }
+              
             }
           }
         });
