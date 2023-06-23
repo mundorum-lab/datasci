@@ -12,19 +12,6 @@ Realiza transformações estatísticas em conjuntos de dados usando técnicas de
 
 # Message Types
 
-
-**`ClusterOutput`**
-~~~json
-{
-  "columns": [{"name":"x", "type":"num"}, {"name":"y", "type":"num"}, {"name":"category", "type":"num"}],
-  "data": [
-    ["xLinha0", "yLinha0", "categorylinha0"],
-    ["xLinha1", "yLinha1", "categorylinha1"],
-    "...",
-    ["xLinhaN", "yLinhaN", "categorylinhaN"],
-  ]
-}
-~~~
 A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
 A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
 O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
@@ -46,7 +33,7 @@ O objeto contém o array de objetos columns, que representa o nome e o tipo de c
 
 # Components
 
-![Component specification](images/components.png)
+![Component specification](img/components.png)
 
 ## Component `Cluster`
 
@@ -62,13 +49,13 @@ property | role
 
 notice | action | message type
 -------| ------ | ------------
-`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `ClusterOutput`
+`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `TypedDataContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformed` | `O componente envia os dados transformados para o barramento` | `ClusterOutput`
+`transformed` | `O componente envia os dados transformados para o barramento` | `TypedDataContent`
 
 ## Component `PCA`
 
