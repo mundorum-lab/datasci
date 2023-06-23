@@ -216,7 +216,7 @@ export class WorldSpaceNodeView extends OidUI {
                 ${outputPorts}
             </div>
             
-            <dialog data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
+            <dialog @mousedown={{this._onMouseDownHandle}} data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">
