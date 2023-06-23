@@ -8,6 +8,18 @@ The data module is the very beggining of this application's workflow, allowing t
 
 This is an explanation of the components contained in this module and their relationship to each other and other modules.
 
+# Team QR2.0
+* Giovana Kerche Bonás
+	* Responsible for architecture and development of the _File Input_, _File Reader_, _Clear Data_ and _List Tables_ components, part of the _data from file_ pipeline.
+* Gustavo Araújo Morais
+	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
+* João Guilherme Alves Santos
+	* Responsible for architecture and development of the _File Input_, _File Reader_, _Clear Data_ and _List Tables_ components, part of the _data from file_ pipeline.
+* Raniery Rodrigues da Silva
+	* Responsible for architecture and development of the _Type Input_ component, which is part of the process of standardization of data ingested.
+* Leonardo Livrare Martins
+	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
+
 # Folder and Files Structure
 
 Our project is divided into the following folders and files:
@@ -35,18 +47,6 @@ Our project is divided into the following folders and files:
 └── images    <- images used in the module specification
 
 ~~~
-
-# Team QR2.0
-* Giovana Kerche Bonás
-	* Responsible for architecture and development of the _File Input_, _File Reader_, _Clear Data_ and _List Tables_ components, part of the _data from file_ pipeline.
-* Gustavo Araújo Morais
-	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
-* João Guilherme Alves Santos
-	* Responsible for architecture and development of the _File Input_, _File Reader_, _Clear Data_ and _List Tables_ components, part of the _data from file_ pipeline.
-* Raniery Rodrigues da Silva
-	* Responsible for architecture and development of the _Type Input_ component, which is part of the process of standardization of data ingested.
-* Leonardo Livrare Martins
-	* Responsible for architecture and development of the _API Input_ and _API parser_ components, part of the _data from API_ pipeline.
 
 # Message Types
 These are the message types exchanged between components of this module and from this module to others.
@@ -140,11 +140,20 @@ Signifies an error that occurs during a process of data processing, such as in t
 The responsibility of this component is to read data from .csv and .json files and save it in a database. To accomplish this, a visual area has been developed that functions as a drag-and-drop feature, allowing users to drag their files onto it.
 In addition, the component makes use of a well-known tool called IndexedDB, which is a low-level API for client-side storage of significant amounts of structured data. The component stores data in a fixed-named database within a collection that is named the same way as the inserted file (the name is processed to remove unsupported characters). Depending on the file extension, the data undergoes processing that handles both the collection keys and the content to store it in the appropriate manner.
 
+### Setup
+~~~html
+<filereader-oid 
+	sep="," 
+	publish="loaded~file/loaded/[id]">
+</filereader-oid>
+~~~
+
+
 ### Properties
 
 | property     | role     | receive by    
 | ------------ | -------- | ------------- 
-separator | character that makes the separation of csv files (by default chooses the comma) | HTML
+sep | separator character that makes the separation of csv files (by default chooses the comma) | HTML
 file |   file is dragged into the area bounded by the component | HTML
 
 
@@ -161,10 +170,21 @@ notice    | source | message type
 ----------| -------| ------------
 loaded | As soon as the component finishes to store the content in Local Storage, it publishes the information about the database name and stored data name on the data bus. | TreatedReaderContent
 
+### Examples 
+- [Integration between file reader, file input and file typing](examples/exampleTypeInputTemplate.html)
+
 ---
 ## Component *file-input*
 
 By using the database name and collection name provided, the component transforms raw data (which it retrieves from the Browser Local Storage) into a useful format for other components. If it fails to open the database or collection for processing, it emits an error message with a description of what occurred.
+
+### Setup
+~~~html
+<fileinput-oid
+	subscribe="file/loaded/[id]~load_file"
+	publish="output~show/message">
+</fileinput-oid>
+~~~
 
 ### Properties
 | property     | role     | receive by    
@@ -189,6 +209,9 @@ notice    | source | message type
 ----------| -------| ------------
 output_raw | Error during the reading of the database or collection | ErrorDuringDataIngestion
 
+### Examples
+- [Integration between file reader, file input and file typing](examples/exampleTypeInputTemplate.html)
+
 ---
 ## Component *api-input*
 
@@ -196,6 +219,13 @@ This component is used to ingest from an API specified by the user. It receives 
 
 It is important to note that the data this component publishes on the bus is the raw data it receives from the API if the request was successful, or an error message otherwise. The standardization of this data is a responsibility of the *api-parser* component.
 
+### Setup
+~~~html
+<api-input 
+	subscribe="input_api/[id]~load"
+    publish="output~receive_data/[id]">
+</api-input>
+~~~
 ### Input Notices
 
 notice | action | message type 
@@ -238,6 +268,14 @@ output_processed | When the component finishes transforming the data received, p
 
 This component receives JSON data from the data bus and, through user input, attempts to correctly define the types of the data provided, defaulting to String if no input is given. It separates by 'sep' input the information column and data. After this process is finished, it inserts the typed data into the data bus.
 
+### Setup
+~~~html
+<file-typing
+	subscribe="load_file/load/[id]~load_file"
+	publish="output~[show/message]">
+</file-typing>
+~~~
+
 ### Properties
 | property     | role     | receive by    
 | ------------ | -------- | ------------- 
@@ -260,6 +298,11 @@ output | As the component finishes transforming the data based on user input, pu
 
 Component used to clean the bank. Bearing in mind that, mainly in the test phase, it is necessary to upload the same file several times.
 
+### Setup
+~~~html
+<cleardata-oid subscribe="data/clear~clear"><cleardata-oid>
+~~~
+
 ### Properties
 
 Don't have
@@ -273,18 +316,23 @@ click | Fires the event to do a complete cleaning of the database |
 ### Output Notices
 Don't have
 
+### Examples
+- [Clear Data](examples/exampleClearData.html)
 
 ---
 ## Component *list-tables*
 
 This component lists all the tables that are saved in our database. Necessary for the help of other teams in the control of the read files.
 
+### Setup
+~~~html
+<listtables-oid subscribe="data/list~list" publish="output_tables~data/tables"></listtables-oid>
+~~~
 
 ### Properties
 
 Don't have
 ### Input Notices
-
 
 notice | action |
 -------| ------ | 
@@ -292,52 +340,17 @@ click | Fires the event for checking the database|
 
 ### Output Notices
 
-
 notice    | source | message type
 ----------| -------| ------------
 output_tables | Returns the list of tables present in the database | TablesInDatabase
 
+### Examples
+
+- [List Tables](examples/exampleListTables.html)
+
 # Components Narratives
 
 ![Components Narratives](images/DataWorkflow.png)
-
-## Setup
-`file-reader` component
-~~~html
-<filereader-oid 
-	sep="," 
-	publish="loaded~file/loaded/[id]">
-</filereader-oid>
-~~~
-`file-input` component
-~~~html
-<fileinput-oid
-	subscribe="file/loaded/[id]~load_file"
-	publish="output~show/message">
-</fileinput-oid>
-~~~
-`api-input` component
-~~~html
-<api-input 
-	subscribe="input_api/[id]~load"
-    publish="output~receive_data/[id]">
-</api-input>
-~~~
-`file-typing` component
-~~~html
-<file-typing
-	subscribe="load_file/load/[id]~load_file"
-	publish="output~[show/message]">
-</file-typing>
-~~~
-`clear-data` component
-~~~html
-<cleardata-oid subscribe="data/clear~clear"><cleardata-oid>
-~~~
-`list-tables` component
-~~~html
-<listtables-oid subscribe="data/list~list" publish="output_tables~data/tables"></listtables-oid>
-~~~
 
 ## Narrative
 - The `file-reader` component recieves a file (csv or json), process the data and stores the data into the Browser Local Storage through a tool called IndexedDB. 
@@ -365,36 +378,36 @@ output_tables | Returns the list of tables present in the database | TablesInDat
 -   If any error occurs during the process, the component stops execution and publishes an error message on the data bus.
 -   If all rows have been processed successfully with no errors, the typed data in JSON format is published on the data bus.
 
-## Examples
+# Examples
 
-### File Module Integration
+## File Module Integration
 Operating diagram:
-[File Input](images/diagram_file_input.png)
+![File Input](images/diagram_file_input.png)
 
 Examples of use with integration between the data and transform groups:
 
-*[Filter](examples-integration/file-transform/filter.html)
+- [Filter](examples-integration/file-transform/filter.html)
 
-*[Mode](examples-integration/file-transform/mode.html)
+- [Mode](examples-integration/file-transform/mode.html)
 
-*[File to test](examples-integration/file-transform/cursos.csv)
+- [Test file](examples-integration/file-transform/cursos.csv)
 
 Examples of use with integration between the data and model groups:
 
-*[Cluster](examples-integration/file-model/cluster.html)
+- [Cluster](examples-integration/file-model/cluster.html)
 
-*[PCA](examples-integration/file-model/pca.html)
+- [PCA](examples-integration/file-model/pca.html)
 
-*[Arquivo para teste](examples-integration/file-model/entrada.csv)
+- [Test File](examples-integration/file-model/entrada.csv)
 
 
 ### File Module 
 Examples of use components:
 
-*[Integration between file reader, file input and file typing](examples/exampleTypeInputTemplate.html)
+- [Integration between file reader, file input and file typing](examples/exampleTypeInputTemplate.html)
 
-*[List Tables](examples/exampleListTables.html)
+- [List Tables](examples/exampleListTables.html)
 
-*[Clear Data](examples/exampleClearData.html)
+- [Clear Data](examples/exampleClearData.html)
 
-*[File to test](examples/zombie-diet.csv)
+- [Test File](examples/zombie-diet.csv)
