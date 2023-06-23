@@ -7,7 +7,7 @@ export function generateWaitingHtml(message) {
     flex-direction: column;
     background: #f0f0f0;
     border-radius: 10px;">
-   <img style="width: 64px" src="./assets/404621.png">
+   <img style="width: 64px" src="../assets/404621.png">
    <div style="height: 50px"></div>
    <div style="margin-left: 24px;
    margin-right: 24px;
@@ -25,7 +25,7 @@ export function generateErrorHtml(message) {
     flex-direction: column;
     background: #f0f0f0;
     border-radius: 10px;">
-    <img style="width: 64px" src="./assets/1463173.png">
+    <img style="width: 64px" src="../assets/1463173.png">
     <div style="height: 40px"></div>
     <div style="margin-left: 24px;
     margin-right: 24px;

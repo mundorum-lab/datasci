@@ -42,8 +42,6 @@ export class GraphOid extends OidUI {
       this.data = config.data
       this.canvas = this.shadowRoot.getElementById('canvas')
       this.canvas.style.display = 'initial';
-      this.placeholder = this.shadowRoot.getElementById('placeholder')
-      this.placeholder.style.display = 'none';
       if (this.chart) this.chart.destroy();
 
       if (!graphsWithoutDataLabel.includes(this.type)) {
@@ -57,6 +55,7 @@ export class GraphOid extends OidUI {
       if (e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE') {
         this.feedbackMessage = generateErrorHtml(e.message)
       } else {
+        console.log(e)
         this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
       }
 
