@@ -33,6 +33,8 @@ export class WorldSpaceNodeView extends OidUI {
             modal.showModal();
             this.isOpen = true;
         }
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('dontScroll', 'true');
 
     }
 
@@ -42,6 +44,8 @@ export class WorldSpaceNodeView extends OidUI {
      */
     _onCancel(event) {
         this.isOpen = false;
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.removeAttribute('dontScroll');
     }
 
     /**
@@ -55,6 +59,8 @@ export class WorldSpaceNodeView extends OidUI {
             modal.close();
             this.isOpen = false;
         }
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.removeAttribute('dontScroll');
     }
 
     connectedCallback() {
@@ -111,7 +117,7 @@ export class WorldSpaceNodeView extends OidUI {
      * @returns {string} The generated content.
      */
     generatePorts(direction, requiredPorts) {
-        const portElement = direction == "output" ? '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative left-full"></div>' : '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
+        const portElement = direction == "output" ? '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative right-0"></div>' : '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
         const breadcrumbPiece = (content, pos) => {
             const separator = pos == 0 ? '' : '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.10876 14L9.46582 1H10.8178L5.46074 14H4.10876Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>';
             
@@ -133,9 +139,9 @@ export class WorldSpaceNodeView extends OidUI {
                     crumbColector.push(breadcrumbPiece(item, pos));
                 });
                 partial += `
-                <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
+                <div class="flex w-full py-3 gap-x-2 text-primary border-b border-accent ${direction == "output" ? "flex-row-reverse" : "flex-row"}">
                     ${portElement}
-                    <ol class="h-4 inline-flex items-center space-x-0">
+                    <ol class="h-4 w-full inline-flex items-center space-x-0 ${direction == "output" ? "justify-end" : "justify-start"}">
                         ${crumbColector.join("")}
                     </ol>
                 </div>`;
@@ -210,7 +216,7 @@ export class WorldSpaceNodeView extends OidUI {
                 ${outputPorts}
             </div>
             
-            <dialog @mousedown={{this._onMouseDownHandle}} data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
+            <dialog data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">

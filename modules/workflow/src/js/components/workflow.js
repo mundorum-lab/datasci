@@ -89,6 +89,13 @@ export class WorkflowOid extends OidUI {
       }
 
       _onWheel(e) {
+        let dontScroll = false;
+        this.nodes.forEach(node => {
+          if(node.hasAttribute('dontScroll')){
+            dontScroll = true;
+          }
+        });
+        if(dontScroll) return;
         e.preventDefault();
 
         // Calculate the zoom factor based on the wheel event
