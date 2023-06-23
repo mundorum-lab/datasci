@@ -52,5 +52,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-dotted-background'),
+  ],
 };
