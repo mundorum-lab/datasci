@@ -3,16 +3,15 @@ import { createConfiguration } from './graph_data_builders/create_data_configura
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Chart from 'chart.js/auto';
+import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_state_template.js';
 
 const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
 
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
-    this.feedbackMessage = ""
+    this.feedbackMessage = ``
     this.canvas = this.shadowRoot.getElementById('canvas')
     this.canvas.style.display = 'initial';
-    this.placeholder = this.shadowRoot.getElementById('placeholder')
-    this.placeholder.style.display = 'none';
     if (this.chart) this.chart.destroy();
 
     if(!graphsWithoutDataLabel.includes(this.type)){
@@ -44,8 +43,12 @@ export class GraphOid extends OidUI {
           }
         }));
     } catch(e) {
-      console.log(e)
-      this.feedbackMessage = e.message
+      if(e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE'){
+        this.feedbackMessage = generateErrorHtml(e.message)
+      } else {
+        this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
+      }
+      
     }
     
   }
@@ -74,7 +77,7 @@ export class GraphOid extends OidUI {
 Oid.component({
   id: 'graph:graph',
   element: 'graph-oid',
-  template: html`<div><p id="placeholder">{{this.feedbackMessage}}</p><canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas></div>`,
+  template: html`<div>{{this.feedbackMessage}}<canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas></div>`,
   properties: {
     uid: {}, // Unique ID
     data: { default: null }, // Internal
@@ -82,7 +85,7 @@ Oid.component({
     options: { default: null },
     title: { default: null},
     fields: { default: null},
-    feedbackMessage: {default: 'Waiting for data'}
+    feedbackMessage: {default: generateWaitingHtml('Waiting for data...')}
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,

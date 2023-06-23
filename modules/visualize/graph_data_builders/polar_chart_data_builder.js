@@ -1,6 +1,9 @@
 import {interpolateColors} from "../utils/color_generator.js";
+import { GraphFieldsVerifier } from "../utils/type_verifier.js";
 
 export function buildPolarChartData(rawData, fields){
+  let fieldsVerifier = new GraphFieldsVerifier('Polar Area')
+
   let data = {
     labels: [],
     datasets: []
@@ -14,8 +17,16 @@ export function buildPolarChartData(rawData, fields){
         tension: 0.1,
     }
     rawData['data'].forEach(row => {
-        data['labels'].push(row[fieldset['x']]);
-        dataset.data.push(row[fieldset['y']]);
+        let xItem = row[fieldset['x']]
+        let yItem = row[fieldset['y']]
+        
+        if(fieldsVerifier.isNumericOrCategorical(xItem, 'x')){
+          data['labels'].push(xItem);
+        }
+        if(fieldsVerifier.isNumeric(yItem, 'y')){
+          dataset.data.push(yItem);
+        }
+        
     });
     data['datasets'].push(dataset);
 })

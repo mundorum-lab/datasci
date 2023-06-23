@@ -1,4 +1,7 @@
+import { GraphFieldsVerifier } from "../utils/type_verifier";
+
 export function buildLineChartData(rawData, fields){
+    let fieldVerifier = new GraphFieldsVerifier("Line");
     let data = {
         labels: [],
         datasets: []
@@ -11,8 +14,16 @@ export function buildLineChartData(rawData, fields){
             tension: 0.1,
         }
         rawData['data'].forEach(row => {
-            data['labels'].push(row[fieldset['x']]);
-            dataset.data.push(row[fieldset['y']]);
+            let xItem = row[fieldset['x']];
+            let yItem = row[fieldset['y']];
+            if(fieldVerifier.isNumericOrCategorical(xItem, 'x')){
+                data['labels'].push(xItem);
+            }
+            if(fieldVerifier.isNumeric(yItem, 'y')){
+                dataset.data.push(yItem);
+            }
+            
+            
         });
         data['datasets'].push(dataset);
     })
