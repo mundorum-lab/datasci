@@ -1,4 +1,7 @@
+import {GraphFieldsVerifier} from '../utils/type_verifier'
+
 export function buildAreaChartData(rawData, fields){
+    let fieldsVerifier = new GraphFieldsVerifier("Area")
   let data = {
     labels: [],
     datasets: []
@@ -11,9 +14,16 @@ export function buildAreaChartData(rawData, fields){
       tension: 0.1,
     }
       rawData['data'].forEach(row => {
-      if (!data['labels'].includes(row[fieldset['x']]))
-        data['labels'].push(row[fieldset['x']]);
-      dataset.data.push(row[fieldset['y']]);
+        let xItem = row[fieldset['x']];
+        let yItem = row[fieldset['y']];
+        if(fieldsVerifier.isNumericOrCategorical(xItem, 'x') && 
+        !data['labels'].includes(row[fieldset['x']])){
+          data['labels'].push(row[fieldset['x']]);
+        }
+        if(fieldsVerifier.isNumeric(yItem, 'y')){
+          dataset.data.push(row[fieldset['y']]);
+      }
+      
     });
     data['datasets'].push(dataset);
   })

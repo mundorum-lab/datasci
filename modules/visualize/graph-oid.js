@@ -3,52 +3,66 @@ import { createConfiguration } from './graph_data_builders/create_data_configura
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Chart from 'chart.js/auto';
+import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_state_template.js';
 
 const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
-    this.wroteMessage = ""
-    const config = createConfiguration(this.type, message, this.fields, 
-      {
-        ...this.options,
-        plugins: {
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'xy',
-           },
+    try {
+      this.feedbackMessage = ``
+      const config = createConfiguration(this.type, message, this.fields,
+        {
+          ...this.options,
+          plugins: {
             zoom: {
-              wheel: {
+              pan: {
                 enabled: true,
+                mode: 'xy',
               },
-              
-              pinch: {
-                enabled: true
-              },
-              mode: 'xy',
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+
+                pinch: {
+                  enabled: true
+                },
+                mode: 'xy',
+              }
+
             }
           }
-        }
-      })
-    this.data = config.data
-    this.canvas = this.shadowRoot.getElementById('canvas')
-    this.canvas.style.display = 'initial';
-    this.placeholder = this.shadowRoot.getElementById('placeholder')
-    this.placeholder.style.display = 'none';
-    if (this.chart) this.chart.destroy();
+        });
+      this.data = config.data
+      this.canvas = this.shadowRoot.getElementById('canvas')
+      this.canvas.style.display = 'initial';
+      if (this.chart) this.chart.destroy();
 
-    if(!graphsWithoutDataLabel.includes(this.type)){
-      Chart.register(ChartDataLabels);
+      if (!graphsWithoutDataLabel.includes(this.type)) {
+        Chart.register(ChartDataLabels);
+      } else {
+        Chart.unregister(ChartDataLabels);
+      }
+
+      Chart.register(zoomPlugin);
+      this.chart = new Chart(this.canvas, config);
     }
-    
-    Chart.register(zoomPlugin);
-    this.chart = new Chart(this.canvas, config);
+    catch (e) {
+      if (e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE') {
+        this.feedbackMessage = generateErrorHtml(e.message)
+      } else {
+        console.log(e)
+        this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
+      }
+
+    }
+
   }
 
-  handleExport(topic, message){
-    if(this.canvas == null){
-      return 
+  handleExport(topic, message) {
+    if (this.canvas == null) {
+      return
     }
     let url = this.canvas.toDataURL(`image/${message['type']}`);
     const download = document.createElement('a');
@@ -70,15 +84,15 @@ export class GraphOid extends OidUI {
 Oid.component({
   id: 'graph:graph',
   element: 'graph-oid',
-  template: html`<div><canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas><p id="placeholder">{{this.wroteMessage}}</p></div>`,
+  template: html`<div>{{this.feedbackMessage}}<canvas id="canvas" style="max-height:400px;max-width:400px;display:none"></canvas></div>`,
   properties: {
     uid: {}, // Unique ID
     data: { default: null }, // Internal
     type: { default: null },
     options: { default: null },
-    title: { default: null},
-    fields: { default: null},
-    wroteMessage: {default: 'Waiting for data'}
+    title: { default: null },
+    fields: { default: null },
+    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') }
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,
