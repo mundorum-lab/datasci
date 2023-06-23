@@ -6,10 +6,10 @@ export function buildScatterChartData(rawData, fields){
   
   fields.forEach((fieldset) => {
     const dataset = {
-        label: 'TODO',
-        data: [],
-        fill: false,
-        tension: 0.1,
+      label: fieldset['title'],
+      data: [],
+      fill: false,
+      tension: 0.1,
     }
     dataset.data = rawData['data'].map(row => {
       return {

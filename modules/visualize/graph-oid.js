@@ -9,19 +9,7 @@ const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
     this.wroteMessage = ""
-    this.canvas = this.shadowRoot.getElementById('canvas')
-    this.canvas.style.display = 'initial';
-    this.placeholder = this.shadowRoot.getElementById('placeholder')
-    this.placeholder.style.display = 'none';
-    if (this.chart) this.chart.destroy();
-
-    if(!graphsWithoutDataLabel.includes(this.type)){
-      Chart.register(ChartDataLabels);
-    }
-    
-    Chart.register(zoomPlugin);
-    
-    this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
+    const config = createConfiguration(this.type, message, this.fields, 
       {
         ...this.options,
         plugins: {
@@ -42,7 +30,20 @@ export class GraphOid extends OidUI {
             }
           }
         }
-      }));
+      })
+    this.data = config.data
+    this.canvas = this.shadowRoot.getElementById('canvas')
+    this.canvas.style.display = 'initial';
+    this.placeholder = this.shadowRoot.getElementById('placeholder')
+    this.placeholder.style.display = 'none';
+    if (this.chart) this.chart.destroy();
+
+    if(!graphsWithoutDataLabel.includes(this.type)){
+      Chart.register(ChartDataLabels);
+    }
+    
+    Chart.register(zoomPlugin);
+    this.chart = new Chart(this.canvas, config);
   }
 
   handleExport(topic, message){
