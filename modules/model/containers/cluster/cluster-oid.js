@@ -15,7 +15,7 @@ export class ApplyCluster extends OidBase {
       }
     }
     
-    columns.push({"name": "category", "type": "num"})
+    columns.push({"name": "category", "type": "number"})
     for (let i = 0; i < centroids.length; i++) {
       data.push([centroids[i][0], centroids[i][1], 0])
     }
