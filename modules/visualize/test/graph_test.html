@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Individual Graph Tests</title>
+  <!-- Visualize Components -->
   <script src="../graph-oid.js" type="module"></script>
   <script src="../mocks/data_sender_oid.js" type="module"></script>
   <script src="../mocks/options_sender_oid.js" type="module"></script>
@@ -15,13 +16,11 @@
   <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="../utils/color_generator.js" type="module"></script>
+  <!-- Data Components -->
+  <script src="../../data/src/components/table-view-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Individual Graph Tests</h1>
-  <options-sender-oid publish="click~graph/options/5"> </options-sender-oid><br />
-  <data-sender-oid publish="click~data/1"> </data-sender-oid><br />
-  <export-button-oid publish="export~graph/export/5"></export-button-oid><br />
-  <graph-oid uid="5" type="line" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
+  <h1>Exemples</h1>
   <h3>Valid Examples</h3>
   <p>-<b>Type:</b> Line; <b>Fields:</b> [{ "x": 2, "y": 1 },{ "x": 2, "y": 3 }]; <b>Mock:</b> General</p>
   <p>-<b>Type:</b> Doughnut; <b>Fields:</b>[{ "x": 0, "y": 1 }]; <b>Mock:</b> General</p>
@@ -32,5 +31,18 @@
   <p>- General  |  Columns {"name": "Nome do produto", "type": "string"}, {"name": "Preço Médio (R$)", "type": "num"}, {"name": "Quantidade em Estoque", "type": "num"}, {"name": "Vendas Mensais", "type": "num"}</p>
   <p>- Scatter  |  Columns {"name":"y1", "type": "num"}, {"name":"y2", "type": "num"}, {"name":"x" , "type": "num"}</p>
   <p>- Cluster  |  Columns {"name":"cluster", "type":"num"}, {"name":"x", "type": "num"}, {"name":"y" , "type": "num"}</p>
+  <h1>Individual Graph Tests</h1>
+  <h2>Send the options</h2>
+  <options-sender-oid publish="click~graph/options/5"> </options-sender-oid>
+  <h2>Send the data</h2>
+  <data-sender-oid publish="click~data/1"> </data-sender-oid>
+  <h2>Data table</h2>
+  Will be shown after you select and send the data.
+  <table-view-oid subscribe="data/1~display"></table-view-oid>
+  <h2>Graph</h2>
+  <graph-oid uid="5" type="line" subscribe="data/1~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
+  <h2>Export the graph</h2>
+  <export-button-oid publish="export~graph/export/5"></export-button-oid><br />
+
 </body>
 </html>
