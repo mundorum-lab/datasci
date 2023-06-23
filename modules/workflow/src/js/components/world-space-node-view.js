@@ -28,27 +28,6 @@ export class WorldSpaceNodeView extends OidUI {
 
         this.model.setInputField(name, value);
     }
-    
-    /**
-     * Event handler for the drag start event.
-     * @param {DragEvent} event - The dragstart event object.
-     */
-    _onDragStart(event) {
-        const dt = event.dataTransfer;
-
-        dt.effectAllowed = 'copy';
-        dt.setData('text/html', this.outerHTML);
-        dt.setData('text', event.target.id);
-        this.style.opacity = '0.4';
-    }
-
-    /**
-     * Event handler for the drag end event.
-     * @param {DragEvent} event - The dragend event object.
-     */
-    _onDragEnd(event) {
-        this.style.opacity = '1';
-    }
 
     /**
      * Event handler for the double click event.
@@ -173,13 +152,20 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
+    connec
+
+    _onMouseDown(event){
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('moving', 'true');
+      }
+
      /**
      * Generates a loading skeleton for the node
      * @returns {string} The generated content.
      */
     renderLoading() {
         return html`
-        <div class="w-72 h-72 border bg-primary-foreground rounded-md flex flex-col items-center" role="status">
+        <div @mousedown={{this._onMouseDown}} @mouseup={{this._onMouseUp}} class="w-72 h-72 border bg-primary-foreground rounded-md flex flex-col items-center" role="status">
             <div class="flex items-center w-full h-8 p-2 border-b border-border">
                 <div class="h-2 bg-border rounded-full w-48"></div>
             </div>
@@ -206,11 +192,10 @@ export class WorldSpaceNodeView extends OidUI {
         const formID = uuid();
 
         return html`
-        <div class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}} @dragstart={{this._onDragStart}} 
-        @dragend={{this._onDragEnd}}>
+        <div @mousedown={{this._onMouseDown}} class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}}>
             <div class="flex justify-between px-2 py-1 content-center w-full border-b">
                 <div class="flex justify-center items-center w-fit h-full gap-2">
-                    <img src="${icon}" alt="{{this.name}}" class="object-fill max-w-8 max-h-8">
+                    <img src="${icon}" alt="{{this.name}}" class="pointer-events-none object-fill max-w-8 max-h-8">
                     <span class="text-md text-primary font-medium">${title}</span>
                 </div>
                 <button @click={{this._onOpenConfig}} class="w-10 h-10 p-2 rounded-md border border-input hover:bg-accent hover:text-accent-foreground transitions-color">

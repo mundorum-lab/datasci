@@ -29,11 +29,11 @@ export class WorkflowOid extends OidUI {
       this.isMoving = false;
 
       this.scale = 1;
-      console.log(nodes)
 
     }
     
       _onMouseDown(event){
+        event.preventDefault();
         this.isMoving = true;
 
         //Mouse
@@ -45,6 +45,7 @@ export class WorkflowOid extends OidUI {
       }
     
       _onMouseMove(event) {
+        event.preventDefault();
         this.mouseX = event.clientX-this.offsetX;
         this.mouseY = event.clientY-this.offsetY;
         if (!this.isMoving) return;
@@ -53,22 +54,40 @@ export class WorkflowOid extends OidUI {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
 
-
-
         const dx = mouseX-this._startPosX;
         const dy = mouseY-this._startPosY;
+
         this.nodes.forEach(node => {
-    
-          node.style.left = parseFloat(node.style.left)+ dx + 'px';
-          node.style.top = parseFloat(node.style.top) +dy + 'px';
-          
-
-
+          if(node.hasAttribute('moving')){
+            this.nodeMoving = node;
+          }
         });
+
+        if(this.nodeMoving != undefined){
+          this.nodeMoving.style.left = parseFloat(this.nodeMoving.style.left)+ dx + 'px';
+          this.nodeMoving.style.top = parseFloat(this.nodeMoving.style.top) +dy + 'px';
+        } else {
+          this.nodes.forEach(node => {
+            node.style.left = parseFloat(node.style.left)+ dx + 'px';
+            node.style.top = parseFloat(node.style.top) +dy + 'px';
+          });
+        }
+
         this._startPosX = this._startPosX +dx;
         this._startPosY = this._startPosY +dy;
 
       }
+      _onMouseUp(event){
+        event.preventDefault();
+        this.nodes.forEach(node => {
+          if(node.hasAttribute('moving')){
+            node.removeAttribute('moving');
+          }
+        });
+        this.nodeMoving = undefined;
+        this.isMoving = false;
+      }
+
       _onWheel(event) {
       
         }
@@ -90,9 +109,6 @@ export class WorkflowOid extends OidUI {
         this.nodes = this.shadowRoot.querySelectorAll(".node");
       }
         
-      _onMouseUp(){
-        this.isMoving = false;
-      }
   
   template() {
     return html`
@@ -101,9 +117,6 @@ export class WorkflowOid extends OidUI {
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
         <div class="w-full">
         <div id="pane" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
-            <div id="node2" class="node w-32 h-32 absolute" style="left: 400px; top: 400px;">
-            <world-space-node type="data:database" id="a" name="Lorem Ipsum" connect="itf:component-provider#provider"></world-space-node>
-            </div>
           </div>
         </div>
       </div>
