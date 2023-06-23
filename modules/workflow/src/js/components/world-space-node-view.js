@@ -207,7 +207,7 @@ export class WorldSpaceNodeView extends OidUI {
 
         return html`
         <div class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}} @dragstart={{this._onDragStart}} 
-        @dragend={{this._onDragEnd}} draggable="true">
+        @dragend={{this._onDragEnd}}>
             <div class="flex justify-between px-2 py-1 content-center w-full border-b">
                 <div class="flex justify-center items-center w-fit h-full gap-2">
                     <img src="${icon}" alt="{{this.name}}" class="object-fill max-w-8 max-h-8">

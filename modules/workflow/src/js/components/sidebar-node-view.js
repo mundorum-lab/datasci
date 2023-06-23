@@ -13,10 +13,10 @@ export class SidebarNodeView extends OidUI {
      */
     _onDragStart(event) {
         const dt = event.dataTransfer;
+
+        let object = {name: this.name, type: this.type, icon: this.iconpath}
         
-        dt.setData('text', this.type);
-        dt.setData('text', this.name);
-        dt.setData('text', this.iconpath);
+        dt.setData('text', JSON.stringify(object));
         this.style.opacity = '0.4';
     }
 
@@ -32,6 +32,8 @@ export class SidebarNodeView extends OidUI {
         return html`
         <div
             draggable="true"
+            @dragstart={{this._onDragStart}}
+            @dragend={{this._onDragEnd}}
             href="#"
             class="bg-background flex w-full h-8 justify-between items-center border rounded-md py-1.5 px-1.5 text-sm leading-6 text-primary"
         >

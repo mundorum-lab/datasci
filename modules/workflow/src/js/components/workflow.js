@@ -4,6 +4,7 @@ import("/modules/workflow/src/js/widgets/buttonPopover.js");
 import("/modules/workflow/src/js/components/sidebar.js");
 import("/modules/workflow/src/js/components/sidebar-node-list-view.js");
 import("/modules/workflow/src/js/components/sidebar-node-view.js");
+import("/modules/workflow/src/js/components/world-space-node-view.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {
@@ -71,8 +72,23 @@ export class WorkflowOid extends OidUI {
       _onWheel(event) {
       
         }
-      
-      
+
+      _onDragOver(ev){
+        ev.preventDefault();
+      }
+
+      _onDrop(ev){
+        ev.preventDefault();
+        console.log(ev.dataTransfer.getData('text'));
+        const receivedObject = JSON.parse(ev.dataTransfer.getData('text'));
+        let node = document.createElement("div");
+        const mouseX = ev.clientX;
+        const mouseY = ev.clientY;
+
+        node.innerHTML = `<world-space-node class="node absolute" style="left: ${mouseX - this.offsetX}px; top: ${mouseY - this.offsetY}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
+        ev.target.appendChild(node);
+        this.nodes = this.shadowRoot.querySelectorAll(".node");
+      }
         
       _onMouseUp(){
         this.isMoving = false;
@@ -84,9 +100,10 @@ export class WorkflowOid extends OidUI {
       <div class="w-full h-full flex">
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
         <div class="w-full">
-        <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
-            <div id="node1" class="node w-32 h-32 bg-blue-500 absolute" style="left: 200px; top: 200px;"></div>
-            <div id="node2" class="node w-32 h-32 bg-red-500 absolute" style="left: 400px; top: 400px;"></div>
+        <div id="pane" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
+            <div id="node2" class="node w-32 h-32 absolute" style="left: 400px; top: 400px;">
+            <world-space-node type="data:database" id="a" name="Lorem Ipsum" connect="itf:component-provider#provider"></world-space-node>
+            </div>
           </div>
         </div>
       </div>
