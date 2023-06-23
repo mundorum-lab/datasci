@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Transform + Model</title>
+    <script src="../../../model/index.js" type="module"></script>
+    <script src="../../../data/src/components/fileinput-oid.js" type="module"></script>
+    <script src="../../../data/src/components/filereader-oid.js" type="module"></script>
+    <script src="../../../data/src/components/typeinput-oid.js" type="module"></script>
+    <script src="../../../data/src/components/table-view-oid.js" type="module"></script>
+</head>
+<body>
+    <h1>PCA:</h1>
+    <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~apply/pca"></fileinput-oid>
+    <ml-apply-pca target_dimension=2 subscribe="apply/pca~transform" publish="transformed~data/transformed"></ml-apply-pca>
+    <table-view-oid subscribe="data/transformed~display"></table-view-oid>
+</body>
+</html>
