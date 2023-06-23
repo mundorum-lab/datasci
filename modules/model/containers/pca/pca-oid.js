@@ -12,7 +12,6 @@ export class PcaOid extends OidBase {
     else{
       this.result = await getPCA2dReduction(this.data)
     }
-    console.log('this.result que sera publicado: ', this.result)
     this._notify("transformed", this.result);
   }
   
