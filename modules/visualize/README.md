@@ -66,6 +66,9 @@ The objective of the module is to allow the data, storaged in tables, to be show
 |     ├── radar_chart_data_builder.js              -> radar chart configuration builder
 │     │
 |     └── scatter_chart_data_builder.js            -> scatter chart configuration builder
+│
+|
+├── icons                        -> folder with icons of graph nodes in workflow
 |
 |
 └── README.md                    -> module specification
@@ -386,5 +389,5 @@ In this exemple, the [graph_test.html file](./test/graph_test.html) is run.
 	1. Run `npm run dev` on terminal.
 	2. Change the "type" selection box to "Cluster"
 	3. Click on "Send Options"
-	4. Click on "Apply Cluster with 2 clusters"
+	4. Click on "Apply Cluster with 2 clusters" at the top of the page
 	5. The `graph-oid` component displays the graph.	
