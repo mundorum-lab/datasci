@@ -1,10 +1,6 @@
 export function buildBubbleChartData(rawData, fields){
   let data = {
     datasets: [
-      {
-        label: 'TODO',
-        data: []
-      }
     ]
   };
   fields.forEach((fieldset) => {
@@ -20,5 +16,6 @@ export function buildBubbleChartData(rawData, fields){
     }})
     data['datasets'].push(dataset);
   });
+  console.log(data)
   return data;
 }

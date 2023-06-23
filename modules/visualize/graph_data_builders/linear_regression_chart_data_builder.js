@@ -6,7 +6,7 @@ export function buildLinearRegressionChartData(rawData, fields){
       
       fields.forEach((fieldset) => {
         const point_dataset = {
-            label: 'TODO',
+            label: fieldset['title']+' points',
             data: [],
             fill: false,
             tension: 0.1,
@@ -14,7 +14,7 @@ export function buildLinearRegressionChartData(rawData, fields){
         }
        
         const line_dataset = {
-          label: 'TODO',
+          label: fieldset['title']+' line',
           data: [],
           fill: false,
           tension: 0.1,

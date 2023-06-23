@@ -32,7 +32,6 @@ export function buildClusterChartData(rawData, fields){
     });
     data.datasets.push(dataset)
   })
-  console.log(data)
   
   return data;
 }
