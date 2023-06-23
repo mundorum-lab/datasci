@@ -23,6 +23,8 @@ export class WorkflowOid extends OidUI {
     super.connectedCallback();
     
       this.nodes = this.shadowRoot.querySelectorAll(".node");
+      this.pane = this.shadowRoot.querySelector("#pane");
+      this.container = this.shadowRoot.querySelector("#container");
       //MAGIC NUMBER
       this.offsetX = 260;
       this.offsetY = 75;
@@ -37,25 +39,17 @@ export class WorkflowOid extends OidUI {
         this.isMoving = true;
 
         //Mouse
-        this._startPosX = event.clientX;
-        this._startPosY = event.clientY;
+        this._startPosX = event.clientX / this.scale;
+        this._startPosY = event.clientY / this.scale;
 
-
+        this._startPosPaneX = event.clientX;
+        this._startPosPaneY = event.clientY;
 
       }
     
       _onMouseMove(event) {
         event.preventDefault();
-        this.mouseX = event.clientX-this.offsetX;
-        this.mouseY = event.clientY-this.offsetY;
         if (!this.isMoving) return;
-        
-        
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
-        const dx = mouseX-this._startPosX;
-        const dy = mouseY-this._startPosY;
 
         this.nodes.forEach(node => {
           if(node.hasAttribute('moving')){
@@ -64,17 +58,22 @@ export class WorkflowOid extends OidUI {
         });
 
         if(this.nodeMoving != undefined){
+          const dx = (event.clientX / this.scale)-this._startPosX;
+          const dy = (event.clientY / this.scale)-this._startPosY;
           this.nodeMoving.style.left = parseFloat(this.nodeMoving.style.left)+ dx + 'px';
-          this.nodeMoving.style.top = parseFloat(this.nodeMoving.style.top) +dy + 'px';
+          this.nodeMoving.style.top = parseFloat(this.nodeMoving.style.top) + dy + 'px';
+          this._startPosX += dx;
+          this._startPosY += dy;
         } else {
-          this.nodes.forEach(node => {
-            node.style.left = parseFloat(node.style.left)+ dx + 'px';
-            node.style.top = parseFloat(node.style.top) +dy + 'px';
-          });
+          const dx = event.clientX-this._startPosPaneX;
+          const dy = event.clientY-this._startPosPaneY;
+          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left)+ dx, -5000+this.container.offsetWidth), 0) + 'px';
+          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top) +dy, -5000+this.container.offsetHeight), 0) + 'px';
+          this._startPosPaneX += dx;
+          this._startPosPaneY += dy;
         }
 
-        this._startPosX = this._startPosX +dx;
-        this._startPosY = this._startPosY +dy;
+        
 
       }
       _onMouseUp(event){
@@ -88,10 +87,15 @@ export class WorkflowOid extends OidUI {
         this.isMoving = false;
       }
 
-      _onWheel(event) {
-      
-        }
+      _onWheel(e) {
+        e.preventDefault();
 
+        // Calculate the zoom factor based on the wheel event
+        const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+        this.scale *= zoomFactor;
+
+        this.pane.style.transform = `scale(${this.scale})`;
+      }
       _onDragOver(ev){
         ev.preventDefault();
       }
@@ -101,10 +105,10 @@ export class WorkflowOid extends OidUI {
         console.log(ev.dataTransfer.getData('text'));
         const receivedObject = JSON.parse(ev.dataTransfer.getData('text'));
         let node = document.createElement("div");
-        const mouseX = ev.clientX;
-        const mouseY = ev.clientY;
+        const mouseX = ev.clientX / this.scale;
+        const mouseY = ev.clientY / this.scale;
 
-        node.innerHTML = `<world-space-node class="node absolute" style="left: ${mouseX - this.offsetX}px; top: ${mouseY - this.offsetY}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
+        node.innerHTML = `<world-space-node class="node absolute" style="left: ${mouseX - this.offsetX / this.scale}px; top: ${mouseY - this.offsetY / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
         ev.target.appendChild(node);
         this.nodes = this.shadowRoot.querySelectorAll(".node");
       }
@@ -115,9 +119,9 @@ export class WorkflowOid extends OidUI {
       <component-provider-oid id="provider"></component-provider-oid>
       <div class="w-full h-full flex">
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
-        <div class="w-full">
-        <div id="pane" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
-          </div>
+        <div id="container" class="w-full h-screen overflow-hidden relative">
+        <div id="pane" style="left: 0px; top: 0px;" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="absolute cursor-move w-[5000px] h-[5000px] bg-dotted-spacing-7 bg-dotted-radius-px bg-dotted-gray-400">
+        </div>
         </div>
       </div>
     `; 
