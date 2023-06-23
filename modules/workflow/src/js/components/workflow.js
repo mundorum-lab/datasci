@@ -25,9 +25,6 @@ export class WorkflowOid extends OidUI {
       this.nodes = this.shadowRoot.querySelectorAll(".node");
       this.pane = this.shadowRoot.querySelector("#pane");
       this.container = this.shadowRoot.querySelector("#container");
-      //MAGIC NUMBER
-      this.offsetX = 260;
-      this.offsetY = 75;
       this.isMoving = false;
 
       this.scale = 1;
@@ -67,8 +64,8 @@ export class WorkflowOid extends OidUI {
         } else {
           const dx = event.clientX-this._startPosPaneX;
           const dy = event.clientY-this._startPosPaneY;
-          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left)+ dx, -5000+this.container.offsetWidth), 0) + 'px';
-          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top) +dy, -5000+this.container.offsetHeight), 0) + 'px';
+          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left)+ dx, (-5000 * this.scale) + this.container.offsetWidth), 0) + 'px';
+          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top) +dy, (-5000 * this.scale) + this.container.offsetHeight), 0) + 'px';
           this._startPosPaneX += dx;
           this._startPosPaneY += dy;
         }
@@ -91,10 +88,14 @@ export class WorkflowOid extends OidUI {
         e.preventDefault();
 
         // Calculate the zoom factor based on the wheel event
-        const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-        this.scale *= zoomFactor;
-
-        this.pane.style.transform = `scale(${this.scale})`;
+        const zoomFactor = e.deltaY < 0 ? 1.02 : 0.98;
+        if(this.scale * zoomFactor * 5000 > this.container.offsetWidth){
+          this.scale *= zoomFactor;
+          this.pane.style.transformOrigin = "left top";
+          this.pane.style.transform = `scale(${this.scale})`;
+          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left), (-5000 * this.scale) + this.container.offsetWidth), 0) + 'px';
+          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top), (-5000 * this.scale) + this.container.offsetHeight), 0) + 'px';
+        }
       }
       _onDragOver(ev){
         ev.preventDefault();
@@ -108,7 +109,7 @@ export class WorkflowOid extends OidUI {
         const mouseX = ev.clientX / this.scale;
         const mouseY = ev.clientY / this.scale;
 
-        node.innerHTML = `<world-space-node class="node absolute" style="left: ${mouseX - this.offsetX / this.scale}px; top: ${mouseY - this.offsetY / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
+        node.innerHTML = `<world-space-node class="node absolute" style="left: ${mouseX - (this.pane.getBoundingClientRect().left) / this.scale}px; top: ${mouseY - (this.pane.getBoundingClientRect().top) / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
         ev.target.appendChild(node);
         this.nodes = this.shadowRoot.querySelectorAll(".node");
       }
