@@ -4,6 +4,11 @@ import kmeans from './kmeans.js'
 export class ApplyCluster extends OidBase {
   applyCluster (topic, message) {
     let columns = [...message.columns]
+    if (columns){
+      columns.forEach(el => {
+        if(el.type === 'boolean' || el.type === 'string') this.reportError('All data must be numbers!'); 
+      });
+    }
     let data = JSON.parse(JSON.stringify(message.data));
     let res = kmeans(data, this.num_clusters, this.max_iterations)
     let centroids = res.centroids
@@ -27,6 +32,13 @@ export class ApplyCluster extends OidBase {
     }
 
     this._notify('transformed', {data: final.data, columns: final.columns});
+  }
+
+  reportError (message){
+    console.log(message);
+    this._notify("error", {
+      error: message
+    });
   }
 }
 
