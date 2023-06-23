@@ -5,22 +5,13 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import Chart from 'chart.js/auto';
 import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_state_template.js';
 
-const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter']
+const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
   handleRender(topic, message) {
-    this.feedbackMessage = ``
-    this.canvas = this.shadowRoot.getElementById('canvas')
-    this.canvas.style.display = 'initial';
-    if (this.chart) this.chart.destroy();
-
-    if(!graphsWithoutDataLabel.includes(this.type)){
-      Chart.register(ChartDataLabels);
-    }
-    
-    Chart.register(zoomPlugin);
     try {
-      this.chart = new Chart(this.canvas, createConfiguration(this.type, message, this.fields, 
+      this.feedbackMessage = ``
+      const config = createConfiguration(this.type, message, this.fields,
         {
           ...this.options,
           plugins: {
@@ -28,34 +19,54 @@ export class GraphOid extends OidUI {
               pan: {
                 enabled: true,
                 mode: 'xy',
-             },
+              },
               zoom: {
-                wheel: {
+                pan: {
                   enabled: true,
+                  mode: 'xy',
                 },
-                
-                pinch: {
-                  enabled: true
-                },
-                mode: 'xy',
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+
+                  pinch: {
+                    enabled: true
+                  },
+                  mode: 'xy',
+                }
               }
             }
           }
-        }));
-    } catch(e) {
-      if(e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE'){
+        });
+      this.data = config.data
+      this.canvas = this.shadowRoot.getElementById('canvas')
+      this.canvas.style.display = 'initial';
+      this.placeholder = this.shadowRoot.getElementById('placeholder')
+      this.placeholder.style.display = 'none';
+      if (this.chart) this.chart.destroy();
+
+      if (!graphsWithoutDataLabel.includes(this.type)) {
+        Chart.register(ChartDataLabels);
+      }
+
+      Chart.register(zoomPlugin);
+      this.chart = new Chart(this.canvas, config);
+    }
+    catch (e) {
+      if (e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE') {
         this.feedbackMessage = generateErrorHtml(e.message)
       } else {
         this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
       }
-      
+
     }
-    
+
   }
 
-  handleExport(topic, message){
-    if(this.canvas == null){
-      return 
+  handleExport(topic, message) {
+    if (this.canvas == null) {
+      return
     }
     let url = this.canvas.toDataURL(`image/${message['type']}`);
     const download = document.createElement('a');
@@ -83,9 +94,9 @@ Oid.component({
     data: { default: null }, // Internal
     type: { default: null },
     options: { default: null },
-    title: { default: null},
-    fields: { default: null},
-    feedbackMessage: {default: generateWaitingHtml('Waiting for data...')}
+    title: { default: null },
+    fields: { default: null },
+    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') }
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,

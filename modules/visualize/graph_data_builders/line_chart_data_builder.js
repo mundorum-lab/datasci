@@ -8,7 +8,7 @@ export function buildLineChartData(rawData, fields){
     };
     fields.forEach((fieldset) => {
         const dataset = {
-            label: 'TODO',
+            label: ['title'],
             data: [],
             fill: false,
             tension: 0.1,
@@ -16,7 +16,7 @@ export function buildLineChartData(rawData, fields){
         rawData['data'].forEach(row => {
             let xItem = row[fieldset['x']];
             let yItem = row[fieldset['y']];
-            if(fieldVerifier.isNumericOrCategorical(xItem, 'x')){
+            if(!data['labels'].includes(row[fieldset['x']]) && fieldVerifier.isNumericOrCategorical(xItem, 'x')){
                 data['labels'].push(xItem);
             }
             if(fieldVerifier.isNumeric(yItem, 'y')){

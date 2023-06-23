@@ -1,3 +1,3 @@
-import './containers/cluster/cluster-oid';
-import './containers/linear-regression/linear-regression-oid';
-import './containers/pca/pca-oid';
+import './containers/cluster/cluster-oid.js';
+import './containers/linear-regression/linear-regression-oid.js';
+import './containers/pca/pca-oid.js';

@@ -9,7 +9,7 @@ export function buildPieChartData(rawData, fields){
     };
     fields.forEach((fieldset) => {
         const dataset = {
-            label: 'TODO',
+            label: fieldset['title'],
             data: [],
             fill: false,
             tension: 0.1,
@@ -18,7 +18,8 @@ export function buildPieChartData(rawData, fields){
             let xItem = row[fieldset['x']]
             let yItem = row[fieldset['y']]
 
-            if(fieldVerifier.isNumericOrCategorical(xItem, 'x')){
+            if(!data['labels'].includes(row[fieldset['x']]) && 
+            fieldVerifier.isNumericOrCategorical(xItem, 'x')){
                 data['labels'].push(xItem);
             }
             if(fieldVerifier.isNumeric(yItem, 'y')){

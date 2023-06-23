@@ -4,15 +4,11 @@ export function buildBubbleChartData(rawData, fields){
   let fieldsVerifier = new GraphFieldsVerifier("Bubble")
   let data = {
     datasets: [
-      {
-        label: 'TODO',
-        data: []
-      }
     ]
   };
   fields.forEach((fieldset) => {
     const dataset = {
-      label: 'TODO',
+      label: fieldset['title'],
       data: [],
     }
     dataset.data = rawData['data'].map(row => {
@@ -27,9 +23,10 @@ export function buildBubbleChartData(rawData, fields){
       return {
         x: row[fieldset['x']],
         y: row[fieldset['y']],
-        r: row[fieldset['r']],
+        r: row[fieldset['z']],
     }})
     data['datasets'].push(dataset);
   });
+  console.log(data)
   return data;
 }

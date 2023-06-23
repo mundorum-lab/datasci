@@ -11,16 +11,17 @@ export function buildPolarChartData(rawData, fields){
   
   fields.forEach((fieldset) => {
     const dataset = {
-        label: 'TODO',
-        data: [],
-        fill: false,
-        tension: 0.1,
+      label: fieldset['title'],
+      data: [],
+      fill: false,
+      tension: 0.1,
     }
     rawData['data'].forEach(row => {
         let xItem = row[fieldset['x']]
         let yItem = row[fieldset['y']]
         
-        if(fieldsVerifier.isNumericOrCategorical(xItem, 'x')){
+        if(!data['labels'].includes(row[fieldset['x']]) &&
+          fieldsVerifier.isNumericOrCategorical(xItem, 'x')){
           data['labels'].push(xItem);
         }
         if(fieldsVerifier.isNumeric(yItem, 'y')){
@@ -29,7 +30,7 @@ export function buildPolarChartData(rawData, fields){
         
     });
     data['datasets'].push(dataset);
-})
+  })
 
   const dataLength = rawData['data'].length;
   data.datasets[0].backgroundColor = interpolateColors(dataLength);  

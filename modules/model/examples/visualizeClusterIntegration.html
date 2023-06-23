@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Forno</title>
+  <script src="../../visualize/graph-oid.js" type="module"></script>
+  <script src="../../visualize/forno/data_sender_oid.js" type="module"></script>
+  <script src="../../visualize/forno/options_sender_oid.js" type="module"></script>
+  <script src="../../visualize/prototype/export_button.js" type="module"></script>
+  <!-- Import DataLabels plugin via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <!-- Import D3 Scale Chromatic via CDN -->
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="../../visualize/utils/color_generator.js" type="module"></script>
+
+  <script src="../containers/cluster/mock-cluster-data.js" type="module"></script>
+  <script src="../containers/cluster/cluster-oid.js" type="module"></script>
+
+  <script src="../../data/src/components/fileinput-oid.js" type="module"></script>
+  <script src="../../data/src/components/filereader-oid.js" type="module"></script>
+  <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
+  <script src="../../data/src/components/table-view-oid.js" type="module"></script>
+  <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
+</head>
+<body>
+  <h1>Cluster Algorithm:</h1>
+  <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
+  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+  <type-input subscribe="data/raw~type_input" publish="output_type~model/cluster/transform"></type-input>
+  <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
+
+  <button-oid label="Clear DB"
+                value="Clear Database Example"
+                publish="click~data/clear">
+  </button-oid>
+  <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
+  
+  <h1>Grafico</h1><br/>
+  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
+  <export-button-oid publish="export~graph/export"></export-button-oid><br />
+  <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>
+  <canvas id="forcing-canvas"></canvas>
+</body>
+</html>

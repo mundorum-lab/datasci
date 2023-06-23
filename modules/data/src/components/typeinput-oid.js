@@ -4,7 +4,7 @@ export class TypeInputOid extends OidUI {
     isNullable = ['', null, 'null', ' '];
 
     handleType_input(topic, message) {
-        const jsonData = JSON.parse(message.value);
+        const jsonData = message;
         let columnType = Array(jsonData.columns.length).fill(null)
 
         let columns = [jsonData.columns];

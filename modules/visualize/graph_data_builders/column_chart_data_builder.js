@@ -10,7 +10,7 @@ export function buildColumnChartData(rawData, fields){
 
     fields.forEach((fieldset) => {
         const dataset = {
-            label: 'TODO',
+            label: ['title'],
             data: [],
             fill: false,
             tension: 0.1,
@@ -19,7 +19,7 @@ export function buildColumnChartData(rawData, fields){
             let xItem = row[fieldset['x']]
             let yItem = row[fieldset['y']]
 
-            if(fieldsVerifier.isNumericOrCategorical(xItem, "x")){
+            if(!data['labels'].includes(row[fieldset['x']]) && fieldsVerifier.isNumericOrCategorical(xItem, "x")){
                 data['labels'].push(xItem);
             }
 
@@ -32,8 +32,8 @@ export function buildColumnChartData(rawData, fields){
         data['datasets'].push(dataset);
     })
 
-    const dataLength = rawData['data'].length;
-    data.datasets[0].backgroundColor = interpolateColors(dataLength); 
+  const dataLength = rawData['data'].length;
+  data.datasets[0].backgroundColor = interpolateColors(dataLength); 
 
-    return data;
+  return data;
 }

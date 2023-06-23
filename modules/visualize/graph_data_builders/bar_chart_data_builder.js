@@ -9,7 +9,7 @@ export function buildBarChartData(rawData, fields){
     };
     fields.forEach((fieldset) => {
         const dataset = {
-            label: 'TODO',
+            label: fieldset['title'],
             data: [],
             fill: false,
             tension: 0.1,
@@ -17,7 +17,7 @@ export function buildBarChartData(rawData, fields){
         rawData['data'].forEach(row => {
             let xItem = row[fieldset['x']];
             let yItem = row[fieldset['y']];
-            if (fieldsVerifier.isNumeric(xItem, 'x')) {
+            if (!data['labels'].includes(row[fieldset['x']]) && fieldsVerifier.isNumeric(xItem, 'x')) {
                 data['labels'].push(xItem);
             }
             if (fieldsVerifier.isNumericOrCategorical(yItem, 'y')){
