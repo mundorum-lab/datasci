@@ -270,9 +270,13 @@ To be able to test our components, we needed data to make the graphs, as well as
 We mock two types of data: data tables and options maps.
 
 ### 1. Mocked data tables
-
+We create 3 data tables, saved in the [data_mock.js](./mocks/data_mock.js) file:
+- mockedData: ideal for testing all types of charts, especially those that accept having axes with categorical values.
+- scatter_mockData: ideal for testing scatter plots
+- cluster_mockData: ideal for testing cluster plot.
 
 ### 2. Mocked options
+We created an example of an options map of the chart present in the [options_mock.js](./mocks/options_mock.js) file.
 
 <br />
 
@@ -372,4 +376,15 @@ In this exemple, the [graph_test.html file](./test/graph_test.html) is run.
 9. Consequently the `graph-oid` component receives the `render` notice.
 10. The `graph-oid` component displays the graph.
 
-## 
+<br />
+
+## Integration Tests:
+
+* ### Cluster_integration_test:
+	In this exemple, the [cluster_integration_test.html file](./test/integration_tests/cluster_integration_test.html) is run.
+
+	1. Run `npm run dev` on terminal.
+	2. Change the "type" selection box to "Cluster"
+	3. Click on "Send Options"
+	4. Click on "Apply Cluster with 2 clusters"
+	5. The `graph-oid` component displays the graph.	
