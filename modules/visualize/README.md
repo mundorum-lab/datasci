@@ -32,7 +32,11 @@ The objective of the module is to allow the data, storaged in tables, to be show
 │     │
 |     ├── graphs_tests.html      -> graphics unit tests page
 │     │
-|     └── integration_tests      -> folder with graphics integration tests pages
+|     └── integration_data       -> exemple of integration with Data module page
+│     │
+|     └── integration_model      -> exemple of integration with Model module page
+│     │
+|     └── integration_transform  -> exemple of integration with Transform module page
 │
 |
 ├── export_button.js             -> component tha implements the export button
@@ -66,6 +70,9 @@ The objective of the module is to allow the data, storaged in tables, to be show
 |     ├── radar_chart_data_builder.js              -> radar chart configuration builder
 │     │
 |     └── scatter_chart_data_builder.js            -> scatter chart configuration builder
+│
+|
+├── icons                        -> folder with icons of graph nodes in workflow
 |
 |
 └── README.md                    -> module specification
@@ -101,28 +108,28 @@ This was the format of the table agreed between the groups. The `GraphOid` compo
 
 **`Options`**
 
-~~~js
+~~~json
 {
-	fields: [{
-		x: <int>,
-		y: <int>,
-		title: <String>,
-		z?: <int>,
+	"fields": [{
+		"x": "<int>",
+		"y": "<int>",
+		"title": "<String>",
+		?"z": "<int>",
 	},
 	? {
-		x: <int>,
-		y: <int>,
-		title: <String>,
-		z?: <int>
+		"x": "<int>",
+		"y": "<int>",
+		"title": "<String>",
+		?"z": "<int>"
 	}],
-	title: <String>,
-	scales: {
-		x-title: <String>,
-		y-title: <String>,
-		type: <String(linear/category)>
-		?min: <int>,
-		?max: <int>,
-		?log-scale: <boolean>
+	"title": "<String>",
+	"scales": {
+		"x-title": "<String>",
+		"y-title": "<String>",
+		"type": "<String(linear/category)>",
+		?"min": "<int>",
+		?"max": "<int>",
+		?"log-scale": "<boolean>"
 	}
 }
 ~~~
@@ -380,11 +387,41 @@ In this exemple, the [graph_test.html file](./test/graph_test.html) is run.
 
 ## Integration Tests:
 
-* ### Cluster_integration_test:
-	In this exemple, the [cluster_integration_test.html file](./test/integration_tests/cluster_integration_test.html) is run.
+* ### integration_data:
+	In this exemple, the [integration_data.html file](./test/integration_data.html) is run.
+
+	The objective is to show that the file upload from filereader-oid component, passing to fileinput-oid and type-input components, can generate correctly any type of graph.
 
 	1. Run `npm run dev` on terminal.
-	2. Change the "type" selection box to "Cluster"
-	3. Click on "Send Options"
-	4. Click on "Apply Cluster with 2 clusters"
-	5. The `graph-oid` component displays the graph.	
+	3. Click on "Send Options".
+	4. Upload a csv file on component.
+		* A [exemple of csv](./mocks/mockedData_in_csv.csv) is available in mocks folder.
+	5. A table will be shown with the data of the file.
+	6. The `graph-oid` component displays the graph.	
+	
+<br />
+
+* ### integration_model:
+	In this exemple, the [integration_model.html file](./test/integration_model.html) is run.
+
+	The objective is to show the clustering of the input data in a cluster graph.
+
+	1. Run `npm run dev` on terminal.
+	2. Change the "type" selection box to "Cluster" in "Graph" section.
+	3. Click on "Send Options".
+	4. Click on "Apply Cluster with 2 clusters" at the top of the page.
+	5. A table will be shown with the data returned by the clustering component, with a new column called "category".
+	5. The `graph-oid` component displays the graph.
+
+<br />
+
+* ### integration_transform:
+	In this exemple, the [integration_transform.html file](./test/integration_transform.html) is run.
+
+	The objective is to show that the operation of subtracting 50 from all values of column "Quantidade em Estoque" is working correctly, creating a new column called "Sobra de estoque".
+
+	1. Run `npm run dev` on terminal.
+	2. Click on "Send Options".
+	3. Click on "Render Graph".
+	4. Two tables with the data before and after the transformation will be shown.
+	5. The `graph-oid` component displays the graph with the originals datas and the changed ones.	

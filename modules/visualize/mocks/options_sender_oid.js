@@ -33,7 +33,7 @@ Oid.component(
           <option value='scatter'>Scatter</option>
         </select><br /><br />
         <label for='fields'>Fields: </label><br />
-        <textarea id='fields' cols='20' rows='8'>{{this.options}}</textarea><br /><br />
+        <textarea id='fields' cols='20' rows='4'>{{this.options}}</textarea><br /><br />
         <button @click>Send Options</button>
       </div>`,
       implementation: OptionsSenderOid
