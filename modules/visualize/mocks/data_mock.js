@@ -1,9 +1,9 @@
 export const mockedData = {
     "columns": [
         {"name": "Nome do produto", "type": "string"},
-        {"name": "Preço Médio (R$)", "type": "num"},
-        {"name": "Quantidade em Estoque", "type": "num"},
-        {"name": "Vendas Mensais", "type": "num"}
+        {"name": "Preço Médio (R$)", "type": "number"},
+        {"name": "Quantidade em Estoque", "type": "number"},
+        {"name": "Vendas Mensais", "type": "number"}
     ],
     "data": [
         ["Camiseta", 49.90, 100, 50],
@@ -18,9 +18,9 @@ export const mockedData = {
 
 export const scatter_mockData = {
     "columns": [
-        {"name":"y1", "type": "num"},
-        {"name":"y2", "type": "num"},
-        {"name":"x" , "type": "num"}
+        {"name":"y1", "type": "number"},
+        {"name":"y2", "type": "number"},
+        {"name":"x" , "type": "number"}
     ],
     "data": [
         [2,1,0],
@@ -34,9 +34,9 @@ export const scatter_mockData = {
 
 export const cluster_mockData = {
     "columns": [
-        {"name":"cluster", "type":"num"},
-        {"name":"x", "type": "num"},
-        {"name":"y" , "type": "num"}
+        {"name":"cluster", "type":"number"},
+        {"name":"x", "type": "number"},
+        {"name":"y" , "type": "number"}
     ],
     "data": [
         [1,1,0],
