@@ -41,9 +41,6 @@ export async function getData(table){
     let columns = table['columns']
     let data = table['data']
     
-    /** 
-     formato dos dados que esta chegando vem diferente do esperado, deixando essa função para depois
-
     let index2remove = []
 
     //remove any columns that are not num
@@ -55,10 +52,10 @@ export async function getData(table){
     }
     
     let aux = 0
-    for(index in index2remove){
+    for(let index in index2remove){
         data.splice(index - aux,1)
         aux++
     }
-    **/
+    
     return data
 }
