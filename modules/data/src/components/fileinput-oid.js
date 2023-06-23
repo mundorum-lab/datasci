@@ -29,8 +29,6 @@ export class FileInputOid extends OidUI {
           const { id, ...rest } = item;
           return rest;
         });
-
-        console.log("esse é o data", data);
         
 
         list_data = [];
