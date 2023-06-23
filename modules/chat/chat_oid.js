@@ -1,6 +1,8 @@
 import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 
 export class ChatOid extends OidWeb {
+  #hasWorkflow=false
+  #connectedList=[]
   async connectedCallback(){
     super.connectedCallback()
     // // console.log("connected callback")
@@ -17,14 +19,14 @@ export class ChatOid extends OidWeb {
   //   // this.requestToOpenAI()
     
   }
-  connectionReady(cInterface,id,component){
-    super.connectionReady(cInterface,id,component)
-    // console.log(`itf = ${cInterface} id = ${id} component = ${component.id}`)
+  // connectionReady(cInterface,id,component){
+  //   super.connectionReady(cInterface,id,component)
+  //   // console.log(`itf = ${cInterface} id = ${id} component = ${component.id}`)
 
-    if(cInterface.includes('itf:oid')){
-      // console.log(`connected with ${id}`)
-    }
-  }
+  //   if(cInterface.includes('itf:oid')){
+  //     // console.log(`connected with ${id}`)
+  //   }
+  // }
   setGraphInfo(topic, message){
     // console.log('=== topic/message') //
     // console.log(topic)
@@ -35,17 +37,39 @@ export class ChatOid extends OidWeb {
     // this.generatePrompt()
     // this.requestToOpenAI()
     this.workflowMap=message
+    if(this.#hasWorkflow==false){
+      console.log("reached hasWorkflow")
+      this.#hasWorkflow=true
+      console.log(this.#connectedList)
+      for (let i of this.#connectedList){
+        let myComponent=this.findComponent(this.workflowMap,i)
+        console.log(myComponent)
+        if (myComponent.nodeType == 'table-view-oid'){
+          let trueComponent=this.findPreviousComponents(this.workflowMap,i)[0][0]
+          this._connect("itf:oid",trueComponent,this)
+          console.log(`connected to ${trueComponent}`)
+        }
+
+      }
+    }
+    else{
+      this.#connectedList=[]
+    }
+    
   }
  
   async generatePrompt(workflowMap, componentId){
     const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
     const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation", "zScoreNorm", "alias"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
+    let finalComponentId = componentId
     // esse if depende do tipo do visualizador das apresentaçoes
-    if (finalComponent.type === 'table-oid-visualizer'){ 
+    if (finalComponent.nodeType === 'table-view-oid'){ 
       let previousComponents = this.findPreviousComponents(this.workflowMap, componentId)
-      finalComponent = previousComponents[0][0]
+      finalComponent = previousComponents[0][1]
+      finalComponentId= previousComponents[0][0]
     }
+    console.log(finalComponent)
     let path = this.findFullPathToComponent(workflowMap, componentId)
     let prompt = `You are a high specialized data science program called DataGPT.
                   I want to understand the following experiment:`
@@ -55,21 +79,21 @@ export class ChatOid extends OidWeb {
       prompt += `${index} - ${component.nodeType} was added. `
       if (component == finalComponent){
         if (this.arrayCheck(tableList,component.nodeType) || this.arrayCheck(valueList,component.nodeType)){
-          let table=await this.getData(componentId,'table')
-          let result=await this.getData(componentId,'result')
+          let table=await this.getData(finalComponentId,'table')
+          let result=await this.getData(finalComponentId,'result')
           // console.log("interface oid received")
-          // console.log(`table:${table}`)
-          // console.log(`result:${result}`)
+          console.log(table)
+          console.log(result)
           prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${JSON.stringify(table)} and the output is ${JSON.stringify(result)}
         Explain it to me.`
         }
         else if (component.nodeType==="graph-oid"){
-          let data=await this.getData(componentId,'data')
-          let type=await this.getData(componentId,'type')
+          let data=await this.getData(finalComponentId,'data')
+          let type=await this.getData(finalComponentId,'type')
           prompt+=`The last component which I want to analyse is a ${type} graph, based on ${JSON.stringify(data)}
         Explain it to me. Please explain the data provided as well.`
         }
-        
+        break
         
       }
       
@@ -85,6 +109,9 @@ export class ChatOid extends OidWeb {
     // // console.log(`type = ${typeof(componentId)}`)
     
     // console.log(`attributeName: ${attributeName}`)
+    console.log("getData")
+    console.log(componentId)
+    console.log(attributeName)
     let componentData=await this._bus.invoke (`itf:oid`, componentId, 'get', {property:attributeName})
     // this._invoke(`itf:oid`,componentId,"get",{property:attributeName})
     
@@ -195,7 +222,19 @@ export class ChatOid extends OidWeb {
   handleConnect(op,message){
     // console.log(`entered on connect`)
     let componentId=message.value
-    this._connect(`itf:oid`,componentId,this)
+    this._connect(`itf:oid`,componentId, this)
+    this.#connectedList.push(componentId)
+    if(this.#hasWorkflow==true){
+      for (let i of this.#connectedList){
+        let myComponent=this.findComponent(this.workflowMap,i)
+        if (myComponent.nodeType === 'table-view-oid'){
+          let trueComponent=this.findPreviousComponents(this.workflowMap,i)[0][0]
+          this._connect("itf:oid",trueComponent,this)
+        }
+
+      }
+      this.#connectedList=[]
+    }
    
   }
 
@@ -307,12 +346,19 @@ Oid.component(
   
       ],
       "edges":[[1,2],[2,3],[3,4],[3,5],[4,8],[5,6],[5,7],[6,9],[7,10]]
-  }},
+  },
+
+
+  },
     // 'columns' : {default: 'undefined'},
     // 'input-data':{default: 'undefined'},
     // 'input-type':{default: 'undefined'},
     // prompt: {default: ''},
   },
+  
+  
+  
+
   receive: {graph: 'setGraphInfo'},
   provide: ['itf:chat'],
   // template: html`<h1>Prompt : {{this.prompt}}</h1><h1>Explanantion : {{this.explanation}}</h1>`,

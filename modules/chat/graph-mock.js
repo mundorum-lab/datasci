@@ -3,18 +3,10 @@ import { html, Oid, OidUI } from '/lib/oidlib-dev.js'
 export class GraphMockOid extends OidUI {
     async connectedCallback(){
         super.connectedCallback()
-        // this.GraphInfo()
         let workflowMap= await fetch("./workflowMapExample.json");
         this.workflowMap=await workflowMap.json(0);
     }
     _graphInfo () {
-        // this._notify( 'infos', {
-        //                                 type: this.type, 
-        //                                 columns: this.columns,
-        //                                 data: this.data
-        //                             }
-        //                             )
-
         this._notify('infos',this.workflowMap)
         console.log("notified")
     }
@@ -29,9 +21,6 @@ Oid.component(
   element: 'graph-mock-oid',
   properties: {
     workflowMap:{default:null},
-    // columns:{},
-    // data:{},
-    // type:{},
     status:{default : ""}
   },
   receive: {connect: 'handleConnect'},
