@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Forno</title>
+  <title>Linear Regression Graphs</title>
   <script src="../../visualize/graph-oid.js" type="module"></script>
   <script src="../../visualize/forno/data_sender_oid.js" type="module"></script>
   <script src="../../visualize/forno/options_sender_oid.js" type="module"></script>
@@ -16,8 +16,7 @@
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="../../visualize/utils/color_generator.js" type="module"></script>
 
-  <script src="../containers/cluster/mock-cluster-data.js" type="module"></script>
-  <script src="../containers/cluster/cluster-oid.js" type="module"></script>
+  <script src="../index.js" type="module"></script>
 
   <script src="../../data/src/components/fileinput-oid.js" type="module"></script>
   <script src="../../data/src/components/filereader-oid.js" type="module"></script>
@@ -26,22 +25,16 @@
   <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Cluster Algorithm:</h1>
+  <h1>Linear Regression Algorithm:</h1>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
-  <type-input subscribe="data/raw~type_input" publish="output_type~model/cluster/transform"></type-input>
-  <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
+  <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
+  <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
 
-  <button-oid label="Clear DB"
-                value="Clear Database Example"
-                publish="click~data/clear">
-  </button-oid>
-  <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
-  
-  <h1>Grafico</h1><br/>
-  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
-  <export-button-oid publish="export~graph/export"></export-button-oid><br />
-  <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>
+  <h1>Grafico com a regressão linear</h1><br/>
+  <options-sender-oid publish="click~2/render/options"> </options-sender-oid><br />
+  <export-button-oid publish="export~2/graph/export"></export-button-oid><br />
+  <graph-oid uid="graph-2" type="scatter" subscribe="2/render/options~options;data/transformed~render;2/graph/export~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>
