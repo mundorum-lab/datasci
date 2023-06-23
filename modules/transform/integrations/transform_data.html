@@ -1,15 +1,3 @@
-<!--Integrando um componente de leitura e tratamento de dados com um componente de transformação.
-A tabela arrastada e lida pelos componentes da Equipe Data é usada pela componente de transform para realizar um filtro-->
-
-<!--Para referência, a tabela arrastada para análise é:
-    hospital_id,numero_pacientes
-    1,300
-    2,200
-    3,100
-    4,100
-    5,500
--->
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,22 +6,25 @@ A tabela arrastada e lida pelos componentes da Equipe Data é usada pela compone
         <script src="../../data/src/components/fileinput-oid.js" type="module"></script>
         <script src="../../data/src/components/filereader-oid.js" type="module"></script>
         <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
+        <script src="../../data/src/components/table-view-oid.js" type="module"></script>
         <script src="../src/components/filter/filter.js" type="module"></script>
         <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
     </head>
     <body>
     <h1>Playground</h1>
-
-    <filereader-oid sep=";" publish="loaded~data/loaded"></filereader-oid>
-
+    <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
     <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
-    
     <type-input subscribe="data/raw~type_input" publish="output_type~data/1"></type-input>
+    <h3>Tabela de entrada</h3>
+    <table-view-oid subscribe="data/1~display"></table-view-oid>
+    <h3>Tabela filtrada: freq &lt; 80</h3>
     <filter-oid
         subscribe="data/1~filter"
-        target_column="numero_pacientes"
-        operation="ne"
-        compared_value="100"
+        publish="filtered~data/2"
+        target_column="freq_cardiaca_bpm"
+        operation="lt"
+        compared_value="80"
     ><filter-oid>
+    <table-view-oid subscribe="data/2~display"></table-view-oid>
 </body>
 </html>

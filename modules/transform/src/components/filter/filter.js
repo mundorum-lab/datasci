@@ -28,6 +28,7 @@ class FilterWeb extends TransformWeb {
             } else {
                 //return error message
                 this.status = false
+                console.log(validation.result)
                 this._notify('filterError', validation.result)
             }
         }catch(error){
@@ -36,6 +37,7 @@ class FilterWeb extends TransformWeb {
                 errorType: "Conversion to DataFrame with Danfo",
                 message: error.message
             }
+            console.log(filterError)
             this._notify('filterError', filterError)
         }
     }
