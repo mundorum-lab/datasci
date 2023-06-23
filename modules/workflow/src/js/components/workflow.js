@@ -5,6 +5,7 @@ import("/modules/workflow/src/js/components/sidebar.js");
 import("/modules/workflow/src/js/components/sidebar-node-list-view.js");
 import("/modules/workflow/src/js/components/sidebar-node-view.js");
 import("/modules/workflow/src/js/components/world-space-node-view.js");
+import("/modules/workflow/src/js/utils/input/inputs.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {

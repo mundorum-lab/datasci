@@ -1,11 +1,4 @@
 import { Bus, css, html, Oid, OidUI } from "/lib/oidlib-dev.js";
-import { InputOid } from "../utils/input/input-field.js";
-import { NumberOid } from "../utils/input/number-field.js";
-import { RangeOid } from "../utils/input/range-input.js";
-import { RadioOid } from "../utils/input/radio-button.js";
-import { CheckOid } from "../utils/input/check-box.js";
-import { SwitchOid } from "../utils/input/switch-input.js";
-import { DropDownOid } from "../utils/input/dropdown-input.js";
 import { OidInputFactory } from "../utils/input/oid-input-factory.js";
 import { WorldSpaceNode } from "./world-space-node.js";
 import { generate as uuid } from "short-uuid";
@@ -151,8 +144,6 @@ export class WorldSpaceNodeView extends OidUI {
 
         return partial;
     }
-
-    connec
 
     _onMouseDown(event){
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
