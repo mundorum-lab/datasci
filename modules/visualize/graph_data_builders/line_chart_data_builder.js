@@ -8,7 +8,7 @@ export function buildLineChartData(rawData, fields){
     };
     fields.forEach((fieldset) => {
         const dataset = {
-            label: ['title'],
+            label: fieldset['title'],
             data: [],
             fill: false,
             tension: 0.1,
