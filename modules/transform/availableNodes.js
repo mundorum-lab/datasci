@@ -609,5 +609,44 @@
             },
         ]
     },
+    {
+        output: [
+            {
+                type: ["json/table"], 
+                name: "saida",
+                range: [1,2]
+            }
+        ],
+        type: 'ts:transJoin',
+        name: "Join",
+        presentable: true,
+        icon: "datasci/modules/transform/icons/join.png",
+        input: [
+            {
+                type: ["json/table"], 
+                name: "entrada",
+                range: [2, 2]
+            }
+        ],
+        fields: [
+            {
+                name: "Coluna",
+                view: "TextInput", 
+                parameters: [{
+                    minLength: 1,
+                    placeholder: "Nome da coluna",
+                }]  
+            },
+            {
+                name: "Tipo de join",
+                view: "DropDown",
+                parameters: [ { options: [
+                    {name: "Inner", value: "inner"},
+                    {name: "Left", value: "left"},
+                    {name: "Rigth", value: "right"},
+                ]}]
+            },
+        ]
+    },
 
 ]
