@@ -8,20 +8,6 @@ import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_sta
 const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
-  setStatus(rawData){
-    this.status = `I am a ${this.type} chart  with columns `
-    let prefix = ""
-    this.fields.forEach(field => {
-      let columns = [
-        rawData.columns[field['x']],
-        rawData.columns[field['y']]
-      ]
-      if(field['z']){console.log('yay')}
-      this.status += prefix+`${JSON.stringify(columns)}`
-      prefix = " and "
-    });
-    this.status += `and data ${JSON.stringify(this.data)}`
-  }
 
   handleRender(topic, message) {
     try {
@@ -50,7 +36,6 @@ export class GraphOid extends OidUI {
           }
         });
         this.data = config.data
-      this.setStatus(message);
       
       this.canvas = this.shadowRoot.getElementById('canvas')
       this.canvas.style.display = 'initial';
@@ -74,7 +59,7 @@ export class GraphOid extends OidUI {
         this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
       }
 
-    }
+    }``
 
   }
 
@@ -112,7 +97,6 @@ Oid.component({
     title: { default: null },
     fields: { default: null },
     feedbackMessage: { default: generateWaitingHtml('Waiting for data...') },
-    status: {default: ""}
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,
