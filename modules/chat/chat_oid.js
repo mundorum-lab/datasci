@@ -3,7 +3,7 @@ import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 export class ChatOid extends OidWeb {
   async connectedCallback(){
     super.connectedCallback()
-    // // console.log("connected callback")
+    // console.log("connected callback")
     // let workflowMap= await fetch("./workflowMapExample.json");
     // workflowMap=await workflowMap.json(0);
     
