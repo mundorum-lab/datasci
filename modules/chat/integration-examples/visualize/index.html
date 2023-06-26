@@ -1,0 +1,39 @@
+<!-- To test this example please add it to modules/visualize folder, please add the file workflowMapExample.json as well -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Forno</title>
+  <script src="graph-oid.js" type="module"></script>
+  <script src="./forno/data-sender-oid.js" type="module"></script>
+  <script src="./forno/options-sender-oid.js" type="module"></script>
+  <script src="./prototype/export_button.js" type="module"></script>
+  <!-- Import DataLabels plugin via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <!-- Import D3 Scale Chromatic via CDN -->
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="../chat/chat_oid.js" type="module"></script>
+  <script src="../chat/graph-mock.js" type="module"></script>
+  <script src="../chat/chat-button-oid.js" type="module"></script>
+  <script src="./utils/color_generator.js" type="module"></script>
+  
+</head>
+<body>
+  <h1>Playground</h1>
+  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
+  <data-sender-oid publish="click~render/data"> </data-sender-oid><br />
+  <export-button-oid publish="export~graph/export"></export-button-oid><br />
+  <graph-oid id="7" uid="graph-1" type="line" subscribe="render/options~options;render/data~render;graph/export~export;"></graph-oid>
+  <canvas id="forcing-canvas"></canvas>
+  <button-oid label="Connect to Graph"
+              publish="click~connect/graph" id=1>
+  </button-oid>
+  
+  <graph-mock-oid subscribe="connect/graph~connect" publish="infos~exportWorkflow" ></graph-mock-oid>
+  <chat-oid id="chat" subscribe="exportWorkflow~graph"></chat-oid>
+  <chat-button-oid subscribe="chat/explain~explain" componentid="7"></chat-button-oid>
+</body>
+</html>
