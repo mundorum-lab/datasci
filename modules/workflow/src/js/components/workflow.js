@@ -1,4 +1,5 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
+import { worldSpaceNodeConnector as Connector} from "/modules/workflow/src/js/components/connectors/index.js";
 import("/modules/workflow/src/js/components/template-selector.js");
 import("/modules/workflow/src/js/widgets/buttonPopover.js");
 import("/modules/workflow/src/js/components/sidebar.js");
@@ -29,6 +30,9 @@ export class WorkflowOid extends OidUI {
       this.isMoving = false;
 
       this.scale = 1;
+
+      this.sourceNode = null;
+      this.targetNode = null;
 
     }
     
@@ -120,12 +124,26 @@ export class WorkflowOid extends OidUI {
         const mouseX = ev.clientX / this.scale;
         const mouseY = ev.clientY / this.scale;
 
-        node.innerHTML = `<world-space-node class="node absolute z-50" style="left: ${mouseX - (this.pane.getBoundingClientRect().left) / this.scale}px; top: ${mouseY - (this.pane.getBoundingClientRect().top) / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
+        node.innerHTML = html`<world-space-node @connectstart={{this._onConnectStart}} class="node absolute z-50" style="left: ${mouseX - (this.pane.getBoundingClientRect().left) / this.scale}px; top: ${mouseY - (this.pane.getBoundingClientRect().top) / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
         ev.target.appendChild(node);
         this.nodes = this.shadowRoot.querySelectorAll(".node");
+
+        this.nodes.forEach((node) => {node.addEventListener("connectstart", this._onConnectStart.bind(this))});
+        this.nodes.forEach((node) => {node.addEventListener("connectend", this._onConnectEnd.bind(this))});
       }
         
-  
+    _onConnectStart(event) {
+      this.sourceNode = event.detail.port;
+      console.log(this.sourceNode);
+    }
+
+    _onConnectEnd(event) {
+      this.targetNode = event.detail.port;
+      console.log(this.targetNode);
+
+      Connector.makeConnection(this.sourceNode, this.targetNode);
+    }
+
   template() {
     return html`
       <component-provider-oid id="provider"></component-provider-oid>
