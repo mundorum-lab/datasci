@@ -6,6 +6,7 @@ import("/modules/workflow/src/js/components/sidebar.js");
 import("/modules/workflow/src/js/components/sidebar-node-list-view.js");
 import("/modules/workflow/src/js/components/sidebar-node-view.js");
 import("/modules/workflow/src/js/components/world-space-node-view.js");
+import("/modules/workflow/src/js/components/arrow-oid.js");
 import("/modules/workflow/src/js/utils/input/inputs.js");
 
 export class WorkflowOid extends OidUI {
@@ -33,6 +34,9 @@ export class WorkflowOid extends OidUI {
 
       this.sourceNode = null;
       this.targetNode = null;
+
+      this.sourcePos = null;
+      this.targetPos = null;
 
     }
     
@@ -134,14 +138,22 @@ export class WorkflowOid extends OidUI {
         
     _onConnectStart(event) {
       this.sourceNode = event.detail.port;
-      console.log(this.sourceNode);
+      this.sourcePos = {top: event.detail.top, left: event.detail.left};
     }
 
     _onConnectEnd(event) {
       this.targetNode = event.detail.port;
-      console.log(this.targetNode);
+      this.targetPos = {top: event.detail.top, left: event.detail.left};
 
-      Connector.makeConnection(this.sourceNode, this.targetNode);
+      const pane = this.shadowRoot.querySelector("#pane");
+      const arrow = `<arrow-oid class="w-fit h-fit absolute z-50" x0="${this.sourcePos.left}" y0="${this.sourcePos.top}" x1="${this.targetPos.left}" y1="${this.targetPos.top}" style="left: ${this.sourcePos.left}px; top: ${this.sourcePos.top}px;"></arrow-oid>`;
+      const valid = Connector.makeConnection(this.sourceNode, this.targetNode);
+      const wrap = document.createElement("div");
+
+      if (valid) {
+        wrap.innerHTML = arrow;
+        pane.appendChild(wrap);
+      }
     }
 
   template() {

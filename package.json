@@ -19,6 +19,8 @@
     "chart.js": "^4.3.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chartjs-plugin-zoom": "^2.0.1",
+    "perfect-arrows": "^0.3.7",
+    "proto-arrows": "^0.1.3",
     "short-uuid": "^4.2.2"
   }
 }
