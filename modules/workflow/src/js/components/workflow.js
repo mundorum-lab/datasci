@@ -146,7 +146,7 @@ export class WorkflowOid extends OidUI {
       this.targetPos = {top: event.detail.top, left: event.detail.left};
 
       const pane = this.shadowRoot.querySelector("#pane");
-      const arrow = `<arrow-oid class="w-fit h-fit absolute z-50" x0="${this.sourcePos.left}" y0="${this.sourcePos.top}" x1="${this.targetPos.left}" y1="${this.targetPos.top}" style="left: ${this.sourcePos.left}px; top: ${this.sourcePos.top}px;"></arrow-oid>`;
+      const arrow = `<arrow-oid class="w-full h-full absolute z-40" x0="${this.sourcePos.left}" y0="${this.sourcePos.top}" x1="${this.targetPos.left}" y1="${this.targetPos.top}" style="left: ${this.sourcePos.left}px; top: ${this.sourcePos.top}px;"></arrow-oid>`;
       const valid = Connector.makeConnection(this.sourceNode, this.targetNode);
       const wrap = document.createElement("div");
 

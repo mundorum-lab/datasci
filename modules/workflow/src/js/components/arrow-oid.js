@@ -23,13 +23,17 @@ class ArrowOid extends OidUI {
         const svgPath = getCubicBezierSVGPath(curve);
         const endAngle = interpolateCubicBezierAngle(curve, 1);
 
+        const minWidth = Math.min(Number(this.x0), Number(this.x1));
+        const minHeight = Math.min(Number(this.y0), Number(this.y1));
+        const width = Math.max(Number(this.x0), Number(this.x1));
+        const height = Math.max(Number(this.y0), Number(this.y1));
+
         return html`
         <svg class="absolute z-50"
-        viewBox="0 0 512 512"
-        style={{ width: 512, height: 512 }}
+        viewBox="${minWidth} ${minHeight} ${width} ${height}"
         stroke="#000"
         fill="#000"
-        strokeWidth={3}
+        strokeWidth="3"
         >
             <circle cx="${curve.start.x}" cy="${curve.start.y}" r="${4}" />
             <path d="${svgPath}" fill="none" />
