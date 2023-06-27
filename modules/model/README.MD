@@ -1,7 +1,7 @@
 # Module Model
 
 # Description
-> Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
+Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
 
 # Team - `Time Extra`
 * `Otávio Silveira Munhoz - 204280`
@@ -25,10 +25,10 @@
   ]
 }
 ~~~
-> A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
-> A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
-> O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
-> Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0" <br>
+A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura; <br>
+A coluna category será um inteiro, que representará a qual cluster cada ponto pertence; <br>
+O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n; <br>
+Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0" <br>
 
 **`TypedDataContent`**
 ~~~json
@@ -42,13 +42,13 @@
 }
 ~~~
 
-> O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos.
+O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos.
 
 # Components
 
 ## Component `Cluster`
 
-> Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
+Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster`, que indica a quantidade de cluster que o modelo deverá gerar
 
 ### Properties
 property | role
@@ -70,7 +70,7 @@ notice    | source | message type
 
 ## Component `PCA`
 
-> Recebe o TypedDataContent, reduz a dimensionalidade para uma dimensão através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento.
+Recebe o TypedDataContent, reduz a dimensionalidade para uma dimensão através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento.
 
 ### Input Notices
 
@@ -86,7 +86,7 @@ notice    | source | message type
 
 ## Component `LinearRegression`
 
-> Recebe o TypedDataContent, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index`, que indica em qual coluna deve ser feita a regressão linear.
+Recebe o TypedDataContent, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index`, que indica em qual coluna deve ser feita a regressão linear.
 
 ### Properties
 property | role
