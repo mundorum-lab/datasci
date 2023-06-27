@@ -26,6 +26,7 @@
 </head>
 <body>
   <h1>Cluster Algorithm:</h1>
+  <p>Use the example_data.csv file</p>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
   <type-input subscribe="data/raw~type_input" publish="output_type~model/cluster/transform"></type-input>
@@ -37,7 +38,7 @@
   </button-oid>
   <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
   
-  <h1>Grafico</h1><br/>
+  <h1>Graphic</h1><br/>
   <options-sender-oid options='[{"x": 0, "y": 1, "z":2}]' publish="click~render/options"> </options-sender-oid><br />
   <export-button-oid publish="export~graph/export"></export-button-oid><br />
   <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>

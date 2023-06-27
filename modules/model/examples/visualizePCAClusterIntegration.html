@@ -26,6 +26,7 @@
 </head>
 <body>
   <h1>Cluster Algorithm:</h1>
+  <p>Use the example_data_2.csv file</p>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
   <type-input subscribe="data/raw~type_input" publish="output_type~apply/pca"></type-input>

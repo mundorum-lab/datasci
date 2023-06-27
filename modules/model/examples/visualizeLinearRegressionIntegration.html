@@ -26,12 +26,19 @@
 </head>
 <body>
   <h1>Linear Regression Algorithm:</h1>
+  <p>Use the example_data.csv file</p>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
   <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
   <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
 
-  <h1>Grafico com a regressão linear</h1><br/>
+  <button-oid label="Clear DB"
+                value="Clear Database Example"
+                publish="click~data/clear">
+  </button-oid>
+  <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
+
+  <h1>Graphic</h1><br/>
   <options-sender-oid options='[{"x": 0, "y": 1, "z":2}]' publish="click~2/render/options"> </options-sender-oid><br />
   <export-button-oid publish="export~2/graph/export"></export-button-oid><br />
   <graph-oid uid="graph-2" type="scatter" subscribe="2/render/options~options;data/transformed~render;2/graph/export~export;"></graph-oid>
