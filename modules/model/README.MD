@@ -107,31 +107,35 @@ error | Aconteceu algum tipo de erro durante a transformação. Coloca no barram
 ## Setup
 
 ~~~html
-<data-component attribute="value"
-                publish="notice:statistics/pca">
-</data-component>
 
-<pca
-    subscribe="statistics/pca:transformation"
-    publish="transformation:statistics/output">
-</pca>
+<ml-cluster-oid 
+  subscribe="model/cluster/transform~transform" 
+  publish="transformed~data/transformed">
+</ml-cluster-oid>
 
-<exibe-grafico
-    subscribe="statistics/output:display">
-</exibe-grafico>
+<ml-apply-pca
+  target_dimension=2 
+  subscribe="model/pca/transform~transform" 
+  publish="transformed~data/transformed">
+</ml-apply-pca>
+
+<ml-lr-oid 
+  target_index="1" 
+  subscribe="data/processed~transform" 
+  publish="transformed~data/transformed">
+</ml-lr-oid>
+
+
 ~~~
 
 ## Narrative
+A narrativa a seguir funciona para todos os componentes citados no setup acima
 
-* O componente PCA irá subscrever no barramento assinando o tópico statistics/pca
-* O componente do grupo de dados ou de tranformação (chamado ficticilmente de data-component) publica um pedido de transformação nesse tópico
-* O componente PCA recebe o pedido e:
-  * Desserializa os dados;
-  * Realiza a transformação;
-  * Serializa a resposta;
-  * Publica no barramento em statistics/output.
-* O componente fictício exibe-grafico, subscrito no statistics/output, recebe os dados transformados e exibe o gráfico correspondente.
-* No exemplo, utilizamos apenas o componente PCA, mas o setup e a narrativa são as mesmas para o componente cluster e linear-regression
+* O componente irá subscrever no barramento assinando o tópico model/<component>/transform
+* O componente realizara a leitura dos dados de input, que chegam no formato _TypedDataContent_
+* O componente realizara uma filtragem dos dados (ou lançar um erro) caso tenha colunas que não são number
+* O componente realizará a transformação nos dados 
+* O componente publica no barramento pelo tópico transformed o resultado, que também esta no formato _TypedDataContent_
 
 
 ### Examples
