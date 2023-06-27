@@ -13,7 +13,7 @@ Oid.component(
       id: 'ex:options-sender',
       element: 'options-sender-oid',
       properties: {
-        options: {default:`[\n\t{ "x": 2, "y": 1 },\n\t{ "x": 2, "y": 3 }\n]`}
+        options: {default:`[\n\t{ "x": 2, "y": 1, "title": "D1" },\n\t{ "x": 2, "y": 3, "title": "D2" }\n]`}
       },
       template: html`
       <div>
@@ -33,7 +33,7 @@ Oid.component(
           <option value='scatter'>Scatter</option>
         </select><br /><br />
         <label for='fields'>Fields: </label><br />
-        <textarea id='fields' cols='20' rows='4'>{{this.options}}</textarea><br /><br />
+        <textarea id='fields' cols='60' rows='4'>{{this.options}}</textarea><br /><br />
         <button @click>Send Options</button>
       </div>`,
       implementation: OptionsSenderOid

@@ -1,6 +1,6 @@
 import { getAvailableNodes } from "/modules/manifest.js";
 import { WorldSpaceNode } from "/modules/workflow/src/js/components/world-space-node.js";
-import { worldSpaceNodeConnector as Connector} from "/modules/workflow/src/js/components/world-space-node-connector.js";
+import { worldSpaceNodeConnector as Connector} from "/modules/workflow/src/js/components/connectors/world-space-node-connector.js";
 
 
 // Define a biblioteca com informações dos componentes

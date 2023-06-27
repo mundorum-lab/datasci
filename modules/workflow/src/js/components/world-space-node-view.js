@@ -1,11 +1,4 @@
 import { Bus, css, html, Oid, OidUI } from "/lib/oidlib-dev.js";
-import { InputOid } from "../utils/input/input-field.js";
-import { NumberOid } from "../utils/input/number-field.js";
-import { RangeOid } from "../utils/input/range-input.js";
-import { RadioOid } from "../utils/input/radio-button.js";
-import { CheckOid } from "../utils/input/check-box.js";
-import { SwitchOid } from "../utils/input/switch-input.js";
-import { DropDownOid } from "../utils/input/dropdown-input.js";
 import { OidInputFactory } from "../utils/input/oid-input-factory.js";
 import { WorldSpaceNode } from "./world-space-node.js";
 import { generate as uuid } from "short-uuid";
@@ -28,27 +21,6 @@ export class WorldSpaceNodeView extends OidUI {
 
         this.model.setInputField(name, value);
     }
-    
-    /**
-     * Event handler for the drag start event.
-     * @param {DragEvent} event - The dragstart event object.
-     */
-    _onDragStart(event) {
-        const dt = event.dataTransfer;
-
-        dt.effectAllowed = 'copy';
-        dt.setData('text/html', this.outerHTML);
-        dt.setData('text', event.target.id);
-        this.style.opacity = '0.4';
-    }
-
-    /**
-     * Event handler for the drag end event.
-     * @param {DragEvent} event - The dragend event object.
-     */
-    _onDragEnd(event) {
-        this.style.opacity = '1';
-    }
 
     /**
      * Event handler for the double click event.
@@ -61,6 +33,8 @@ export class WorldSpaceNodeView extends OidUI {
             modal.showModal();
             this.isOpen = true;
         }
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('dontScroll', 'true');
 
     }
 
@@ -70,6 +44,8 @@ export class WorldSpaceNodeView extends OidUI {
      */
     _onCancel(event) {
         this.isOpen = false;
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.removeAttribute('dontScroll');
     }
 
     /**
@@ -83,6 +59,8 @@ export class WorldSpaceNodeView extends OidUI {
             modal.close();
             this.isOpen = false;
         }
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.removeAttribute('dontScroll');
     }
 
     connectedCallback() {
@@ -139,7 +117,7 @@ export class WorldSpaceNodeView extends OidUI {
      * @returns {string} The generated content.
      */
     generatePorts(direction, requiredPorts) {
-        const portElement = direction == "output" ? '<div class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative left-full"></div>' : '<div class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
+        const portElement = direction == "output" ? '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative right-0"></div>' : '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
         const breadcrumbPiece = (content, pos) => {
             const separator = pos == 0 ? '' : '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.10876 14L9.46582 1H10.8178L5.46074 14H4.10876Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>';
             
@@ -161,9 +139,9 @@ export class WorldSpaceNodeView extends OidUI {
                     crumbColector.push(breadcrumbPiece(item, pos));
                 });
                 partial += `
-                <div class="flex w-full pr-3 py-3 gap-x-2 text-primary border-b border-accent">
+                <div class="flex w-full py-3 gap-x-2 text-primary border-b border-accent ${direction == "output" ? "flex-row-reverse" : "flex-row"}">
                     ${portElement}
-                    <ol class="h-4 inline-flex items-center space-x-0">
+                    <ol class="h-4 w-full inline-flex items-center space-x-0 ${direction == "output" ? "justify-end" : "justify-start"}">
                         ${crumbColector.join("")}
                     </ol>
                 </div>`;
@@ -172,6 +150,16 @@ export class WorldSpaceNodeView extends OidUI {
 
         return partial;
     }
+
+    _onMouseDown(event){
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('moving', 'true');
+      }
+
+    _onMouseDownHandle(event){
+        this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
+        this.node.setAttribute('dontMove', 'true');
+      }
 
      /**
      * Generates a loading skeleton for the node
@@ -206,11 +194,10 @@ export class WorldSpaceNodeView extends OidUI {
         const formID = uuid();
 
         return html`
-        <div class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}} @dragstart={{this._onDragStart}} 
-        @dragend={{this._onDragEnd}} draggable="true">
+        <div @mousedown={{this._onMouseDown}} class="w-72 h-fit border bg-primary-foreground rounded-md flex flex-col items-start justify-start" @dblclick={{this._onOpenConfig}}>
             <div class="flex justify-between px-2 py-1 content-center w-full border-b">
                 <div class="flex justify-center items-center w-fit h-full gap-2">
-                    <img src="${icon}" alt="{{this.name}}" class="object-fill max-w-8 max-h-8">
+                    <img src="${icon}" alt="{{this.name}}" class="pointer-events-none object-fill max-w-8 max-h-8">
                     <span class="text-md text-primary font-medium">${title}</span>
                 </div>
                 <button @click={{this._onOpenConfig}} class="w-10 h-10 p-2 rounded-md border border-input hover:bg-accent hover:text-accent-foreground transitions-color">
@@ -229,7 +216,7 @@ export class WorldSpaceNodeView extends OidUI {
                 ${outputPorts}
             </div>
             
-            <dialog data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
+            <dialog @mousedown={{this._onMouseDownHandle}} data-modal @cancel={{this._onCancel}} class="w-1/3 rounded-xl bg-background text-foreground border">
             <div class="flex flex-col gap-y-4 justify-center">
                 <div class="flex items-center justify-between">
                     <div class="w-6">
@@ -241,7 +228,6 @@ export class WorldSpaceNodeView extends OidUI {
                 </div>
                 <div class="flex flex-col gap-y-4">
                     ${modalContent}
-                    <button type="submit" form="${formID}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4">Salvar</button>
                 </div>
             </div>
             </dialog>

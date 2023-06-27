@@ -1,0 +1,33 @@
+{
+    "nodes":
+    [
+    {
+        "nodeId":1,
+        "nodeType":"file-input",
+        "attributes":{}
+    },
+    {
+        "nodeId":2,
+        "nodeType":"filter-oid",
+        "attributes":{}
+    },
+    {
+        "nodeId":3,
+        "nodeType":"filter",
+        "attributes":{   
+            "table" : {},
+            "status" : true,
+            "name" : "",
+            "type" : ""
+        }
+
+    },
+    {
+        "nodeId":4,
+        "nodeType":"table-view-oid",
+        "attributes":{}
+    }
+
+    ],
+    "edges":[[1,2],[2,3],[3,4],[4,5]]
+}

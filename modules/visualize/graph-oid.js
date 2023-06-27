@@ -8,6 +8,7 @@ import { generateErrorHtml, generateWaitingHtml } from './graph_states/graph_sta
 const graphsWithoutDataLabel = ['pie', 'doughnut', 'scatter', 'cluster', 'linear_regression']
 
 export class GraphOid extends OidUI {
+
   handleRender(topic, message) {
     try {
       this.feedbackMessage = ``
@@ -34,7 +35,8 @@ export class GraphOid extends OidUI {
             }
           }
         });
-      this.data = config.data
+        this.data = config.data
+      
       this.canvas = this.shadowRoot.getElementById('canvas')
       this.canvas.style.display = 'initial';
       if (this.chart) this.chart.destroy();
@@ -47,6 +49,7 @@ export class GraphOid extends OidUI {
 
       Chart.register(zoomPlugin);
       this.chart = new Chart(this.canvas, config);
+      
     }
     catch (e) {
       if (e.code == 'DATA_TYPE_MISSMATCH_ERROR_CODE') {
@@ -56,7 +59,7 @@ export class GraphOid extends OidUI {
         this.feedbackMessage = generateErrorHtml("Something went wrong! Try to generate the graph again");
       }
 
-    }
+    }``
 
   }
 
@@ -79,6 +82,7 @@ export class GraphOid extends OidUI {
     this.title = title;
     this.options = options
   }
+
 }
 
 Oid.component({
@@ -92,7 +96,7 @@ Oid.component({
     options: { default: null },
     title: { default: null },
     fields: { default: null },
-    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') }
+    feedbackMessage: { default: generateWaitingHtml('Waiting for data...') },
   },
   receive: ['render', 'export', 'options'],
   implementation: GraphOid,

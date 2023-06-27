@@ -1,5 +1,12 @@
 # Module `Presentation`
 
+## GitHub usage
+
+Nossa equipe organizou em conjunto com o professor o uso de Projects do
+GitHub para organização de tarefas das equipes, e usamos esta funcionalidade
+durante todo o semestre. Também fizemos o uso de PRs, especialmente para a
+implementação do Vite no projeto.
+
 ## Description
 
 O módulo de Presentation é responsável por apresentar o resultado da
