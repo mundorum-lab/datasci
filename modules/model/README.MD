@@ -132,7 +132,15 @@ error | Aconteceu algum tipo de erro durante a transformação. Coloca no barram
 
 
 ### Examples
-* Você pode encontrar exemplos dos componentes funcionando integrados na pasta ./examples/, ou através das urls: (precisa estar com o sistema rodando localmente)
+Você pode encontrar exemplos dos componentes funcionando integrados na pasta ./examples/, ou através das urls: (precisa estar com o sistema rodando localmente)
 * http://localhost:5173/modules/model/examples/dataLinearRegressionIntegration.html
 * http://localhost:5173/modules/model/examples/dataPCAIntegration.html
-* http://localhost:5173/modules/model/examples/dataClusterItegration.html
+* http://localhost:5173/modules/model/examples/dataClusterIntegration.html
+* http://localhost:5173/modules/model/examples/visualizeClusterIntegration.html
+* http://localhost:5173/modules/model/examples/visualizePCAClusterIntegration.html
+* http://localhost:5173/modules/model/examples/visualizeLinearRegressionIntegration.html
+
+Para rodar os exemplos que começam com "data", basta arrastar um dos arquivos csv da pasta support na região indicada. Nos exemplos de "visualize", primeiro é preciso selecionar o tipo de gráfico adequado no menu "type", podendo ser Cluster ou Scatter, pressionar o "Send Options" e em seguida arrastar o arquivo csv.
+
+Caso deseje rodar o exemplo novamente, primeiro apertar o botão "Clear DB" para que a execução anterior não atrapalhe o resultado.
+
