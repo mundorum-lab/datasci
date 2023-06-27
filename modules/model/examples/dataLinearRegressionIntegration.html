@@ -9,13 +9,21 @@
   <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
   <script src="../../data/src/components/table-view-oid.js" type="module"></script>
   <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
+  <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
 </head>
 <body>
   <h1>Linear Regression Algorithm:</h1>
+  <p>Use the example_data.csv file</p>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
   <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
   <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
+
+  <button-oid label="Clear DB"
+                value="Clear Database Example"
+                publish="click~data/clear">
+  </button-oid>
+  <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
 
   <table-view-oid subscribe="data/transformed~display"></table-view-oid>
 </body>

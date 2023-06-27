@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Linear Regression Graphs</title>
+  <title>Visualize integration</title>
   <script src="../../visualize/graph-oid.js" type="module"></script>
   <script src="../../visualize/mocks/data_sender_oid.js" type="module"></script>
   <script src="../../visualize/mocks/options_sender_oid.js" type="module"></script>
@@ -25,25 +25,24 @@
   <script src="../../data/src/components/cleardata-oid.js" type="module"></script>
 </head>
 <body>
-  <h1>Linear Regression Algorithm:</h1>
-  <p>Use the example_data.csv file</p>
+  <h1>Cluster Algorithm:</h1>
+  <p>Use the example_data_2.csv file</p>
   <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
   <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
-  <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>
-  <ml-lr-oid target_index="1" subscribe="data/processed~transform" publish="transformed~data/transformed"></ml-lr-oid>
+  <type-input subscribe="data/raw~type_input" publish="output_type~apply/pca"></type-input>
+  <ml-apply-pca target_dimension=2 subscribe="apply/pca~transform" publish="transformed~model/cluster/transform"></ml-apply-pca>
+  <ml-cluster-oid subscribe="model/cluster/transform~transform" publish="transformed~1/data"></ml-cluster-oid>
 
   <button-oid label="Clear DB"
                 value="Clear Database Example"
                 publish="click~data/clear">
   </button-oid>
   <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
-  <br />
-  <h1>How to use</h1>
-  <p>Select the graph type as "Linear Regression" and click the send options button. Then upload your file!</p>
-  <h1>Graphic</h1><br/>
-  <options-sender-oid options='[{"x": 0, "y": 1, "z":2}]' publish="click~2/render/options"> </options-sender-oid><br />
-  <export-button-oid publish="export~2/graph/export"></export-button-oid><br />
-  <graph-oid uid="graph-2" type="scatter" subscribe="2/render/options~options;data/transformed~render;2/graph/export~export;"></graph-oid>
+  
+  <h1>Grafico</h1><br/>
+  <options-sender-oid options='[{"x": 0, "y": 1, "z":2}]' publish="click~render/options"> </options-sender-oid><br />
+  <export-button-oid publish="export~graph/export"></export-button-oid><br />
+  <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
 </body>
 </html>
