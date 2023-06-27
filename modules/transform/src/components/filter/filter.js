@@ -8,8 +8,8 @@ class FilterWeb extends TransformWeb {
         super()
     }
     
-    handleFilter (topic, message) {  //handle with notice
-        //topic: filter
+    handleFilter (topic, message) { 
+
         if(Number(this.compared_value)){
             this.compared_value = Number(this.compared_value)
         }
@@ -26,7 +26,6 @@ class FilterWeb extends TransformWeb {
             if(validation.isValid){
                 this.filter()
             } else {
-                //return error message
                 this.status = false
                 console.log(validation.result)
                 this._notify('filterError', validation.result)

@@ -64,9 +64,9 @@ export const pressao_sanguinea_data = {
         [20, 53, 139]],
     file_id: "7578",
     columns: [
-        {name: "paciente_id", type: "number"}, 
-        {name: "idade", type: "number"}, 
-        {name: "pressao_sanguinea", type: "number"}
+        {name: "paciente_id", type: "int"}, 
+        {name: "idade", type: "int"}, 
+        {name: "pressao_sanguinea", type: "int"}
     ]
 }
 
@@ -86,8 +86,8 @@ export const colesterol_data = {
     ],
     file_id: "4528",
     columns: [
-        {name: "paciente_id", type: "number"}, 
-        {name: "idade", type: "number"}, 
-        {name: "colesterol mg/dL", type: "number"}
+        {name: "paciente_id", type: "int"}, 
+        {name: "idade", type: "int"}, 
+        {name: "colesterol mg/dL", type: "int"}
     ]
 }

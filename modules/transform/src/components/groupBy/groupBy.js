@@ -21,10 +21,8 @@ export class GroupByWeb extends TransformWeb {
         this.columns = new_columns
     }
 
-    handleGroupBy (topic, message) {  //handle with notice
+    handleGroupBy (topic, message) {  
 
-        //topic: groupBy
-        //message: table
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {

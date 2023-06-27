@@ -20,7 +20,7 @@ export class AliasWeb extends TransformWeb {
         this._notify('aliasResult', this.result)
     }
 
-    handleAlias (topic, message) {  //handle with notice
+    handleAlias (topic, message) {  
         
         
         if(message.hasOwnProperty("value")){
@@ -40,7 +40,6 @@ export class AliasWeb extends TransformWeb {
         if(validation.isValid){
             this.alias()
         } else {
-            //return error message
             this.status = false
             this._notify('aliasError', validation.result)
         }
@@ -58,6 +57,5 @@ Oid.component(
     new: {default: null},
   },
   receive: {alias: 'handleAlias'},
-  /*template: html``,*/
   implementation: AliasWeb
 })

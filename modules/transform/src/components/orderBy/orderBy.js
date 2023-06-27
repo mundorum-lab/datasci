@@ -18,7 +18,7 @@ export class OrderByWeb extends TransformWeb {
         this._notify('orderByResult', this.result)
     }
 
-    handleOrderBy (topic, message) {  //handle with notice
+    handleOrderBy (topic, message) {  
 
 
         if(message.hasOwnProperty("value")){
@@ -38,7 +38,6 @@ export class OrderByWeb extends TransformWeb {
         if(validation.isValid){
             this.orderBy()
         } else {
-            //return error message
             this.status = false
             this._notify('orderByError', validation.result)
         }

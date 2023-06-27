@@ -18,10 +18,8 @@ export class ColumnDeleteWeb extends TransformWeb {
         
     }
 
-    handleDeleteColumn (topic, message) {  //handle with notice
+    handleDeleteColumn (topic, message) { 
         
-        //topic: deleteColumn
-        //message: deleteColumnInput
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
@@ -39,7 +37,6 @@ export class ColumnDeleteWeb extends TransformWeb {
         if(validation.isValid){
             this.deleteCol()
         } else {
-            //return error message
             this.status = false
             this._notify('deleteColumnError', validation.result)
         }
@@ -56,6 +53,5 @@ Oid.component(
     column: {default: null},
   },
   receive: {deleteColumn: 'handleDeleteColumn'},
-  /*template: html``,*/
   implementation: ColumnDeleteWeb
 })
