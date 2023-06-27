@@ -11,26 +11,27 @@ export class ApplyCluster extends OidBase {
     }
     let data = JSON.parse(JSON.stringify(message.data));
     let res = kmeans(data, this.num_clusters, this.max_iterations)
-    let centroids = res.centroids
     let clusters = res.clusters
 
     for (let j = 1; j <= clusters.length; j++) {
       for (let i = 0; i < clusters[j-1].points.length; i++) {
-        clusters[j-1].points[i].push(j);
+        // Adds category and is_centroid columns
+        clusters[j-1].points[i].push(j, false);
       }
+      // Adds centroid to the respective cluster, rounded to two decimal places
+      clusters[j-1].points.push([...clusters[j-1].centroid.map(val => val.toFixed(2)), j, true])
     }
     
-    columns.push({"name": "category", "type": "number"})
-    for (let i = 0; i < centroids.length; i++) {
-      let arr = centroids[i].map((val) => parseFloat(val).toFixed(3))
-      arr.push(0)
-      data.push(arr)
-    }
+    columns.push({"name": "category", "type": "number"}, {"name": "is_centroid", "type": "boolean"})
+    // Concatenates the cluster arrays
+    let points = clusters.map(elem => elem.points).reduce(function(pre, cur) {
+        return pre.concat(cur);
+    }, [])
     let final = {
       "columns" : columns,
-      "data" : data
+      "data" : points
     }
-
+    
     this._notify('transformed', {data: final.data, columns: final.columns});
   }
 
