@@ -79,7 +79,10 @@ transformed | O componente envia os dados transformados para o barramento | Type
 
 ## Component LinearRegression
 
-Recebe o _TypedDataContent_, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro target_index que indica em qual coluna deve ser feita a regressão linear.
+Recebe o _TypedDataContent_, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro target_index que indica em qual coluna deve ser feita a regressão linear. 
+>
+A saída desse componente será igual à tabela recebida na entrada, mas terá uma nova coluna, _y\__ acrescentada à sua estrutura;<br />   
+A coluna _y\__ será um número (float), que representará o valor da coluna target_index linearizada. Então, em um exemplo de 2 colunas (x e y), com target_index = 1, caso o usuário plote um gráfico com as colunas 0 e 1 ele terá os pontos originais, caso ele plote as colunas 0 e 2 ele terá os pontos linearizados;<br />
 
 ### Properties
 property | role
