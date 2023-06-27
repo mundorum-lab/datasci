@@ -3,11 +3,12 @@ import { html, Oid, OidWeb } from '/lib/oidlib-dev.js'
 export class ChatOid extends OidWeb {
   #hasWorkflow=false
   #connectedList=[]
+  #descriptions=null
   async connectedCallback(){
     super.connectedCallback()
     // // console.log("connected callback")
-    // let workflowMap= await fetch("./workflowMapExample.json");
-    // workflowMap=await workflowMap.json(0);
+    let descriptions= await fetch("\\modules/chat/descriptions.json");
+    this.#descriptions=await descriptions.json(0);
     
     // let myComponent=this.findComponent(workflowMap,4);
     // // console.log([4,myComponent])
@@ -59,7 +60,7 @@ export class ChatOid extends OidWeb {
   }
  
   async generatePrompt(workflowMap, componentId){
-    const tableList=["transform","filter","groupBy","columnOperation","deleteColumn"]
+    const tableList=["transform","filter-oid","groupBy","columnOperation","deleteColumn"]
     const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation", "zScoreNorm", "alias"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
     let finalComponentId = componentId
@@ -76,7 +77,16 @@ export class ChatOid extends OidWeb {
     let index = 0
     for (let component of path){
       index += 1
-      prompt += `${index} - ${component.nodeType} was added. `
+      let descriptions=this.#descriptions.content
+      let componentDescription=null
+      let componentName=null
+      for (let i of descriptions){
+        if (i.type===component.nodeType){
+          
+          componentDescription=i.description
+          componentName=i.name
+        }
+      }
       if (component == finalComponent){
         if (this.arrayCheck(tableList,component.nodeType) || this.arrayCheck(valueList,component.nodeType)){
           let table=await this.getData(finalComponentId,'table')
@@ -84,17 +94,51 @@ export class ChatOid extends OidWeb {
           // console.log("interface oid received")
           console.log(table)
           console.log(result)
-          prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${JSON.stringify(table)} and the output is ${JSON.stringify(result)}
-        Explain it to me.`
+          if (componentName!=null && componentDescription!=null){
+            console.log("null test")
+            prompt+=`The last component which I want to analyse is a ${componentName},${componentDescription}, it receives the input ${JSON.stringify(table)} and the output is ${JSON.stringify(result)}
+        Explain it to me.Please explain the data provided as well.`
+          }
+          else{
+            prompt+=`The last component which I want to analyse is a ${component.nodeType}, it receives the input ${JSON.stringify(table)} and the output is ${JSON.stringify(result)}
+        Explain it to me.Please explain the data provided as well.`
+          }
+          
         }
         else if (component.nodeType==="graph-oid"){
           let data=await this.getData(finalComponentId,'data')
           let type=await this.getData(finalComponentId,'type')
-          prompt+=`The last component which I want to analyse is a ${type} graph, based on ${JSON.stringify(data)}
+          if (componentName!=null && componentDescription!=null){
+            prompt +=`The last component which I want to analyse is a ${componentName},${componentDescription},its type is a ${type} , and it is based on ${JSON.stringify(data)}.
+            Explain it to me. Please explain the data provided as well.`
+          }
+          else{
+            prompt+=`The last component which I want to analyse is a ${type} graph, based on ${JSON.stringify(data)}.
         Explain it to me. Please explain the data provided as well.`
+          }
+          
         }
         break
         
+      }
+      else{
+        if (index==1){
+          if (componentName!=null && componentDescription!=null){
+            prompt += `Firstly,${componentName} was added,${componentDescription}. `
+          }
+          else{
+            prompt += `Firstly,${component.nodeType} was added. `
+          }
+        } 
+        else{
+          console.log("else index")
+          if (componentName!=null && componentDescription!=null){
+            prompt += `Then,${componentName} was added,${componentDescription}. `
+          }
+          else{
+            prompt += `Then,${component.nodeType} was added. `
+          }
+        }
       }
       
     }

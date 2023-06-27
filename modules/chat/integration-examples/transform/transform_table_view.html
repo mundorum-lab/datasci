@@ -26,13 +26,13 @@ que mostra a tabela filtrada na tela.-->
         target_column="numero_pacientes"
         operation="gt"
         compared_value="100"
-        id="3"
+        id="2"
     ></filter-oid>
     <table-view-oid
-    subscribe="data/2~display" id="4"
+    subscribe="data/2~display" id="3"
     ></table-view-oid>
     <graph-mock-oid subscribe="connect/graph~connect" publish="infos~exportWorkflow" ></graph-mock-oid>
     <chat-oid id="chat" subscribe= "exportWorkflow~graph"></chat-oid>
-    <chat-button-oid subscribe="chat/explain~explain" componentid="4"></chat-button-oid>
+    <chat-button-oid subscribe="chat/explain~explain" componentid="3"></chat-button-oid>
 </body>
 </html>
