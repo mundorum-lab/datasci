@@ -1,0 +1,57 @@
+<mxfile host="Electron" modified="2023-06-21T20:24:15.450Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="-znuZoUz5Da0cKLc_kcV" version="21.5.0" type="device">
+  <diagram name="Página-1" id="u8BBPU2Zr-gYWV3qUmDy">
+    <mxGraphModel dx="875" dy="524" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-13" value="" style="whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="190" y="350" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-6" value="" style="whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="190" y="170" width="270" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xZ-vkwWinsfSTJXqL0b6-2" target="xZ-vkwWinsfSTJXqL0b6-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-2" value="File Reader" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" y="180" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xZ-vkwWinsfSTJXqL0b6-3" target="xZ-vkwWinsfSTJXqL0b6-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-3" value="File Input" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="340" y="180" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xZ-vkwWinsfSTJXqL0b6-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-4" value="Type Input" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="570" y="310" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xZ-vkwWinsfSTJXqL0b6-11" target="xZ-vkwWinsfSTJXqL0b6-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-11" value="API Input" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" y="360" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="xZ-vkwWinsfSTJXqL0b6-12" target="xZ-vkwWinsfSTJXqL0b6-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-12" value="API Parser" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="340" y="360" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-14" value="Clear Data" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="270" y="260" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-18" value="Data from file" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="257.5" y="140" width="135" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="xZ-vkwWinsfSTJXqL0b6-19" value="Data from API" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="257.5" y="420" width="135" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

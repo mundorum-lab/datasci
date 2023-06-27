@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Transform-Visualize</title>
+  <!-- Visualize components -->
+  <script src="../../visualize/graph-oid.js" type="module"></script>
+  <script src="../../visualize/export_button.js" type="module"></script>
+  <!-- Data components -->
+  <script src="../../data/src/components/fileinput-oid.js" type="module"></script>
+  <script src="../../data/src/components/filereader-oid.js" type="module"></script>
+  <script src="../../data/src/components/typeinput-oid.js" type="module"></script>
+  <!-- Transform Component -->
+  <script src="../src/components/groupBy/groupBy.js" type="module"></script>
+  <script src="../src/components/filter/filter.js" type="module"></script>
+  <script src="../../data/src/components/table-view-oid.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+  <!-- Helpers -->
+  <script src="./helpers/data-sender-oid.js" type="module"></script>
+  <script src="./helpers/options-sender-oid.js" type="module"></script>
+  <!-- Import DataLabels plugin via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <!-- Import D3 Scale Chromatic via CDN -->
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="../../visualize/utils/color_generator.js" type="module"></script>
+</head>
+<body>
+  <h1>Playground</h1>
+    <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+    <type-input subscribe="data/raw~type_input" publish="output_type~data/1"></type-input>
+  <h3>Tabela de entrada</h3>
+  <table-view-oid subscribe="data/1~display"></table-view-oid>
+  <groupby-oid
+    subscribe="data/1~groupby"
+    publish="groupbyResult~data/2"
+    operation="count"
+    group_by_target_column="colesterol"
+    operation_target_column="pressao_sanguinea"
+    result_column="frequêcia do colestrol"></groupby-oid>
+    <h3>Tabela de frequencia</h3>
+    <table-view-oid subscribe="data/2~display"></table-view-oid>
+    <h3>Gráfico de frequencia</h3>
+    <options-sender-oid 
+    pairs="0,1"
+    title="Relacionando colesterol e pressão X idade"
+    type="bar"
+    publish="click~graph/options/6"> </options-sender-oid><br />
+  <graph-oid uid="5" type="line" subscribe="data/2~render;graph/options/6~options;graph/export/6~export;"></graph-oid>
+  <export-button-oid publish="export~graph/export/6"></export-button-oid><br/>
+  <canvas id="forcing-canvas"></canvas>
+</body>
+</html>

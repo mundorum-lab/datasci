@@ -1,21 +1,31 @@
+import { GraphFieldsVerifier } from "../utils/type_verifier";
+
 export function buildLineChartData(rawData, fields){
-  let data = {
-    labels: [],
-    datasets: []
-  };
-  fields.forEach((fieldset) => {
-    const dataset = {
-      label: fieldset['title'],
-      data: [],
-      fill: false,
-      tension: 0.1,
-    }
-    rawData['data'].forEach(row => {
-      if (!data['labels'].includes(row[fieldset['x']]))
-        data['labels'].push(row[fieldset['x']]);
-      dataset.data.push(row[fieldset['y']]);
-    });
-    data['datasets'].push(dataset);
-  })
-  return data;
+    let fieldVerifier = new GraphFieldsVerifier("Line");
+    let data = {
+        labels: [],
+        datasets: []
+    };
+    fields.forEach((fieldset) => {
+        const dataset = {
+            label: fieldset['title'],
+            data: [],
+            fill: false,
+            tension: 0.1,
+        }
+        rawData['data'].forEach(row => {
+            let xItem = row[fieldset['x']];
+            let yItem = row[fieldset['y']];
+            if(!data['labels'].includes(row[fieldset['x']]) && fieldVerifier.isNumericOrCategorical(xItem, 'x')){
+                data['labels'].push(xItem);
+            }
+            if(fieldVerifier.isNumeric(yItem, 'y')){
+                dataset.data.push(yItem);
+            }
+            
+            
+        });
+        data['datasets'].push(dataset);
+    })
+    return data;
 }

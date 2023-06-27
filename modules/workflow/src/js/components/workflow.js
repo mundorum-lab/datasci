@@ -4,6 +4,8 @@ import("/modules/workflow/src/js/widgets/buttonPopover.js");
 import("/modules/workflow/src/js/components/sidebar.js");
 import("/modules/workflow/src/js/components/sidebar-node-list-view.js");
 import("/modules/workflow/src/js/components/sidebar-node-view.js");
+import("/modules/workflow/src/js/components/world-space-node-view.js");
+import("/modules/workflow/src/js/utils/input/inputs.js");
 
 export class WorkflowOid extends OidUI {
   _onClick(event) {
@@ -22,13 +24,11 @@ export class WorkflowOid extends OidUI {
     super.connectedCallback();
     
       this.nodes = this.shadowRoot.querySelectorAll(".node");
-      //MAGIC NUMBER
-      this.offsetX = 260;
-      this.offsetY = 75;
+      this.pane = this.shadowRoot.querySelector("#pane");
+      this.container = this.shadowRoot.querySelector("#container");
       this.isMoving = false;
 
       this.scale = 1;
-      console.log(nodes)
 
     }
     
@@ -36,57 +36,103 @@ export class WorkflowOid extends OidUI {
         this.isMoving = true;
 
         //Mouse
-        this._startPosX = event.clientX;
-        this._startPosY = event.clientY;
+        this._startPosX = event.clientX / this.scale;
+        this._startPosY = event.clientY / this.scale;
 
-
+        this._startPosPaneX = event.clientX;
+        this._startPosPaneY = event.clientY;
 
       }
     
       _onMouseMove(event) {
-        this.mouseX = event.clientX-this.offsetX;
-        this.mouseY = event.clientY-this.offsetY;
         if (!this.isMoving) return;
-        
-        
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
+        let dontMove = false
 
-
-
-        const dx = mouseX-this._startPosX;
-        const dy = mouseY-this._startPosY;
         this.nodes.forEach(node => {
-    
-          node.style.left = parseFloat(node.style.left)+ dx + 'px';
-          node.style.top = parseFloat(node.style.top) +dy + 'px';
-          
+          if(node.hasAttribute('moving') && !node.hasAttribute('dontMove')){
+            this.nodeMoving = node;
+          } else if(node.hasAttribute('dontMove')){
+            dontMove = true;
+          }}
+        );
 
+        if(this.nodeMoving != undefined){
+          event.preventDefault();
+          const dx = (event.clientX / this.scale)-this._startPosX;
+          const dy = (event.clientY / this.scale)-this._startPosY;
+          this.nodeMoving.style.left = parseFloat(this.nodeMoving.style.left)+ dx + 'px';
+          this.nodeMoving.style.top = parseFloat(this.nodeMoving.style.top) + dy + 'px';
+          this._startPosX += dx;
+          this._startPosY += dy;
+        } else if(!dontMove) {
+          event.preventDefault();
+          const dx = event.clientX-this._startPosPaneX;
+          const dy = event.clientY-this._startPosPaneY;
+          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left)+ dx, (-5000 * this.scale) + this.container.offsetWidth), 0) + 'px';
+          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top) +dy, (-5000 * this.scale) + this.container.offsetHeight), 0) + 'px';
+          this._startPosPaneX += dx;
+          this._startPosPaneY += dy;
+        }
 
-        });
-        this._startPosX = this._startPosX +dx;
-        this._startPosY = this._startPosY +dy;
+        
 
       }
-      _onWheel(event) {
-      
-        }
-      
-      
-        
-      _onMouseUp(){
+      _onMouseUp(event){
+        this.nodes.forEach(node => {
+          if(node.hasAttribute('moving')){
+            node.removeAttribute('moving');
+            node.removeAttribute('dontMove');
+          }
+        });
+        this.nodeMoving = undefined;
         this.isMoving = false;
       }
+
+      _onWheel(e) {
+        let dontScroll = false;
+        this.nodes.forEach(node => {
+          if(node.hasAttribute('dontScroll')){
+            dontScroll = true;
+          }
+        });
+        if(dontScroll) return;
+        e.preventDefault();
+
+        // Calculate the zoom factor based on the wheel event
+        const zoomFactor = e.deltaY < 0 ? 1.02 : 0.98;
+        if(this.scale * zoomFactor * 5000 > this.container.offsetWidth){
+          this.scale *= zoomFactor;
+          this.pane.style.transformOrigin = "left top";
+          this.pane.style.transform = `scale(${this.scale})`;
+          this.pane.style.left = Math.min(Math.max(parseFloat(this.pane.style.left), (-5000 * this.scale) + this.container.offsetWidth), 0) + 'px';
+          this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top), (-5000 * this.scale) + this.container.offsetHeight), 0) + 'px';
+        }
+      }
+      _onDragOver(ev){
+        ev.preventDefault();
+      }
+
+      _onDrop(ev){
+        ev.preventDefault();
+        console.log(ev.dataTransfer.getData('text'));
+        const receivedObject = JSON.parse(ev.dataTransfer.getData('text'));
+        let node = document.createElement("div");
+        const mouseX = ev.clientX / this.scale;
+        const mouseY = ev.clientY / this.scale;
+
+        node.innerHTML = `<world-space-node class="node absolute z-50" style="left: ${mouseX - (this.pane.getBoundingClientRect().left) / this.scale}px; top: ${mouseY - (this.pane.getBoundingClientRect().top) / this.scale}px;" type="${receivedObject.type}" id="${"id" + Math.random().toString(16).slice(2)}" name="${receivedObject.name}" connect="itf:component-provider#provider"></world-space-node>`;
+        ev.target.appendChild(node);
+        this.nodes = this.shadowRoot.querySelectorAll(".node");
+      }
+        
   
   template() {
     return html`
       <component-provider-oid id="provider"></component-provider-oid>
       <div class="w-full h-full flex">
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
-        <div class="w-full">
-        <div @mouseup={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="w-full h-full overflow-hidden cursor-move relative">
-            <div id="node1" class="node w-32 h-32 bg-blue-500 absolute" style="left: 200px; top: 200px;"></div>
-            <div id="node2" class="node w-32 h-32 bg-red-500 absolute" style="left: 400px; top: 400px;"></div>
+        <div id="container" class="w-full h-full overflow-hidden relative">
+          <div id="pane" style="left: -2000px; top: -2000px;" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mouseleave={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="absolute cursor-move w-[5000px] h-[5000px] bg-dotted-spacing-7 bg-dotted-radius-px bg-dotted-gray-400 z-0">
           </div>
         </div>
       </div>

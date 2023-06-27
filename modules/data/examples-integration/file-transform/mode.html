@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Transform + Data</title>
+    <script src="../../../data/src/components/fileinput-oid.js" type="module"></script>
+    <script src="../../../data/src/components/filereader-oid.js" type="module"></script>
+    <script src="../../../data/src/components/typeinput-oid.js" type="module"></script>
+    <script src="../../../data/src/components/table-view-oid.js" type="module"></script>
+    <script src="../../../transform/src/components/mode/mode.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+    </head>
+    <body>
+    <h1>Playground</h1>
+    <filereader-oid sep=";" publish="loaded~data/loaded"></filereader-oid>
+    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>    
+    <type-input subscribe="data/raw~type_input" publish="output_type~data/processed"></type-input>   
+    <mode-oid subscribe="data/processed~mode" publish="modeResult~data/2" column="Idade"></mode-oid>
+    <h2>Moda</h2>
+    <table-view-oid subscribe="data/2~display"></table-view-oid>
+</body>
+</html>

@@ -35,7 +35,7 @@ export class SidebarNodeListView extends OidUI {
 
         return parsedItems;
     }
-      
+    
     template () {
         let template = ``;
 

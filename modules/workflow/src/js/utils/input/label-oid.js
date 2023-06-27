@@ -24,3 +24,5 @@ Oid.component(
         stylesheet: ['/style.css']
     }
 )
+
+export { LabelOid };

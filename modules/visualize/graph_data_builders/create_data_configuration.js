@@ -36,8 +36,8 @@ export function createConfiguration(type, rawData, fields, options) {
         config.type = 'bar'
         config.data = buildColumnChartData(rawData, fields);
         config.options = {
+          ...options,
           scales: {
-            ...options,
             x: {
                 beginAtZero: true
             }
