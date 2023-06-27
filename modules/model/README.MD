@@ -12,11 +12,6 @@ Realiza transformações estatísticas em conjuntos de dados usando técnicas de
 
 # Message Types
 
-A saída _ClusterOutput_ será igual à tabela recebida na entrada, mas terá a nova coluna _category_ acrescentada à sua estrutura;
-A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence;
-Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ;
-Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria definida como "0".
-
 **TypedDataContent**
 ~~~json
 {
@@ -37,7 +32,11 @@ O objeto contém o array de objetos _columns_, que representa o nome e o tipo de
 
 ## Component Cluster
 
-Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro _num_cluster_ que indica a quantidade de clusters que o modelo deverá gerar.
+Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Pode ser passado o parâmetro _num_cluster_, que indica a quantidade de clusters que o modelo deverá gerar e o _max_iterations_, que é o número máximos de iterações que o algoritmo irá executar.
+
+A saída desse componente será igual à tabela recebida na entrada, mas terá duas novas colunas, _category_ e _is_centroid_ acrescentadas à sua estrutura;
+A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence, enquanto a _is_centroid_ indica se o ponto é um centroide ou não;
+Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ;
 
 ### Properties
 property | role
