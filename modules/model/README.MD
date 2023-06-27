@@ -19,7 +19,7 @@ Realiza transformações estatísticas em conjuntos de dados usando técnicas de
   "data": [
     ["coluna0", "coluna1", "..."],
     ["coluna0", "coluna1", "..."],
-    "..."
+    "..." 
   ]
 }
 ~~~
@@ -34,9 +34,9 @@ O objeto contém o array de objetos _columns_, que representa o nome e o tipo de
 
 Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Pode ser passado o parâmetro _num_cluster_, que indica a quantidade de clusters que o modelo deverá gerar e o _max_iterations_, que é o número máximos de iterações que o algoritmo irá executar.
 
-A saída desse componente será igual à tabela recebida na entrada, mas terá duas novas colunas, _category_ e _is_centroid_ acrescentadas à sua estrutura;
-A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence, enquanto a _is_centroid_ indica se o ponto é um centroide ou não;
-Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ;
+A saída desse componente será igual à tabela recebida na entrada, mas terá duas novas colunas, _category_ e _is_centroid_ acrescentadas à sua estrutura;  
+A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence, enquanto a _is_centroid_ indica se o ponto é um centroide ou não;  
+Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_.
 
 ### Properties
 property | role
