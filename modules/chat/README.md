@@ -18,13 +18,6 @@
 }
 ~~~
 
-**SingleValue**
-~~~json~~~
-{
-  "value": any
-}
-~~~
-
 **WorkflowState**
 ~~~json
 {
@@ -51,23 +44,11 @@ property | role
 ---------| --------
 `id` | unique identifier of the component,relative to the workflow, it let the component find itself in the workflow
 
-### Input Notices
-
-notice | action | message type
--------| ------ | ------------
-`receiveId` | stores the component Id to search the workflow to find relevant nodes | SingleValue
-> Obs: this notice was implemented, however the id can be passed directly through a parameter if the presentation prefers that way
-
-### Output Notices
-
-notice    | source | message type
-----------| -------| ------------
-copyAndOpenChatGPT | copy the generated prompt to the clipboard and opens a new window to openAI | ---
 
 ## Setup
 
 ~~~html
-<chat-button-oid subscribe="chat/explain~explain" componentId="<insert componentId here or subscribe to topic with receiveId>" >
+<chat-button-oid subscribe="chat/explain~explain" componentId="<insert componentId here>" >
 </chat-button-oid>
 
 ~~~
