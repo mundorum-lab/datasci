@@ -1,7 +1,7 @@
 # Module Model
 
 # Description
-> Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
+Realiza transformações estatísticas em conjuntos de dados usando técnicas de aprendizado de máquina.
 
 # Team - Time Extra
 * Otávio Silveira Munhoz - 204280
@@ -12,23 +12,10 @@
 
 # Message Types
 
-
-**ClusterOutput**
-~~~json
-{
-  "columns": [{"name":"x", "type":"num"}, {"name":"y", "type":"num"}, {"name":"category", "type":"num"}],
-  "data": [
-    ["xLinha0", "yLinha0", "categorylinha0"],
-    ["xLinha1", "yLinha1", "categorylinha1"],
-    "...",
-    ["xLinhaN", "yLinhaN", "categorylinhaN"],
-  ]
-}
-~~~
--  A saída ClusterOutput será igual a tabela recebida na entrada, mas terá a nova coluna "category" acrescentada à usa estrutura;
--  A coluna category será um inteiro, que representará a qual cluster cada ponto pertence;
--  O primeiro cluster terá a categoria 1, o segundo cluster terá a categoria 2, ..., e o cluster n terá a categoria n;
--  Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria settada como "0".
+A saída _ClusterOutput_ será igual à tabela recebida na entrada, mas terá a nova coluna _category_ acrescentada à sua estrutura; <br>
+A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence; <br>
+Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ; <br>
+Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria definida como "0" <br>
 
 **TypedDataContent**
 ~~~json
@@ -42,13 +29,15 @@
 }
 ~~~
 
-O objeto contém o array de objetos columns, que representa o nome e o tipo de cada coluna da tabela, o data, com um o array que contém os dados da tabela, cujo tipo depende dos dados inseridos.
+O objeto contém o array de objetos _columns_, que representa o nome e o tipo de cada coluna da tabela e o array de arrays data, contendo os dados da tabela, cujo tipo depende dos dados inseridos.
 
 # Components
 
-## Component Cluster
+![Component specification](img/components.png)
 
-Recebe o TypedDataContent, aplica o modelo de clusterização. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro num_cluster, que indica a quantidade de cluster que o modelo deverá gerar
+## Component `Cluster`
+
+Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster` que indica a quantidade de clusters que o modelo deverá gerar.
 
 ### Properties
 property | role
@@ -60,17 +49,22 @@ max_iterations | Definir o número máximo de iterações do algoritmo
 
 notice | action | message type
 -------| ------ | ------------
-transform | O usuário envia um pedido de transformação dos dados por clusterização | ClusterOutput
+`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `TypedDataContent`
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-transformed | O componente envia os dados transformados para o barramento | ClusterOutput
+`transformed` | `O componente envia os dados transformados para o barramento` | `TypedDataContent`
 
 ## Component PCA
 
-Recebe o TypedDataContent, reduz a dimensionalidade para uma dimensão através da aplicação do modelo de PCA. Por fim, devolve os dados transformados para o barramento.
+Recebe o _TypedDataContent_, reduz a dimensionalidade para uma ou duas dimensões através da aplicação do modelo de PCA e devolve os dados transformados para o barramento.
+
+### Properties
+property | role
+-------| ------
+`target_dimension` | `Define se a tabela retornada terá uma ou duas dimensões` 
 
 ### Input Notices
 
@@ -86,13 +80,12 @@ transformed | O componente envia os dados transformados para o barramento | Type
 
 ## Component LinearRegression
 
-Recebe o TypedDataContent, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo. Por fim, devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro target_index, que indica em qual coluna deve ser feita a regressão linear.
+Recebe o _TypedDataContent_, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index` que indica em qual coluna deve ser feita a regressão linear.
 
 ### Properties
 property | role
 -------| ------
-target_index | Define qual coluna da tabela é a coluna "resultado". O valor dessa coluna deve ser entre 0 até a quantidade de colunas - 1.
-data | Armazena o resultado da regressão. Esse parâmetro não deve ser utilizado, pois ao realizar a operação, ele será sobrescrito. 
+`target_index` | `Define qual coluna da tabela é a coluna "resultado". O valor dessa coluna deve ser entre 0 até a quantidade de colunas - 1.`
 
 ### Input Notices
 
