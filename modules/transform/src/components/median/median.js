@@ -15,17 +15,14 @@ export class MedianWeb extends TransformWeb {
         this._notify('medianResult', this.result)
     }
 
-    handleMedian (topic, message) {  //handle with notice
-        
-        //topic: median
-        //message: medianInput
+    handleMedian (topic, message) {  
  
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
             this.table = message
         }
-        this.toDataFrame()        //TODO add this as non-oid attributes
+        this.toDataFrame()   
         this.file_id = message.file_id
         
         let validator = new ValidateMedian()
@@ -35,7 +32,6 @@ export class MedianWeb extends TransformWeb {
         if(validation.isValid){
             this.median()
         } else {
-            //return error message
             this.status = false
             this._notify('medianError', validation.result)
         }

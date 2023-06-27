@@ -18,10 +18,7 @@ export class CountWeb extends TransformWeb {
         this._notify('countResult', this.result)
     }
     
-    handleCount (topic, message) {  //handle with notice
-        
-        //topic: count
-        //message: countInput
+    handleCount (topic, message) { 
         
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
@@ -35,7 +32,6 @@ export class CountWeb extends TransformWeb {
         if(validation.isValid){
             this.count()
         } else {
-            //return error message
             this.status = false
             this._notify('countError', validation.result)
         }
