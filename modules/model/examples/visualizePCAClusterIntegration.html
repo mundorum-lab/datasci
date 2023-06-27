@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Forno</title>
+  <title>Visualize integration</title>
   <script src="../../visualize/graph-oid.js" type="module"></script>
-  <script src="../../visualize/forno/data_sender_oid.js" type="module"></script>
-  <script src="../../visualize/forno/options_sender_oid.js" type="module"></script>
-  <script src="../../visualize/prototype/export_button.js" type="module"></script>
+  <script src="../../visualize/mocks/data_sender_oid.js" type="module"></script>
+  <script src="../../visualize/mocks/options_sender_oid.js" type="module"></script>
+  <script src="../../visualize/export_button.js" type="module"></script>
   <!-- Import DataLabels plugin via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -39,7 +39,7 @@
   <cleardata-oid subscribe="data/clear~clear"></cleardata-oid>
   
   <h1>Grafico</h1><br/>
-  <options-sender-oid publish="click~render/options"> </options-sender-oid><br />
+  <options-sender-oid options='[{"x": 0, "y": 1, "z":2}]' publish="click~render/options"> </options-sender-oid><br />
   <export-button-oid publish="export~graph/export"></export-button-oid><br />
   <graph-oid uid="graph-1" type="cluster" subscribe="render/options~options;1/data~render;graph/export~export;"></graph-oid>
   <canvas id="forcing-canvas"></canvas>
