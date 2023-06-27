@@ -12,10 +12,10 @@ Realiza transformações estatísticas em conjuntos de dados usando técnicas de
 
 # Message Types
 
-A saída _ClusterOutput_ será igual à tabela recebida na entrada, mas terá a nova coluna _category_ acrescentada à sua estrutura; <br>
-A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence; <br>
-Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ; <br>
-Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria definida como "0" <br>
+A saída _ClusterOutput_ será igual à tabela recebida na entrada, mas terá a nova coluna _category_ acrescentada à sua estrutura;
+A coluna _category_ será um inteiro, que representará a qual cluster cada ponto pertence;
+Se houverem _n_ clusters, o _i_-ésimo cluster terá a categoria _i_, para 1 ≤ _i_ ≤ _n_ ;
+Para efeito de visualização ao plottar o gráfico resultante, os centróides de cada cluster sempre terão a categoria definida como "0".
 
 **TypedDataContent**
 ~~~json
@@ -35,9 +35,9 @@ O objeto contém o array de objetos _columns_, que representa o nome e o tipo de
 
 ![Component specification](img/components.png)
 
-## Component `Cluster`
+## Component Cluster
 
-Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `num_cluster` que indica a quantidade de clusters que o modelo deverá gerar.
+Recebe o _TypedDataContent_, aplica o modelo de clusterização e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro _num_cluster_ que indica a quantidade de clusters que o modelo deverá gerar.
 
 ### Properties
 property | role
@@ -49,13 +49,13 @@ max_iterations | Definir o número máximo de iterações do algoritmo
 
 notice | action | message type
 -------| ------ | ------------
-`transform` | `O usuário envia um pedido de transformação dos dados por clusterização` | `TypedDataContent`
+transform | O usuário envia um pedido de transformação dos dados por clusterização | TypedDataContent
 
 ### Output Notices
 
 notice    | source | message type
 ----------| -------| ------------
-`transformed` | `O componente envia os dados transformados para o barramento` | `TypedDataContent`
+transformed | O componente envia os dados transformados para o barramento | TypedDataContent
 
 ## Component PCA
 
@@ -64,7 +64,7 @@ Recebe o _TypedDataContent_, reduz a dimensionalidade para uma ou duas dimensõe
 ### Properties
 property | role
 -------| ------
-`target_dimension` | `Define se a tabela retornada terá uma ou duas dimensões` 
+target_dimension | Define se a tabela retornada terá uma ou duas dimensões 
 
 ### Input Notices
 
@@ -80,12 +80,12 @@ transformed | O componente envia os dados transformados para o barramento | Type
 
 ## Component LinearRegression
 
-Recebe o _TypedDataContent_, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro `target_index` que indica em qual coluna deve ser feita a regressão linear.
+Recebe o _TypedDataContent_, aplica o modelo de Regressão Linear gerando os pontos da linha que melhor representa o modelo e devolve os dados transformados para o barramento. Para esse componente funcionar, será necessário o parâmetro target_index que indica em qual coluna deve ser feita a regressão linear.
 
 ### Properties
 property | role
 -------| ------
-`target_index` | `Define qual coluna da tabela é a coluna "resultado". O valor dessa coluna deve ser entre 0 até a quantidade de colunas - 1.`
+target_index | Define qual coluna da tabela é a coluna "resultado". O valor dessa coluna deve ser entre 0 até a quantidade de colunas - 1.
 
 ### Input Notices
 
@@ -110,12 +110,12 @@ error | Aconteceu algum tipo de erro durante a transformação. Coloca no barram
 </data-component>
 
 <pca
-                subscribe="statistics/pca:transformation"
-                publish="transformation:statistics/output">
+    subscribe="statistics/pca:transformation"
+    publish="transformation:statistics/output">
 </pca>
 
 <exibe-grafico
-                subscribe="statistics/output:display">
+    subscribe="statistics/output:display">
 </exibe-grafico>
 ~~~
 
