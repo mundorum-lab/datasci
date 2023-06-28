@@ -180,6 +180,8 @@ export class WorkflowOid extends OidUI {
 
         this.nodes.forEach((node) => {node.addEventListener("connectstart", this._onConnectStart.bind(this))});
         this.nodes.forEach((node) => {node.addEventListener("connectend", this._onConnectEnd.bind(this))});
+        this.nodes.forEach((node) => {node.addEventListener("deletenode", this._onDeleteNode.bind(this))});
+
       }
         
     /**
@@ -188,7 +190,21 @@ export class WorkflowOid extends OidUI {
      */
     _onConnectStart(event) {
       this.sourceNode = event.detail.port;
+      this.sourceId = event.detail.id;
       this.source = event.detail;
+    }
+
+    /**
+     * Event handler for the delete process of the node.
+     * @param {CustomEvent} event - The node deletion event object.
+     */
+    _onDeleteNode(event) {
+      this.handles.forEach((handle, key) => {
+        if(handle.sourceId === event.detail.id || handle.targetId === event.detail.id){
+          handle.line.remove();
+          this.handles.splice(key, 1);
+        }
+    });
     }
 
     /**
@@ -198,15 +214,19 @@ export class WorkflowOid extends OidUI {
     _onConnectEnd(event) {
       this.targetNode = event.detail.port;
       this.target = event.detail;
+      this.targetId = event.detail.id;
 
       if (this.sourceNode != null) {
         let svg = d3.select(this.svg);
         const valid = Connector.makeConnection(this.sourceNode, this.targetNode);
 
         if (valid) {
+          console.log(this.source, this.target);
           this.handles.push({
-            source: this.source, 
+            source: this.source,
+            sourceId: this.sourceId,
             target: this.target, 
+            targetId: this.targetId,
             line: svg.append("line")
           .attr("x1",this.source.target.getBoundingClientRect().left / this.scale + this.source.target.offsetWidth/2 - parseFloat(this.pane.style.left) / this.scale - this.container.offsetLeft / this.scale)
           .attr("y1",this.source.target.getBoundingClientRect().top / this.scale + this.source.target.offsetHeight/2 - parseFloat(this.pane.style.top) / this.scale - this.container.offsetTop / this.scale)

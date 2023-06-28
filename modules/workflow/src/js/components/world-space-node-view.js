@@ -71,8 +71,9 @@ export class WorldSpaceNodeView extends OidUI {
 
         const sourceId = event.target.getAttribute('portid');
         const e = new CustomEvent("connectstart", { detail: {
-            port: this.model.getOutPort(sourceId), 
+            port: this.model.getOutPort(sourceId),
             target: event.target,
+            id: this.model.id,
         }});
         this.dispatchEvent(e);
     }
@@ -87,9 +88,12 @@ export class WorldSpaceNodeView extends OidUI {
         const e = new CustomEvent("connectend", { detail: {
             port: this.model.getInPort(targetId), 
             target: event.target,
+            id: this.model.id,
         }});
         this.dispatchEvent(e);
     }
+
+    
 
     connectedCallback() {
         super.connectedCallback();
@@ -203,9 +207,13 @@ export class WorldSpaceNodeView extends OidUI {
     /**
      * Event handler for clicking the delete button
      */
-    _onDeleteNode() {
+    _onDeleteNode(event) {
         this.model.Destroy();
         this.node.remove();
+        const e = new CustomEvent("deletenode", { detail: {
+            id: this.model.id
+        }});
+        this.dispatchEvent(e);
     }
 
      /**
