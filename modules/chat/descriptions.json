@@ -12,5 +12,61 @@
             "name":"filter",
             "description":"this component receives a table from its predecessor and filter specified columns"
         }
+        ,
+        {
+            "type":"filereader-oid",
+            "name":"file reader",
+            "description":"this component reads data from .csv and .json files and save it in a database"
+        }
+        ,
+        {
+            "type":"fileinput-oid",
+            "name":"file input",
+            "description":"this component access the local storage to convert raw data into data in useful format for other components"
+
+        }
+        ,
+        {
+            "type":"api-input",
+            "name":"api input",
+            "description":"This component is used to ingest data from an API specified by the user"
+        },
+        {
+            "type":"api-parser",
+            "name":"api parser",
+            "description":"This component standardizes the raw data obtained from APIs through the api-input component"
+
+        },
+        {
+            "type":"file-typing",
+            "name":" file typing",
+            "description":"this component attempts to correctly define the types of the data provided based on the user's input"
+        },
+        {
+            "type":"cleardata-oid",
+            "name":"clear data",
+            "description":"this component cleans the database"
+        },
+        {
+            "type":"listtables-oid",
+            "name":"list tables",
+            "description":"This component lists all the tables that are saved in the local database"
+        },
+        {
+            "type":"ml:linear-regression",
+            "name":"linear regression",
+            "description":"this component applies a linear regression model to the data provided, generating a line which best represents the model"
+        },
+        {
+            "type":"ml:cluster-oid",
+            "name":"cluster",
+            "description":"this component applies a clustering model to the data provided"
+        },
+        {
+            "type":"ml:apply-pca",
+            "name":"PCA",
+            "description":"this component applies a PCA model to reduce the dimensionality of the data provided to one or two dimensions"
+        }
+
     ]   
 }
