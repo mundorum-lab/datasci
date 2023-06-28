@@ -166,7 +166,6 @@ export class worldSpaceNodeConnector {
 
     Destroy() {
         //Destroy the connectorcleaning all the connections
-
         this.connectedWorldSpaceConnectors.forEach(function (connector) {
             this.removeConnection(connector);
         });
