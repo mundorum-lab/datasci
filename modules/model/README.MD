@@ -132,10 +132,10 @@ error | Aconteceu algum tipo de erro durante a transformação. Coloca no barram
 A narrativa a seguir funciona para todos os componentes citados no setup acima
 
 * O componente irá subscrever no barramento assinando o tópico model/\<component>/transform
-* O componente realizara a leitura dos dados de input, que chegam no formato _TypedDataContent_
-* O componente realizara uma filtragem dos dados (ou lançar um erro) caso tenha colunas que não são do tipo number
+* O componente realizará a leitura dos dados de input, que chegam no formato _TypedDataContent_
+* O componente realizará uma filtragem dos dados (ou lançar um erro) caso tenha colunas que não são do tipo number
 * O componente realizará a transformação nos dados 
-* O componente publica no barramento pelo tópico transformed o resultado, que também esta no formato _TypedDataContent_
+* O componente publica no barramento pelo tópico transformed o resultado, que também está no formato _TypedDataContent_
 
 
 ### Examples
