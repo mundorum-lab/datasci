@@ -7,10 +7,13 @@ que mostra a tabela filtrada na tela.-->
 <html>
     <head>
     <meta charset="utf-8">
-    <title>transform-table</title>
-        <script src="../src/components/filter/filter.js" type="module"></script>
-        <script src="../../data/src/components/table-view-oid.js" type="module"></script>
+    <title>Playground</title>
+        <script src="../../../transform/src/components/filter/filter.js" type="module"></script>
+        <script src="../../../data/src/components/table-view-oid.js" type="module"></script>
         <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+        <script src="../../chat_oid.js" type="module"></script>
+        <script src="../../graph-mock.js" type="module"></script>
+        <script src="../../chat-button-oid.js" type="module"></script>
     </head>
     <body>
     <h1>Playground</h1>
@@ -23,10 +26,13 @@ que mostra a tabela filtrada na tela.-->
         target_column="numero_pacientes"
         operation="gt"
         compared_value="100"
+        id="3"
     ></filter-oid>
     <table-view-oid
-    subscribe="data/2~display"
+    subscribe="data/2~display" id="4"
     ></table-view-oid>
-    
+    <graph-mock-oid subscribe="connect/graph~connect" publish="infos~exportWorkflow" ></graph-mock-oid>
+    <chat-oid id="chat" subscribe= "exportWorkflow~graph"></chat-oid>
+    <chat-button-oid subscribe="chat/explain~explain" componentid="4"></chat-button-oid>
 </body>
 </html>

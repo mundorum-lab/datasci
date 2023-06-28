@@ -17,8 +17,9 @@ export class LinearModel extends OidBase {
     const thetas = executeLinearRegression(normalized_array, target_array);
     const result = calculateResultColumn(thetas, normalized_array);
     this.data.forEach((el, index) => {
-      el[this.target_index] = result[index]
+      el[el.length] = result[index]
     });
+    message.columns.push({type:'number', name: "y_"})
     this.publishResponse('transformed', message.id, this.data, message.columns);
   }
 

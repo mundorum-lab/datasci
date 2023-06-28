@@ -35,15 +35,13 @@ export class ModeWeb extends TransformWeb {
 
     mode(){
         this.value = this.calcularModa(this.df.column(this.column).values)
-        this.toSingleValue(this.value,"Moda",this.column) // Fix return: Json or singleValue.
+        this.toSingleValue(this.value,"Moda",this.column) 
         this.status = true
         this._notify('modeResult', this.result)
     }
 
-    handleMode (topic, message) {  //handle with notice
+    handleMode (topic, message) {  
         
-        //topic: mode
-        //message: modeInput
  
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
@@ -59,7 +57,6 @@ export class ModeWeb extends TransformWeb {
         if(validation.isValid){
             this.mode()
         } else {
-            //return error message
             this.status = false
             this._notify('modeError', validation.result)
         }

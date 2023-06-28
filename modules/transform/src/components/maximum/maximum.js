@@ -8,14 +8,11 @@ export class MaximumWeb extends TransformWeb {
         this.value = this.df.column(this.column).max()
         this.toSingleValue(this.value, "Máximo", this.column)
         this.status = true
-        console.log(this.value, this.status)
         this._notify('maximumResult', this.result)
     }
     
-    handleMaximum (topic, message) {  //handle with notice
-        
-        //topic: maximum
-        //message: maximumInput
+    handleMaximum (topic, message) {  
+    
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
@@ -28,7 +25,6 @@ export class MaximumWeb extends TransformWeb {
         if(validation.isValid){
             this.maximum()
         } else {
-            //return error message
             this.status = false
             this._notify('maximumError', validation.result)
         }

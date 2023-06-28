@@ -16,10 +16,8 @@ export class MinimumWeb extends TransformWeb {
         this._notify('minimumResult', this.result)
     }
     
-    handleMinimum (topic, message) {  //handle with notice
+    handleMinimum (topic, message) {  
         
-        //topic: minimum
-        //message: minimumInput
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
@@ -32,7 +30,6 @@ export class MinimumWeb extends TransformWeb {
         if(validation.isValid){
             this.minimum()
         } else {
-            //return error message
             this.status = false
             this._notify('minimumError', validation.result)
         }

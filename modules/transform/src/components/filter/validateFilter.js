@@ -4,7 +4,6 @@ export class ValidateFilter extends Validate{
 
     constructor(){
         super()
-        //this.validOperations = [["<=",">",">=","<"],[],["==","!="]]
         this.validOperations = [["le","gt","ge","lt"],[],["eq","ne"]]
     }
 

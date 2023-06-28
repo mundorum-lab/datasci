@@ -25,7 +25,7 @@ export class NormalizeWeb extends TransformWeb {
         this._notify('normalizeResult', this.result)
     }
 
-    handleNormalize (topic, message) {  //handle with notice
+    handleNormalize (topic, message) { 
         
         
         if(message.hasOwnProperty("value")){
@@ -43,7 +43,6 @@ export class NormalizeWeb extends TransformWeb {
         if(validation.isValid){
             this.normalize()
         } else {
-            //return error message
             this.status = false
             this._notify('normalizeError', validation.result)
         }
@@ -60,6 +59,5 @@ Oid.component(
     column: {default: null},
   },
   receive: {normalize: 'handleNormalize'},
-  /*template: html``,*/
   implementation: NormalizeWeb
 })
