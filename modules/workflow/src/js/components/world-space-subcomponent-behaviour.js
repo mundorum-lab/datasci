@@ -21,8 +21,7 @@ export class WorldSpaceSubcomponentBehaviour {
 
     /** Deletes itself and removes references if necessary. */
     Destroy() {
-        // TODO: Implement the destruction logic
-        delete onWorldSpaceComponents[this.individualId];
+        delete WorldSpace.onWorldSpaceComponents[this.individualId];
     }
 
     /** Returns the position of the component. @returns {Vector2} - The position. */
