@@ -161,6 +161,9 @@ export class WorldSpaceNodeView extends OidUI {
         this.node.setAttribute('dontMove', 'true');
       }
 
+    /**
+     * Event handler for clicking the delete button
+     */
     _onDeleteNode() {
         this.model.Destroy();
         this.node.remove();

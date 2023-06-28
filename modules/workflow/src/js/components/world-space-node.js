@@ -128,8 +128,11 @@ export class WorldSpaceNode extends WorldSpaceSubcomponentBehaviour {
     getOutPort(id) {
         return this.output[id];
     }
+
+    /**
+     * Deletes itself and removes reference from its connections as a safety measure.
+     */
     Destroy() {
-        /*Deletes itself and removes reference from the nodes targeting it and receiving from it, safety measurement */
         for (let i = 0; i < this.input.length; i++) {
             this.input[i].Destroy();
         }
