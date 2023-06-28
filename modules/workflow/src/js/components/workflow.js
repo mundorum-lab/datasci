@@ -1,5 +1,6 @@
 import { html, Oid, OidUI } from "/lib/oidlib-dev";
 import { worldSpaceNodeConnector as Connector} from "/modules/workflow/src/js/components/connectors/index.js";
+import * as d3 from "d3"
 import("/modules/workflow/src/js/components/template-selector.js");
 import("/modules/workflow/src/js/widgets/buttonPopover.js");
 import("/modules/workflow/src/js/components/sidebar.js");
@@ -8,6 +9,7 @@ import("/modules/workflow/src/js/components/sidebar-node-view.js");
 import("/modules/workflow/src/js/components/world-space-node-view.js");
 import("/modules/workflow/src/js/components/arrow-oid.js");
 import("/modules/workflow/src/js/utils/input/inputs.js");
+
 
 export class WorkflowOid extends OidUI {
   /**
@@ -35,6 +37,7 @@ export class WorkflowOid extends OidUI {
     
       this.nodes = this.shadowRoot.querySelectorAll(".node");
       this.pane = this.shadowRoot.querySelector("#pane");
+      this.svg = this.shadowRoot.querySelector("#svg1");
       this.container = this.shadowRoot.querySelector("#container");
       this.isMoving = false;
 
@@ -190,14 +193,20 @@ export class WorkflowOid extends OidUI {
       this.targetPos = {top: event.detail.top, left: event.detail.left};
 
       if (this.sourceNode != null) {
-        const pane = this.shadowRoot.querySelector("#pane");
-        const arrow = `<arrow-oid class="w-full h-full absolute z-40" x0="${this.sourcePos.left}" y0="${this.sourcePos.top}" x1="${this.targetPos.left}" y1="${this.targetPos.top}" style="left: ${this.sourcePos.left}px; top: ${this.sourcePos.top}px;"></arrow-oid>`;
+        let svg = d3.select(this.svg);
+        console.log(svg)
         const valid = Connector.makeConnection(this.sourceNode, this.targetNode);
-        const wrap = document.createElement("div");
 
         if (valid) {
-          wrap.innerHTML = arrow;
-          pane.appendChild(wrap);
+          console.log(this.targetPos, this.sourcePos);
+          console.log(this.container);
+          svg.append("line")
+          .attr("x1",this.sourcePos.left - parseFloat(this.pane.style.left) - this.container.offsetLeft)
+          .attr("y1",this.sourcePos.top - parseFloat(this.pane.style.top) - this.container.offsetTop)
+          .attr('x2',this.targetPos.left - parseFloat(this.pane.style.left) - this.container.offsetLeft)
+          .attr("y2",this.targetPos.top - parseFloat(this.pane.style.top) - this.container.offsetTop)
+          .attr("stroke-width", 3)
+          .attr("stroke", "black");
           this.sourceNode = null;
           this.targetNode = null;
           this.sourcePos = null;
@@ -217,7 +226,9 @@ export class WorkflowOid extends OidUI {
         <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
         <div id="container" class="w-full h-full overflow-hidden relative">
           <div id="pane" style="left: -2000px; top: -2000px;" @drop={{this._onDrop}} @dragover={{this._onDragOver}} @mouseup={{this._onMouseUp}} @mouseleave={{this._onMouseUp}} @mousemove={{this._onMouseMove}} @wheel={{this._onWheel}} @mousedown={{this._onMouseDown}} class="absolute cursor-move w-[5000px] h-[5000px] bg-dotted-spacing-7 bg-dotted-radius-px bg-dotted-gray-400 z-0">
+          <svg id="svg1" style="display: relative; top: 0; left: 0; width: 5000px; height: 5000px" class="pointer-events-none">
           </div>
+          </svg>
         </div>
       </div>
     `; 

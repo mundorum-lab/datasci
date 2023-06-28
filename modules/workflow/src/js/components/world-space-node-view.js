@@ -68,20 +68,12 @@ export class WorldSpaceNodeView extends OidUI {
      * @param {CustomEvent} event - The connect start event object.
      */
     _onConnectStart(event) {
-        const re = /\d+/i;
-        const positionsCSS = this.style.cssText.split(';').filter(item => item != '');
-        const positionsValue = []
-
-        positionsCSS.forEach((pos) => {
-            const res = pos.match(re);
-            positionsValue.push(Number(res));
-        })
 
         const sourceId = event.target.getAttribute('portid');
         const e = new CustomEvent("connectstart", { detail: {
             port: this.model.getOutPort(sourceId), 
-            top: event.target.offsetTop + event.target.offsetHeight / 2 + positionsValue[1], 
-            left: event.target.offsetLeft + event.target.offsetWidth / 2 + positionsValue[0]
+            top: event.target.getBoundingClientRect().top + event.target.offsetHeight/2, 
+            left: event.target.getBoundingClientRect().left + event.target.offsetWidth/2
         }});
         this.dispatchEvent(e);
     }
@@ -91,20 +83,12 @@ export class WorldSpaceNodeView extends OidUI {
      * @param {CustomEvent} event - The connect end event object.
      */
     _onConnectEnd(event) {
-        const re = /\d+/i;
-        const positionsCSS = this.style.cssText.split(';').filter(item => item != '');
-        const positionsValue = []
-
-        positionsCSS.forEach((pos) => {
-            const res = pos.match(re);
-            positionsValue.push(Number(res));
-        })
 
         const targetId = event.target.getAttribute('portid');
         const e = new CustomEvent("connectend", { detail: {
             port: this.model.getInPort(targetId), 
-            top: event.target.offsetTop + event.target.offsetHeight / 2 + positionsValue[1], 
-            left: event.target.offsetLeft + event.target.offsetWidth / 2 + positionsValue[0]
+            top: event.target.getBoundingClientRect().top + event.target.offsetHeight/2, 
+            left: event.target.getBoundingClientRect().left + event.target.offsetWidth/2
         }});
         this.dispatchEvent(e);
     }
