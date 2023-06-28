@@ -8,7 +8,7 @@
         }
         ,
         {
-            "type":"filter-oid",
+            "type":"ts:filter",
             "name":"filter",
             "description":"this component receives a table from its predecessor and filter specified columns"
         }
@@ -66,7 +66,101 @@
             "type":"ml:apply-pca",
             "name":"PCA",
             "description":"this component applies a PCA model to reduce the dimensionality of the data provided to one or two dimensions"
+        },
+        {   
+            "type":"ts:groupby",
+            "name":"groupby",
+            "description":"this component groups the rows of the given table"
         }
-
+        ,
+        {
+            "type":"ts:columnOp",
+            "name":"columnOp",
+            "description":"this component does an operation between columns and generates a table with the previous table plus the resulting column"
+        }
+        ,
+        {
+            "type":"ts:columnOpConstant",
+            "name":"columnOpConstant",
+            "description":"this component does an operation between columns and generates a table with the previous table plus the resulting column"
+        }
+        ,
+        {
+            "type":"ts:deleteColumn",
+            "name":"deleteColumn",
+            "description":"this component excludes a column."
+        }
+        ,
+        {
+            "type":"ts:minimum",
+            "name":"minimum",
+            "description":"this component finds and returns the minimum value of the column."
+        }
+        ,
+        {
+            "type":"ts:maximum",
+            "name":"maximum",
+            "description":"this component finds and returns the maximum value of the column."
+        }
+        ,
+        {
+            "type":"ts:count",
+            "name":"count",
+            "description":"this component counts how many times the element appears in the column."
+        }
+        ,
+        {
+            "type":"ts:unique",
+            "name":"unique",
+            "description":"this component counts how many unique values ​​are present in the column."
+        }
+        ,
+        {
+            "type":"ts:orderBy",
+            "name":"orderBy",
+            "description":"this component sorts rows based on a column's value in ascending or descending order."
+        }
+        ,
+        {
+            "type":"ts:mean",
+            "name":"mean",
+            "description":"this component finds and returns the mean value of the column."
+        }
+        ,
+        {
+            "type":"ts:median",
+            "name":"median",
+            "description":"this component finds and returns the value corresponding to the column median."
+        }
+        ,
+        {
+            "type":"ts:mode",
+            "name":"mode",
+            "description":"this component finds and returns the value corresponding to the mode of the column."
+        }
+        ,
+        {
+            "type":"ts:standarddeviation",
+            "name":"standarddeviation",
+            "description":"this component finds and returns the value corresponding to the population standard deviation of the column."
+        }
+        ,
+        {
+            "type":"ts:alias",
+            "name":"alias",
+            "description":"this component changes the name of a table column"
+        }
+        ,
+        {
+            "type":"ts:zScoreNorm",
+            "name":"zScoreNorm",
+            "description":"this component performs a normalization of the data in a column."
+        }
+        ,
+        {
+            "type":"ts:join",
+            "name":"join",
+            "description":"this component merges two tables based on a column"
+        }
     ]   
 }
