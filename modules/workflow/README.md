@@ -5,15 +5,15 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 
 # Team
 * César Devens Grazioti
-  * <brief description of the activities developed by this member>
+  * Protótipo de alta fidelidade do framework web, Simetria dos nós (input e output), Campos dos componentes renderizáveis, Leitor e seletor de templates.
 * João Augusto Rosa Feltran
-  * <brief description of the activities developed by this member>
+  * Simetria dos nós (input e output), Criação de testes de validação da ciclicidade do grafo, Tipagem do código com JSDoc, Componentes da sidebar.
 * João Miguel de Oliveira Guimarães
-  * <brief description of the activities developed by this member>
+  * Protótipo de baixa fidelidade do framework web, Renderização dinâmica dos inputs, Exportação do grafo, Declaração dos componentes no barramento.
 * Lucas Eduardo Ramos de Oliveira
-  * <brief description of the activities developed by this member>
+  * Fetch dos nós cadastrados pelas equipes, Renderização da sidebar, Drag and drop dos nós, Espaço de visualização do workflow.
 * Renan Luis Moraes de Sousa
-  * <brief description of the activities developed by this member>
+  * Definição das classes do Nós/WorldSpace e arquitetura geral, Hierarquia das conexões, Lógica de conexão das portas, Checagem da validade das conexões, Transformação workflow no grafo, Tipagem do código com JSDoc.
 
 # Message Types
 
