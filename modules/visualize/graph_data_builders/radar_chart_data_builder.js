@@ -28,11 +28,10 @@ export function buildRadarChartData(rawData, fields){
         
     });
     data['datasets'].push(dataset);
-  })
-
-  const dataLength = rawData['data'].length;
-  // TODO: Add transparency
-  data.datasets[0].backgroundColor = interpolateColors(dataLength);  
+    // TODO: Add transparency
+    const dataLength = rawData['data'].length;
+    dataset.backgroundColor = interpolateColors(dataLength); 
+  }) 
   
   return data;
 }

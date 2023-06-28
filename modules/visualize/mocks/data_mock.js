@@ -18,9 +18,9 @@ export const mockedData = {
 
 export const scatter_mockData = {
     "columns": [
-        {"name":"y1", "type": "number"},
-        {"name":"y2", "type": "number"},
-        {"name":"x" , "type": "number"}
+        {"name":"y1", "type": "num"},
+        {"name":"y2", "type": "num"},
+        {"name":"x" , "type": "num"}
     ],
     "data": [
         [2,1,0],

@@ -26,11 +26,10 @@ export function buildBarChartData(rawData, fields){
             
             
         });
+        const dataLength = rawData['data'].length;
+        dataset.backgroundColor = interpolateColors(dataLength); 
         data['datasets'].push(dataset);
     })
-
-    const dataLength = rawData['data'].length;
-    data.datasets[0].backgroundColor = interpolateColors(dataLength);    
 
     return data;
 }

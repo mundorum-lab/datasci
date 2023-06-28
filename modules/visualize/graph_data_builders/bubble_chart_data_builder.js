@@ -27,6 +27,5 @@ export function buildBubbleChartData(rawData, fields){
     }})
     data['datasets'].push(dataset);
   });
-  console.log(data)
   return data;
 }
