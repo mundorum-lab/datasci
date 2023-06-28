@@ -72,8 +72,7 @@ export class WorldSpaceNodeView extends OidUI {
         const sourceId = event.target.getAttribute('portid');
         const e = new CustomEvent("connectstart", { detail: {
             port: this.model.getOutPort(sourceId), 
-            top: event.target.getBoundingClientRect().top + event.target.offsetHeight/2, 
-            left: event.target.getBoundingClientRect().left + event.target.offsetWidth/2
+            target: event.target,
         }});
         this.dispatchEvent(e);
     }
@@ -87,8 +86,7 @@ export class WorldSpaceNodeView extends OidUI {
         const targetId = event.target.getAttribute('portid');
         const e = new CustomEvent("connectend", { detail: {
             port: this.model.getInPort(targetId), 
-            top: event.target.getBoundingClientRect().top + event.target.offsetHeight/2, 
-            left: event.target.getBoundingClientRect().left + event.target.offsetWidth/2
+            target: event.target,
         }});
         this.dispatchEvent(e);
     }

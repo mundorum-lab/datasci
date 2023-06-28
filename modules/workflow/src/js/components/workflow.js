@@ -34,7 +34,7 @@ export class WorkflowOid extends OidUI {
 
   connectedCallback(){
     super.connectedCallback();
-    
+      this.handles = [];
       this.nodes = this.shadowRoot.querySelectorAll(".node");
       this.pane = this.shadowRoot.querySelector("#pane");
       this.svg = this.shadowRoot.querySelector("#svg1");
@@ -90,6 +90,14 @@ export class WorkflowOid extends OidUI {
           const dy = (event.clientY / this.scale)-this._startPosY;
           this.nodeMoving.style.left = parseFloat(this.nodeMoving.style.left)+ dx + 'px';
           this.nodeMoving.style.top = parseFloat(this.nodeMoving.style.top) + dy + 'px';
+          this.handles.forEach((handle) => {
+            console.log(handle.source.target.getBoundingClientRect().left, handle.source.target.offsetWidth/2, parseFloat(this.pane.style.left), this.container.offsetLeft)
+            handle.line
+            .attr("x1",handle.source.target.getBoundingClientRect().left / this.scale + handle.source.target.offsetWidth/2 - parseFloat(this.pane.style.left) / this.scale - this.container.offsetLeft  / this.scale)
+            .attr("y1",handle.source.target.getBoundingClientRect().top / this.scale + handle.source.target.offsetHeight/2 - parseFloat(this.pane.style.top) / this.scale - this.container.offsetTop  / this.scale)
+            .attr('x2',handle.target.target.getBoundingClientRect().left / this.scale + handle.target.target.offsetWidth/2 - parseFloat(this.pane.style.left) / this.scale - this.container.offsetLeft  / this.scale)
+            .attr("y2",handle.target.target.getBoundingClientRect().top / this.scale + handle.target.target.offsetHeight/2 - parseFloat(this.pane.style.top) / this.scale - this.container.offsetTop  / this.scale)
+          })
           this._startPosX += dx;
           this._startPosY += dy;
         } else if(!dontMove) {
@@ -181,7 +189,7 @@ export class WorkflowOid extends OidUI {
      */
     _onConnectStart(event) {
       this.sourceNode = event.detail.port;
-      this.sourcePos = {top: event.detail.top, left: event.detail.left};
+      this.source = event.detail;
     }
 
     /**
@@ -190,27 +198,27 @@ export class WorkflowOid extends OidUI {
      */
     _onConnectEnd(event) {
       this.targetNode = event.detail.port;
-      this.targetPos = {top: event.detail.top, left: event.detail.left};
+      this.target = event.detail;
 
       if (this.sourceNode != null) {
         let svg = d3.select(this.svg);
-        console.log(svg)
         const valid = Connector.makeConnection(this.sourceNode, this.targetNode);
 
         if (valid) {
-          console.log(this.targetPos, this.sourcePos);
-          console.log(this.container);
-          svg.append("line")
-          .attr("x1",this.sourcePos.left - parseFloat(this.pane.style.left) - this.container.offsetLeft)
-          .attr("y1",this.sourcePos.top - parseFloat(this.pane.style.top) - this.container.offsetTop)
-          .attr('x2',this.targetPos.left - parseFloat(this.pane.style.left) - this.container.offsetLeft)
-          .attr("y2",this.targetPos.top - parseFloat(this.pane.style.top) - this.container.offsetTop)
+          this.handles.push({
+            source: this.source, 
+            target: this.target, 
+            line: svg.append("line")
+          .attr("x1",this.source.target.getBoundingClientRect().left + this.source.target.offsetWidth/2 - parseFloat(this.pane.style.left) - this.container.offsetLeft)
+          .attr("y1",this.source.target.getBoundingClientRect().top + this.source.target.offsetHeight/2 - parseFloat(this.pane.style.top) - this.container.offsetTop)
+          .attr('x2',this.target.target.getBoundingClientRect().left + this.target.target.offsetWidth/2 - parseFloat(this.pane.style.left) - this.container.offsetLeft)
+          .attr("y2",this.target.target.getBoundingClientRect().top + this.target.target.offsetHeight/2 - parseFloat(this.pane.style.top) - this.container.offsetTop)
           .attr("stroke-width", 3)
-          .attr("stroke", "black");
-          this.sourceNode = null;
+          .attr("stroke", "black")});
           this.targetNode = null;
-          this.sourcePos = null;
-          this.targetPos = null;
+          this.source = null;
+          this.target = null;
+          console.log(this.handles)
         }
       }
     }
