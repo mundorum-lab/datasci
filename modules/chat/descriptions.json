@@ -1,0 +1,16 @@
+{
+    "content":[
+        {
+            "type":"graph-oid",
+            "name":"graph",
+            "description":"this component generates a graph of a specified type based on the data it receives from its predecessor"
+
+        }
+        ,
+        {
+            "type":"filter-oid",
+            "name":"filter",
+            "description":"this component receives a table from its predecessor and filter specified columns"
+        }
+    ]   
+}

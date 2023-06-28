@@ -45,6 +45,16 @@ The objective of the module is to allow the data, storaged in tables, to be show
 ├── graph-oid.js                 -> component that creates the chart
 │
 |
+├── exceptions                   -> folder that focus in error treatments
+│     │
+|     ├── visualize_exceptions.js             -> file that has all the funcions that create a specific type of exception
+|
+|
+├── graph_states                 -> folder with UI states of the graph
+│     │
+|     ├── graph_state_template.js             -> file that has all functions that create a UI state for the graph
+|
+|
 ├── graph_data_builders          -> folder with graph configurations (type, data and options) builders
 │     │
 |     ├── create_data_configuration.js             -> function that is called by graph-oid component to build data configuration based in the graph type. Calls the specific builder for each type of chart.
@@ -73,6 +83,9 @@ The objective of the module is to allow the data, storaged in tables, to be show
 │
 |
 ├── icons                        -> folder with icons of graph nodes in workflow
+|
+|
+├── assets                       -> folder with images that are used in the graph component
 |
 |
 └── README.md                    -> module specification
