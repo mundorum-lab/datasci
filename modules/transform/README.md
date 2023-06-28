@@ -528,42 +528,93 @@ joinResult | é ativada quando a operação de join termina e é bem-sucedida | 
 
 ## Integrations Examples
 
-* A instanciação acima simula o estado do workflow no qual há nós (que podem ser de outro grupo ou outro componente de Transformação) antes depois do filtro, assim o filtro recebe uma entrada da saída do nó anterior e gera uma saída que é entrada para o próximo.
-* Toda entrada e saída do formato `table` chega no barramento por meio do notice `data/id`, em que `data` indica que há uma tabela e `id` indica o id do nó instanciado (valor criado pelo grupo de workflow para organizar os "vértices").
+* A instanciação acima simula o estado do workflow no qual há nós (que podem ser de outro grupo ou outro componente de Transformação) antes e depois do filtro, assim o filtro recebe uma entrada da saída do nó anterior e gera uma saída que é entrada para o próximo.
+* Toda entrada e saída é do formato `table` e chega no barramento por meio do notice `data/id`, em que `data` indica que há uma tabela e `id` indica o id do nó instanciado (valor criado pelo grupo de workflow para organizar os "vértices").
 ![alt text](./images/conexoes.png)
-* Todos os componentes de transformação recebem dados em forma de tabela. Já a saída, pode ser tabela ou valor único.
-* O nó que faz o publish de uma tabela usa o notice `data/seu_id`, indicando que a mensagem é uma tabela e que a fonte dela é o nó cujo id foi especificado. O nó conectado a esse e que deseja receber mensagens dele, faz o subscribe com o notice `data/id_no_anterior`. Assim a tabela é passada pelos nós.
-* Os valores digitados pelo usuário para fazer a operação são passados por parâmetro ao componente de Transformação.
-* O componente `filter` é instanciado com o tópico `data/id` e com os devidos parâmetros. Internamente, irá usar um componente de validação para verificar a entrada e possíveis erros. Os tópicos publicados são dois possíveis:
-  * `error`: caso ocorra algum erro na validação ou na própria execução da operação. O notice depende do componente e foi especificado por cada um na documentação. A mensagem publicada são infrmações do erro.
-  * `filterResult`: caso a operação seja bem sucedida. A mensagem publicada é a tabela e o tópico segue o formato `data/id`
+* A narrativa se dá da seguinte forma:
+  1. O nó anterior ao filtro faz o publish de uma tabela e usa o notice `data/seu_id`, indicando que a mensagem é uma tabela e que a fonte dela é o nó cujo id foi especificado. 
+  2. O filtro conectado a esse nó e que deseja receber mensagens dele, faz o subscribe com o notice `data/id_no_anterior`. Assim a tabela é passada pelos nós.
+  3. Os valores digitados pelo usuário para fazer a operação são passados por parâmetro ao componente de Transformação.
+  4. O componente `filter` faz as operações com a tabela e dados recebidos por parâmetro. Internamente, irá usar uma classe de validação para verificar a entrada e possíveis erros. Por último, faz um publish no tópico `data/id` ou `error` a depender do resultado da operação. Os notices gerados para esse tópico são:
+      * `error`: caso ocorra algum erro na validação ou na própria execução da operação. O notice depende do componente e foi especificado por cada um na documentação. A mensagem publicada são infrmações do erro.
+      * `filterResult`: caso a operação seja bem sucedida. A mensagem publicada é a tabela e o tópico segue o formato `data/id`
+  5. Outro componente ligado ao `filter` assina o tópico `data/id` e recebe o dado resultante do filtro. 
 
 
  ## Integrations Examples
 
-* Na pasta [integration](./integrations) há exemplos de integração com outros grupos. Nem todos funcionam perfeitamente, uma vez que há alguns erros internos nos componentes. Porém as mensagens enstão sendo devidamente recebidas no formato de dado acordado e os componentes se conectam. 
+Na pasta [integrations](./integrations) há exemplos de integração com outros grupos.
 
-Um dos [exemplos](./integrations/transform_data.html), é simulado abaixo:
+Para publicar dados mockados sem precisar do componente da equipe `Data` para arrastar o arquivo, a pasta [helpers](./integrations/helpers) apresenta um componente que publica JSON de dados mockados, chamado `data-sender-oid`. Os possíveis dados de serem mockados estão no arquivo [json_data.js](./mocked_data/json_data.js). Para escolher qual dado o `data-sender-oid` irá publicar, passamos para ele por parâmetro o nome de um dos dados disponíveis no [json_data.js](./mocked_data/json_data.js). Um exemplo do funcionamento se encontra abaixo:
 
 ~~~html
-<filereader-oid sep=";" publish="loaded~data/loaded"></filereader-oid>
-
-    <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
-    
-    <type-input subscribe="data/raw~type_input" publish="output_type~data/1"></type-input>
-    <filter-oid
-        subscribe="data/1~filter"
-        target_column="numero_pacientes"
-        operation="ne"
-        compared_value="100"
-    ><filter-oid>
+<data-sender-oid
+  data_name="colesterol_data"
+  publish="click~data/1">
+<data-sender-oid>
 ~~~
-* O `filereader` é um componente que lê um arquivo 'csv' que é arrastado para a tela. O `type-input` recebe informações lidas e realiza o processamento dos dados e publica a  `table` no barramento no formato possível de ser lido por outros componentes. Inclusive pelo `filter`, que recebe e filtra sos dados. 
+
+Além disso, a pasta pasta [helpers](./integrations/helpers) apresenta um componente para publicar os `options` necessários para a construção de gráficos, quando for o caso. Os options que esse componente publica também são passados por parâmetro. Outro exemplo de funcionamento se encontra a seguir:
+
+~~~html
+<options-sender-oid 
+    pairs="1,3"
+    title="Colesterol"
+    type="line"
+    publish="click~graph/options5">
+</options-sender-oid>
+~~~
+
+**IMPORTANTE:** Para que o gráfico funcione adequadamente, ele deve receber as `options` antes de realizar qualquer operação. Por isso, a primeira coisa que deve ser feita ao simular os exemplos que apresentam gráficos (a saber, [esse](./integrations/full_path_example.html) e [esse](./integrations/transform_visualize.html)), é clicar na palavra `send-options`, presente na página do navegador.
+
+A imagem a seguir mostra o estado do workflow que um dos [exemplos](./integrations/full_path_example.html) de integração simula. Após ela, há o código destacado, indicando como seria a comunicação para que essa configuração dos componentes funcione.
+
+![alt text](./images/full_path_diagram.png)
+
+~~~html
+
+  <!--Componentes de Data recebem o arquivo arrastado-->
+
+  <filereader-oid sep="," publish="loaded~data/loaded"></filereader-oid>
+  <fileinput-oid subscribe="data/loaded~load_file" publish="output_raw~data/raw"></fileinput-oid>
+  <type-input subscribe="data/raw~type_input" publish="output_type~data/1"></type-input>
+
+  <!--Componentes GroupBy agrupam os dados por tipo de colesterol e gera uma
+  nova coluna com count-->
+
+  <groupby-oid
+    subscribe="data/1~groupby"
+    publish="groupbyResult~data/2"
+    operation="count"
+    group_by_target_column="colesterol"
+    operation_target_column="pressao_sanguinea"
+    result_column="frequêcia do colestrol">
+  </groupby-oid>
+  
+  <!--O componente "options-sender" envia as opções para  componente de gráfico.
+  O componente de gráfico recebe as opções bem como a tabela do GroupBy e 
+  cria um gráfico de frequência-->
+
+  <options-sender-oid 
+    pairs="0,1"
+    title="Relacionando colesterol e pressão X idade"
+    type="bar"
+    publish="click~graph/options/6"> 
+  </options-sender-oid><br />
+  <graph-oid 
+    uid="5" type="line" 
+    subscribe="data/2~render;graph/options/6~options;graph/export/6~export;">
+  </graph-oid>
+  <export-button-oid publish="export~graph/export/6"></export-button-oid><br/>
+  <canvas id="forcing-canvas"></canvas>
+~~~
+
+Para simular esse exemplo, a tabela usada deve ser a mesma, uma vez que os parâmetros das operações a serem realizadas são definidos com base nas colunas dessa tabela. Você pode encontrá-la [aqui](./mocked_data/pressao_colesterol.csv). O mesmo vale para o [exemplo](./integrations/transform_data.html) de integração com data, a tabela arrastada deve ser a mesma para simulá-lo. Voce pode encontrá-la [aqui](./mocked_data/freq_cardiaca.csv)
 
  ## General Examples
 
-* Na pasta [examples](./examples) há exemplos de funcionamento dos componentes. Há um botão que publica o Json em formato de `string`, mockando a tabela. Os componentes recebem os dados, realizam operações e publicam a resposta. A resposta é recebida pelos componentes `table-view-oid`, que mostram o resultado na tela. 
+* Na pasta [examples](./examples) há exemplos de funcionamento de componentes. O botão `start` publica dados mockados em formato de `string`. Os componentes recebem os dados, realizam operações e publicam a resposta. A resposta é recebida pelos componentes `table-view-oid`, que mostram o resultado na tela. 
 
 * Há dois arquivos html:
-  * simple_output: consistem em componentes que devolvem valores únicos ou uma lista de valores no formato `table`
-  * table_output: consistem em componentes cujo resultado é uma nova tabela, que é devolvida também no formato `table`.
+  * [simple_output](./examples/simple_output.html): consistem em componentes que devolvem valores únicos ou uma lista de valores no formato `table`
+  * [table_output](./examples/table_output.html): consistem em componentes cujo resultado é uma nova tabela, que é devolvida também no formato `table`.

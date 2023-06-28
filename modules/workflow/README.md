@@ -427,6 +427,23 @@ notice    | source | message type
 ----------| -------| ------------
 `addNode` | `Adiciona um novo nó a lista` | `Tipo singleNode`
 
+
+## Component `TemplateSelector`
+
+Este componente é responsável por disponibilizar na tela uma lista dos templates disponíveis. Para isso, o usuário deve, primeiramente, fazer um requerimento dos templates ao clicar no botão `Select Template`, em seguida, um evento de requisição de templates é disparado no barramento e publicado no tópico "apresentacao/templates/requisicao". Posteriormente, o componente template-lister-oid, recebe o evento de notificação, mapeia para um método interno e devolve a lista de templates no barramento no tópico "apresentacao/templates/listagem". Assim, basta que nosso componente template-selector-oid esteja inscrito no tópico anterior para apresentar os templates. Uma vez que o usuário escolheu o template pelo Radio Button com as opções de template e clicou no botão "Salvar", é publicado no barramento com o tópico "saved~workflow/saved" uma mensagem contendo o template selecionado.
+
+### Input Notices
+
+notice | action | message type
+-------| ------ | ------------
+`selector` | `Recebe a lista de todos os templates disponíveis` | `templatesList`
+
+### Output Notices
+
+notice    | source | message type
+----------| -------| ------------
+`saved` | `Emitido quando o usuário aperta o botão "Salvar"` | `template selecionado do templatesList`
+
 ## `component-provider-oid`
 
 Este componente é responsável por fornecer informações sobre o conjunto de nós disponíveis que podem ser utilizados na construção de um workflow.

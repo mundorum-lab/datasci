@@ -8,8 +8,6 @@ export class JoinWeb extends TransformWeb {
     mergeTables(){
         let merge_df = dfd.merge({ "left": this.df, "right": this.df_2, "on": [this.on], how: this.how})
         this.df = merge_df
-        //alterações em colunas
-        console.log(merge_df)
 
     }
 
@@ -75,6 +73,5 @@ Oid.component(
     how: {default: 'inner'},
   },
   receive: {join: 'handleJoin'},
-  /*template: html``,*/
   implementation: JoinWeb
 })

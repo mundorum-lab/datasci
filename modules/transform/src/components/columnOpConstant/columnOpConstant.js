@@ -55,7 +55,7 @@ export class ColumnOpConstantWeb extends TransformWeb {
         this._notify('columnOpConstantResult', this.result)
     }
 
-    handleColumnOpConstant (topic, message) {  //handle with notice
+    handleColumnOpConstant (topic, message) { 
         
         
         if(message.hasOwnProperty("value")){
@@ -76,7 +76,6 @@ export class ColumnOpConstantWeb extends TransformWeb {
         if(validation.isValid){
             this.columnOpConstant()
         } else {
-            //return error message
             this.status = false
             this._notify('columnOpConstantError', validation.result)
         }
@@ -96,6 +95,5 @@ Oid.component(
     result: {default: "Nova Coluna"},
   },
   receive: {columnOpConstant: 'handleColumnOpConstant'},
-  /*template: html``,*/
   implementation: ColumnOpConstantWeb
 })

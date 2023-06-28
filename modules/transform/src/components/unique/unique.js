@@ -16,10 +16,8 @@ export class UniqueWeb extends TransformWeb {
         this._notify('uniqueResult', this.result)
     }
     
-    handleUnique (topic, message) {  //handle with notice
+    handleUnique (topic, message) {
         
-        //topic: unique
-        //message: uniqueInput
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
@@ -32,7 +30,6 @@ export class UniqueWeb extends TransformWeb {
         if(validation.isValid){
             this.unique()
         } else {
-            //return error message
             this.status = false
             this._notify('uniqueError', validation.result)
         }

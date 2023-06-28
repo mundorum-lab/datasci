@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Transform-Visualize</title>
+  <title>transform-visualize</title>
   <!-- Visualize components -->
   <script src="../../visualize/graph-oid.js" type="module"></script>
   <script src="../../visualize/prototype/export_button.js" type="module"></script>
@@ -42,7 +42,9 @@
         result="colesterol excedente"
     ></column-op-constant-oid>
   <h3>Tabela modificada</h3>
+  <p>colesterol excedente = colesterol - 180</p>
   <table-view-oid subscribe="data/2~display"></table-view-oid>
+  <p>y = colesterol excedente, x = idade</p>
   <graph-oid uid="5" type="line" subscribe="data/2~render;graph/options/5~options;graph/export/5~export;"></graph-oid>
   <export-button-oid publish="export~graph/export/5"></export-button-oid><br/>
   <canvas id="forcing-canvas"></canvas>

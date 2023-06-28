@@ -15,17 +15,14 @@ export class StddevWeb extends TransformWeb {
         this._notify('stddevResult', this.result)
     }
 
-    handleStddev (topic, message) {  //handle with notice
-        
-        //topic: stddev
-        //message: stddevInput
+    handleStddev (topic, message) { 
         
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
         } else {
             this.table = message
         }
-        this.toDataFrame()        //TODO add this as non-oid attributes
+        this.toDataFrame()   
         this.file_id = message.file_id
 
         

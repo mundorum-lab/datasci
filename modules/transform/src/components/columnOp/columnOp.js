@@ -41,7 +41,7 @@ export class ColumnOpWeb extends TransformWeb {
         this._notify('columnOpResult', this.result)
     }
 
-    handleColumnOp(topic, message) {  //handle with notice
+    handleColumnOp(topic, message) { 
         
         if(message.hasOwnProperty("value")){
             this.table = JSON.parse(message.value)
@@ -61,7 +61,6 @@ export class ColumnOpWeb extends TransformWeb {
         if(validation.isValid){
             this.columnOp()
         } else {
-            //return error message
             this.status = false
             this._notify('columnOpError', validation.result)
         }
@@ -81,6 +80,5 @@ Oid.component(
     result: {default: "Nova Coluna"},
   },
   receive: {columnOp: 'handleColumnOp'},
-  /*template: html``,*/
   implementation: ColumnOpWeb
 })
