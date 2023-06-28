@@ -11,7 +11,7 @@ export class WorldSpaceNodeView extends OidUI {
      */
 
     /**
-     * Handler for bus messages.
+     * Event handler for bus messages.
      * @param {object} topic - The topic of the message.
      * @param {object} message - The message.
      */
@@ -62,6 +62,38 @@ export class WorldSpaceNodeView extends OidUI {
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
         this.node.removeAttribute('dontScroll');
     }
+
+    /**
+     * Event handler for the mouse click on port which starts the connection process.
+     * @param {CustomEvent} event - The connect start event object.
+     */
+    _onConnectStart(event) {
+
+        const sourceId = event.target.getAttribute('portid');
+        const e = new CustomEvent("connectstart", { detail: {
+            port: this.model.getOutPort(sourceId),
+            target: event.target,
+            id: this.model.id,
+        }});
+        this.dispatchEvent(e);
+    }
+
+    /**
+     * Event handler for the mouse click on port which ends the connection process.
+     * @param {CustomEvent} event - The connect end event object.
+     */
+    _onConnectEnd(event) {
+
+        const targetId = event.target.getAttribute('portid');
+        const e = new CustomEvent("connectend", { detail: {
+            port: this.model.getInPort(targetId), 
+            target: event.target,
+            id: this.model.id,
+        }});
+        this.dispatchEvent(e);
+    }
+
+    
 
     connectedCallback() {
         super.connectedCallback();
@@ -117,7 +149,7 @@ export class WorldSpaceNodeView extends OidUI {
      * @returns {string} The generated content.
      */
     generatePorts(direction, requiredPorts) {
-        const portElement = direction == "output" ? '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative right-0"></div>' : '<div @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
+        //const portElement = direction == "output" ? '<div @click={{this._onConnectStart}} @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative right-0"></div>' : '<div @click={{this._onConnectEnd}} @mousedown={{this._onMouseDownHandle}} class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>'
         const breadcrumbPiece = (content, pos) => {
             const separator = pos == 0 ? '' : '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.10876 14L9.46582 1H10.8178L5.46074 14H4.10876Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>';
             
@@ -131,8 +163,10 @@ export class WorldSpaceNodeView extends OidUI {
             `;
         }
 
+        let contador = 0;
         let partial = "", crumbColector;
         for (let port of requiredPorts) {
+            const portElement = direction == "output" ? `<div @click={{this._onConnectStart}} @mousedown={{this._onMouseDownHandle}} portid="${contador}" class="w-3 h-4 box-border border-ring border-2 border-r-0 rounded-l-lg relative right-0"></div>` : `<div @click={{this._onConnectEnd}} @mousedown={{this._onMouseDownHandle}} portid="${contador}" class="w-3 h-4 box-border border-ring border-2 border-l-0 rounded-r-lg relative left-0"></div>`
             crumbColector = [];
             for (let type of port.type) {
                 type.split("/").forEach((item, pos) => {
@@ -146,16 +180,25 @@ export class WorldSpaceNodeView extends OidUI {
                     </ol>
                 </div>`;
             }
+            contador += 1;
         }
 
         return partial;
     }
 
+    /**
+     * Event handler for the mouse down event to move only the node.
+     * @param {MouseEvent} event - The mouse down event.
+     */
     _onMouseDown(event){
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
         this.node.setAttribute('moving', 'true');
       }
 
+    /**
+     * Event handler for the mouse down event to not move the node when draggin the node.
+     * @param {MouseEvent} event - The mouse down event object
+     */
     _onMouseDownHandle(event){
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
         this.node.setAttribute('dontMove', 'true');
@@ -164,13 +207,17 @@ export class WorldSpaceNodeView extends OidUI {
     /**
      * Event handler for clicking the delete button
      */
-    _onDeleteNode() {
+    _onDeleteNode(event) {
         this.model.Destroy();
         this.node.remove();
+        const e = new CustomEvent("deletenode", { detail: {
+            id: this.model.id
+        }});
+        this.dispatchEvent(e);
     }
 
      /**
-     * Generates a loading skeleton for the node
+     * Generates a loading skeleton for the node.
      * @returns {string} The generated content.
      */
     renderLoading() {
@@ -190,7 +237,7 @@ export class WorldSpaceNodeView extends OidUI {
     }
 
     /**
-     * Generates a the node
+     * Generates the node
      * @returns {string} The generated content.
      */
     renderNode() {
