@@ -7,7 +7,7 @@ Esse módulo tem como função prover as funcionalidades para interação dos us
 * César Devens Grazioti
   * Protótipo de alta fidelidade do framework web, Simetria dos nós (input e output), Campos dos componentes renderizáveis, Leitor e seletor de templates.
 * João Augusto Rosa Feltran
-  * Simetria dos nós (input e output), Criação de testes de validação da ciclicidade do grafo, Tipagem do código com JSDoc, Componentes da sidebar.
+  * Simetria dos nós (input e output), Criação de testes de validação da ciclicidade do grafo, Tipagem do código com JSDoc, Componentes da sidebar, Remoção dos nós do painel.
 * João Miguel de Oliveira Guimarães
   * Protótipo de baixa fidelidade do framework web, Renderização dinâmica dos inputs, Exportação do grafo, Declaração dos componentes no barramento.
 * Lucas Eduardo Ramos de Oliveira
@@ -486,17 +486,49 @@ Essa sessão descreve o pipeline do nosso workflow, desde a recepção dos nós 
 
 ## Setup
 ~~~html
-<other-group publish="nodes~availableNodes">
-</other-group>
+<application-oid publish="tabChanged~presentation/tabs">
+    <theme-switcher-oid><theme-switcher-oid />
+        <div id="presentation-container">
+           <presenter-oid
+             subscribe="presentation/html~getJSONHTMLDescription;presentation/template~templateReady;presentation/tabs~tabChanged"
+           ></presenter-oid>
+           <builder-oid
+             subscribe="workflow/graph~getJSONHTML"
+             publish="returnJSONHTMLDescription~presentation/html"
+           ></builder-oid>
+         </div>
+         <div id="workflow-container">
+           <workflow-main-page>
+           <component-provider-oid id="provider"></component-provider-oid>
+               <div>
+                   <node-list-oid connect="itf:component-provider#provider"></node-list-oid>
+                   <div id="container">
+                       <div id="pane">
+                          <world-space-node connect="itf:component-provider#provider"></world-space-node>
+               </div>
+                   </div>
+               </div>
+              <button-oid
+                label="Request templates"
+                publish="click~apresentacao/templates/requisicao"
+              >
+              </button-oid>
 
-<available-nodes subscribe="availableNodes~nodes" publish="node~addNode">
-</available-nodes>
+              <template-lister-oid
+              subscribe="apresentacao/templates/requisicao~requestTemplatesList"
+              publish="responseTemplatesList~apresentacao/templates/listagem"
+              >
+              </template-lister-oid>
 
-<world-space-view subscribe="addNode~addNode" publish="exportWorkflow~exportWorkflow">
-</world-space-view>
-
-<another-group subscribe="exportWorkflow~exportWorkflow">
-</another-group>
+              <template-selector-oid
+              subscribe="apresentacao/templates/listagem~selector"
+              publish="saved~workflow/saved"
+              > 
+              </template-selector-oid>
+            </workflow-main-page>
+         </div>
+      </div>
+</application-oid>
 ~~~
 
 ## Narrative
