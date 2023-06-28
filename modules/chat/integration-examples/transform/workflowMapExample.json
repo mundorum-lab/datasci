@@ -11,19 +11,9 @@
         "nodeType":"filter-oid",
         "attributes":{}
     },
+    
     {
         "nodeId":3,
-        "nodeType":"filter",
-        "attributes":{   
-            "table" : {},
-            "status" : true,
-            "name" : "",
-            "type" : ""
-        }
-
-    },
-    {
-        "nodeId":4,
         "nodeType":"table-view-oid",
         "attributes":{}
     }
