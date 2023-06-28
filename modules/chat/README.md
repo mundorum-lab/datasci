@@ -42,13 +42,13 @@
 
 property | role
 ---------| --------
-`id` | unique identifier of the component,relative to the workflow, it let the component find itself in the workflow
+`componentid` | unique identifier of the component,relative to the workflow, it let the component find itself in the workflow
 
 
 ## Setup
 
 ~~~html
-<chat-button-oid subscribe="chat/explain~explain" componentId="<insert componentId here>" >
+<chat-button-oid subscribe="chat/explain~explain" componentid="<insert componentId here>" >
 </chat-button-oid>
 
 ~~~
@@ -106,6 +106,7 @@ notice    | source | message type
 
 ## Example
 
-* The index.html file can be used as an example
-* The integration with a mock of the workflow can be seen in this file, also the value received can be seen in console.
-* The integration with transform and graph components should be seen too, however it is not working properly yet.
+* Examples can be found in the folder "integration examples"
+* To run them, follow the steps on the README in the folder of the project and use the following links:
+* Visualize integration: http://127.0.0.1:5173/modules/chat/integration-examples/visualize/index.html and to see a sample answer, follow the link : https://chat.openai.com/share/6be5514c-5147-4fa6-8185-c4667e900fc0
+* Transform integration: http://127.0.0.1:5173/modules/chat/integration-examples/transform/transform_table_view.html and to see a sample answer, follow the link: https://chat.openai.com/share/84ae4554-64a9-49c7-914f-3995df461161
