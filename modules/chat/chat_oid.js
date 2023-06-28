@@ -60,7 +60,7 @@ export class ChatOid extends OidWeb {
   }
  
   async generatePrompt(workflowMap, componentId){
-    const tableList=["transform","filter-oid","groupBy","columnOperation","deleteColumn"]
+    const tableList=["transform","ts:filter","groupBy","columnOperation","deleteColumn"]
     const valueList=["minimum","maximum","count","orderBy","uniqueValues","mean","median","mode","standarddeviation", "zScoreNorm", "alias"]
     let finalComponent = this.findComponent(this.workflowMap, componentId)
     let finalComponentId = componentId

@@ -3,12 +3,12 @@
     [
     {
         "nodeId":1,
-        "nodeType":"file-input",
+        "nodeType":"fileinput-oid",
         "attributes":{}
     },
     {
         "nodeId":2,
-        "nodeType":"filter-oid",
+        "nodeType":"ts:filter",
         "attributes":{}
     },
     
@@ -19,5 +19,5 @@
     }
 
     ],
-    "edges":[[1,2],[2,3],[3,4],[4,5]]
+    "edges":[[1,2],[2,3]]
 }
