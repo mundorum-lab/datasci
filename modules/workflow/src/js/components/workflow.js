@@ -212,7 +212,7 @@ export class WorkflowOid extends OidUI {
           .attr("y1",this.source.target.getBoundingClientRect().top / this.scale + this.source.target.offsetHeight/2 - parseFloat(this.pane.style.top) / this.scale - this.container.offsetTop / this.scale)
           .attr('x2',this.target.target.getBoundingClientRect().left / this.scale + this.target.target.offsetWidth/2 - parseFloat(this.pane.style.left) / this.scale - this.container.offsetLeft / this.scale)
           .attr("y2",this.target.target.getBoundingClientRect().top / this.scale + this.target.target.offsetHeight/2 - parseFloat(this.pane.style.top) / this.scale - this.container.offsetTop / this.scale)
-          .attr("stroke-width", 3)
+          .attr("stroke-width", 2)
           .attr("stroke", "black")});
           this.targetNode = null;
           this.source = null;
