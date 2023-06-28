@@ -10,6 +10,15 @@ import("/modules/workflow/src/js/components/arrow-oid.js");
 import("/modules/workflow/src/js/utils/input/inputs.js");
 
 export class WorkflowOid extends OidUI {
+  /**
+   * Represents the view of the entire workflow page
+   * @extends OidUI
+   */
+
+  /**
+   * Event handler for the click event.
+   * @param {Event} event - The click event object.
+   */
   _onClick(event) {
     let me = event.composedPath().find((x) => x.tagName == "BUTTON");
     if (me.children["chevron"].classList.contains("rotate-90")) {
@@ -20,7 +29,6 @@ export class WorkflowOid extends OidUI {
       me.nextElementSibling.classList.remove("hidden");
     }
   }
-
 
   connectedCallback(){
     super.connectedCallback();
@@ -40,6 +48,10 @@ export class WorkflowOid extends OidUI {
 
     }
     
+    /**
+     * Event handler for the mouse down event for dragging the pane.
+     * @param {MouseEvent} event - The mouse down event object
+     */
       _onMouseDown(event){
         this.isMoving = true;
 
@@ -52,6 +64,11 @@ export class WorkflowOid extends OidUI {
 
       }
     
+      /**
+       * Event handler for the mouse move event for dragging the pane.
+       * @param {MouseEvent} event - The mouse move event object. 
+       * @returns - Stop the function when the down event has not happenned.
+       */
       _onMouseMove(event) {
         if (!this.isMoving) return;
         let dontMove = false
@@ -85,6 +102,11 @@ export class WorkflowOid extends OidUI {
         
 
       }
+
+      /**
+       * Event handler for the mouse up event.
+       * @param {MouseEvent} event - The mouse up event object. 
+       */
       _onMouseUp(event){
         this.nodes.forEach(node => {
           if(node.hasAttribute('moving')){
@@ -96,6 +118,11 @@ export class WorkflowOid extends OidUI {
         this.isMoving = false;
       }
 
+      /**
+       * Event handler for the wheel event.
+       * @param {WheelEvent} e - The wheel event object. 
+       * @returns - Stop the function when inside the modal.
+       */
       _onWheel(e) {
         let dontScroll = false;
         this.nodes.forEach(node => {
@@ -116,10 +143,19 @@ export class WorkflowOid extends OidUI {
           this.pane.style.top = Math.min(Math.max(parseFloat(this.pane.style.top), (-5000 * this.scale) + this.container.offsetHeight), 0) + 'px';
         }
       }
+
+      /**
+       * Event handler for the drag over event.
+       * @param {DragEvent} ev - The drag over event object. 
+       */
       _onDragOver(ev){
         ev.preventDefault();
       }
 
+      /**
+       * Event handler for the drop event.
+       * @param {DragEvent} ev - The drop event object. 
+       */
       _onDrop(ev){
         ev.preventDefault();
         console.log(ev.dataTransfer.getData('text'));
@@ -136,11 +172,19 @@ export class WorkflowOid extends OidUI {
         this.nodes.forEach((node) => {node.addEventListener("connectend", this._onConnectEnd.bind(this))});
       }
         
+    /**
+     * Event handler for the mouse click on port which starts the connection process.
+     * @param {CustomEvent} event - The connect start event object.
+     */
     _onConnectStart(event) {
       this.sourceNode = event.detail.port;
       this.sourcePos = {top: event.detail.top, left: event.detail.left};
     }
 
+    /**
+     * Event handler for the mouse click on port which ends the connection process.
+     * @param {CustomEvent} event - The connect end event object.
+     */
     _onConnectEnd(event) {
       this.targetNode = event.detail.port;
       this.targetPos = {top: event.detail.top, left: event.detail.left};
@@ -162,6 +206,10 @@ export class WorkflowOid extends OidUI {
       }
     }
 
+  /**
+   * Generates the visual template for the workflow page view.
+   * @returns {string} The generated html template.
+   */
   template() {
     return html`
       <component-provider-oid id="provider"></component-provider-oid>

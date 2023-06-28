@@ -11,7 +11,7 @@ export class WorldSpaceNodeView extends OidUI {
      */
 
     /**
-     * Handler for bus messages.
+     * Event handler for bus messages.
      * @param {object} topic - The topic of the message.
      * @param {object} message - The message.
      */
@@ -63,6 +63,10 @@ export class WorldSpaceNodeView extends OidUI {
         this.node.removeAttribute('dontScroll');
     }
 
+    /**
+     * Event handler for the mouse click on port which starts the connection process.
+     * @param {CustomEvent} event - The connect start event object.
+     */
     _onConnectStart(event) {
         const re = /\d+/i;
         const positionsCSS = this.style.cssText.split(';').filter(item => item != '');
@@ -82,6 +86,10 @@ export class WorldSpaceNodeView extends OidUI {
         this.dispatchEvent(e);
     }
 
+    /**
+     * Event handler for the mouse click on port which ends the connection process.
+     * @param {CustomEvent} event - The connect end event object.
+     */
     _onConnectEnd(event) {
         const re = /\d+/i;
         const positionsCSS = this.style.cssText.split(';').filter(item => item != '');
@@ -192,18 +200,26 @@ export class WorldSpaceNodeView extends OidUI {
         return partial;
     }
 
+    /**
+     * Event handler for the mouse down event to move only the node.
+     * @param {MouseEvent} event - The mouse down event.
+     */
     _onMouseDown(event){
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
         this.node.setAttribute('moving', 'true');
       }
 
+    /**
+     * Event handler for the mouse down event to not move the node when draggin the node.
+     * @param {MouseEvent} event - The mouse down event object
+     */
     _onMouseDownHandle(event){
         this.node = event.composedPath().find((element) => element instanceof WorldSpaceNodeView);
         this.node.setAttribute('dontMove', 'true');
       }
 
      /**
-     * Generates a loading skeleton for the node
+     * Generates a loading skeleton for the node.
      * @returns {string} The generated content.
      */
     renderLoading() {
@@ -223,7 +239,7 @@ export class WorldSpaceNodeView extends OidUI {
     }
 
     /**
-     * Generates a the node
+     * Generates the node
      * @returns {string} The generated content.
      */
     renderNode() {
