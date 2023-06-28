@@ -164,9 +164,10 @@ export class worldSpaceNodeConnector {
         return this.parentWorldSpaceNode.individualId;
     }
 
+    /**
+     * Destroy the connector, cleaning all its connections.
+     */
     Destroy() {
-        //Destroy the connectorcleaning all the connections
-
         this.connectedWorldSpaceConnectors.forEach(function (connector) {
             this.removeConnection(connector);
         });
