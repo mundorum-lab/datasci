@@ -444,7 +444,7 @@ notice    | source | message type
 ----------| -------| ------------
 `saved` | `Emitido quando o usuário aperta o botão "Salvar"` | `template selecionado do templatesList`
 
-## `component-provider-oid`
+## Componente `component-provider-oid`
 
 Este componente é responsável por fornecer informações sobre o conjunto de nós disponíveis que podem ser utilizados na construção de um workflow.
 
@@ -486,26 +486,34 @@ Essa sessão descreve o pipeline do nosso workflow, desde a recepção dos nós 
 
 ## Setup
 ~~~html
-<other-group publish="nodes:availableNodes">
+<other-group publish="nodes~availableNodes">
 </other-group>
 
-<available-nodes subscribe="availableNodes:nodes" publish="node:addNode">
+<available-nodes subscribe="availableNodes~nodes" publish="node~addNode">
 </available-nodes>
 
-<world-space-view subscribe="addNode:addNode" publish="exportWorkflow:exportWorkflow">
+<world-space-view subscribe="addNode~addNode" publish="exportWorkflow~exportWorkflow">
 </world-space-view>
 
-<another-group subscribe="exportWorkflow:exportWorkflow">
+<another-group subscribe="exportWorkflow~exportWorkflow">
 </another-group>
 ~~~
 
 ## Narrative
 
-* Os outros grupos publicam as informações de seus nós no barramento por meio da mensagem `availableNodes`, mapeada do parâmetro `nodes`
-* O componente `<available-nodes>` recebe a mensagem, mapeia para o parâmetro `nodes` e processa os dados criando os nós disponíveis e os renderizando na "gaveta" para que o usuário selecione.
-* Após selecionar um nó, o usuário o arrasta para o espaço de workflow, o componente `<world-space-view>`.
-  * Isso inicia o evento `addNode`, mapeia para o parâmetro `addNode` e atualiza o estado do workflow.
-  * Assim, o novo nó é criado no workflow:
-    * O componente do Workflow instancia cada `<world-space-node>` com a informação recebida pelo addNode sendo passada como parâmetro.
-* O usuário conecta os nós criados o que atualiza novamente o estado do workflow
-* Por fim, ao clicar em exportar, o componente `<world-space-view>` lança o evento `exportWorkflow`, mapeia para o parâmetro `exportWorkflow` e publica no barramento o estado atual do pipeline para que o próximo grupo o execute.
+* Os grupos cadastram seus componentes nos arquivos `availableNodes.json` em seus módulos.
+* Os componentes cadastrados são expostos para o sistema através do `manifest.js`.
+* O componente `component-provider-oid` prove aos outros componentes por meio da interface `itf:component-provider` acesso as informações dos nós.
+* O componente `sidebar-oid` solicita ao `component-provider-oid` pela interface `itf:component-provider` todos os nós disponíveis e utilizando essa informação.
+  * São criados diversos componentes `sidebar-node-list-view` que apresentam ao usuários os nós disponíveis.
+* O usuário pode selecionar um nó e arrastá-lo para o painel.
+  * Ao fazer isso uma instância do componente `world-space-node` é criada e adicionada ao `world-space`.
+  * A instância do componente `world-space-node` solicita ao `component-provider-oid` as informações necessárias para que possa renderizar sua UI.
+* O usuário conecta os nós criados o que atualiza novamente o estado do workflow.
+* Por fim, ao clicar na aba **Presentation**, o componente `workflow-publisher-oid` lança o sinal `export`, mapeia na categoria `workflow/state`.
+* O grupo Presentation escuta a categoria `workflow/state` e instancia os componentes para execução, de fato, do workflow.
+* O usuário pode escolher o esquema de visualização do resultado gerado pelo workflow. Para isso, basta clicar no botão `Select Template`.
+  * Em seguida, é disparado um evento de requisição de templates e publicado no tópico `apresentacao/templates/requisicao`.
+  * O componente `template-lister-oid`, recebe o evento de notificação, mapeia para um método interno e devolve a lista de templates no barramento no tópico `apresentacao/templates/listagem`.
+  * O componente `template-selector-oid`, que está inscrito no tópico `apresentacao/templates/listagem`, apresenta os templates disponíveis em forma de um RadioButton. 
+  * O template escolhido é publicado no barramento com o tópico `saved~workflow/saved`.
